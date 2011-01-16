@@ -1,0 +1,5 @@
+#!/bin/bash
+# Basic build script
+echo "Starting valac"
+valac --pkg rss-glib-1.0 --pkg libsoup-2.4 --pkg webkit-1.0 --thread *.vala backend/*.vala frontend/widgets/*.vala --pkg gee-1.0 --pkg glib-2.0 --pkg gtk+-2.0 -o feedler
+echo "Finished valac"
