@@ -16,7 +16,6 @@
 */
 
 using Gtk;
-using WebKit;
 
 public class Feedler : Window {
    
@@ -27,7 +26,7 @@ public class Feedler : Window {
 //    ScrolledWindow browser_sw;
     ContentPane content_pane;
     ScrolledWindow treeview_sw;
-    WebView browser_webview;
+    Gee.HashMap<string, Gee.HashMap<string, string>> results;
     AppMenu app_menu;
     VBox vbox;
     HPaned main_pane;
@@ -36,19 +35,21 @@ public class Feedler : Window {
     public Feedler () {
         
         // The window poperties
-        this.set_title ("Feedler");
-        this.set_position (WindowPosition.CENTER);
-        set_default_size (700, 440);
+
+        this.title = "Feedler";
+        this.icon_name = "news-feed";
+        this.window_position = WindowPosition.CENTER;
+        this.set_default_size (800, 600);
+        this.type_hint = Gdk.WindowTypeHint.NORMAL;
         
         // Initialize fields
-        this.toolbar = new Toolbar ();
-        this.vbox = new VBox (false, 0);
-        this.main_pane = new HPaned ();
-        this.main_pane.name = "SidebarHandleLeft";
-        this.browser_pane = new VPaned ();
-        this.content_pane = new ContentPane ();
-        this.treeview_sw = new ScrolledWindow (null, null);
-        this.browser_webview = new WebView ();
+        toolbar = new Toolbar ();
+        vbox = new VBox (false, 0);
+        main_pane = new HPaned ();
+        main_pane.name = "SidebarHandleLeft";
+        browser_pane = new VPaned ();
+        content_pane = new ContentPane ();
+        treeview_sw = new ScrolledWindow (null, null);
 
         // Set up local variables for the toolbutton items
         var add_button = new ToolButton.from_stock (Gtk.Stock.ADD);
@@ -59,15 +60,11 @@ public class Feedler : Window {
         this.toolbar.add (remove_button);
         this.toolbar.add (spacing);
 
-        var label = new Label ("");
-        label.set_markup ("<big><b>Welcome to Feedler</b></big>");
         this.main_pane.add2 (browser_pane);
 
         this.treeview_sw.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
-//        this.browser_sw.add (browser_webview);
         this.browser_pane.pack1 (treeview_sw, true, false);
         this.browser_pane.pack2 (content_pane, true, false);
-        this.browser_webview.open ("http://feeds.feedburner.com/d0od");
 
         this.vbox.pack_start (this.toolbar, false, true, 0);
         this.vbox.pack_start (this.main_pane, true, true, 0);
@@ -120,7 +117,19 @@ public class Feedler : Window {
                 treestore.set (child, 0, str, -1);
             }
         }
+        this.sidebar_treeview.expand_all ();
         this.main_pane.add1 (this.sidebar_treeview);
+    }
+    
+    private void on_browser_treeview_selection () { 
+        var selection = this.browser_treeview.get_selection ();
+        var model = this.browser_treeview.get_model ();
+        var treeiter = TreeIter ();
+        selection.get_selected(out model, out treeiter);
+        var val = GLib.Value (typeof (string));
+        model.get_value (treeiter, 0, out val);
+        this.content_pane.load_article (results[(string)val]["description"], results[(string)val]["url"]);
+        this.content_pane.show ();
     }
     
     private void setup_browser_treeview () {
@@ -128,19 +137,28 @@ public class Feedler : Window {
         var treestore = new TreeStore (2, typeof (string), typeof (string));
         var gb = new Grabber ();
         var ff = new FeedFetcher ();
-        string xml = ff.grab_xml ("http://www.macrumors.com/macrumors.xml");
-        Gee.ArrayList<Gee.HashMap> results = gb.parse_feed (xml);
-        foreach (Gee.HashMap<string, string> result in results) {
-            stdout.printf(result["description"]+"\n");
-        }
+        string xml = ff.grab_xml ("http://feeds.feedburner.com/webupd8?format=xml");
+        this.results = gb.parse_feed (xml);
         this.browser_treeview.set_model (treestore);
-        this.browser_treeview.set_headers_visible (false);
-        this.browser_treeview.insert_column_with_attributes (-1, null, new CellRendererText (), "text", 0, null);
-        foreach (Gee.HashMap<string, string> result in results) {
+        this.browser_treeview.headers_visible = true;
+        var title_column = new Gtk.TreeViewColumn.with_attributes ("Title", new CellRendererText (), "text", 0, null);
+        title_column.resizable = true;
+        title_column.max_width = 500;
+        
+        var date_column = new Gtk.TreeViewColumn.with_attributes ("Date", new CellRendererText (), "text", 1, null);
+        title_column.resizable = true;
+        date_column.max_width = 20;
+        this.browser_treeview.insert_column (title_column, -1); 
+        this.browser_treeview.insert_column (date_column, -1); 
+        foreach (string result in results.keys) {
             TreeIter root;
             treestore.append (out root, null);
-            treestore.set (root, 0, result["title"], -1);
-        } 
+            treestore.set (root, 0, result, -1);
+            treestore.set (root, 1, results[result]["date"], -1);
+        }
+        this.browser_treeview.columns_autosize ();
+        this.browser_treeview.get_selection ().changed.connect (on_browser_treeview_selection);
+//        this.content_pane.load_article (results[0]["description"]);
         this.treeview_sw.add (this.browser_treeview);
     }
     
@@ -187,6 +205,8 @@ public class Feedler : Window {
         var window = new Feedler ();
         window.destroy.connect (Gtk.main_quit);
         window.show_all ();
+        window.content_pane.hide ();
+        window.app_menu.grab_focus (); // Better thaan giving focus elsewhere
         Gtk.main ();
         return 0;
     }

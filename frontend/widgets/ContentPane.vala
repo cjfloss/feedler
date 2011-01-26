@@ -15,37 +15,32 @@
 ### END LICENSE
 */
 
-public class ContentPane : Gtk.ScrolledWindow {
+using WebKit;
 
-    Gtk.TextView textview;
-    Gtk.TextTagTable tagtable;
-    Gtk.TextBuffer textbuffer;
+public class ContentPane : Gtk.VBox {
+
+    WebView browser_webview;
+    Gtk.Label website_label = new Gtk.Label (null);
 
     public ContentPane () {
     
-    setup_tag_table ();
-    this.textbuffer = new Gtk.TextBuffer (this.tagtable);
-    this.textview = new Gtk.TextView ();
-    this.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-    this.textview.set_buffer (this.textbuffer);
-    var end_iter = Gtk.TextIter ();
-    this.textbuffer.get_end_iter (out end_iter);
-    this.textview.set_cursor_visible (false);
-    this.textbuffer.insert_with_tags (end_iter, "Into the Night", 1);
-    this.add (this.textview);
-    
+        Gtk.ScrolledWindow main_sw = new Gtk.ScrolledWindow (null, null);
+        this.browser_webview = new WebView ();
+        main_sw.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this.browser_webview.settings.auto_resize_window = false;
+        this.website_label.use_markup = true;
+        main_sw.add (this.browser_webview);
+        this.pack_end (this.website_label, false);
+        this.pack_start (main_sw);
+        
     }
     
-    private void setup_tag_table () {
-    this.tagtable = new Gtk.TextTagTable ();
+    public void load_article (string content, string website_label) {
     
-    var title_tag = new Gtk.TextTag ("title");
-    title_tag.set_property ("weight", Pango.Weight.BOLD);
-    title_tag.set_property ("scale", Pango.Scale.LARGE);
-    this.tagtable.add (title_tag);
+        this.website_label.set_markup("<a href=\""+website_label+"\">"+website_label+"</a>");
+        this.browser_webview.load_string (content, "text/html", "UTF-8", "");
     
     }
-
 }
 
 

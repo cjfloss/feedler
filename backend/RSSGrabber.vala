@@ -50,19 +50,23 @@ public class Grabber {
         this.parser = new Parser ();
     }
     
-    public Gee.ArrayList<Gee.HashMap> parse_feed (string xml) {
-    this.parser.load_from_data (xml, xml.length);
-    var doc = this.parser.get_document ();
-    var feed = new Gee.ArrayList<Gee.HashMap> ();
-    foreach (Item item in doc.get_items ()) {
-        var article = new Gee.HashMap<string, string> ();
-        article["title"] = item.title;
-        article["date"] = item.pub_date;
-        article["description"] = item.description;
-        article["guid"] = item.guid;
-        feed.add(article);
-	    }
+    public Gee.HashMap<string, Gee.HashMap<string, string>> parse_feed (string xml) {
+    
+        try { this.parser.load_from_data (xml, xml.length); }
+        catch { stdout.printf ("Woah dude, parsing fail!"); }
+        var doc = this.parser.get_document ();
+        var feed = new Gee.HashMap<string, Gee.HashMap<string, string>> ();
+        foreach (Item item in doc.get_items ()) {
+            var article = new Gee.HashMap<string, string> ();
+            article["date"] = item.pub_date;
+            article["description"] = item.description;
+            article["url"] = item.link;
+            feed[(string)item.title] = article;
+        }
         return feed;
+        // We're returning a hashmap of article titles mapped to a hashmap ofs
+        // strings describing article data mapped to the actual data (also strings)
+        
 	}
 }
 
