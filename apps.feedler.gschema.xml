@@ -1,0 +1,19 @@
+<schemalist>
+	<schema path="/apps/feedler/" id="apps.feedler" gettext-domain="feedler">
+		<key name="width" type="i">
+			<default>800</default>
+			<summary>Window Width</summary>
+			<description>Preferred width of the window.</description>
+		</key>
+		<key name="height" type="i">
+			<default>500</default>
+			<summary>Window Height</summary>
+			<description>Preferred height of the window.</description>
+		</key>
+		<key name="hpane-width" type="i">
+			<default>175</default>
+			<summary>Sidebar Width</summary>
+			<description>Preferred width of the sidebar.</description>
+		</key>
+	</schema>
+</schemalist>
