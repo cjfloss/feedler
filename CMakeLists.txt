@@ -119,7 +119,6 @@ vala_precompile(VALA_C
 PACKAGES
 	gtk+-3.0
     granite
-	webkitgtk-3.0
 	libnotify
 	libsoup-2.4
 	libxml-2.0
