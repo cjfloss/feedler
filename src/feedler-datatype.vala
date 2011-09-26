@@ -39,7 +39,7 @@ internal class Feedler.Channel
 	
 	internal void favicon ()
 	{
-		stderr.printf ("http://getfavicon.appspot.com/%s\n",homepage);
+		stderr.printf ("http://getfavicon.appspot.com/%s\n", homepage);
 		Soup.Message msg = new Soup.Message("GET", "http://getfavicon.appspot.com/"+homepage);
         session.queue_message (msg, favicon_func);
 	}
@@ -55,10 +55,9 @@ internal class Feedler.Channel
 			last = this.items.last ().data.title;
 		else
 			last = "";
-
 		unowned Xml.Doc doc = Xml.Parser.parse_memory (rss, rss.length);
 		Feedler.Parser parser = new Feedler.Parser ();
-		unowned GLib.List<Feedler.Item?> rss_items = parser.parse_doc_type (this.type, doc);
+		unowned GLib.List<Feedler.Item?> rss_items = parser.parse_type (this.type, doc);
 		GLib.List<Feedler.Item?> new_items = new GLib.List<Feedler.Item?> ();
 		foreach (Feedler.Item it in rss_items)
 		{
@@ -75,7 +74,6 @@ internal class Feedler.Channel
 		foreach (Feedler.Item it in new_items)
 			this.items.append (it);
 		this.unreaded = unreaded;
-		stderr.printf ("Przed emitem updated ()");
 		this.updated (id, unreaded);
 	}
 	

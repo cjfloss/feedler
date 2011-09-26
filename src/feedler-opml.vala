@@ -19,16 +19,16 @@ public class Feedler.OPML : GLib.Object
 	
 	construct
 	{
-		this.channels = new GLib.List<Feedler.Channel?> ();
-		this.folders =  new GLib.List<Feedler.Folder?> ();
+		this.channels = new GLib.List<Feedler.Channel> ();
+		this.folders =  new GLib.List<Feedler.Folder> ();
 	}
 
-	public unowned GLib.List<Feedler.Folder?> get_folders ()
+	public unowned GLib.List<Feedler.Folder> get_folders ()
 	{
 		return folders;
 	}
 	
-	public unowned GLib.List<Feedler.Channel?> get_channels ()
+	public unowned GLib.List<Feedler.Channel> get_channels ()
 	{
 		return channels;
 	}
@@ -75,7 +75,7 @@ public class Feedler.OPML : GLib.Object
 			if (outline->name == "outline")
 			{
 				type = outline->get_prop ("type");
-				if (type == "rss")
+				if (type == "rss" || type == "atom")
 					this.parse_outline (outline);
 				else if (type == "folder" || type == null)
 				{
@@ -90,7 +90,10 @@ public class Feedler.OPML : GLib.Object
 					this.parse_body (outline);
 				}
 				else
+				{
 					stderr.printf ("Feedler.Opml: This feed's type is currently not supported.");
+					continue;
+				}
 			}
 			outline = outline->next;
 		}

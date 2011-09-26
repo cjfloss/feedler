@@ -216,7 +216,9 @@ public class Feedler.Window : Gtk.Window
 	protected void update_all ()
 	{
 		foreach (Feedler.Channel ch in this.db.channels)
+		{
 			ch.update ();
+		}
 	}
 	
 	protected void updated_channel (int channel, int unreaded)
@@ -340,7 +342,6 @@ public class Feedler.Window : Gtk.Window
 					this.side.add_channel_to_folder (channel.folder, channel.title);
 				else
 					this.side.add_channel (channel.title);
-				this.db.channels.last ().data.updated.connect (updated_channel);
 			}
 			
 			this.db.insert_opml (this.opml.get_folders (), this.opml.get_channels ());
