@@ -16,7 +16,7 @@ internal class Feedler.Channel
 	internal signal void updated (int channel_id, int unreaded);
 	internal signal void faviconed (int channel_id);
 	
-	internal static Soup.Session session = new Soup.SessionAsync ();
+	internal static Soup.Session session;
 	internal int id;
 	internal string title;
 	internal string source;
@@ -25,6 +25,12 @@ internal class Feedler.Channel
 	internal string type;
 	internal int unreaded;
 	internal unowned GLib.List<Feedler.Item?> items;
+	
+	static construct
+	{
+		session = new Soup.SessionAsync ();
+		session.timeout = 5;
+	}
 
 	internal void add_item (Feedler.Item item)
 	{
@@ -49,32 +55,34 @@ internal class Feedler.Channel
 		string rss = (string) message.response_body.data;
 		int unreaded = 0;
 
-		stderr.printf ("%s:\n", this.title);
-		string last;
-		if (this.items.length () > 0)
-			last = this.items.last ().data.title;
-		else
-			last = "";
-		unowned Xml.Doc doc = Xml.Parser.parse_memory (rss, rss.length);
-		Feedler.Parser parser = new Feedler.Parser ();
-		unowned GLib.List<Feedler.Item?> rss_items = parser.parse_type (this.type, doc);
-		GLib.List<Feedler.Item?> new_items = new GLib.List<Feedler.Item?> ();
-		foreach (Feedler.Item it in rss_items)
+		if (rss != null)
 		{
-			if (it.title != last)
-			{
-				//stderr.printf ("%s - %s\n", it.title, it.author);
-				//this.items.append (it);
-				new_items.prepend (it);
-				unreaded++;
-			}
+			string last;
+			if (this.items.length () > 0)
+				last = this.items.last ().data.title;
 			else
-				break;
+				last = "";
+			unowned Xml.Doc doc = Xml.Parser.parse_memory (rss, rss.length);
+			Feedler.Parser parser = new Feedler.Parser ();
+			unowned GLib.List<Feedler.Item?> rss_items = parser.parse_type (this.type, doc);
+			GLib.List<Feedler.Item?> new_items = new GLib.List<Feedler.Item?> ();
+			foreach (Feedler.Item it in rss_items)
+			{
+				if (it.title != last)
+				{
+					new_items.prepend (it);
+					unreaded++;
+				}
+				else
+					break;
+			}
+			foreach (Feedler.Item it in new_items)
+				this.items.append (it);
+			this.unreaded = unreaded;
+			this.updated (id, unreaded);
 		}
-		foreach (Feedler.Item it in new_items)
-			this.items.append (it);
-		this.unreaded = unreaded;
-		this.updated (id, unreaded);
+		else
+			this.updated (id, -1);
 	}
 	
 	internal void favicon_func (Soup.Session session, Soup.Message message)

@@ -223,9 +223,13 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void updated_channel (int channel, int unreaded)
 	{
-		Feedler.Channel ch = this.db.channels.nth_data (channel-1);
-		this.side.add_unreaded (ch.title, unreaded);
-		this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
+		if (unreaded > 0)
+		{
+			Feedler.Channel ch = this.db.channels.nth_data (channel-1);
+			this.side.add_unreaded (ch.title, unreaded);
+			this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
+		}
+		//TODO information on sidebar-cell		
 	}
 		
 	protected void mark_all ()
