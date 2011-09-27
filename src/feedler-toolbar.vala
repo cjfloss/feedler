@@ -18,11 +18,13 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Gtk.MenuItem export_feeds = new Gtk.MenuItem.with_label ("Export subscriptions");
     internal Gtk.MenuItem about_program = new Gtk.MenuItem.with_label ("About");
     
-    internal Granite.Widgets.ModeButton mode = new Granite.Widgets.ModeButton ();
+    //internal Granite.Widgets.ModeButton mode;
+    internal Granite.Widgets.ModeButtonMarlin mode;
     internal Granite.Widgets.SearchBar search = new Granite.Widgets.SearchBar ("Type to search..");
     
 	construct
 	{
+		this.get_style_context().add_class("primary-toolbar");
 		sidebar_visible.active = true;
         Gtk.Menu menu = new Gtk.Menu ();
         menu.append (import_feeds);
@@ -35,6 +37,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
         Granite.Widgets.AppMenu appmenu = new Granite.Widgets.AppMenu (menu);
         this.about_program.activate.connect (on_about);
         
+        this.mode = new Granite.Widgets.ModeButtonMarlin ();
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-details-symbolic", Gtk.IconSize.MENU));
         Gtk.ToolItem mode_item = new Gtk.ToolItem ();
