@@ -10,7 +10,7 @@ public class Feedler.Window : Gtk.Window
 	private Feedler.Settings settings;
 	private Feedler.Database db;
 	private Feedler.OPML opml;
-	private Feedler.Toolbar toolbar;	
+	internal Feedler.Toolbar toolbar;	
 	private Feedler.Sidebar side;
 	private Feedler.History history;
 	private weak Feedler.View view;
@@ -228,6 +228,9 @@ public class Feedler.Window : Gtk.Window
 			Feedler.Channel ch = this.db.channels.nth_data (channel-1);
 			this.side.add_unreaded (ch.title, unreaded);
 			this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
+			
+			if (this.selection_tree () == channel - 1)
+				this.load_channel ();
 		}
 		//TODO information on sidebar-cell		
 	}
@@ -251,6 +254,7 @@ public class Feedler.Window : Gtk.Window
 			}
 			this.side.set_unreaded (ch.title, 0);
 		}
+		this.load_channel ();
 	}
 	
 	protected void mark_channel (int item_id)
@@ -412,6 +416,10 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void sidebar_update ()
 	{
-		this.scroll_side.set_visible (this.toolbar.sidebar_visible.active);
+		if (this.toolbar.sidebar_visible.active)
+			this.scroll_side.show ();
+		else
+			this.scroll_side.hide ();
+		//this.scroll_side.set_visible (this.toolbar.sidebar_visible.active);
 	}
 }

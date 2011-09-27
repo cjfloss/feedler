@@ -35,12 +35,12 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (about_program);
         
         Granite.Widgets.AppMenu appmenu = new Granite.Widgets.AppMenu (menu);
-        this.about_program.activate.connect (on_about);
         
         this.mode = new Granite.Widgets.ModeButtonMarlin ();
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-details-symbolic", Gtk.IconSize.MENU));
         Gtk.ToolItem mode_item = new Gtk.ToolItem ();
+        mode_item.set_border_width (5);
         mode_item.add (mode);
         Gtk.ToolItem search_item = new Gtk.ToolItem ();
         search_item.add (search);
@@ -58,14 +58,5 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.insert (search_item, 6);
         this.insert (mode_item, 7);
         this.insert (appmenu, 8);
-	}
-	
-	protected void on_about ()
-	{
-		Granite.Widgets.AboutDialog about = new Granite.Widgets.AboutDialog ();
-        if (about.run () == Gtk.ResponseType.ACCEPT) {
-            stderr.printf ("Create: OK");
-        }
-        about.destroy ();
 	}
 }

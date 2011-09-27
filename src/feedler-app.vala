@@ -19,7 +19,7 @@ public class Feedler.App : Granite.Application
 		build_version_info = Build.VERSION_INFO;
 		program_name = "Feedler";
 		exec_name = "feedler";
-		app_copyright = "2011";
+		app_years = "2011";
 		application_id = "net.launchpad.Feedler";
 		app_icon = "news-feed";
         app_launcher = "feedler.desktop";
@@ -28,6 +28,7 @@ public class Feedler.App : Granite.Application
 		help_url = "https://answers.launchpad.net/feedler";
 		translate_url = "https://translations.launchpad.net/feedler";
 		about_authors = {"Daniel Kur <daniel.m.kur@gmail.com>"};
+		//about_license_type = Gtk.License.GPL_3_0;
 	}
 
 	protected override void activate ()
@@ -41,6 +42,7 @@ public class Feedler.App : Granite.Application
 		window = new Feedler.Window ();
 		window.set_application (this);
 		window.show_all ();
+		window.toolbar.about_program.activate.connect (() => {show_about (window);});
 	}
 	
 	public static int main (string[] args)
