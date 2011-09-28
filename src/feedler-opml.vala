@@ -75,8 +75,10 @@ public class Feedler.OPML : GLib.Object
 			if (outline->name == "outline")
 			{
 				type = outline->get_prop ("type");
-				if (type == "rss" || type == "atom")
-					this.parse_outline (outline);
+				if (type == "rss")
+					this.parse_outline (outline, Type.RSS);
+				else if (type == "atom")
+					this.parse_outline (outline, Type.ATOM);
 				else if (type == "folder" || type == null)
 				{
 					Feedler.Folder fo = new Feedler.Folder ();
@@ -100,13 +102,13 @@ public class Feedler.OPML : GLib.Object
 		
 	}
 	
-	private void parse_outline (Xml.Node* node)
+	private void parse_outline (Xml.Node* node, Type type)
 	{
 		Feedler.Channel outline = new Feedler.Channel ();
 		outline.title = node->get_prop ("title");
 		outline.source = node->get_prop ("xmlUrl");
 		outline.homepage = node->get_prop ("htmlUrl");
-		outline.type = node->get_prop ("type");
+		outline.type = type;
 		if (node->parent->name != "body")
 			outline.folder = node->parent->get_prop ("title");
 		else
@@ -159,7 +161,7 @@ public class Feedler.OPML : GLib.Object
         {
 			Xml.Node* outline = new Xml.Node (null, "outline");
 			outline->new_prop ("title", channel.title);
-			outline->new_prop ("type", channel.type);
+			outline->new_prop ("type", channel.type.to_string ());
 			outline->new_prop ("xmlUrl", channel.source);
 			outline->new_prop ("htmlUrl", channel.homepage);
 			if (channel.folder != null)

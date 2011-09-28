@@ -6,34 +6,16 @@
  */
  
 public class Feedler.Parser : GLib.Object
-{
-	public enum ChannelType
-	{
-		RSS,
-		ATOM
-	}
-	
+{	
 	internal GLib.List<Feedler.Item?> items;
 	
-	public unowned GLib.List<Feedler.Item?> parse_channel_type (ChannelType type, Xml.Doc* doc)
+	public unowned GLib.List<Feedler.Item?> parse_type (Type type, Xml.Doc* doc)
 	{		
 		items = new GLib.List<Feedler.Item?> ();
 		switch (type)
 		{
-			case ChannelType.RSS:  parse_rss (doc->get_root_element ());  break;
-			case ChannelType.ATOM: parse_atom (doc->get_root_element ()); break;
-			default: parse (doc); break;
-		}
-		return items;
-	}
-	
-	public unowned GLib.List<Feedler.Item?> parse_type (string type, Xml.Doc* doc)
-	{		
-		items = new GLib.List<Feedler.Item?> ();
-		switch (type)
-		{
-			case "rss":  parse_rss (doc->get_root_element ());  break;
-			case "atom": parse_atom (doc->get_root_element ()); break;
+			case Type.RSS:  parse_rss (doc->get_root_element ());  break;
+			case Type.ATOM: parse_atom (doc->get_root_element ()); break;
 			default: parse (doc); break;
 		}
 		return items;

@@ -51,7 +51,7 @@ public class Feedler.Database : GLib.Object
 			GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler/fav", 0755);
 			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE | SQLHeavy.FileMode.CREATE);
 			db.execute ("CREATE TABLE folders (`id` INTEGER PRIMARY KEY,`name` TEXT,`parent` TEXT);");
-			db.execute ("CREATE TABLE channels (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`homepage` TEXT,`folder` TEXT,`type` TEXT);");
+			db.execute ("CREATE TABLE channels (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`homepage` TEXT,`folder` TEXT,`type` INT);");
 			db.execute ("CREATE TABLE items (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`author` TEXT,`description` TEXT,`time` INT,`state` INT,`channel` REFERENCES `channels`(`id`));");
 			this.created = true;
 		}
@@ -162,7 +162,7 @@ public class Feedler.Database : GLib.Object
 				query.set_string (":source", channel.source);
 				query.set_string (":homepage", channel.homepage);
 				query.set_string (":folder", channel.folder);
-				query.set_string (":type", channel.type);
+				query.set_int (":type", channel.type);
 				channel.id = (int) query.execute_insert ();
 				this.channels.append (channel);
 			}
@@ -213,7 +213,7 @@ public class Feedler.Database : GLib.Object
 			query.set_string (":source", channel.source);
 			query.set_string (":homepage", channel.homepage);
 			query.set_string (":folder", channel.folder);
-			query.set_string (":type", channel.type);
+			query.set_int (":type", (int)channel.type);
 			channel.id = (int) query.execute_insert ();
 			this.channels.append (channel);
 			foreach (Feedler.Item item in channel.items)
@@ -261,7 +261,6 @@ public class Feedler.Database : GLib.Object
 	{
         try
         {
-			GLib.Time current_time = GLib.Time.local (time_t ());
 			query = new SQLHeavy.Query (db, "SELECT * FROM `channels`;");
 			for (var results = query.execute(); !results.finished; results.next())
 			{				
@@ -271,7 +270,7 @@ public class Feedler.Database : GLib.Object
 				ch.source = results.fetch_string (2);
 				ch.homepage = results.fetch_string (3);
 				ch.folder = results.fetch_string (4);
-				ch.type = results.fetch_string (5);
+				ch.type = (Type) results.fetch_int (5);
 				
 				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`="+results.fetch_int (0).to_string ()+";");
 				for (var r = q.execute(); !r.finished; r.next())

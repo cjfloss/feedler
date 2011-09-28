@@ -11,6 +11,25 @@ public class Feedler.Folder
 	public string parent;
 }
 
+public enum Type
+{
+	RSS,
+	ATOM;
+	
+	public string to_string ()
+	{
+        switch (this)
+        {
+            case RSS:
+                return "rss";
+            case ATOM:
+                return "atom";
+            default:
+                assert_not_reached();
+        }
+    }
+}
+
 public class Feedler.Channel
 {
 	public signal void updated (int channel_id, int unreaded);
@@ -22,7 +41,7 @@ public class Feedler.Channel
 	public string source;
 	public string homepage;
 	public string folder;
-	public string type;
+	public Type type;
 	public int unreaded;
 	public unowned GLib.List<Feedler.Item?> items;
 	

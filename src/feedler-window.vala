@@ -65,7 +65,7 @@ public class Feedler.Window : Gtk.Window
 	private void ui_workspace ()
 	{
 		this.side = new Feedler.Sidebar ();
-		
+		this.side.cursor_changed.connect (load_channel);
 		this.scroll_side = new Gtk.ScrolledWindow (null, null);
 		this.scroll_side.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 		this.scroll_side.add (side);
@@ -76,8 +76,6 @@ public class Feedler.Window : Gtk.Window
         this.vbox.pack_start (hpane, true);
         this.hpane.add1 (scroll_side);
         this.hpane.add2 (layout);
-        
-        this.side.cursor_changed.connect (load_channel);
         
 		this.layout.append_page (new Feedler.ViewList (), null);
 		this.layout.append_page (new Feedler.ViewWeb (), null);
@@ -101,9 +99,9 @@ public class Feedler.Window : Gtk.Window
 		foreach (Feedler.Channel channel in this.db.select_channels ())
 		{
 			if (channel.folder != "root")
-				this.side.add_channel_to_folder (channel.folder, channel.title);
+				this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
 			else
-				this.side.add_channel (channel.title);
+				this.side.add_channel (channel.id, channel.title);
 			channel.updated.connect (updated_channel);
 			//channel.faviconed.connect (faviconed_channel);
 		}			
@@ -163,7 +161,7 @@ public class Feedler.Window : Gtk.Window
 		{
 			ChannelStore channel;
 			model.get (iter, 0, out channel);
-			return this.side.subs_map.lookup (channel.channel).get_id ();
+			return (channel.id - 1);
 		}
 		else
 			return 0;
@@ -226,7 +224,7 @@ public class Feedler.Window : Gtk.Window
 		if (unreaded > 0)
 		{
 			Feedler.Channel ch = this.db.channels.nth_data (channel-1);
-			this.side.add_unreaded (ch.title, unreaded);
+			this.side.add_unreaded (ch.id, unreaded);
 			this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
 			
 			if (this.selection_tree () == channel - 1)
@@ -252,7 +250,7 @@ public class Feedler.Window : Gtk.Window
 				else
 					break;
 			}
-			this.side.set_unreaded (ch.title, 0);
+			this.side.mark_readed (ch.id);
 		}
 		this.load_channel ();
 	}
@@ -337,6 +335,8 @@ public class Feedler.Window : Gtk.Window
 				this.db.create ();
 			}
 			
+			this.db.insert_opml (this.opml.get_folders (), this.opml.get_channels ());
+			
 			foreach (Feedler.Folder folder in this.opml.get_folders ())
 			{
 				if (folder.parent != "root")
@@ -348,12 +348,10 @@ public class Feedler.Window : Gtk.Window
 			foreach (Feedler.Channel channel in this.opml.get_channels ())
 			{
 				if (channel.folder != "root")
-					this.side.add_channel_to_folder (channel.folder, channel.title);
+					this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
 				else
-					this.side.add_channel (channel.title);
+					this.side.add_channel (channel.id, channel.title);
 			}
-			
-			this.db.insert_opml (this.opml.get_folders (), this.opml.get_channels ());
 			
 			foreach (Feedler.Channel channel in this.db.channels.nth (this.db.channels.length () - this.opml.get_channels ().length ()))
 			{
