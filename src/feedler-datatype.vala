@@ -5,26 +5,26 @@
  * @see COPYING
  */
  
-internal class Feedler.Folder
+public class Feedler.Folder
 {
-	internal string name;
-	internal string parent;
+	public string name;
+	public string parent;
 }
 
-internal class Feedler.Channel
+public class Feedler.Channel
 {
-	internal signal void updated (int channel_id, int unreaded);
-	internal signal void faviconed (int channel_id);
+	public signal void updated (int channel_id, int unreaded);
+	public signal void faviconed (int channel_id);
 	
-	internal static Soup.Session session;
-	internal int id;
-	internal string title;
-	internal string source;
-	internal string homepage;
-	internal string folder;
-	internal string type;
-	internal int unreaded;
-	internal unowned GLib.List<Feedler.Item?> items;
+	public static Soup.Session session;
+	public int id;
+	public string title;
+	public string source;
+	public string homepage;
+	public string folder;
+	public string type;
+	public int unreaded;
+	public unowned GLib.List<Feedler.Item?> items;
 	
 	static construct
 	{
@@ -32,25 +32,25 @@ internal class Feedler.Channel
 		session.timeout = 5;
 	}
 
-	internal void add_item (Feedler.Item item)
+	public void add_item (Feedler.Item item)
 	{
 		this.items.append (item);
 	}
 	
-	internal void update ()
+	public void update ()
 	{
 		Soup.Message msg = new Soup.Message("GET", source);
         session.queue_message (msg, update_func);
 	}
 	
-	internal void favicon ()
+	public void favicon ()
 	{
 		stderr.printf ("http://getfavicon.appspot.com/%s\n", homepage);
 		Soup.Message msg = new Soup.Message("GET", "http://getfavicon.appspot.com/"+homepage);
         session.queue_message (msg, favicon_func);
 	}
 	
-	internal void update_func (Soup.Session session, Soup.Message message)
+	public void update_func (Soup.Session session, Soup.Message message)
 	{
 		string rss = (string) message.response_body.data;
 		int unreaded = 0;
@@ -85,7 +85,7 @@ internal class Feedler.Channel
 			this.updated (id, -1);
 	}
 	
-	internal void favicon_func (Soup.Session session, Soup.Message message)
+	public void favicon_func (Soup.Session session, Soup.Message message)
 	{
 		try
 		{
@@ -105,19 +105,19 @@ internal class Feedler.Channel
 	}
 }
 
-internal enum State
+public enum State
 {
 	READED,
 	UNREADED,
 	BOOKMARKED
 }
 
-internal class Feedler.Item
+public class Feedler.Item
 {
-	internal string title;
-	internal string source;
-	internal string author;
-	internal string description;
-	internal int publish_time;
-	internal State state;
+	public string title;
+	public string source;
+	public string author;
+	public string description;
+	public int time;
+	public State state;
 }

@@ -32,16 +32,15 @@ public class Feedler.ViewWeb : Feedler.View
 		this.item_readed (-1);
 	}
 	
-	public override void add_feed (string feed_time, string feed_name, string feed_source, string feed_text, string feed_author, bool feed_unreaded)
+	public override void add_feed (Feedler.Item item, string time_format)
 	{
-		this.content.prepend (generate_item (feed_name, feed_time, feed_text));
-		this.browser.load_string (content.str, "text/html", "UTF-8", "");
-		//FIXME load after add all feeds in channel
+		this.content.prepend (generate_item (item.title, time_format, item.description));
 	}
 	
-	public override void load_article (string content)
+	public override void load_feeds ()
 	{
 		stderr.printf ("Feedler.ViewWeb.load_article ()");
+		this.browser.load_string (content.str, "text/html", "UTF-8", "");
 	}
 	
 	public override void refilter (string text)

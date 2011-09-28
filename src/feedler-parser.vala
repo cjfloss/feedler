@@ -83,13 +83,13 @@ public class Feedler.Parser : GLib.Object
 			else if (iter->name == "description" || iter->name == "encoded")
 				item.description = iter->get_content ();
 			else if (iter->name == "pubDate")
-				item.publish_time = (int)string_to_time_t (iter->get_content ());
+				item.time = (int)string_to_time_t (iter->get_content ());
         }
         item.state = State.UNREADED;
         if (item.author == null)
 			item.author = "Anonymous";
-		if (item.publish_time == 0)
-			item.publish_time = (int)time_t ();
+		if (item.time == 0)
+			item.time = (int)time_t ();
         items.append (item);
 	}
 	
@@ -124,11 +124,11 @@ public class Feedler.Parser : GLib.Object
 			else if (iter->name == "summary")
 				item.description = iter->get_content ();
 			else if (iter->name == "updated" || iter->name == "published")
-				item.publish_time = (int)string_to_time_t (iter->get_content ());
+				item.time = (int)string_to_time_t (iter->get_content ());
         }
         item.state = State.UNREADED;
-		if (item.publish_time == 0)
-			item.publish_time = (int)time_t ();
+		if (item.time == 0)
+			item.time = (int)time_t ();
         items.append (item);
 	}
 	

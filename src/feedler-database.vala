@@ -52,7 +52,7 @@ public class Feedler.Database : GLib.Object
 			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE | SQLHeavy.FileMode.CREATE);
 			db.execute ("CREATE TABLE folders (`id` INTEGER PRIMARY KEY,`name` TEXT,`parent` TEXT);");
 			db.execute ("CREATE TABLE channels (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`homepage` TEXT,`folder` TEXT,`type` TEXT);");
-			db.execute ("CREATE TABLE items (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`author` TEXT,`description` TEXT,`publish_time` INT,`state` INT,`channel` REFERENCES `channels`(`id`));");
+			db.execute ("CREATE TABLE items (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`author` TEXT,`description` TEXT,`time` INT,`state` INT,`channel` REFERENCES `channels`(`id`));");
 			this.created = true;
 		}
 		catch (SQLHeavy.Error e)
@@ -110,18 +110,18 @@ public class Feedler.Database : GLib.Object
 		this._insert_channel (channel.get_title (), channel.get_source (), channel.get_homepage (), channel.get_folder (), channel.get_type ());  
 	}
 	
-	private void _insert_item (string title, string source, string description, string author, int publish_time, int channel)
+	private void _insert_item (string title, string source, string description, string author, int time, int channel)
 	{
         try
         {
 			transaction = db.begin_transaction ();
-			query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `publish_time`, `unreaded`, `channel`) VALUES (:title, :source, :description, :author, :publish_time, :unreaded, :channel);");
+			query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `time`, `unreaded`, `channel`) VALUES (:title, :source, :description, :author, :time, :unreaded, :channel);");
 			stderr.printf ("prepare item\n");
 			query.set_string (":title", title);
 			query.set_string (":source", source);
 			query.set_string (":description", description);
 			query.set_string (":author", author);
-			query.set_int (":publish_time", publish_time);
+			query.set_int (":time", time);
 			query.set_int (":unreaded", 1);
 			query.set_int (":channel", channel);
 			query.execute ();
@@ -130,13 +130,13 @@ public class Feedler.Database : GLib.Object
 		}
 		catch (SQLHeavy.Error e)
 		{
-			stderr.printf ("Feedler.Database.insert_item (%s, %s, %s, %i, %i): I cannot insert item.", title, source, description, publish_time, channel);
+			stderr.printf ("Feedler.Database.insert_item (%s, %s, %s, %i, %i): I cannot insert item.", title, source, description, time, channel);
 		}
 	}
 
 	public void insert_item (Feedler.Item item, int channel_id)
 	{
-		this._insert_item (item.get_title (), item.get_source (), item.get_description (), item.get_publish_time (), channel_id);  
+		this._insert_item (item.get_title (), item.get_source (), item.get_description (), item.get_time (), channel_id);  
 	}
 */	
 	public void insert_opml (GLib.List<Feedler.Folder> folders, GLib.List<Feedler.Channel> channels)
@@ -184,12 +184,12 @@ public class Feedler.Database : GLib.Object
 			transaction = db.begin_transaction ();
 			foreach (Feedler.Item item in items)
 			{			
-				query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `publish_time`, `state`, `channel`) VALUES (:title, :source, :description, :author, :publish_time, :state, :channel);");
+				query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `time`, `state`, `channel`) VALUES (:title, :source, :description, :author, :time, :state, :channel);");
 				query.set_string (":title", item.title);
 				query.set_string (":source", item.source);
 				query.set_string (":author", item.author);
 				query.set_string (":description", item.description);
-				query.set_int (":publish_time", item.publish_time);
+				query.set_int (":time", item.time);
 				//query.set_int (":state", (int)item.state);
 				query.set_int (":state", (int)State.READED);
 				query.set_int (":channel", channel_id);
@@ -203,7 +203,7 @@ public class Feedler.Database : GLib.Object
 		}
 	}
 	
-	internal void insert_subscription (ref Feedler.Channel channel)
+	public void insert_subscription (ref Feedler.Channel channel)
 	{
         try
         {
@@ -218,12 +218,12 @@ public class Feedler.Database : GLib.Object
 			this.channels.append (channel);
 			foreach (Feedler.Item item in channel.items)
 			{			
-				query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `publish_time`, `state`, `channel`) VALUES (:title, :source, :description, :author, :publish_time, :state, :channel);");
+				query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `time`, `state`, `channel`) VALUES (:title, :source, :description, :author, :time, :state, :channel);");
 				query.set_string (":title", item.title);
 				query.set_string (":source", item.source);
 				query.set_string (":author", item.author);
 				query.set_string (":description", item.description);
-				query.set_int (":publish_time", item.publish_time);
+				query.set_int (":time", item.time);
 				//query.set_int (":state", (int)item.state);
 				query.set_int (":state", (int)State.READED);
 				query.set_int (":channel", channel.id);
@@ -261,6 +261,7 @@ public class Feedler.Database : GLib.Object
 	{
         try
         {
+			GLib.Time current_time = GLib.Time.local (time_t ());
 			query = new SQLHeavy.Query (db, "SELECT * FROM `channels`;");
 			for (var results = query.execute(); !results.finished; results.next())
 			{				
@@ -280,7 +281,7 @@ public class Feedler.Database : GLib.Object
 					it.source = r.fetch_string (2);
 					it.author = r.fetch_string (3);
 					it.description = r.fetch_string (4);
-					it.publish_time = r.fetch_int (5);
+					it.time = r.fetch_int (5);
 					it.state = (State)r.fetch_int (6);
 					ch.add_item (it);				
 				}

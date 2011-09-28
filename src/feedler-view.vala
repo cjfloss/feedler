@@ -17,9 +17,9 @@ public abstract class Feedler.View : Gtk.Viewport
 		
 	public abstract void clear ();
 	
-	public abstract void add_feed (string feed_time, string feed_name, string feed_source, string feed_text, string feed_author, bool feed_unreaded);
+	public abstract void add_feed (Feedler.Item item, string time_format);
 	
-	public abstract void load_article (string content);
+	public abstract void load_feeds ();
 	
 	public abstract void refilter (string text);
 	

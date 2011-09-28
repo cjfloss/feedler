@@ -10,7 +10,7 @@ public class Feedler.Window : Gtk.Window
 	private Feedler.Settings settings;
 	private Feedler.Database db;
 	private Feedler.OPML opml;
-	internal Feedler.Toolbar toolbar;	
+	internal Feedler.Toolbar toolbar;
 	private Feedler.Sidebar side;
 	private Feedler.History history;
 	private weak Feedler.View view;
@@ -315,14 +315,15 @@ public class Feedler.Window : Gtk.Window
 		GLib.Time current_time = GLib.Time.local (time_t ());
 		foreach (Feedler.Item item in this.db.channels.nth_data (this.selection_tree ()).items)
 		{
-			GLib.Time feed_time = GLib.Time.local (item.publish_time);
+			GLib.Time feed_time = GLib.Time.local (item.time);
 			if (feed_time.day_of_year + 6 < current_time.day_of_year)
 				time_format = feed_time.format ("%d %B %Y");
 			else
 				time_format = feed_time.format ("%A %R");
 
-			this.view.add_feed (time_format, item.title, item.source, item.description, item.author, (bool)item.state);
+			this.view.add_feed (item, time_format);
 		}
+		this.view.load_feeds ();
 	}
 	
 	protected void import (string filename)

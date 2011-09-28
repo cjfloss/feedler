@@ -13,15 +13,18 @@ public class FeedStore : GLib.Object
     public string text { set; get; }
     public string author { set; get; }
     public bool unreaded { set; get; }
-    
-    public FeedStore (string subject, string date, string source, string text, string author, bool unreaded)
-    {
-		this.subject = subject;
-		this.date = date;
-		this.source = source;
-		this.text = text;
-		this.author = author;
-		this.unreaded = unreaded;
+	
+	public FeedStore (Feedler.Item item, string time_format)
+	{
+		this.subject = item.title;
+		this.date = time_format;		
+		this.source = item.source;
+		this.text = item.description;
+		this.author = item.author;
+		if (item.state == State.UNREADED)
+			this.unreaded = true;
+		else
+			this.unreaded = false;
 	}
 }
 
@@ -84,16 +87,15 @@ public class Feedler.ViewList : Feedler.View
 		this.store.clear ();
 	}
 	
-	public override void add_feed (string feed_time, string feed_name, string feed_source, string feed_text, string feed_author, bool feed_unreaded)
+	public override void add_feed (Feedler.Item item, string time_format)
 	{
 		Gtk.TreeIter feed_iter;
 		this.store.prepend (out feed_iter);
-        this.store.set (feed_iter, 0, new FeedStore (feed_name, feed_time, feed_source, feed_text, feed_author, feed_unreaded), -1);
+        this.store.set (feed_iter, 0, new FeedStore (item, time_format), -1);
 	}
 	
-	public override void load_article (string content)
+	public override void load_feeds ()
 	{
-		this.browser.load_string (content, "text/html", "UTF-8", "");
 	}
 	
 	public override void refilter (string text)
@@ -106,6 +108,11 @@ public class Feedler.ViewList : Feedler.View
 	{
 		this.tree.get_selection ().select_path (path);
 		this.load_item_history (false);
+	}
+	
+	protected void load_article (string content)
+	{
+		this.browser.load_string (content, "text/html", "UTF-8", "");
 	}
 	
 	protected void browse_page (Gtk.TreePath path, Gtk.TreeViewColumn column) 

@@ -2,9 +2,9 @@
 Version=0.0.1
 Type=Application
 Name=Feedler
-_GenericName=Feed Reader
+_GenericName=Feedler News Reader
 _Comment=Download and view feeds
-Categories=Network;News;
+Categories=GTK;Network;News;
 Exec=feedler
 Icon=news-feed
 Terminal=false
