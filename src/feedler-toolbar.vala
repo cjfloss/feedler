@@ -21,6 +21,9 @@ public class Feedler.Toolbar : Gtk.Toolbar
     //internal Granite.Widgets.ModeButton mode;
     internal Granite.Widgets.ModeButtonMarlin mode;
     internal Granite.Widgets.SearchBar search = new Granite.Widgets.SearchBar ("Type to search..");
+    Gtk.ToolItem mode_item;
+    Gtk.ToolItem search_item;
+    internal Granite.Widgets.AppMenu appmenu;
     
 	construct
 	{
@@ -34,15 +37,15 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (new Gtk.SeparatorMenuItem ());
         menu.append (about_program);
         
-        Granite.Widgets.AppMenu appmenu = new Granite.Widgets.AppMenu (menu);
+        this.appmenu = new Granite.Widgets.AppMenu (menu);
         
         this.mode = new Granite.Widgets.ModeButtonMarlin ();
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-details-symbolic", Gtk.IconSize.MENU));
-        Gtk.ToolItem mode_item = new Gtk.ToolItem ();
+        this.mode_item = new Gtk.ToolItem ();
         mode_item.set_border_width (5);
         mode_item.add (mode);
-        Gtk.ToolItem search_item = new Gtk.ToolItem ();
+        search_item = new Gtk.ToolItem ();
         search_item.add (search);
         
         var separator = new Gtk.SeparatorToolItem ();
@@ -58,5 +61,18 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.insert (search_item, 6);
         this.insert (mode_item, 7);
         this.insert (appmenu, 8);
+	}
+	
+	public void set_enable (bool state)
+	{
+		this.back.set_sensitive (state);
+		this.forward.set_sensitive (state);
+		this.update.set_sensitive (state);
+		this.mark.set_sensitive (state);
+		this.add_new.set_sensitive (state);
+		
+		this.search_item.set_sensitive (state);
+		this.mode_item.set_sensitive (state);
+		this.appmenu.set_sensitive (state);
 	}
 }

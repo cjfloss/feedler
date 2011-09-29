@@ -110,6 +110,7 @@ public class Feedler.Window : Gtk.Window
 	
 	private void ui_welcome ()
 	{
+		this.toolbar.set_enable (false);
 		Granite.Widgets.Welcome welcome = new Granite.Widgets.Welcome ("Get Some Feeds", "Feedler can't seem to find your feeds.");
 		welcome.append ("gtk-new", "Import", "Add a subscriptions from OPML file.");
 		//welcome.append ("tag-new", "Create", "Add a subscription from URL.");		
@@ -119,6 +120,7 @@ public class Feedler.Window : Gtk.Window
 	
 	private void ui_welcome_to_workspace ()
 	{
+		this.toolbar.set_enable (true);
 		GLib.List<Gtk.Widget> box = this.vbox.get_children ();
 		this.vbox.remove (box.nth_data (box.length ()-1));
 		this.ui_workspace ();
@@ -152,7 +154,7 @@ public class Feedler.Window : Gtk.Window
 	}
 	
 	private int selection_tree ()
-	{
+	{//FIXME for the folders
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
 		Gtk.TreeSelection selection = this.side.get_selection ();
