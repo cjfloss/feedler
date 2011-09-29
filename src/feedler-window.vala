@@ -40,7 +40,8 @@ public class Feedler.Window : Gtk.Window
 			this.ui_welcome ();		
 			
 		this.add (vbox);
-		this.show_all ();
+		//this.show_all ();
+		this.toolbar.progressbar_hide ();
 		this.history = new Feedler.History ();
 	}
 	
@@ -210,6 +211,7 @@ public class Feedler.Window : Gtk.Window
 		
 	protected void update_all ()
 	{
+		this.toolbar.progressbar_show ();
 		foreach (Feedler.Channel ch in this.db.channels)
 		{
 			ch.update ();
@@ -218,16 +220,20 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void updated_channel (int channel, int unreaded)
 	{
+		Feedler.Channel ch = this.db.channels.nth_data (channel);
+		this.toolbar.progressbar_text ("Updating "+ch.title);
+		
 		if (unreaded > 0)
 		{
-			Feedler.Channel ch = this.db.channels.nth_data (channel);
 			this.side.add_unreaded (ch.id, unreaded);
 			this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
 			
 			if (this.selection_tree () == channel)
 				this.load_channel ();
 		}
-		//TODO information on sidebar-cell		
+		//TODO information on sidebar-cell
+		double p = 1.0 / this.db.channels.length ();
+		this.toolbar.progressbar_progress (p);
 	}
 		
 	protected void mark_all ()

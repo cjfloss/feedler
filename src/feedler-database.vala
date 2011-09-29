@@ -217,7 +217,7 @@ public class Feedler.Database : GLib.Object
 				ch.folder = results.fetch_int (4);
 				ch.type = (Type) results.fetch_int (5);
 				
-				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`="+results.fetch_int (0).to_string ()+";");
+				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`="+ch.id.to_string ()+";");
 				for (var r = q.execute(); !r.finished; r.next())
 				{
 					Feedler.Item it = new Feedler.Item ();
