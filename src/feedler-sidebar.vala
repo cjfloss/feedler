@@ -17,7 +17,7 @@ public class ChannelStore : GLib.Object
 		this.id = id;
 		this.channel = channel;
 		this.unreaded = unreaded;
-		this.mode = mode;
+		this.mode = mode; //0-Folder;1-Channel
 	}
 }
 
@@ -25,8 +25,8 @@ public class Feedler.Sidebar : Gtk.TreeView
 {
 	private Gtk.TreeStore store;
 	private Feedler.SidebarCell scell;
-	internal GLib.HashTable<string, Gtk.TreeIter?> iter_map;
-	internal GLib.List<Gtk.TreeIter?> subs_map;
+	internal GLib.List<Gtk.TreeIter?> folders;
+	internal GLib.List<Gtk.TreeIter?> channels;
 	
 	construct
 	{
@@ -43,32 +43,32 @@ public class Feedler.Sidebar : Gtk.TreeView
 		column.set_cell_data_func (scell, render_scell);
 		this.insert_column (column, -1); 
 
-		this.iter_map = new GLib.HashTable<string, Gtk.TreeIter?> (GLib.str_hash, GLib.str_equal);
-		this.subs_map = new GLib.List<Gtk.TreeIter?> ();
+		this.folders = new GLib.List<Gtk.TreeIter?> ();
+		this.channels = new GLib.List<Gtk.TreeIter?> ();
 	}
 	
-	public void add_folder (string folder_name)
+	public void add_folder (int folder_id, string folder_name)
 	{
 		Gtk.TreeIter folder_iter;
 		this.store.append (out folder_iter, null);
-        this.store.set (folder_iter, 0, new ChannelStore (-1, folder_name, 0, 0), -1);
-        this.iter_map.insert (folder_name, folder_iter);
+        this.store.set (folder_iter, 0, new ChannelStore (folder_id, folder_name, 0, 0), -1);
+        this.folders.append (folder_iter);
 	}
 	
-	public void add_folder_to_folder (string folder_name, string parent_folder)
+	public void add_folder_to_folder (int folder_id, string folder_name, int folder_parent)
 	{       
-        unowned Gtk.TreeIter parent_iter = iter_map.lookup (parent_folder);
+        unowned Gtk.TreeIter parent_iter = folders.nth_data (folder_parent);
 		Gtk.TreeIter folder_iter;
 		this.store.append (out folder_iter, parent_iter);
-        this.store.set (folder_iter, 0, new ChannelStore (-1, folder_name, 0, 0), -1);
-        this.iter_map.insert (folder_name, folder_iter);
+        this.store.set (folder_iter, 0, new ChannelStore (folder_id, folder_name, 0, 0), -1);
+        this.folders.append (folder_iter);
 	}
 	
-	public void remove_folder (string folder_name)
+	public void remove_folder (int folder_id)
 	{
-		unowned Gtk.TreeIter folder_iter = iter_map.lookup (folder_name);
+		unowned Gtk.TreeIter folder_iter = folders.nth_data (folder_id);
 		this.store.remove (folder_iter);
-		this.iter_map.remove (folder_name);
+		this.folders.remove (folder_iter);
 	}
 	
 	public void add_channel (int channel_id, string channel_name)
@@ -76,21 +76,21 @@ public class Feedler.Sidebar : Gtk.TreeView
 		Gtk.TreeIter channel_iter;		
 		this.store.append (out channel_iter, null);		
         this.store.set (channel_iter, 0, new ChannelStore (channel_id, channel_name, 0, 1), -1);
-        this.subs_map.append (channel_iter);
+        this.channels.append (channel_iter);
 	}
 	
-	public void add_channel_to_folder (string folder_name, int channel_id, string channel_name)
+	public void add_channel_to_folder (int folder_id, int channel_id, string channel_name)
 	{
-		unowned Gtk.TreeIter folder_iter = iter_map.lookup (folder_name);
+		unowned Gtk.TreeIter folder_iter = folders.nth_data (folder_id);
 		Gtk.TreeIter channel_iter;
 		this.store.append (out channel_iter, folder_iter);	
         this.store.set (channel_iter, 0, new ChannelStore (channel_id, channel_name, 0, 1), -1);
-        this.subs_map.append (channel_iter);
+        this.channels.append (channel_iter);
 	}
 
 	public void mark_readed (int channel_id)
 	{
-		unowned Gtk.TreeIter channel_iter = subs_map.nth_data (channel_id-1);
+		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unreaded = 0;
@@ -107,7 +107,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 	
 	public void add_unreaded (int channel_id, int unreaded)
 	{
-		unowned Gtk.TreeIter channel_iter = subs_map.nth_data (channel_id-1);
+		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unreaded += unreaded;

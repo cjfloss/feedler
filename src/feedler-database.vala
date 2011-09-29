@@ -50,8 +50,8 @@ public class Feedler.Database : GLib.Object
 			GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler", 0755);
 			GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler/fav", 0755);
 			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE | SQLHeavy.FileMode.CREATE);
-			db.execute ("CREATE TABLE folders (`id` INTEGER PRIMARY KEY,`name` TEXT,`parent` TEXT);");
-			db.execute ("CREATE TABLE channels (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`homepage` TEXT,`folder` TEXT,`type` INT);");
+			db.execute ("CREATE TABLE folders (`id` INTEGER PRIMARY KEY,`name` TEXT,`parent` INT);");
+			db.execute ("CREATE TABLE channels (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`homepage` TEXT,`folder` INT,`type` INT);");
 			db.execute ("CREATE TABLE items (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`author` TEXT,`description` TEXT,`time` INT,`state` INT,`channel` REFERENCES `channels`(`id`));");
 			this.created = true;
 		}
@@ -62,14 +62,14 @@ public class Feedler.Database : GLib.Object
 		}
 	}
 /*	
-	private void _insert_folder (string name, string parent)
+	private void _insert_folder (string name, int parent)
 	{
         try
         {
 			transaction = db.begin_transaction ();
 			query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
 			query.set_string (":name", name);
-			query.set_string (":parent", parent);
+			query.set_int (":parent", parent);
 			query.execute ();
 			transaction.commit();
 		}
@@ -81,62 +81,8 @@ public class Feedler.Database : GLib.Object
 	
 	public void insert_folder (Feedler.Folder folder)
 	{
-		this._insert_folder (folder.get_name (), folder.get_parent ());  
-	}
-	
-	private void _insert_channel (string title, string source, string homepage, string folder, string type)
-	{
-        try
-        {
-			transaction = db.begin_transaction ();
-			query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `homepage`, `folder`, `type`) VALUES (:title, :source, :homepage, :folder, :type);");
-			stderr.printf ("prepare channel\n");
-			query.set_string (":title", title);
-			query.set_string (":source", source);
-			query.set_string (":homepage", homepage);
-			query.set_string (":folder", folder);
-			query.set_string (":type", type);
-			query.execute ();
-			transaction.commit();
-		}
-		catch (SQLHeavy.Error e)
-		{
-			stderr.printf ("Feedler.Database.insert_channel (%s, %s, %s, %i, %s, %i): I cannot insert channel.", title, source, homepage, image, folder, unreaded);
-		}
-	}
-	
-	public void insert_channel (Feedler.Channel channel)
-	{
-		this._insert_channel (channel.get_title (), channel.get_source (), channel.get_homepage (), channel.get_folder (), channel.get_type ());  
-	}
-	
-	private void _insert_item (string title, string source, string description, string author, int time, int channel)
-	{
-        try
-        {
-			transaction = db.begin_transaction ();
-			query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `time`, `unreaded`, `channel`) VALUES (:title, :source, :description, :author, :time, :unreaded, :channel);");
-			stderr.printf ("prepare item\n");
-			query.set_string (":title", title);
-			query.set_string (":source", source);
-			query.set_string (":description", description);
-			query.set_string (":author", author);
-			query.set_int (":time", time);
-			query.set_int (":unreaded", 1);
-			query.set_int (":channel", channel);
-			query.execute ();
-			stderr.printf ("execute item\n");
-			transaction.commit();
-		}
-		catch (SQLHeavy.Error e)
-		{
-			stderr.printf ("Feedler.Database.insert_item (%s, %s, %s, %i, %i): I cannot insert item.", title, source, description, time, channel);
-		}
-	}
-
-	public void insert_item (Feedler.Item item, int channel_id)
-	{
-		this._insert_item (item.get_title (), item.get_source (), item.get_description (), item.get_time (), channel_id);  
+		this._insert_folder (folder.get_name (), folder.get_parent ());
+		this.folders.append (folder); 
 	}
 */	
 	public void insert_opml (GLib.List<Feedler.Folder> folders, GLib.List<Feedler.Channel> channels)
@@ -146,30 +92,25 @@ public class Feedler.Database : GLib.Object
 			transaction = db.begin_transaction ();
 			foreach (Feedler.Folder folder in folders)
 			{
-				//stderr.printf ("%s\n", folder.name);
 				query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
 				query.set_string (":name", folder.name);
-				query.set_string (":parent", folder.parent);
+				query.set_int (":parent", folder.parent);
 				query.execute ();
 				this.folders.append (folder);
 			}
 
 			foreach (Feedler.Channel channel in channels)
 			{
-				//stderr.printf ("%s\n", channel.title);
 				query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `homepage`, `folder`, `type`) VALUES (:title, :source, :homepage, :folder, :type);");
 				query.set_string (":title", channel.title);
 				query.set_string (":source", channel.source);
 				query.set_string (":homepage", channel.homepage);
-				query.set_string (":folder", channel.folder);
+				query.set_int (":folder", channel.folder);
 				query.set_int (":type", channel.type);
-				channel.id = (int) query.execute_insert ();
+				query.execute ();
 				this.channels.append (channel);
 			}
 			transaction.commit();
-			
-			//this.folders.concat (folders.first ());
-			//this.channels.concat (channels);
 		}
 		catch (SQLHeavy.Error e)
 		{
@@ -212,9 +153,10 @@ public class Feedler.Database : GLib.Object
 			query.set_string (":title", channel.title);
 			query.set_string (":source", channel.source);
 			query.set_string (":homepage", channel.homepage);
-			query.set_string (":folder", channel.folder);
+			query.set_int (":folder", channel.folder);
 			query.set_int (":type", (int)channel.type);
-			channel.id = (int) query.execute_insert ();
+			channel.id = (int)this.channels.length ();
+			query.execute ();
 			this.channels.append (channel);
 			foreach (Feedler.Item item in channel.items)
 			{			
@@ -241,12 +183,14 @@ public class Feedler.Database : GLib.Object
 	{
         try
         {
+			int count = 0;
 			query = new SQLHeavy.Query (db, "SELECT * FROM `folders`;");
 			for (SQLHeavy.QueryResult results = query.execute(); !results.finished; results.next())
 			{
 				Feedler.Folder fo = new Feedler.Folder ();
+				fo.id = count++;
 				fo.name = results.fetch_string (1);
-				fo.parent = results.fetch_string (2);
+				fo.parent = results.fetch_int (2);
 				this.folders.append (fo);
 			}
 		}
@@ -261,15 +205,16 @@ public class Feedler.Database : GLib.Object
 	{
         try
         {
+			int count = 0;
 			query = new SQLHeavy.Query (db, "SELECT * FROM `channels`;");
 			for (var results = query.execute(); !results.finished; results.next())
 			{				
 				Feedler.Channel ch = new Feedler.Channel ();
-				ch.id = results.fetch_int (0);
+				ch.id = count++;
 				ch.title = results.fetch_string (1);
 				ch.source = results.fetch_string (2);
 				ch.homepage = results.fetch_string (3);
-				ch.folder = results.fetch_string (4);
+				ch.folder = results.fetch_int (4);
 				ch.type = (Type) results.fetch_int (5);
 				
 				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`="+results.fetch_int (0).to_string ()+";");

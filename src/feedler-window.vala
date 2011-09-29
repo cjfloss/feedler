@@ -90,15 +90,15 @@ public class Feedler.Window : Gtk.Window
 		this.ui_workspace ();        
         foreach (Feedler.Folder folder in this.db.select_folders ())
 		{
-			if (folder.parent != "root")
-				this.side.add_folder_to_folder (folder.name, folder.parent);
+			if (folder.parent != -1)
+				this.side.add_folder_to_folder (folder.id, folder.name, folder.parent);
 			else
-				this.side.add_folder (folder.name);
+				this.side.add_folder (folder.id, folder.name);
 		}
 			
 		foreach (Feedler.Channel channel in this.db.select_channels ())
 		{
-			if (channel.folder != "root")
+			if (channel.folder != -1)
 				this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
 			else
 				this.side.add_channel (channel.id, channel.title);
@@ -128,20 +128,15 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void destroy_app ()
 	{
-		this.save_settings ();
-		Gtk.main_quit ();
-	}
-	
-	protected void save_settings ()
-	{
-		// Save window geometry
+		// Save settings
         Gtk.Allocation alloc;
-        get_allocation(out alloc); // get_size() is a lie.
+        get_allocation(out alloc);
         settings.width = alloc.width;
         settings.height = alloc.height;
-        // Save sidebar width
         settings.hpane_width = this.hpane.position;
-     }
+		
+		Gtk.main_quit ();
+	}
 	
 	protected void catch_activated (int index)
 	{
@@ -163,7 +158,7 @@ public class Feedler.Window : Gtk.Window
 		{
 			ChannelStore channel;
 			model.get (iter, 0, out channel);
-			return (channel.id - 1);
+			return channel.id;
 		}
 		else
 			return 0;
@@ -225,11 +220,11 @@ public class Feedler.Window : Gtk.Window
 	{
 		if (unreaded > 0)
 		{
-			Feedler.Channel ch = this.db.channels.nth_data (channel-1);
+			Feedler.Channel ch = this.db.channels.nth_data (channel);
 			this.side.add_unreaded (ch.id, unreaded);
 			this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
 			
-			if (this.selection_tree () == channel - 1)
+			if (this.selection_tree () == channel)
 				this.load_channel ();
 		}
 		//TODO information on sidebar-cell		
@@ -330,7 +325,7 @@ public class Feedler.Window : Gtk.Window
 	{
 		try
 		{
-			this.opml.import (filename);
+			this.opml.import (filename, (int)this.db.folders.length (), (int)this.db.channels.length ());
 			if (!this.db.created)
 			{
 				this.ui_welcome_to_workspace ();
@@ -341,15 +336,15 @@ public class Feedler.Window : Gtk.Window
 			
 			foreach (Feedler.Folder folder in this.opml.get_folders ())
 			{
-				if (folder.parent != "root")
-					this.side.add_folder_to_folder (folder.name, folder.parent);
+				if (folder.parent != -1)
+					this.side.add_folder_to_folder (folder.id, folder.name, folder.parent);
 				else
-					this.side.add_folder (folder.name);
+					this.side.add_folder (folder.id, folder.name);
 			}
 
 			foreach (Feedler.Channel channel in this.opml.get_channels ())
 			{
-				if (channel.folder != "root")
+				if (channel.folder != -1)
 					this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
 				else
 					this.side.add_channel (channel.id, channel.title);

@@ -7,8 +7,9 @@
  
 public class Feedler.Folder
 {
+	public int id;
 	public string name;
-	public string parent;
+	public int parent;
 }
 
 public enum Type
@@ -40,7 +41,7 @@ public class Feedler.Channel
 	public string title;
 	public string source;
 	public string homepage;
-	public string folder;
+	public int folder;
 	public Type type;
 	public int unreaded;
 	public unowned GLib.List<Feedler.Item?> items;

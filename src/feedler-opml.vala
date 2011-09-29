@@ -16,12 +16,8 @@ public class Feedler.OPML : GLib.Object
 {	
 	private GLib.List<Feedler.Channel?> channels;
 	private GLib.List<Feedler.Folder?> folders;
-	
-	construct
-	{
-		this.channels = new GLib.List<Feedler.Channel> ();
-		this.folders =  new GLib.List<Feedler.Folder> ();
-	}
+	private int ch_count;
+	private int fo_count;
 
 	public unowned GLib.List<Feedler.Folder> get_folders ()
 	{
@@ -34,10 +30,12 @@ public class Feedler.OPML : GLib.Object
 	}
 
 /* IMPORT */	
-	public void import (string path) throws OPMLError
+	public void import (string path, int folder_size, int channel_size) throws OPMLError
 	{
 		this.channels = new GLib.List<Feedler.Channel?> ();
 		this.folders = new GLib.List<Feedler.Folder?> ();
+		this.ch_count = folder_size;
+		this.fo_count = folder_size;
 				
 		Xml.Doc* doc = Xml.Parser.parse_file (path);
         if (doc == null)
@@ -82,11 +80,12 @@ public class Feedler.OPML : GLib.Object
 				else if (type == "folder" || type == null)
 				{
 					Feedler.Folder fo = new Feedler.Folder ();
+					fo.id = fo_count++;
 					fo.name = outline->get_prop ("title");
-					fo.parent = "root";
+					fo.parent = -1;
 					
 					if (outline->parent->name != "body")
-						fo.parent = outline->parent->get_prop ("title");
+						fo.parent = find_folder_id (outline->parent->get_prop ("title"));
 
 					this.folders.append (fo);
 					this.parse_body (outline);
@@ -105,16 +104,27 @@ public class Feedler.OPML : GLib.Object
 	private void parse_outline (Xml.Node* node, Type type)
 	{
 		Feedler.Channel outline = new Feedler.Channel ();
+		outline.id = ch_count++;
 		outline.title = node->get_prop ("title");
 		outline.source = node->get_prop ("xmlUrl");
 		outline.homepage = node->get_prop ("htmlUrl");
 		outline.type = type;
 		if (node->parent->name != "body")
-			outline.folder = node->parent->get_prop ("title");
+			outline.folder = find_folder_id (node->parent->get_prop ("title"));
 		else
-			outline.folder = "root";
+			outline.folder = -1;
 		outline.favicon ();
 		this.channels.append (outline);
+	}
+	
+	private int find_folder_id (string folder_name)
+	{
+		foreach (Feedler.Folder folder in folders)
+		{
+			if (folder.name == folder_name)
+				return folder.id;
+		}
+		return -1;
 	}
 	
 /* EXPORT */
@@ -134,7 +144,7 @@ public class Feedler.OPML : GLib.Object
 	
 	private string generate_file (GLib.List<Feedler.Folder>* folders, GLib.List<Feedler.Channel>* channels)
 	{
-		GLib.HashTable<string, Xml.Node*> folder_node = new GLib.HashTable<string, Xml.Node*> (str_hash, str_equal);
+		GLib.List<Xml.Node*> folder_node = new GLib.List<Xml.Node*> ();
         Xml.Doc* doc = new Xml.Doc("1.0");
         Xml.Node* opml = doc->new_node (null, "opml", null);
         opml->new_prop ("version", "1.0");
@@ -154,7 +164,7 @@ public class Feedler.OPML : GLib.Object
 			outline->new_prop ("title", folder.name);
 			outline->new_prop ("type", "folder");
 			
-			folder_node.insert (folder.name, outline);
+			folder_node.append (outline);
 			body->add_child (outline);
 		}
         foreach (Feedler.Channel channel in (GLib.List<Feedler.Channel>)channels)
@@ -164,9 +174,9 @@ public class Feedler.OPML : GLib.Object
 			outline->new_prop ("type", channel.type.to_string ());
 			outline->new_prop ("xmlUrl", channel.source);
 			outline->new_prop ("htmlUrl", channel.homepage);
-			if (channel.folder != null)
+			if (channel.folder != -1)
 			{
-				Xml.Node* folder = folder_node.lookup (channel.folder);
+				Xml.Node* folder = folder_node.nth_data (channel.folder);
 				folder->add_child (outline);
 			}
 			else
