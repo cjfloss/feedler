@@ -7,25 +7,22 @@
  
 public class Progress : Gtk.VBox
 {
-	private Gtk.ProgressBar progressbar;
-	private Gtk.Label label;
+	internal Gtk.ProgressBar progressbar;
+	internal Gtk.Label label;
 	
 	construct
 	{
 		this.progressbar = new Gtk.ProgressBar ();
 		this.progressbar.set_fraction (0.01);
-		this.label = new Gtk.Label ("");
+		this.label = new Gtk.Label (null);
 		this.label.set_justify (Gtk.Justification.CENTER);
 		this.label.set_single_line_mode (true);
 		this.label.ellipsize = Pango.EllipsizeMode.END;
-	}
-	
-	public void pack ()
-	{
+		
 		this.pack_start (label, false, false, 0);
-		this.pack_end (progressbar, false, false, 2);
+		this.pack_end (progressbar, false, false, 0);
 	}
-	
+		
 	public void set_text (string text)
 	{
 		this.label.set_text (text);
@@ -36,32 +33,9 @@ public class Progress : Gtk.VBox
 		this.label.set_markup (markup);
 	}
 
-	public string get_text ()
-	{
-		return label.get_text ();
-	}
-
-	public void show_ ()
-	{
-		if (this.get_children ().length () == 0)
-			this.pack ();
-
-		this.label.show ();
-		this.progressbar.show ();
-	}
-	
-	public void hide_ ()
-	{
-		this.label.hide ();
-		this.progressbar.hide ();
-	}
-
 	public void set_progress_value (double progress)
 	{
 		progressbar.set_fraction (progressbar.fraction + progress);
-			
-		if (progressbar.fraction >= 1.0)
-			this.hide_ ();
 	}
 }
 
@@ -74,6 +48,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Gtk.ToolButton add_new = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
     
     Gtk.ToolItem progress_item;
+    Gtk.Alignment align;
     Progress progress;    
     //internal Granite.Widgets.ModeButton mode;
     internal Granite.Widgets.ModeButtonMarlin mode;
@@ -115,8 +90,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		
 		this.progress = new Progress ();
 		this.progress_item = new Gtk.ToolItem ();
-		this.progress_item.add (progress);
-		//progress_item.set_border_width (5);
 		progress_item.set_expand (true);
         
         this.insert (back, 0);
@@ -129,6 +102,13 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.insert (search_item, 7);
         this.insert (mode_item, 8);
         this.insert (appmenu, 9);
+        
+        this.align = new Gtk.Alignment (0.0f, 0.5f, 1.0f, 0.1f);
+		this.progress_item.add (align);
+		align.add (progress);
+		progress_item.show_all ();
+		align.set_no_show_all (true);
+		align.hide ();
 	}
 	
 	public void set_enable (bool state)
@@ -141,17 +121,18 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		
 		this.search_item.set_sensitive (state);
 		this.mode_item.set_sensitive (state);
-		this.appmenu.set_sensitive (state);
+		this.export_feeds.set_sensitive (state);
+		this.sidebar_visible.set_sensitive (state);
 	}
 	
 	public void progressbar_show ()
 	{
-		this.progress.show_ ();
+		this.align.show ();
 	}
 	
 	public void progressbar_hide ()
 	{
-		this.progress.hide_ ();
+		this.align.hide ();
 	}
 	
 	public void progressbar_text (string text)
@@ -162,10 +143,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 	public void progressbar_progress (double value)
 	{
 		this.progress.set_progress_value (value);
-	}
-	
-	public void progressbar_pack ()
-	{
-		this.progress.pack ();
+		if (progress.progressbar.fraction >= 1.0)
+			this.align.hide ();
 	}
 }
