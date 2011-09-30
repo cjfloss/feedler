@@ -13,7 +13,6 @@ public class Progress : Gtk.VBox
 	construct
 	{
 		this.progressbar = new Gtk.ProgressBar ();
-		this.progressbar.set_fraction (0.01);
 		this.label = new Gtk.Label (null);
 		this.label.set_justify (Gtk.Justification.CENTER);
 		this.label.set_single_line_mode (true);
@@ -43,6 +42,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 {
 	internal Gtk.ToolButton back = new Gtk.ToolButton.from_stock (Gtk.Stock.GO_BACK);
     internal Gtk.ToolButton forward = new Gtk.ToolButton.from_stock (Gtk.Stock.GO_FORWARD);
+    internal Gtk.ToolButton next = new Gtk.ToolButton.from_stock (Gtk.Stock.JUMP_TO);
 	internal Gtk.ToolButton update = new Gtk.ToolButton.from_stock (Gtk.Stock.REFRESH);
     internal Gtk.ToolButton mark = new Gtk.ToolButton.from_stock (Gtk.Stock.APPLY);
     internal Gtk.ToolButton add_new = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
@@ -94,14 +94,15 @@ public class Feedler.Toolbar : Gtk.Toolbar
         
         this.insert (back, 0);
         this.insert (forward, 1);
-        this.insert (update, 2);
-        this.insert (mark, 3);
-        this.insert (add_new, 4);
-        this.insert (separator, 5);
-        this.insert (progress_item, 6);
-        this.insert (search_item, 7);
-        this.insert (mode_item, 8);
-        this.insert (appmenu, 9);
+        this.insert (next, 2);
+        this.insert (update, 3);
+        this.insert (mark, 4);
+        this.insert (add_new, 5);
+        this.insert (separator, 6);
+        this.insert (progress_item, 7);
+        this.insert (search_item, 8);
+        this.insert (mode_item, 9);
+        this.insert (appmenu, 10);
         
         this.align = new Gtk.Alignment (0.0f, 0.5f, 1.0f, 0.1f);
 		this.progress_item.add (align);
@@ -115,6 +116,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 	{
 		this.back.set_sensitive (state);
 		this.forward.set_sensitive (state);
+		this.next.set_sensitive (state);
 		this.update.set_sensitive (state);
 		this.mark.set_sensitive (state);
 		this.add_new.set_sensitive (state);
@@ -127,6 +129,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 	
 	public void progressbar_show ()
 	{
+		this.progress.progressbar.set_fraction (0.01);
 		this.align.show ();
 	}
 	

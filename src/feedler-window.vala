@@ -52,6 +52,7 @@ public class Feedler.Window : Gtk.Window
         
         this.toolbar.back.clicked.connect (history_prev);
         this.toolbar.forward.clicked.connect (history_next);
+        this.toolbar.next.clicked.connect (next_unreaded);
         this.toolbar.update.clicked.connect (update_all);
         this.toolbar.mark.clicked.connect (mark_all);
         this.toolbar.add_new.clicked.connect (create_subscription);
@@ -207,6 +208,20 @@ public class Feedler.Window : Gtk.Window
 	protected void history_remove ()
 	{	
 		this.history.remove_double ();
+	}
+	
+	protected void next_unreaded ()
+	{	
+		stderr.printf ("Feedler.App.next_unreaded ()\n");
+		foreach (Feedler.Channel ch in this.db.channels)
+		{
+			if (ch.unreaded > 0)
+			{
+				this.side.select_channel (ch.id);
+				this.load_channel ();
+				break;
+			}
+		}
 	}
 		
 	protected void update_all ()
@@ -422,6 +437,5 @@ public class Feedler.Window : Gtk.Window
 			this.scroll_side.show ();
 		else
 			this.scroll_side.hide ();
-		//this.scroll_side.set_visible (this.toolbar.sidebar_visible.active);
 	}
 }
