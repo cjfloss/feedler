@@ -55,7 +55,7 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.next.clicked.connect (next_unreaded);
         this.toolbar.update.clicked.connect (update_all);
         this.toolbar.mark.clicked.connect (mark_all);
-        this.toolbar.add_new.clicked.connect (create_subscription);
+        this.toolbar.add_new.clicked.connect (add_subscription);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.search.activate.connect (search_list); 
         
@@ -146,7 +146,7 @@ public class Feedler.Window : Gtk.Window
 		switch (index)
 		{
 			case 0: this.import_file (); break;
-			case 1: this.create_subscription (); break;
+			case 1: this.add_subscription (); break;
 		}
 	}
 	
@@ -421,14 +421,40 @@ public class Feedler.Window : Gtk.Window
         file_chooser.destroy ();
 	}
 	
-	protected void create_subscription ()
+	protected void add_subscription ()
 	{
-		var subs_creator = new Feedler.CreateSubs ();
-        if (subs_creator.run () == Gtk.ResponseType.ACCEPT) {
-            stderr.printf ("Create: OK");
-        }
-        subs_creator.destroy ();
-        this.show_all ();
+		this.create_subscription ("http://elementaryos.org/journal/rss.xml");
+	}
+	
+	protected void create_subscription (string url)
+	{
+		stderr.printf ("create_\n");
+        Soup.Message msg = new Soup.Message("GET", url);
+        Feedler.Channel.session.queue_message (msg, create_subscription_func);
+	}
+	
+	public void create_subscription_func (Soup.Session session, Soup.Message message)
+	{
+		stderr.printf ("create_func\n");
+		string rss = (string) message.response_body.data;
+		
+		if (rss != null)
+		{
+			unowned Xml.Doc doc = Xml.Parser.parse_memory (rss, rss.length);
+			Feedler.Parser parser = new Feedler.Parser ();
+			Feedler.Channel channel = parser.parse_new (doc);
+			channel.source = message.get_uri ().to_string (false);
+			
+			this.db.insert_subscription (ref channel);
+			if (channel.folder != -1)
+				this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
+			else
+				this.side.add_channel (channel.id, channel.title);
+			this.side.select_channel (channel.id);
+			this.side.add_unreaded (channel.id, channel.unreaded);
+			this.load_channel ();
+			channel.favicon ();
+		}
 	}
 	
 	protected void sidebar_update ()

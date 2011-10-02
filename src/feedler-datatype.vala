@@ -65,7 +65,7 @@ public class Feedler.Channel
 	
 	public void favicon ()
 	{
-		stderr.printf ("http://getfavicon.appspot.com/%s\n", homepage);
+		//stderr.printf ("http://getfavicon.appspot.com/%s\n", homepage);
 		Soup.Message msg = new Soup.Message("GET", "http://getfavicon.appspot.com/"+homepage);
         session.queue_message (msg, favicon_func);
 	}
