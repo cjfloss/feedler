@@ -29,8 +29,8 @@ public class Feedler.Parser : GLib.Object
 		switch (root->name)
 		{
 			case "rss":  parse_rss_new (root);  break;
-			//case "feed": parse_atom_new (root); break;
-			default: stderr.printf ("Undefined type of feeds."); break;
+			case "feed": parse_atom_new (root); break;
+			default: stderr.printf ("Undefined type of feeds."); return null; break;
 		}
 		channel.unreaded = (int)channel.items.length ();
 		channel.folder = -1;
@@ -137,6 +137,25 @@ public class Feedler.Parser : GLib.Object
         }
 	}
 	
+	private void parse_atom_new (Xml.Node* channel)
+	{
+		this.channel.type = Type.ATOM;
+		for (Xml.Node* iter = channel->children; iter != null; iter = iter->next)
+		{
+            if (iter->type != Xml.ElementType.ELEMENT_NODE)
+                continue;
+                
+            if (iter->name == "title")
+				this.channel.title = iter->get_content ();
+			else if (iter->name == "link" && iter->get_prop ("rel") == "alternate")
+				this.channel.homepage = iter->get_prop ("href");	
+            else if (iter->name == "entry")
+				parse_atom_item_new (iter);
+            else
+				parse_atom_new (iter);
+        }
+	}
+	
 	private void parse_atom_item (Xml.Node* iitem)
     {
 		Feedler.Item item = new Feedler.Item ();
@@ -160,6 +179,31 @@ public class Feedler.Parser : GLib.Object
 		if (item.time == 0)
 			item.time = (int)time_t ();
         items.append (item);
+	}
+	
+	private void parse_atom_item_new (Xml.Node* iitem)
+    {
+		Feedler.Item item = new Feedler.Item ();
+		for (Xml.Node* iter = iitem->children; iter != null; iter = iter->next)
+		{
+            if (iter->type != Xml.ElementType.ELEMENT_NODE)
+                continue;
+
+            if (iter->name == "title")
+				item.title = iter->get_content ();
+			else if (iter->name == "link" && iter->get_prop ("rel") == "alternate")
+				item.source = iter->get_prop ("href");
+			else if (iter->name == "author")
+				item.author = parse_atom_author (iter);
+			else if (iter->name == "summary")
+				item.description = iter->get_content ();
+			else if (iter->name == "updated" || iter->name == "published")
+				item.time = (int)string_to_time_t (iter->get_content ());
+        }
+        item.state = State.UNREADED;
+		if (item.time == 0)
+			item.time = (int)time_t ();
+		this.channel.items.prepend (item);
 	}
 	
 	private string parse_atom_author (Xml.Node* iitem)
