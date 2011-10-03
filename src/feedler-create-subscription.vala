@@ -7,35 +7,40 @@
  
 public class Feedler.CreateSubs : Gtk.Dialog
 {
-	internal Gtk.ComboBoxText folder_entry;
-	internal Gtk.Entry channel_entry;
-	internal Gtk.VBox vbox = new Gtk.VBox (false, 0);
+	private Gtk.ComboBoxText folder_entry;
+	private Granite.Widgets.HintedEntry channel_entry;
+	private Gtk.Box vbox;
 	
 	construct
 	{
-		this.title = "Create subscriptions";
+		this.title = "Add subscription";
         this.border_width = 5;
 		this.folder_entry = new Gtk.ComboBoxText ();
-		var folder_label = new Gtk.Label.with_mnemonic ("_Folder name:");
-        folder_label.mnemonic_widget = this.folder_entry;
-		this.channel_entry = new Gtk.Entry ();
-		var channel_label = new Gtk.Label.with_mnemonic ("_Channel name:");
-        channel_label.mnemonic_widget = this.channel_entry;
+		this.folder_entry.append_text ("Folder");
+		this.folder_entry.set_active (0);
+		this.channel_entry = new Granite.Widgets.HintedEntry ("URI");
         
-        var hbox = new Gtk.HBox (false, 20);
-        hbox.pack_start (folder_label, false, true, 0);
-        hbox.pack_start (this.folder_entry, true, true, 0);
-        this.vbox.pack_start (hbox, false, true, 0);
-        var hbox2 = new Gtk.HBox (false, 20);
-        hbox2.pack_start (channel_label, false, true, 0);
-        hbox2.pack_start (this.channel_entry, true, true, 0);
-        this.vbox.pack_start (hbox2, false, true, 0);
-        
-        //this.add (this.vbox);
-        //this.child = vbox;
+        this.vbox = this.get_content_area () as Gtk.Box;
+        this.vbox.pack_start (this.folder_entry, false, true, 0);
+        this.vbox.pack_start (this.channel_entry, false, true, 0);
 
-        //this.add_button (Gtk.Stock.CLOSE, Gtk.ResponseType.CLOSE);
-        //this.add_button (Gtk.Stock.APPLY, Gtk.ResponseType.APPLY);
+        this.add_button (Gtk.Stock.CLOSE, Gtk.ResponseType.CLOSE);
+        this.add_button (Gtk.Stock.APPLY, Gtk.ResponseType.APPLY);
 		this.show_all ();
     }
+    
+    public void add_folder (string folder_name)
+    {
+		this.folder_entry.append_text (folder_name);
+	}
+    
+    public string get_uri ()
+    {
+		return channel_entry.get_text ();
+	}
+	
+	public int get_folder ()
+    {
+		return folder_entry.get_active ();
+	}
 }

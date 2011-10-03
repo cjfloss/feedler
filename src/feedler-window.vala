@@ -402,9 +402,8 @@ public class Feedler.Window : Gtk.Window
                                       Gtk.FileChooserAction.OPEN,
                                       Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
                                       Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
-        if (file_chooser.run () == Gtk.ResponseType.ACCEPT) {
+        if (file_chooser.run () == Gtk.ResponseType.ACCEPT)
             import (file_chooser.get_filename ());
-        }
         file_chooser.destroy ();
         this.show_all ();
 	}
@@ -415,15 +414,22 @@ public class Feedler.Window : Gtk.Window
                                       Gtk.FileChooserAction.SAVE,
                                       Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
                                       Gtk.Stock.SAVE, Gtk.ResponseType.ACCEPT);
-        if (file_chooser.run () == Gtk.ResponseType.ACCEPT) {
+        if (file_chooser.run () == Gtk.ResponseType.ACCEPT)
             export (file_chooser.get_filename ());
-        }
         file_chooser.destroy ();
 	}
 	
 	protected void add_subscription ()
 	{
-		this.create_subscription ("http://elementaryos.org/journal/rss.xml");
+		Feedler.CreateSubs subs = new Feedler.CreateSubs ();
+		foreach (Feedler.Folder folder in this.db.folders)
+			subs.add_folder (folder.name);
+		if (subs.run () == Gtk.ResponseType.APPLY)
+		{
+			stderr.printf ("Selected folder id: %i\n", subs.get_folder ());
+            this.create_subscription (subs.get_uri ());
+        }
+        subs.destroy ();
 	}
 	
 	protected void create_subscription (string url)
@@ -444,12 +450,13 @@ public class Feedler.Window : Gtk.Window
 			Feedler.Parser parser = new Feedler.Parser ();
 			Feedler.Channel channel = parser.parse_new (doc);
 			channel.source = message.get_uri ().to_string (false);
-			
+
 			this.db.insert_subscription (ref channel);
 			if (channel.folder != -1)
 				this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
 			else
 				this.side.add_channel (channel.id, channel.title);
+
 			this.side.select_channel (channel.id);
 			this.side.add_unreaded (channel.id, channel.unreaded);
 			this.load_channel ();
