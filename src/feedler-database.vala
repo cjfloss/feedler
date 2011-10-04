@@ -17,7 +17,7 @@ public class Feedler.Database : GLib.Object
 	
 	construct
 	{
-		this.location = GLib.Environment.get_user_data_dir () + "/feedler/feedler.db";
+		this.location = "/home/" + GLib.Environment.get_user_name ()  + "/feedler/feedler.db";
 		this.channels = new GLib.List<Feedler.Channel?> ();
 		this.folders = new GLib.List<Feedler.Folder?> ();
 
