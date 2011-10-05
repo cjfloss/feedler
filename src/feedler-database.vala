@@ -17,7 +17,7 @@ public class Feedler.Database : GLib.Object
 	
 	construct
 	{
-		this.location = "/home/" + GLib.Environment.get_user_name ()  + "/feedler/feedler.db";
+		this.location = GLib.Environment.get_user_data_dir () + "/feedler/feedler.db";
 		this.channels = new GLib.List<Feedler.Channel?> ();
 		this.folders = new GLib.List<Feedler.Folder?> ();
 
@@ -58,33 +58,26 @@ public class Feedler.Database : GLib.Object
 		catch (SQLHeavy.Error e)
 		{
 			stderr.printf ("Feedler.Database.create (): I cannot create new database.\n");
-			stderr.printf (location);
 		}
 	}
-/*	
-	private void _insert_folder (string name, int parent)
+
+	public void insert_folder (Feedler.Folder folder)
 	{
-        try
+		try
         {
 			transaction = db.begin_transaction ();
 			query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
-			query.set_string (":name", name);
-			query.set_int (":parent", parent);
+			query.set_string (":name", folder.name);
+			query.set_int (":parent", folder.parent);
 			query.execute ();
 			transaction.commit();
 		}
 		catch (SQLHeavy.Error e)
 		{
-			stderr.printf ("Feedler.Database.insert_folder (%s, %s): I cannot insert folder.", name, parent);
-		}
+			stderr.printf ("Feedler.Database.insert_folder (): I cannot insert folder.");
+		} 
 	}
 	
-	public void insert_folder (Feedler.Folder folder)
-	{
-		this._insert_folder (folder.get_name (), folder.get_parent ());
-		this.folders.append (folder); 
-	}
-*/	
 	public void insert_opml (GLib.List<Feedler.Folder> folders, GLib.List<Feedler.Channel> channels)
 	{
 		try
