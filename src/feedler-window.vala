@@ -61,6 +61,7 @@ public class Feedler.Window : Gtk.Window
         
         this.toolbar.import_feeds.activate.connect (import_file);
         this.toolbar.export_feeds.activate.connect (export_file);
+        this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
 	}
 
@@ -427,12 +428,24 @@ public class Feedler.Window : Gtk.Window
 		if (subs.run () == Gtk.ResponseType.APPLY)
 		{
 			stderr.printf ("Selected folder id: %i\n", subs.get_folder ());
-            this.create_subscription (subs.get_uri ());
+            this.create_subscription (subs.get_uri (), subs.get_folder ());
         }
         subs.destroy ();
 	}
 	
-	protected void create_subscription (string url)
+	protected void config ()
+	{
+		Feedler.Preferences pref = new Feedler.Preferences ();
+		if (pref.run () == Gtk.ResponseType.APPLY)
+		{
+			stderr.printf ("Preferences");
+			pref.save ();
+			this.view.load_settings ();
+        }
+        pref.destroy ();
+	}
+	
+	protected void create_subscription (string url, int folder)
 	{
 		stderr.printf ("create_\n");
         Soup.Message msg = new Soup.Message("GET", url);

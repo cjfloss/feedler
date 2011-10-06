@@ -69,6 +69,7 @@ public class Feedler.ViewList : Feedler.View
 		this.browser = new WebKit.WebView ();
 		this.browser.settings.auto_resize_window = false;
 		this.browser.settings.default_font_size = 9;
+		this.load_settings ();
 		
 		this.scroll_web = new Gtk.ScrolledWindow (null, null);
 		this.scroll_web.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
@@ -108,6 +109,14 @@ public class Feedler.ViewList : Feedler.View
 	{
 		this.tree.get_selection ().select_path (path);
 		this.load_item_history (false);
+	}
+	
+	public override void load_settings ()
+	{
+		this.browser.settings.auto_load_images = Feedler.Pref.enable_image;
+		this.browser.settings.enable_scripts = Feedler.Pref.enable_script;
+		this.browser.settings.enable_java_applet = Feedler.Pref.enable_java;
+		this.browser.settings.enable_plugins = Feedler.Pref.enable_plugin;
 	}
 	
 	protected void load_article (string content)
