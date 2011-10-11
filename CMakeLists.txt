@@ -105,6 +105,7 @@ vala_precompile(VALA_C
 	src/feedler-datatype.vala
 	src/feedler-sidebar.vala
 	src/feedler-settings.vala
+	src/feedler-preferences.vala
 	src/feedler-view.vala
 	src/feedler-view-list.vala
 	src/feedler-view-web.vala
