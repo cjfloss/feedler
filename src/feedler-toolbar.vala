@@ -78,6 +78,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.appmenu = new Granite.Widgets.AppMenu (menu);
         
         this.mode = new Granite.Widgets.ModeButtonMarlin ();
+        //this.mode = new Granite.Widgets.ModeButton ();
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-details-symbolic", Gtk.IconSize.MENU));
         this.mode_item = new Gtk.ToolItem ();

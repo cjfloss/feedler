@@ -13,12 +13,12 @@ public class Feedler.SidebarCell : Gtk.CellRenderer
 	public enum Type
 	{
 		FOLDER,
-		CHANNEL
+		CHANNEL,
+		ERROR
 	}
 	public string channel { set; get; }
 	public int unreaded { set; get; }
 	public Type type;
-	//public int spinner = 0;
 	
 	double height_centered;
 
@@ -122,7 +122,7 @@ static void custom_rounded (Cairo.Context cr, double x, double y, double w, doub
 
         /* Compute font size */
         Pango.FontDescription font_medium = widget.get_pango_context ().get_font_description ();
-        Pango.FontDescription old_desc = font_medium;
+        //Pango.FontDescription old_desc = font_medium;
         font_medium.set_size(Pango.units_from_double (Pango.units_to_double (font_medium.get_size()) - 2));
         Pango.FontDescription font_bold = widget.get_pango_context ().get_font_description ();
         font_bold.set_weight (Pango.Weight.BOLD);
@@ -167,13 +167,19 @@ static void custom_rounded (Cairo.Context cr, double x, double y, double w, doub
         Pango.cairo_show_layout (cr, layout);
         
         /* Icon */
-        if (type == Type.CHANNEL && GLib.FileUtils.test (location+channel+".png", GLib.FileTest.EXISTS))
+        if (type == Type.ERROR)
+        {
+			weak Gdk.Pixbuf pix = new Gtk.Invisible ().render_icon_pixbuf (Gtk.Stock.CANCEL, Gtk.IconSize.MENU);
+			Gdk.cairo_set_source_pixbuf (cr, pix, area.x - 8, height_centered - 2);
+			cr.paint ();
+		}
+        else if (type == Type.CHANNEL && GLib.FileUtils.test (location+channel+".png", GLib.FileTest.EXISTS))
 		{
 			cr.set_source_surface (new Cairo.ImageSurface.from_png (location+channel+".png"),
 								area.x - 8, height_centered - 2);
 			cr.paint ();
 		}
-		layout.set_font_description (old_desc); /* Restore the old font, it could cause some strange behavior */
+		//layout.set_font_description (old_desc); /* Restore the old font, it could cause some strange behavior */
     }
 
     double get_height (Gtk.Widget widget) {

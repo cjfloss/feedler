@@ -40,8 +40,6 @@ public class Feedler.Window : Gtk.Window
 			this.ui_welcome ();		
 			
 		this.add (vbox);
-		//this.show_all ();
-		this.toolbar.progressbar_hide ();
 		this.history = new Feedler.History ();
 	}
 	
@@ -247,9 +245,13 @@ public class Feedler.Window : Gtk.Window
 			if (this.selection_tree () == channel)
 				this.load_channel ();
 		}
-		//TODO information on sidebar-cell
-		double p = 1.0 / this.db.channels.length ();
-		this.toolbar.progressbar_progress (p);
+		else if (unreaded == -1)
+		{
+			this.side.set_error (ch.id);
+		}
+		else
+			this.side.set_empty (ch.id);
+		this.toolbar.progressbar_progress (1.0 / this.db.channels.length ());
 	}
 		
 	protected void mark_all ()

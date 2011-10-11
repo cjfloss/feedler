@@ -111,6 +111,25 @@ public class Feedler.Sidebar : Gtk.TreeView
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unreaded += unreaded;
+		channel.mode = 1;
+		this.store.set_value (channel_iter, 0, channel);
+	}
+	
+	public void set_error (int channel_id)
+	{
+		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		ChannelStore channel;
+		this.model.get (channel_iter, 0, out channel);
+		channel.mode = 2;
+		this.store.set_value (channel_iter, 0, channel);
+	}
+	
+	public void set_empty (int channel_id)
+	{
+		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		ChannelStore channel;
+		this.model.get (channel_iter, 0, out channel);
+		channel.mode = 1;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
