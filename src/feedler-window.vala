@@ -78,12 +78,15 @@ public class Feedler.Window : Gtk.Window
         this.hpane.add1 (scroll_side);
         this.hpane.add2 (layout);
         
-		this.layout.append_page (new Feedler.ViewList (), null);
-		this.layout.append_page (new Feedler.ViewWeb (), null);
+        var vlist = new Feedler.ViewList ();
+        var vweb = new Feedler.ViewWeb ();
+        vlist.item_readed.connect (mark_channel);
+        vweb.item_readed.connect (mark_channel);
+		this.layout.append_page (vlist, null);
+		this.layout.append_page (vweb, null);
 		this.view = (Feedler.View)layout.get_nth_page (0);
 		this.view.item_selected.connect (history_add);
 		this.view.item_browsed.connect (history_remove);
-		this.view.item_readed.connect (mark_channel);
 	}
 	
 	private void ui_feeds ()
@@ -150,7 +153,7 @@ public class Feedler.Window : Gtk.Window
 	}
 	
 	private int selection_tree ()
-	{//FIXME for the folders
+	{
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
 		Gtk.TreeSelection selection = this.side.get_selection ();
@@ -162,7 +165,7 @@ public class Feedler.Window : Gtk.Window
 			return channel.id;
 		}
 		else
-			return 0;
+			return -1;
 	}
 	
 	protected void history_prev ()
@@ -277,19 +280,18 @@ public class Feedler.Window : Gtk.Window
 	}
 	
 	protected void mark_channel (int item_id)
-	{//FIXME: channel->items
+	{
 		stderr.printf ("Feedler.App.mark_channel ()\n");
-		Gtk.TreeModel model;
-		Gtk.TreeIter iter;
-		Gtk.TreeSelection selection = this.side.get_selection ();
+		stderr.printf ("item_id: %i\n", item_id);
+		int id = this.selection_tree ();
 			
-		if (selection.get_selected (out model, out iter))
+		if (id != -1)
 		{
-			unowned Feedler.Channel ch = this.db.channels.nth_data (this.selection_tree ());
+			unowned Feedler.Channel ch = this.db.channels.nth_data (id);
 			if (item_id == -1)
 			{
-				this.side.set_unreaded_iter (iter, 0);
-				foreach (Feedler.Item it in this.db.channels.nth_data (this.selection_tree ()).items)
+				this.side.mark_readed (ch.id);
+				foreach (Feedler.Item it in ch.items)
 				{
 					if (it.state == State.UNREADED)
 					{
@@ -304,7 +306,7 @@ public class Feedler.Window : Gtk.Window
 			}
 			else
 			{
-				this.side.dec_unreaded (iter);
+				this.side.dec_unreaded (ch.id);
 				ch.unreaded--;
 				unowned Feedler.Item it = ch.items.nth_data (ch.items.length () - item_id - 1);
 				it.state = State.READED;
@@ -328,11 +330,18 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void load_channel ()
 	{
+		int id = this.selection_tree ();
+		if (id != -1)
+			this.load_channel_from_id (id);
+	}
+	
+	private void load_channel_from_id (int channel_id)
+	{
 		stderr.printf ("Feedler.App.load_channel ()\n");
 		this.view.clear ();
 		string time_format;
 		GLib.Time current_time = GLib.Time.local (time_t ());
-		foreach (Feedler.Item item in this.db.channels.nth_data (this.selection_tree ()).items)
+		foreach (Feedler.Item item in this.db.channels.nth_data (channel_id).items)
 		{
 			GLib.Time feed_time = GLib.Time.local (item.time);
 			if (feed_time.day_of_year + 6 < current_time.day_of_year)

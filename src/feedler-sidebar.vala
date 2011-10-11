@@ -97,14 +97,6 @@ public class Feedler.Sidebar : Gtk.TreeView
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
-	public void set_unreaded_iter (Gtk.TreeIter channel_iter, int unreaded)
-	{
-		ChannelStore channel;
-		this.model.get (channel_iter, 0, out channel);
-		channel.unreaded = unreaded;
-		this.store.set_value (channel_iter, 0, channel);
-	}
-	
 	public void add_unreaded (int channel_id, int unreaded)
 	{
 		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
@@ -112,6 +104,15 @@ public class Feedler.Sidebar : Gtk.TreeView
 		this.model.get (channel_iter, 0, out channel);
 		channel.unreaded += unreaded;
 		channel.mode = 1;
+		this.store.set_value (channel_iter, 0, channel);
+	}
+	
+	public void dec_unreaded (int channel_id)
+	{
+		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		ChannelStore channel;
+		this.model.get (channel_iter, 0, out channel);
+		channel.unreaded--;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
@@ -137,14 +138,6 @@ public class Feedler.Sidebar : Gtk.TreeView
 	{
 		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
 		this.get_selection ().select_iter (channel_iter);
-	}
-	
-	public void dec_unreaded (Gtk.TreeIter channel_iter)
-	{
-		ChannelStore channel;
-		this.model.get (channel_iter, 0, out channel);
-		channel.unreaded--;
-		this.store.set_value (channel_iter, 0, channel);
 	}
 	
 	private void render_scell (Gtk.CellLayout layout, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)

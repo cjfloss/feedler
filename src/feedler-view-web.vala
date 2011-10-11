@@ -30,7 +30,6 @@ public class Feedler.ViewWeb : Feedler.View
 	{
 		this.content.assign (generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
 		this.item_selected ("");
-		this.item_readed (-1);
 	}
 	
 	public override void add_feed (Feedler.Item item, string time_format)
@@ -50,6 +49,7 @@ public class Feedler.ViewWeb : Feedler.View
 	{
 		stderr.printf ("Feedler.ViewWeb.load_article ()");
 		this.browser.load_string (content.str, "text/html", "UTF-8", "");
+		this.item_readed (-1);
 	}
 	
 	public override void refilter (string text)
