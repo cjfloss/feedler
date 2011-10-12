@@ -34,7 +34,7 @@ public enum Type
 public class Feedler.Channel
 {
 	public signal void updated (int channel_id, int unreaded);
-	public signal void faviconed (int channel_id);
+	public signal void faviconed (int channel_id, bool state);
 	
 	public static Soup.Session session;
 	public int id;
@@ -117,9 +117,11 @@ public class Feedler.Channel
 				pix.scale_simple (16, 16, Gdk.InterpType.BILINEAR).save (GLib.Environment.get_user_data_dir () + "/feedler/fav/" + title + ".png", "png");
 			else
 				pix.save (GLib.Environment.get_user_data_dir () + "/feedler/fav/" + title + ".png", "png");
+			this.faviconed (id, true);
 		}
 		catch (GLib.Error e)
 		{
+			this.faviconed (id, false);
 			stderr.printf ("Feedler.Channel.favicon (): I cannot get favicon for %s\n", this.homepage);
 		}
 	}

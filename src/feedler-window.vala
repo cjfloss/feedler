@@ -107,7 +107,7 @@ public class Feedler.Window : Gtk.Window
 			else
 				this.side.add_channel (channel.id, channel.title);
 			channel.updated.connect (updated_channel);
-			//channel.faviconed.connect (faviconed_channel);
+			channel.faviconed.connect (faviconed_channel);
 		}			
 		this.side.expand_all ();
 	}
@@ -132,7 +132,6 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void destroy_app ()
 	{
-		// Save settings
         Gtk.Allocation alloc;
         get_allocation(out alloc);
         settings.width = alloc.width;
@@ -256,6 +255,26 @@ public class Feedler.Window : Gtk.Window
 			this.side.set_empty (ch.id);
 		this.toolbar.progressbar_progress (1.0 / this.db.channels.length ());
 	}
+	
+	protected void favicon_all ()
+	{
+		this.toolbar.progressbar_show ();
+		foreach (Feedler.Channel ch in this.db.channels)
+		{
+			ch.favicon ();
+		}
+	}
+	
+	protected void faviconed_channel (int channel, bool state)
+	{
+		Feedler.Channel ch = this.db.channels.nth_data (channel);
+		this.toolbar.progressbar_text ("Favicon for "+ch.title);
+		this.toolbar.progressbar_progress (1.0 / this.db.channels.length ());		
+		if (state)
+			this.side.set_empty (ch.id);
+		else
+			this.side.set_error (ch.id);
+	}
 		
 	protected void mark_all ()
 	{
@@ -282,7 +301,6 @@ public class Feedler.Window : Gtk.Window
 	protected void mark_channel (int item_id)
 	{
 		stderr.printf ("Feedler.App.mark_channel ()\n");
-		stderr.printf ("item_id: %i\n", item_id);
 		int id = this.selection_tree ();
 			
 		if (id != -1)
@@ -386,6 +404,7 @@ public class Feedler.Window : Gtk.Window
 			foreach (Feedler.Channel channel in this.db.channels.nth (this.db.channels.length () - this.opml.get_channels ().length ()))
 			{
 				channel.updated.connect (updated_channel);
+				channel.faviconed.connect (faviconed_channel);
 			}
 			this.side.expand_all ();
 		}
@@ -447,12 +466,14 @@ public class Feedler.Window : Gtk.Window
 	protected void config ()
 	{
 		Feedler.Preferences pref = new Feedler.Preferences ();
+		pref.favicons.connect (favicon_all);
 		if (pref.run () == Gtk.ResponseType.APPLY)
 		{
 			stderr.printf ("Preferences");
 			pref.save ();
 			this.view.load_settings ();
         }
+        pref.favicons.disconnect (favicon_all);
         pref.destroy ();
 	}
 	
