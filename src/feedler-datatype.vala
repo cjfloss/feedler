@@ -37,6 +37,7 @@ public class Feedler.Channel
 	public signal void faviconed (int channel_id, bool state);
 	
 	public static Soup.Session session;
+	public static int last_id;
 	public int id;
 	public string title;
 	public string source;
@@ -48,6 +49,7 @@ public class Feedler.Channel
 	
 	static construct
 	{
+		last_id = -1;
 		session = new Soup.SessionAsync ();
 		session.timeout = 5;
 	}

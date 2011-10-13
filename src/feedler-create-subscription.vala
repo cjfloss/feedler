@@ -41,6 +41,6 @@ public class Feedler.CreateSubs : Gtk.Dialog
 	
 	public int get_folder ()
     {
-		return folder_entry.get_active ();
+		return folder_entry.get_active ()-1;
 	}
 }

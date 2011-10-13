@@ -458,7 +458,6 @@ public class Feedler.Window : Gtk.Window
 			subs.add_folder (folder.name);
 		if (subs.run () == Gtk.ResponseType.APPLY)
 		{
-			stderr.printf ("Selected folder id: %i\n", subs.get_folder ());
             this.create_subscription (subs.get_uri (), subs.get_folder ());
         }
         subs.destroy ();
@@ -481,6 +480,7 @@ public class Feedler.Window : Gtk.Window
 	protected void create_subscription (string url, int folder)
 	{
 		stderr.printf ("create_\n");
+		Feedler.Channel.last_id = folder;
         Soup.Message msg = new Soup.Message("GET", url);
         Feedler.Channel.session.queue_message (msg, create_subscription_func);
 	}
@@ -496,13 +496,12 @@ public class Feedler.Window : Gtk.Window
 			Feedler.Parser parser = new Feedler.Parser ();
 			Feedler.Channel channel = parser.parse_new (doc);
 			channel.source = message.get_uri ().to_string (false);
-
+			channel.folder = Feedler.Channel.last_id;
 			this.db.insert_subscription (ref channel);
 			if (channel.folder != -1)
 				this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
 			else
 				this.side.add_channel (channel.id, channel.title);
-
 			this.side.select_channel (channel.id);
 			this.side.add_unreaded (channel.id, channel.unreaded);
 			this.load_channel ();
