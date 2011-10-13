@@ -61,6 +61,7 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.export_feeds.activate.connect (export_file);
         this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
+        this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
 	}
 
 	private void ui_workspace ()
@@ -515,5 +516,13 @@ public class Feedler.Window : Gtk.Window
 			this.scroll_side.show ();
 		else
 			this.scroll_side.hide ();
+	}
+	
+	protected void fullscreen_mode ()
+	{
+		if (this.toolbar.fullscreen_mode.active)
+			this.fullscreen ();
+		else
+			this.unfullscreen ();
 	}
 }

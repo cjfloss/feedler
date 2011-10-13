@@ -58,6 +58,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
     
     internal Granite.Widgets.AppMenu appmenu;
     internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label ("Sidebar visible");
+    internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label ("Fullscreen");
     internal Gtk.MenuItem import_feeds = new Gtk.MenuItem.with_label ("Import subscriptions");
     internal Gtk.MenuItem export_feeds = new Gtk.MenuItem.with_label ("Export subscriptions");
     internal Gtk.MenuItem preferences = new Gtk.MenuItem.with_label ("Preferences");
@@ -72,6 +73,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (export_feeds);
         menu.append (new Gtk.SeparatorMenuItem ());
         menu.append (sidebar_visible);
+        menu.append (fullscreen_mode);
         menu.append (new Gtk.SeparatorMenuItem ());
         menu.append (preferences);
         menu.append (about_program);
