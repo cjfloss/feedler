@@ -254,7 +254,11 @@ public class Feedler.Window : Gtk.Window
 		}
 		else
 			this.side.set_empty (ch.id);
-		this.toolbar.progressbar_progress (1.0 / this.db.channels.length ());
+		if (this.toolbar.progressbar_progress (1.0 / this.db.channels.length ()))
+		{
+			Notify.Notification notify = new Notify.Notification ("Feedler News Reader", "There are new feeds to read!", "news-feed");
+			notify.show ();
+		}
 	}
 	
 	protected void favicon_all ()

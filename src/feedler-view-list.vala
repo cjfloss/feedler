@@ -186,7 +186,8 @@ public class Feedler.ViewList : Feedler.View
 		
 		renderer.subject = feed.subject;
 		renderer.date = feed.date;
-		renderer.text = feed.source;
+		renderer.author = feed.author;
+		renderer.channel = feed.source;
 		renderer.unreaded = feed.unreaded;
 	}
 }

@@ -143,10 +143,14 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		this.progress.set_text (text);
 	}
 	
-	public void progressbar_progress (double value)
+	public bool progressbar_progress (double value)
 	{
 		this.progress.set_progress_value (value);
 		if (progress.progressbar.fraction >= 1.0)
+		{
 			this.align.hide ();
+			return true;
+		}
+		return false;
 	}
 }

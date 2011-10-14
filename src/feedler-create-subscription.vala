@@ -24,7 +24,7 @@ public class Feedler.CreateSubs : Gtk.Dialog
         this.vbox.pack_start (this.folder_entry, false, true, 0);
         this.vbox.pack_start (this.channel_entry, false, true, 0);
 
-        this.add_button (Gtk.Stock.CLOSE, Gtk.ResponseType.CLOSE);
+        this.add_button (Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL);
         this.add_button (Gtk.Stock.APPLY, Gtk.ResponseType.APPLY);
 		this.show_all ();
     }

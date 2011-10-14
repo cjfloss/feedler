@@ -9,8 +9,9 @@
 public class Feedler.ViewCell : Gtk.CellRenderer
 {
     public string subject { set; get; }
+    public string author { set; get; }
+    public string channel { set; get; }
     public string date { set; get; }
-    public string text { set; get; }
     public bool unreaded { set; get; }
 
     double sender_height = 0.0;
@@ -96,7 +97,7 @@ public class Feedler.ViewCell : Gtk.CellRenderer
 
         /* Compute font size */
         Pango.FontDescription font_medium = widget.get_pango_context ().get_font_description ();
-        Pango.FontDescription old_desc = font_medium;
+        //Pango.FontDescription old_desc = font_medium;
         font_medium.set_size(Pango.units_from_double (Pango.units_to_double (font_medium.get_size()) - 2));
 
         Pango.FontDescription font_small = widget.get_pango_context().get_font_description ();
@@ -110,6 +111,7 @@ public class Feedler.ViewCell : Gtk.CellRenderer
         //stderr.printf ("color_insensitive: (%f, %f, %f, %f)", color_insensitive.red, color_insensitive.green, color_insensitive.blue, color_insensitive.alpha);
 
         //Date
+        /*
         Gdk.cairo_set_source_rgba (cr,
             (flags & Gtk.CellRendererState.FOCUSED) > 0 ? color_normal  : link_color);
         layout = widget.create_pango_layout (date);
@@ -117,7 +119,7 @@ public class Feedler.ViewCell : Gtk.CellRenderer
         double date_width = get_layout_width (layout);
         cr.move_to (area.x + area.width - get_layout_width (layout) - 5, area.y);
         Pango.cairo_show_layout (cr, layout);
-        
+        */
         double unread_width = 0.0;
        
         //Subject
@@ -125,14 +127,15 @@ public class Feedler.ViewCell : Gtk.CellRenderer
         if (unreaded)
 			layout.set_font_description (font_bold);
         layout.set_ellipsize (Pango.EllipsizeMode.END);
-        layout.set_width (Pango.units_from_double (area.width - date_width - 5));
+        //layout.set_width (Pango.units_from_double (area.width - date_width - 5));
+        layout.set_width (Pango.units_from_double (area.width - 5));
         cr.move_to (area.x, area.y);
         Gdk.cairo_set_source_rgba (cr, color_normal);
         Pango.cairo_show_layout (cr, layout);
         double y = sender_height;
         
         //Description
-        layout = widget.create_pango_layout (text);
+        layout = widget.create_pango_layout (date+", by "+author);
         layout.set_ellipsize (Pango.EllipsizeMode.END);
         layout.set_width (Pango.units_from_double (area.width - unread_width));
         cr.move_to (area.x, area.y + y);
@@ -140,7 +143,7 @@ public class Feedler.ViewCell : Gtk.CellRenderer
         layout.set_font_description (font_medium);
         Pango.cairo_show_layout (cr, layout);
 
-        layout.set_font_description (old_desc); /* Restore the old font, it could cause some strange behavior */
+        //layout.set_font_description (old_desc); /* Restore the old font, it could cause some strange behavior */
     }
 
     double get_height (Gtk.Widget widget) {
@@ -151,7 +154,6 @@ public class Feedler.ViewCell : Gtk.CellRenderer
 
         layout = widget.create_pango_layout ("|");
         Pango.FontDescription font_medium = widget.get_pango_context ().get_font_description ();
-        Pango.FontDescription old_desc = font_medium;
         font_medium.set_size (Pango.units_from_double (
                               Pango.units_to_double (font_medium.get_size ()) - 2));
         layout.set_font_description (font_medium);

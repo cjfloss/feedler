@@ -32,7 +32,7 @@ public class Feedler.ViewWeb : Feedler.View
 	
 	public override void add_feed (Feedler.Item item, string time_format)
 	{
-		this.content.prepend (generate_item (item.title, time_format, item.description));
+		this.content.prepend (generate_item (item.title, time_format, item.author, item.description));
 	}
 	
 	public override void load_feeds ()
@@ -52,11 +52,11 @@ public class Feedler.ViewWeb : Feedler.View
 		stderr.printf ("Feedler.ViewWeb.select ()");
 	}
 	
-	private string generate_item (string title, string time, string description)
+	private string generate_item (string title, string time, string author, string description)
 	{
 		GLib.StringBuilder item = new GLib.StringBuilder ();
 		item.append ("<div class='item'><span class='title'>"+title+"</span><br/>");
-		item.append ("<span class='time'>"+time+"</span><br/>");
+		item.append ("<span class='time'>"+time+", by "+author+"</span><br/>");
 		item.append ("<span class='content'>"+description+"</span></div><br/>");
 		
 		return item.str;
