@@ -11,6 +11,7 @@ public class PrefView : Gtk.VBox
 	Gtk.CheckButton enable_script;
 	Gtk.CheckButton enable_java;
 	Gtk.CheckButton enable_plugin;
+	Gtk.CheckButton shrink_image;
 	
 	construct
 	{
@@ -19,33 +20,29 @@ public class PrefView : Gtk.VBox
 		this.enable_script = new Gtk.CheckButton.with_label ("Enable scripts");
 		this.enable_java = new Gtk.CheckButton.with_label ("Enable java");
 		this.enable_plugin = new Gtk.CheckButton.with_label ("Enable plugins");
+		this.shrink_image = new Gtk.CheckButton.with_label ("Shrink image to fit");
 		
-		this.enable_image.active = Feedler.Pref.enable_image;
-		this.enable_script.active = Feedler.Pref.enable_script;
-		this.enable_java.active = Feedler.Pref.enable_java;
-		this.enable_plugin.active = Feedler.Pref.enable_plugin;
+		this.enable_image.active = Feedler.View.settings.auto_load_images;
+		this.enable_script.active = Feedler.View.settings.enable_scripts;
+		this.enable_java.active = Feedler.View.settings.enable_java_applet;
+		this.enable_plugin.active = Feedler.View.settings.enable_plugins;
+		this.shrink_image.active = Feedler.View.settings.auto_shrink_images;
 		
 		this.pack_start (enable_image, false, true, 5);
 		this.pack_start (enable_script, false, true, 5);
 		this.pack_start (enable_java, false, true, 5);
 		this.pack_start (enable_plugin, false, true, 5);
+		this.pack_start (shrink_image, false, true, 5);
 	}
 	
 	public void save ()
 	{
-		Feedler.Pref.enable_image = this.enable_image.active;
-		Feedler.Pref.enable_script = this.enable_script.active;
-		Feedler.Pref.enable_java = this.enable_java.active;
-		Feedler.Pref.enable_plugin = this.enable_plugin.active;
+		Feedler.View.settings.auto_load_images = this.enable_image.active;
+		Feedler.View.settings.enable_scripts = this.enable_script.active;
+		Feedler.View.settings.enable_java_applet = this.enable_java.active;
+		Feedler.View.settings.enable_plugins = this.enable_plugin.active;
+		Feedler.View.settings.auto_shrink_images = this.shrink_image.active;
 	}
-}
-
-public class Feedler.Pref
-{
-	public static bool enable_image = true;
-	public static bool enable_script = true;
-	public static bool enable_java = true;
-	public static bool enable_plugin = true;
 }
  
 public class Feedler.Preferences : Gtk.Dialog
@@ -63,7 +60,7 @@ public class Feedler.Preferences : Gtk.Dialog
         this.web = new PrefView ();
         this.fav = new Gtk.Button.with_label ("Update favicons");
 		this.tabs = new Granite.Widgets.StaticNotebook ();
-		this.tabs.append_page (web, new Gtk.Label ("Views"));
+		this.tabs.append_page (web, new Gtk.Label ("Behavior"));
 		this.tabs.append_page (fav, new Gtk.Label ("Other"));
 		
 		this.fav.clicked.connect (() => {this.favicons ();});

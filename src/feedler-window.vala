@@ -471,7 +471,6 @@ public class Feedler.Window : Gtk.Window
 		{
 			stderr.printf ("Preferences");
 			pref.save ();
-			this.view.load_settings ();
         }
         pref.favicons.disconnect (favicon_all);
         pref.destroy ();
