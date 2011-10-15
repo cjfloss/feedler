@@ -39,6 +39,7 @@ public class Feedler.Channel
 	public static Soup.Session session;
 	public static int last_id;
 	public int id;
+	public int id_db;
 	public string title;
 	public string source;
 	public string homepage;

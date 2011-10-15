@@ -140,6 +140,11 @@ public class Feedler.Sidebar : Gtk.TreeView
 		this.get_selection ().select_iter (channel_iter);
 	}
 	
+	public void select_path (Gtk.TreePath path)
+	{
+		this.get_selection ().select_path (path);
+	}
+	
 	private void render_scell (Gtk.CellLayout layout, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
 	{
 		ChannelStore channel;

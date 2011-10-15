@@ -107,7 +107,8 @@ public class Feedler.Database : GLib.Object
 				query.set_string (":homepage", channel.homepage);
 				query.set_int (":folder", channel.folder);
 				query.set_int (":type", channel.type);
-				query.execute ();
+				//query.execute ();
+				channel.id_db =  (int)query.execute_insert ();
 				this.channels.append (channel);
 			}
 			transaction.commit();
@@ -156,7 +157,8 @@ public class Feedler.Database : GLib.Object
 			query.set_int (":folder", channel.folder);
 			query.set_int (":type", (int)channel.type);
 			channel.id = (int)this.channels.length ();
-			query.execute ();
+			channel.id_db =  (int)query.execute_insert ();
+			//query.execute ();
 			this.channels.append (channel);
 			foreach (Feedler.Item item in channel.items)
 			{			
@@ -211,6 +213,7 @@ public class Feedler.Database : GLib.Object
 			{				
 				Feedler.Channel ch = new Feedler.Channel ();
 				ch.id = count++;
+				ch.id_db = results.fetch_int (0);
 				ch.title = results.fetch_string (1);
 				ch.source = results.fetch_string (2);
 				ch.homepage = results.fetch_string (3);

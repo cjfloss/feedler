@@ -12,12 +12,14 @@ public class Feedler.Window : Gtk.Window
 	private Feedler.OPML opml;
 	internal Feedler.Toolbar toolbar;
 	private Feedler.Sidebar side;
+	private Gtk.Menu context;
 	private Feedler.History history;
 	private weak Feedler.View view;
 	private Gtk.HPaned hpane;
 	private Gtk.VBox vbox;
 	private Gtk.ScrolledWindow scroll_side;
 	private Feedler.CardLayout layout;
+	private bool new_feeds;
 	
 	construct
 	{
@@ -67,10 +69,20 @@ public class Feedler.Window : Gtk.Window
 	private void ui_workspace ()
 	{
 		this.side = new Feedler.Sidebar ();
-		this.side.cursor_changed.connect (load_channel);
+		this.side.button_press_event.connect (context_menu);
 		this.scroll_side = new Gtk.ScrolledWindow (null, null);
 		this.scroll_side.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 		this.scroll_side.add (side);
+		
+		this.context = new Gtk.Menu ();
+		Gtk.MenuItem it_delete = new Gtk.MenuItem.with_label ("Delete");
+		Gtk.MenuItem it_rename = new Gtk.MenuItem.with_label ("Rename");
+		it_delete.set_sensitive (false);
+		it_rename.set_sensitive (false);
+		this.context.append (it_delete);
+		this.context.append (it_rename);
+		it_delete.activate.connect (delete_channel);
+		this.context.show_all ();
 		
 		this.hpane = new Gtk.HPaned ();
 		this.hpane.name = "SidebarHandleLeft";
@@ -111,6 +123,7 @@ public class Feedler.Window : Gtk.Window
 			channel.faviconed.connect (faviconed_channel);
 		}			
 		this.side.expand_all ();
+		this.side.cursor_changed.connect (load_channel);
 	}
 	
 	private void ui_welcome ()
@@ -242,6 +255,7 @@ public class Feedler.Window : Gtk.Window
 		
 		if (unreaded > 0)
 		{
+			this.new_feeds = true;
 			this.side.add_unreaded (ch.id, unreaded);
 			this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
 			
@@ -254,10 +268,11 @@ public class Feedler.Window : Gtk.Window
 		}
 		else
 			this.side.set_empty (ch.id);
-		if (this.toolbar.progressbar_progress (1.0 / this.db.channels.length ()))
+		if (this.toolbar.progressbar_progress (1.0 / this.db.channels.length ()) && this.new_feeds)
 		{
 			Notify.Notification notify = new Notify.Notification ("Feedler News Reader", "There are new feeds to read!", "news-feed");
 			notify.show ();
+			this.new_feeds = false;
 		}
 	}
 	
@@ -412,6 +427,7 @@ public class Feedler.Window : Gtk.Window
 				channel.faviconed.connect (faviconed_channel);
 			}
 			this.side.expand_all ();
+			this.update_all ();
 		}
 		catch (GLib.Error error)
 		{
@@ -526,5 +542,29 @@ public class Feedler.Window : Gtk.Window
 			this.fullscreen ();
 		else
 			this.unfullscreen ();
+	}
+	
+	private bool context_menu (Gdk.EventButton e)
+	{
+		if (e.button != 3)
+			return false;
+		Gtk.TreePath path;
+		Gtk.TreeViewColumn column;
+		int cell_x;
+		int cell_y;
+		if (this.side.get_path_at_pos ((int) e.x, (int) e.y, out path, out column, out cell_x, out cell_y))
+		{
+			this.side.select_path (path);
+			this.context.popup (null, null, null, e.button, e.time);
+			return true;
+		}
+		return false;
+	}
+	
+	protected void delete_channel ()
+	{
+		int id = this.selection_tree ();
+		if (id != -1)
+			stderr.printf ("Channel to delete: %i\n", id);
 	}
 }
