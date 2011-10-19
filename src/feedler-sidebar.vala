@@ -86,6 +86,23 @@ public class Feedler.Sidebar : Gtk.TreeView
 		this.store.append (out channel_iter, folder_iter);	
         this.store.set (channel_iter, 0, new ChannelStore (channel_id, channel_name, 0, 1), -1);
         this.channels.append (channel_iter);
+        stderr.printf ("ID: %i\n", channel_id);
+        stderr.printf ("Size: %i\n", (int)channels.length ());
+	}
+	
+	public void remove_channel (int channel_id)
+	{
+		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		this.store.remove (channel_iter);
+		this.channels.remove (channels.nth_data (channel_id));
+		for (uint i = this.channels.length ()-1; i > channel_id; i--)
+		{
+			ChannelStore channel;
+			unowned Gtk.TreeIter ch_iter = channels.nth_data (i);
+			this.model.get (ch_iter, 0, out channel);
+			--channel.id;
+			this.store.set_value (ch_iter, 0, channel);
+		}
 	}
 
 	public void mark_readed (int channel_id)

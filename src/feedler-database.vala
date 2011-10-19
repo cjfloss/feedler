@@ -52,7 +52,7 @@ public class Feedler.Database : GLib.Object
 			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE | SQLHeavy.FileMode.CREATE);
 			db.execute ("CREATE TABLE folders (`id` INTEGER PRIMARY KEY,`name` TEXT,`parent` INT);");
 			db.execute ("CREATE TABLE channels (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`homepage` TEXT,`folder` INT,`type` INT);");
-			db.execute ("CREATE TABLE items (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`author` TEXT,`description` TEXT,`time` INT,`state` INT,`channel` REFERENCES `channels`(`id`));");
+			db.execute ("CREATE TABLE items (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`author` TEXT,`description` TEXT,`time` INT,`state` INT,`channel` INT);");
 			this.created = true;
 		}
 		catch (SQLHeavy.Error e)
@@ -107,7 +107,6 @@ public class Feedler.Database : GLib.Object
 				query.set_string (":homepage", channel.homepage);
 				query.set_int (":folder", channel.folder);
 				query.set_int (":type", channel.type);
-				//query.execute ();
 				channel.id_db =  (int)query.execute_insert ();
 				this.channels.append (channel);
 			}
@@ -157,8 +156,7 @@ public class Feedler.Database : GLib.Object
 			query.set_int (":folder", channel.folder);
 			query.set_int (":type", (int)channel.type);
 			channel.id = (int)this.channels.length ();
-			channel.id_db =  (int)query.execute_insert ();
-			//query.execute ();
+			channel.id_db =  (int)query.execute_insert ()-1;
 			this.channels.append (channel);
 			foreach (Feedler.Item item in channel.items)
 			{			
@@ -170,7 +168,7 @@ public class Feedler.Database : GLib.Object
 				query.set_int (":time", item.time);
 				//query.set_int (":state", (int)item.state);
 				query.set_int (":state", (int)State.READED);
-				query.set_int (":channel", channel.id);
+				query.set_int (":channel", channel.id_db);
 				query.execute ();
 			}
 			transaction.commit();
@@ -178,6 +176,26 @@ public class Feedler.Database : GLib.Object
 		catch (SQLHeavy.Error e)
 		{
 			stderr.printf ("Feedler.Database.insert_subscription (): I cannot insert new subscription.\n");
+		}
+	}
+	
+	public void remove_subscription (int channel_id, int db_id)
+	{
+        try
+        {
+			transaction = db.begin_transaction ();
+			query = transaction.prepare ("DELETE FROM `channels` WHERE `id` = :id;");
+			query.set_int (":id", db_id);
+			query.execute_async ();
+			query = transaction.prepare ("DELETE FROM `items` WHERE `channel` = :ch;");
+			query.set_int (":ch", db_id-1);
+			query.execute_async ();
+			this.channels.remove (this.channels.nth_data (channel_id));
+			transaction.commit();
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Feedler.Database.remove_subscription (): I cannot remove subscription.\n");
 		}
 	}
 	
@@ -220,8 +238,8 @@ public class Feedler.Database : GLib.Object
 				ch.folder = results.fetch_int (4);
 				ch.type = (Type) results.fetch_int (5);
 				
-				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`="+ch.id.to_string ()+";");
-				for (var r = q.execute(); !r.finished; r.next())
+				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`="+(ch.id_db-1).to_string ()+";");
+				for (var r = q.execute (); !r.finished; r.next ())
 				{
 					Feedler.Item it = new Feedler.Item ();
 					it.title = r.fetch_string (1);

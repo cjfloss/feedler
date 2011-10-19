@@ -76,11 +76,10 @@ public class Feedler.Window : Gtk.Window
 		
 		this.context = new Gtk.Menu ();
 		Gtk.MenuItem it_delete = new Gtk.MenuItem.with_label ("Delete");
-		Gtk.MenuItem it_rename = new Gtk.MenuItem.with_label ("Rename");
-		it_delete.set_sensitive (false);
-		it_rename.set_sensitive (false);
+		//Gtk.MenuItem it_rename = new Gtk.MenuItem.with_label ("Rename");
+		//it_rename.set_sensitive (false);
 		this.context.append (it_delete);
-		this.context.append (it_rename);
+		//this.context.append (it_rename);
 		it_delete.activate.connect (delete_channel);
 		this.context.show_all ();
 		
@@ -563,8 +562,16 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void delete_channel ()
 	{
+		Gtk.MessageDialog info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Are you sure you want to delete this channel?");
 		int id = this.selection_tree ();
 		if (id != -1)
-			stderr.printf ("Channel to delete: %i\n", id);
+			if (info.run () == Gtk.ResponseType.YES)
+			{
+				this.side.remove_channel (id);
+				this.db.remove_subscription (id, this.db.channels.nth_data (id).id_db);
+				for (uint i = this.db.channels.length ()-1; i >= id; i--)
+					this.db.channels.nth_data (i).id--;
+			}
+		info.destroy ();
 	}
 }
