@@ -86,8 +86,6 @@ public class Feedler.Sidebar : Gtk.TreeView
 		this.store.append (out channel_iter, folder_iter);	
         this.store.set (channel_iter, 0, new ChannelStore (channel_id, channel_name, 0, 1), -1);
         this.channels.append (channel_iter);
-        stderr.printf ("ID: %i\n", channel_id);
-        stderr.printf ("Size: %i\n", (int)channels.length ());
 	}
 	
 	public void remove_channel (int channel_id)

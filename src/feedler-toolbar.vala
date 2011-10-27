@@ -50,8 +50,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
     Gtk.ToolItem progress_item;
     Gtk.Alignment align;
     Progress progress;    
-    //internal Granite.Widgets.ModeButton mode;
-    internal Granite.Widgets.ModeButtonMarlin mode;
+    internal Granite.Widgets.ModeButton mode;
     internal Granite.Widgets.SearchBar search = new Granite.Widgets.SearchBar ("Type To Search..");
     Gtk.ToolItem mode_item;
     Gtk.ToolItem search_item;
@@ -79,12 +78,11 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (preferences);
         this.appmenu = new Granite.Widgets.AppMenu (menu);
         
-        this.mode = new Granite.Widgets.ModeButtonMarlin ();
-        //this.mode = new Granite.Widgets.ModeButton ();
+        this.mode = new Granite.Widgets.ModeButton ();
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-details-symbolic", Gtk.IconSize.MENU));
         this.mode_item = new Gtk.ToolItem ();
-        mode_item.set_border_width (5);
+		mode_item.margin = 5;
         mode_item.add (mode);
         search_item = new Gtk.ToolItem ();
         search_item.add (search);

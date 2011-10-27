@@ -68,6 +68,7 @@ public class Feedler.Window : Gtk.Window
 
 	private void ui_workspace ()
 	{
+		this.toolbar.mode.selected = 0;
 		this.side = new Feedler.Sidebar ();
 		this.side.button_press_event.connect (context_menu);
 		this.scroll_side = new Gtk.ScrolledWindow (null, null);
@@ -453,6 +454,18 @@ public class Feedler.Window : Gtk.Window
                                       Gtk.FileChooserAction.OPEN,
                                       Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
                                       Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
+		
+		Gtk.FileFilter filter_opml = new Gtk.FileFilter ();
+		filter_opml.set_filter_name ("Subscriptions");
+		filter_opml.add_pattern ("*.opml");
+		filter_opml.add_pattern ("*.xml");
+		file_chooser.add_filter (filter_opml);
+
+		Gtk.FileFilter filter_all = new Gtk.FileFilter ();
+		filter_all.set_filter_name ("All files");
+		filter_all.add_pattern ("*");
+		file_chooser.add_filter (filter_all);
+
         if (file_chooser.run () == Gtk.ResponseType.ACCEPT)
             import (file_chooser.get_filename ());
         file_chooser.destroy ();
