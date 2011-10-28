@@ -117,7 +117,6 @@ vala_precompile(VALA_C
 	src/feedler-cardlayout.vala
 	src/feedler-view-cell.vala
 	src/feedler-sidebar-cell.vala
-	src/granite-modebutton.vala
 PACKAGES
 	gtk+-3.0
     granite
