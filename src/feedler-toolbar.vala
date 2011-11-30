@@ -66,6 +66,9 @@ public class Feedler.Toolbar : Gtk.Toolbar
 	construct
 	{
 		sidebar_visible.active = true;
+
+	// Toolbar properties compliant with elementary HIG
+	get_style_context ().add_class ("primary-toolbar");
 		
         Gtk.Menu menu = new Gtk.Menu ();
         menu.append (import_feeds);
