@@ -486,6 +486,7 @@ public class Feedler.Window : Gtk.Window
 	protected void add_subscription ()
 	{
 		Feedler.CreateSubs subs = new Feedler.CreateSubs ();
+		subs.move_to_widget (this.toolbar.add_new);
 		foreach (Feedler.Folder folder in this.db.folders)
 			subs.add_folder (folder.name);
 		if (subs.run () == Gtk.ResponseType.APPLY)

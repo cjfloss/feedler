@@ -56,6 +56,7 @@ public class Feedler.Preferences : Gtk.Dialog
 	{
 		this.title = "Preferences";
         this.border_width = 5;
+		this.set_default_size (300, 300);
         this.web = new PrefView ();
         this.fav = new Gtk.Button.with_label ("Update favicons");
 		this.tabs = new Granite.Widgets.StaticNotebook ();

@@ -5,7 +5,7 @@
  * @see COPYING
  */
  
-public class Feedler.CreateSubs : Gtk.Dialog
+public class Feedler.CreateSubs : Granite.Widgets.PopOver
 {
 	private Gtk.ComboBoxText folder_entry;
 	private Granite.Widgets.HintedEntry channel_entry;
@@ -13,8 +13,8 @@ public class Feedler.CreateSubs : Gtk.Dialog
 	
 	construct
 	{
-		this.title = "Add subscription";
-        this.border_width = 5;
+		//this.title = "Add subscription";
+        //this.border_width = 5;
 		this.folder_entry = new Gtk.ComboBoxText ();
 		this.folder_entry.append_text ("Folder");
 		this.folder_entry.set_active (0);
@@ -24,7 +24,7 @@ public class Feedler.CreateSubs : Gtk.Dialog
         this.vbox.pack_start (this.folder_entry, false, true, 0);
         this.vbox.pack_start (this.channel_entry, false, true, 0);
 
-        this.add_button (Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL);
+        //this.add_button (Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL);
         this.add_button (Gtk.Stock.APPLY, Gtk.ResponseType.APPLY);
 		this.show_all ();
     }

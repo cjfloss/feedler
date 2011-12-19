@@ -97,13 +97,14 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.insert (back, 0);
         this.insert (forward, 1);
         this.insert (next, 2);
-        this.insert (update, 3);
-        this.insert (mark, 4);
-        this.insert (add_new, 5);
-        this.insert (progress_item, 6);
-        this.insert (search_item, 7);
-        this.insert (mode_item, 8);
-        this.insert (appmenu, 9);
+		this.insert (new Gtk.SeparatorToolItem (), 3);
+        this.insert (update, 4);
+        this.insert (mark, 5);
+        this.insert (add_new, 6);
+        this.insert (progress_item, 7);
+        this.insert (search_item, 8);
+        this.insert (mode_item, 9);
+        this.insert (appmenu, 10);
 
         this.align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
 		this.progress_item.add (align);
