@@ -11,17 +11,17 @@ msgstr ""
 "PO-Revision-Date: 2011-12-02 08:27+0000\n"
 "Last-Translator: 英华 <wantinghard@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <zh_CN@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-03 05:49+0000\n"
-"X-Generator: Launchpad (build 14418)\n"
-
-#: ../data/feedler.desktop
-msgid "Download and view feeds"
-msgstr "下载和查看 feed 订阅"
+"X-Launchpad-Export-Date: 2011-12-27 05:10+0000\n"
+"X-Generator: Launchpad (build 14560)\n"
+"Language: \n"
 
 #: ../data/feedler.desktop
 msgid "Feedler News Reader"
 msgstr "Feedler 新闻阅读器"
+
+#: ../data/feedler.desktop
+msgid "Download and view feeds"
+msgstr "下载和查看 feed 订阅"
