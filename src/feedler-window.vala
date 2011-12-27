@@ -86,6 +86,7 @@ public class Feedler.Window : Gtk.Window
 		
 		this.hpane = new Gtk.HPaned ();
 		this.hpane.name = "SidebarHandleLeft";
+		this.hpane.get_style_context().add_class("sidebar-pane-separator");
 		this.hpane.set_position (settings.hpane_width);
         this.vbox.pack_start (hpane, true);
         this.hpane.add1 (scroll_side);
