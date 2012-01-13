@@ -95,16 +95,23 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		progress_item.set_expand (true);
         
         this.insert (back, 0);
+        this.back.tooltip_text = _("Back");
         this.insert (forward, 1);
+        this.forward.tooltip_text = _("Forward");
         this.insert (next, 2);
+        this.next.tooltip_text = _("Next");
 		this.insert (new Gtk.SeparatorToolItem (), 3);
         this.insert (update, 4);
+        this.update.tooltip_text = _("Update");
         this.insert (mark, 5);
+        this.mark.tooltip_text = _("Mark");
         this.insert (add_new, 6);
+        this.add_new.tooltip_text = _("Add New Feed");
         this.insert (progress_item, 7);
         this.insert (search_item, 8);
         this.insert (mode_item, 9);
         this.insert (appmenu, 10);
+        this.appmenu.tooltip_text = _("Menu");
 
         this.align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
 		this.progress_item.add (align);
