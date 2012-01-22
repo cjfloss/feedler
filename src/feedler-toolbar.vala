@@ -102,9 +102,9 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.next.tooltip_text = _("Next");
 		this.insert (new Gtk.SeparatorToolItem (), 3);
         this.insert (update, 4);
-        this.update.tooltip_text = _("Update");
+        this.update.tooltip_text = _("Refresh");
         this.insert (mark, 5);
-        this.mark.tooltip_text = _("Mark");
+        this.mark.tooltip_text = _("Mark All As Read");
         this.insert (add_new, 6);
         this.add_new.tooltip_text = _("Add New Feed");
         this.insert (progress_item, 7);
