@@ -11,17 +11,17 @@ msgstr ""
 "PO-Revision-Date: 2011-11-25 18:03+0000\n"
 "Last-Translator: Andrea Basso <voluntatefaber@gmail.com>\n"
 "Language-Team: Italian <it@li.org>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-27 05:10+0000\n"
-"X-Generator: Launchpad (build 14560)\n"
-
-#: ../data/feedler.desktop
-msgid "Download and view feeds"
-msgstr "Scarica e mostra notiziari"
+"X-Launchpad-Export-Date: 2012-01-29 05:29+0000\n"
+"X-Generator: Launchpad (build 14727)\n"
+"Language: it\n"
 
 #: ../data/feedler.desktop
 msgid "Feedler News Reader"
 msgstr "Feedler Aggregatore di Novità"
+
+#: ../data/feedler.desktop
+msgid "Download and view feeds"
+msgstr "Scarica e mostra notiziari"

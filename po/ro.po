@@ -11,17 +11,17 @@ msgstr ""
 "PO-Revision-Date: 2011-12-30 09:37+0000\n"
 "Last-Translator: rodislav <rodearo@yahoo.com>\n"
 "Language-Team: Romanian <ro@li.org>\n"
-"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-12-31 06:13+0000\n"
-"X-Generator: Launchpad (build 14560)\n"
-
-#: ../data/feedler.desktop
-msgid "Download and view feeds"
-msgstr "Descarcă și vizualizează fluxuri"
+"X-Launchpad-Export-Date: 2012-01-29 05:29+0000\n"
+"X-Generator: Launchpad (build 14727)\n"
+"Language: ro\n"
 
 #: ../data/feedler.desktop
 msgid "Feedler News Reader"
 msgstr "Feedler Cititor de Noutăţi"
+
+#: ../data/feedler.desktop
+msgid "Download and view feeds"
+msgstr "Descarcă și vizualizează fluxuri"
