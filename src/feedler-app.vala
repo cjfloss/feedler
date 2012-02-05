@@ -19,7 +19,7 @@ public class Feedler.App : Granite.Application
 		build_version_info = Build.VERSION_INFO;
 		program_name = "Feedler";
 		exec_name = "feedler";
-		app_years = "2011";
+		app_years = "2011-2012";
 		application_id = "net.launchpad.Feedler";
 		app_icon = "news-feed";
         app_launcher = "feedler.desktop";
