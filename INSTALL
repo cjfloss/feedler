@@ -15,13 +15,15 @@ because it is missing certain dependencies. It is up to you to install them.
 	
 
 General build instructions:
-	1) mkdir build
-	2) cd build
-	3) cmake ..
-	4) make 	
+	1) bzr branch lp:feedler
+	2) cd feedler
+	3) mkdir build
+	4) cd build
+	5) cmake .. -DCMAKE_INSTALLPREFIX=/usr
+	6) make 	
 
 To install:
-	5) sudo make install
+	7) sudo make install
 
 
 Have a nice day with Feedler;)
