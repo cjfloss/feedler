@@ -21,7 +21,7 @@ public class Feedler.App : Granite.Application
 		exec_name = "feedler";
 		app_years = "2011-2012";
 		application_id = "net.launchpad.Feedler";
-		app_icon = "news-feed";
+		app_icon = "internet-feed-reader";
         app_launcher = "feedler.desktop";
 		main_url = "https://launchpad.net/feedler";
 		bug_url = "https://bugs.launchpad.net/feedler";
