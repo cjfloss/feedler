@@ -6,5 +6,5 @@ GenericName=Feedler News Reader
 Comment=Download and view feeds
 Categories=GTK;Network;News;
 Exec=feedler
-Icon=news-feed
+Icon=internet-feed-reader
 Terminal=false
