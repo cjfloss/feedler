@@ -142,5 +142,5 @@ install(TARGETS feedler RUNTIME DESTINATION bin)
 # GSettings Schema
 #
 include(GSettings)
-add_schema("apps.feedler.gschema.xml")
+add_schema("org.elementary.feedler.gschema.xml")
 
