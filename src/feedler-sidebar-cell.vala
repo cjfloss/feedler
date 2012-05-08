@@ -173,12 +173,29 @@ static void custom_rounded (Cairo.Context cr, double x, double y, double w, doub
 			Gdk.cairo_set_source_pixbuf (cr, pix, area.x - 8, height_centered - 2);
 			cr.paint ();
 		}
-        else if (type == Type.CHANNEL && GLib.FileUtils.test (location+channel+".png", GLib.FileTest.EXISTS))
-		{
-			cr.set_source_surface (new Cairo.ImageSurface.from_png (location+channel+".png"),
-								area.x - 8, height_centered - 2);
-			cr.paint ();
-		}
+        else if (type == Type.CHANNEL)
+        {
+            if (GLib.FileUtils.test (location+channel+".png", GLib.FileTest.EXISTS))
+		    {
+			    cr.set_source_surface (new Cairo.ImageSurface.from_png (location+channel+".png"),
+								       area.x - 8, height_centered - 2);
+			    cr.paint ();
+		    }
+            else
+            {
+                try
+                {
+                    Gtk.IconTheme icons = Gtk.IconTheme.get_default ();
+                    Gdk.Pixbuf pix = icons.load_icon ("internet-feed-reader", 16, 0);
+                    Gdk.cairo_set_source_pixbuf (cr, pix, area.x - 8, height_centered - 2);
+        			cr.paint ();
+                }
+                catch (GLib.Error e)
+                {
+                    stderr.printf ("ERROR: %s - No such file found for: internet-feed-reader\n", e.message);
+                }
+            }
+        }
 		//layout.set_font_description (old_desc); /* Restore the old font, it could cause some strange behavior */
     }
 

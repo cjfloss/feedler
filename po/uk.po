@@ -11,17 +11,17 @@ msgstr ""
 "PO-Revision-Date: 2012-01-16 15:39+0000\n"
 "Last-Translator: Victor Markin <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-03-04 05:15+0000\n"
 "X-Generator: Launchpad (build 14886)\n"
-"Language: uk\n"
-
-#: ../data/feedler.desktop
-msgid "Feedler News Reader"
-msgstr "Програма для читання новин Feedler"
 
 #: ../data/feedler.desktop
 msgid "Download and view feeds"
 msgstr "Завантаження та перегляд каналів"
+
+#: ../data/feedler.desktop
+msgid "Feedler News Reader"
+msgstr "Програма для читання новин Feedler"

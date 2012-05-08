@@ -11,17 +11,17 @@ msgstr ""
 "PO-Revision-Date: 2012-01-05 09:54+0000\n"
 "Last-Translator: Kārlis Lukstiņš <Unknown>\n"
 "Language-Team: Latvian <lv@li.org>\n"
+"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-03-04 05:14+0000\n"
 "X-Generator: Launchpad (build 14886)\n"
-"Language: lv\n"
-
-#: ../data/feedler.desktop
-msgid "Feedler News Reader"
-msgstr "Feelder Ziņu Lasītājs"
 
 #: ../data/feedler.desktop
 msgid "Download and view feeds"
 msgstr "Lejupielādē un lasi ziņas"
+
+#: ../data/feedler.desktop
+msgid "Feedler News Reader"
+msgstr "Feelder Ziņu Lasītājs"

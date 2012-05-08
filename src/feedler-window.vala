@@ -29,7 +29,7 @@ public class Feedler.Window : Gtk.Window
 		this.opml = new Feedler.OPML ();
 		this.layout = new Feedler.CardLayout ();
 		this.title = "Feedler";
-		this.icon_name = "news-feed";
+		this.icon_name = "internet-feed-reader";
 		this.destroy.connect (destroy_app);
 		this.set_default_size (settings.width, settings.height);
 		this.set_size_request (800, 500);
@@ -85,7 +85,8 @@ public class Feedler.Window : Gtk.Window
 		this.context.show_all ();
 		
 		this.hpane = new Gtk.HPaned ();
-		this.hpane.name = "SidebarHandleLeft";
+		this.side.name = "SidebarContent";
+        this.side.get_style_context ().add_class ("sidebar");
 		this.hpane.get_style_context().add_class("sidebar-pane-separator");
 		this.hpane.set_position (settings.hpane_width);
         this.vbox.pack_start (hpane, true);
@@ -271,7 +272,7 @@ public class Feedler.Window : Gtk.Window
 			this.side.set_empty (ch.id);
 		if (this.toolbar.progressbar_progress (1.0 / this.db.channels.length ()) && this.new_feeds)
 		{
-			Notify.Notification notify = new Notify.Notification ("Feedler News Reader", "There are new feeds to read!", "news-feed");
+			Notify.Notification notify = new Notify.Notification ("Feedler News Reader", "There are new feeds to read!", "internet-feed-reader");
 			notify.show ();
 			this.new_feeds = false;
 		}

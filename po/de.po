@@ -11,17 +11,17 @@ msgstr ""
 "PO-Revision-Date: 2012-02-23 14:14+0000\n"
 "Last-Translator: Henrik Graßhoff <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-03-04 05:14+0000\n"
 "X-Generator: Launchpad (build 14886)\n"
-"Language: de\n"
-
-#: ../data/feedler.desktop
-msgid "Feedler News Reader"
-msgstr "Feedler – Newsreader"
 
 #: ../data/feedler.desktop
 msgid "Download and view feeds"
 msgstr "Feeds herunterladen und anzeigen"
+
+#: ../data/feedler.desktop
+msgid "Feedler News Reader"
+msgstr "Feedler – Newsreader"
