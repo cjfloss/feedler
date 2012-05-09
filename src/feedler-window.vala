@@ -21,6 +21,7 @@ public class Feedler.Window : Gtk.Window
 	private Gtk.ScrolledWindow scroll_side;
 	private Feedler.CardLayout layout;
     private Feedler.StatusButton add_feed;
+    private Feedler.StatusButton del_feed;
 	private bool new_feeds;
 	
 	construct
@@ -51,7 +52,12 @@ public class Feedler.Window : Gtk.Window
         this.add_feed.set_tooltip (_("Add new subscription URL"));
         this.add_feed.button_press_event.connect (this.add_feed_pressed);
 
+        this.del_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("list-remove-symbolic", Gtk.IconSize.MENU));
+        this.del_feed.set_tooltip (_("Remove selected subscription"));
+        this.del_feed.button_press_event.connect (this.del_feed_pressed);
+
         this.stat.insert_widget (this.add_feed, true);
+        this.stat.insert_widget (this.del_feed, true);
         //this.stat.insert_widget (new Gtk.Button.with_label ("Test"));
         this.vbox.pack_end (this.stat, false, true, 0);
 		this.add (vbox);
@@ -497,37 +503,43 @@ public class Feedler.Window : Gtk.Window
             export (file_chooser.get_filename ());
         file_chooser.destroy ();
 	}
-	/*
-	protected void add_subscription ()
-	{
-		Feedler.CreateSubs subs = new Feedler.CreateSubs ();
-		subs.move_to_widget (this.toolbar.add_new);
-		foreach (Feedler.Folder folder in this.db.folders)
-			subs.add_folder (folder.name);
-		if (subs.run () == Gtk.ResponseType.APPLY)
-		{
-            this.create_subscription (subs.get_uri (), subs.get_folder ());
-        }
-        subs.destroy ();
-	}
-    */
+
     public virtual bool add_feed_pressed (Gdk.EventButton event)
     {
 		if (event.type == Gdk.EventType.BUTTON_PRESS)
         {
 			Feedler.CreateSubs subs = new Feedler.CreateSubs ();
-		    subs.move_to_widget (this.add_feed);
-            subs.present ();
+		    subs.set_transient_for (this);
+            subs.feed_added.connect (add_feed_added);
 		    foreach (Feedler.Folder folder in this.db.folders)
 			    subs.add_folder (folder.name);
-		    if (subs.run () == Gtk.ResponseType.APPLY)
-		    {
-                this.create_subscription (subs.get_uri (), subs.get_folder ());
-            }
-            subs.destroy ();
+            subs.show_all ();
 		}
 		return false;
 	}
+
+    public virtual bool del_feed_pressed (Gdk.EventButton event)
+    {
+        int id = this.selection_tree ();
+		if (event.type == Gdk.EventType.BUTTON_PRESS && id != -1)
+        {
+            Gtk.MessageDialog info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Are you sure you want to delete this channel?");
+			if (info.run () == Gtk.ResponseType.YES)
+			{
+				this.side.remove_channel (id);
+				this.db.remove_subscription (id, this.db.channels.nth_data (id).id_db);
+				for (uint i = this.db.channels.length ()-1; i >= id; i--)
+					this.db.channels.nth_data (i).id--;
+			}
+            info.destroy ();
+		}
+		return false;
+	}
+
+    public virtual void add_feed_added (int folder, string url)
+    {
+        this.create_subscription (url, folder);
+    }
 	
 	protected void config ()
 	{
