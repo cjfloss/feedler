@@ -12,6 +12,7 @@ public class Feedler.Window : Gtk.Window
 	private Feedler.OPML opml;
 	internal Feedler.Toolbar toolbar;
 	private Feedler.Sidebar side;
+	private Feedler.Statusbar stat;
 	private Gtk.Menu context;
 	private Feedler.History history;
 	private weak Feedler.View view;
@@ -19,10 +20,12 @@ public class Feedler.Window : Gtk.Window
 	private Gtk.VBox vbox;
 	private Gtk.ScrolledWindow scroll_side;
 	private Feedler.CardLayout layout;
+    private Feedler.StatusButton add_feed;
 	private bool new_feeds;
 	
 	construct
 	{
+        //Icons.init ();
 		Notify.init ("org.elementary.Feedler");
 		this.settings = new Feedler.Settings ();
 		this.db = new Feedler.Database ();
@@ -32,7 +35,7 @@ public class Feedler.Window : Gtk.Window
 		this.icon_name = "internet-feed-reader";
 		this.destroy.connect (destroy_app);
 		this.set_default_size (settings.width, settings.height);
-		this.set_size_request (800, 500);
+		this.set_size_request (820, 520);
 		
 		this.vbox = new Gtk.VBox (false, 0);	
 		this.ui_toolbar ();
@@ -41,6 +44,16 @@ public class Feedler.Window : Gtk.Window
 		else
 			this.ui_welcome ();		
 			
+        this.stat = new Feedler.Statusbar ();
+        //this.stat.set_unreaded (3);
+
+        this.add_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.MENU));
+        this.add_feed.set_tooltip (_("Add new subscription URL"));
+        this.add_feed.button_press_event.connect (this.add_feed_pressed);
+
+        this.stat.insert_widget (this.add_feed, true);
+        //this.stat.insert_widget (new Gtk.Button.with_label ("Test"));
+        this.vbox.pack_end (this.stat, false, true, 0);
 		this.add (vbox);
 		this.history = new Feedler.History ();
 	}
@@ -55,7 +68,7 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.next.clicked.connect (next_unreaded);
         this.toolbar.update.clicked.connect (update_all);
         this.toolbar.mark.clicked.connect (mark_all);
-        this.toolbar.add_new.clicked.connect (add_subscription);
+        //this.toolbar.add_new.clicked.connect (add_subscription);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.search.activate.connect (search_list); 
         
@@ -163,7 +176,7 @@ public class Feedler.Window : Gtk.Window
 		switch (index)
 		{
 			case 0: this.import_file (); break;
-			case 1: this.add_subscription (); break;
+			//case 1: this.add_subscription (); break;
 		}
 	}
 	
@@ -484,7 +497,7 @@ public class Feedler.Window : Gtk.Window
             export (file_chooser.get_filename ());
         file_chooser.destroy ();
 	}
-	
+	/*
 	protected void add_subscription ()
 	{
 		Feedler.CreateSubs subs = new Feedler.CreateSubs ();
@@ -496,6 +509,24 @@ public class Feedler.Window : Gtk.Window
             this.create_subscription (subs.get_uri (), subs.get_folder ());
         }
         subs.destroy ();
+	}
+    */
+    public virtual bool add_feed_pressed (Gdk.EventButton event)
+    {
+		if (event.type == Gdk.EventType.BUTTON_PRESS)
+        {
+			Feedler.CreateSubs subs = new Feedler.CreateSubs ();
+		    subs.move_to_widget (this.add_feed);
+            subs.present ();
+		    foreach (Feedler.Folder folder in this.db.folders)
+			    subs.add_folder (folder.name);
+		    if (subs.run () == Gtk.ResponseType.APPLY)
+		    {
+                this.create_subscription (subs.get_uri (), subs.get_folder ());
+            }
+            subs.destroy ();
+		}
+		return false;
 	}
 	
 	protected void config ()

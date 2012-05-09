@@ -45,23 +45,23 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Gtk.ToolButton next = new Gtk.ToolButton.from_stock (Gtk.Stock.JUMP_TO);
 	internal Gtk.ToolButton update = new Gtk.ToolButton.from_stock (Gtk.Stock.REFRESH);
     internal Gtk.ToolButton mark = new Gtk.ToolButton.from_stock (Gtk.Stock.APPLY);
-    internal Gtk.ToolButton add_new = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
+    //internal Gtk.ToolButton add_new = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
     
     Gtk.ToolItem progress_item;
     Gtk.Alignment align;
     Progress progress;    
     internal Granite.Widgets.ModeButton mode;
-    internal Granite.Widgets.SearchBar search = new Granite.Widgets.SearchBar ("Type To Search..");
+    internal Granite.Widgets.SearchBar search = new Granite.Widgets.SearchBar (_("Type to Search..."));
     Gtk.ToolItem mode_item;
     Gtk.ToolItem search_item;
     
     internal Granite.Widgets.AppMenu appmenu;
-    internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label ("Sidebar Visible");
-    internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label ("Fullscreen");
-    internal Gtk.MenuItem import_feeds = new Gtk.MenuItem.with_label ("Import...");
-    internal Gtk.MenuItem export_feeds = new Gtk.MenuItem.with_label ("Export...");
-    internal Gtk.MenuItem about_program = new Gtk.MenuItem.with_label ("About");
-    internal Gtk.MenuItem preferences = new Gtk.MenuItem.with_label ("Preferences");
+    internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label (_("Sidebar Visible"));
+    internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label (_("Fullscreen"));
+    internal Gtk.MenuItem import_feeds = new Gtk.MenuItem.with_label (_("Import"));
+    internal Gtk.MenuItem export_feeds = new Gtk.MenuItem.with_label (_("Export"));
+    internal Gtk.MenuItem preferences = new Gtk.MenuItem.with_label (_("Preferences"));
+    internal Gtk.MenuItem about_program = new Gtk.MenuItem.with_label (_("About"));
     
 	construct
 	{
@@ -77,8 +77,8 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (sidebar_visible);
         menu.append (fullscreen_mode);
         menu.append (new Gtk.SeparatorMenuItem ());
-        menu.append (about_program);
         menu.append (preferences);
+        menu.append (about_program);
         this.appmenu = new Granite.Widgets.AppMenu (menu);
         
         this.mode = new Granite.Widgets.ModeButton ();
@@ -105,12 +105,19 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.update.tooltip_text = _("Refresh");
         this.insert (mark, 5);
         this.mark.tooltip_text = _("Mark All As Read");
+        /*
         this.insert (add_new, 6);
         this.add_new.tooltip_text = _("Add New Feed");
         this.insert (progress_item, 7);
         this.insert (search_item, 8);
         this.insert (mode_item, 9);
         this.insert (appmenu, 10);
+        this.appmenu.tooltip_text = _("Menu");
+        */
+        this.insert (progress_item, 6);
+        this.insert (search_item, 7);
+        this.insert (mode_item, 8);
+        this.insert (appmenu, 9);
         this.appmenu.tooltip_text = _("Menu");
 
         this.align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
@@ -128,7 +135,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		this.next.set_sensitive (state);
 		this.update.set_sensitive (state);
 		this.mark.set_sensitive (state);
-		this.add_new.set_sensitive (state);
+		//this.add_new.set_sensitive (state);
 		
 		this.search_item.set_sensitive (state);
 		this.mode_item.set_sensitive (state);

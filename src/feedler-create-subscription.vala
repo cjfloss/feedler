@@ -13,10 +13,9 @@ public class Feedler.CreateSubs : Granite.Widgets.PopOver
 	
 	construct
 	{
-		//this.title = "Add subscription";
-        //this.border_width = 5;
+        this.border_width = 5;
 		this.folder_entry = new Gtk.ComboBoxText ();
-		this.folder_entry.append_text ("Folder");
+		this.folder_entry.append_text (_("Select folder"));
 		this.folder_entry.set_active (0);
 		this.channel_entry = new Granite.Widgets.HintedEntry ("URI");
         
@@ -25,7 +24,7 @@ public class Feedler.CreateSubs : Granite.Widgets.PopOver
         this.vbox.pack_start (this.channel_entry, false, true, 0);
 
         //this.add_button (Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL);
-        this.add_button (Gtk.Stock.APPLY, Gtk.ResponseType.APPLY);
+        this.add_button (Gtk.Stock.ADD, Gtk.ResponseType.APPLY);
 		this.show_all ();
     }
     
@@ -41,6 +40,6 @@ public class Feedler.CreateSubs : Granite.Widgets.PopOver
 	
 	public int get_folder ()
     {
-		return folder_entry.get_active ()-1;
+		return folder_entry.get_active () - 1;
 	}
 }
