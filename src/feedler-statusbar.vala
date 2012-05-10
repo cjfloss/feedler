@@ -38,8 +38,32 @@ public class Feedler.StatusButton : Gtk.EventBox
 public class Feedler.Statusbar : Granite.Widgets.StatusBar
 {
     public uint total_unreaded { get; private set; default = 0; }
+    internal Feedler.StatusButton add_feed;
+    internal Feedler.StatusButton delete_feed;
+	internal Feedler.StatusButton edit_feed;
+    internal Feedler.StatusButton mark_feed;
 
     private string STATUS_TEXT_FORMAT = _("%u %s");
+
+    public Statusbar ()
+    {
+        this.add_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.MENU));
+        this.add_feed.set_tooltip (_("Add new subscription URL"));
+
+        this.delete_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("list-remove-symbolic", Gtk.IconSize.MENU));
+        this.delete_feed.set_tooltip (_("Remove selected subscription"));
+
+	    this.edit_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("format-text-larger-symbolic", Gtk.IconSize.MENU));
+        this.edit_feed.set_tooltip (_("Edit selected subscription"));
+
+        this.mark_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("go-bottom-symbolic", Gtk.IconSize.MENU));
+        this.mark_feed.set_tooltip (_("Mark selected subscription as readed"));
+
+        this.insert_widget (this.add_feed, true);
+        this.insert_widget (this.delete_feed, true);
+	    this.insert_widget (this.edit_feed, true);
+        this.insert_widget (this.mark_feed, false);
+    }
 
     public void set_unreaded (uint total_unreaded)
     {

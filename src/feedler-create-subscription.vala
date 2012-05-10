@@ -5,30 +5,28 @@
  * @see COPYING
  */
 
-public class Feedler.CreateSubs : Gtk.Window//Granite.Widgets.LightWindow
+public class Feedler.CreateSubs : Granite.Widgets.LightWindow
 {
     public signal void feed_added (int folder, string url);
 	private Gtk.ComboBoxText folder;
 	private Granite.Widgets.HintedEntry channel;
 	
-	construct
+	public CreateSubs ()
 	{
-        this.border_width = 10;
+        this.border_width = 15;
         this.window_position = Gtk.WindowPosition.CENTER;
         this.type_hint = Gdk.WindowTypeHint.DIALOG;
 		this.set_modal (false);
 		this.destroy_with_parent = true;
-        this.set_size_request (240, -1);
+        this.set_size_request (320, -1);
 		this.resizable = false;
 
 		this.folder = new Gtk.ComboBoxText ();
-		this.folder.append_text (_("Select folder"));
-		this.folder.set_active (0);
 		this.channel = new Granite.Widgets.HintedEntry ("URI");
 
         var save = new Gtk.Button.with_label (_("Add"));
         save.valign = save.halign = Gtk.Align.END;
-        save.clicked.connect_after (() => { feed_added (this.folder.get_active () - 1, this.channel.get_text ()); });
+        save.clicked.connect_after (() => { feed_added (this.folder.get_active (), this.channel.get_text ()); });
 
         var cancel = new Gtk.Button.with_label (_("Cancel"));
         cancel.valign = cancel.halign = Gtk.Align.END;
@@ -37,9 +35,20 @@ public class Feedler.CreateSubs : Gtk.Window//Granite.Widgets.LightWindow
         var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
         button_box.pack_start (cancel, false, false, 0);
         button_box.pack_end (save, false, false, 0);
+        button_box.margin_top = 10;
 
-        var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        var f_label = new Gtk.Label ("");
+        f_label.set_markup ("<b>%s</b>".printf (_("Select folder")));
+        f_label.set_halign (Gtk.Align.START);
+        var c_label = new Gtk.Label ("");
+        c_label.set_markup ("<b>%s</b>".printf (_("Address to channel")));
+        c_label.set_halign (Gtk.Align.START);
+        c_label.margin_top = 5;
+        
+        var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 5);
+        content.pack_start (f_label);
         content.pack_start (this.folder, false, true, 0);
+        content.pack_start (c_label);
         content.pack_start (this.channel, false, true, 0);
         content.pack_end (button_box, false, false, 0);
         

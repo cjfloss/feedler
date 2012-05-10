@@ -20,8 +20,6 @@ public class Feedler.Window : Gtk.Window
 	private Gtk.VBox vbox;
 	private Gtk.ScrolledWindow scroll_side;
 	private Feedler.CardLayout layout;
-    private Feedler.StatusButton add_feed;
-    private Feedler.StatusButton del_feed;
 	private bool new_feeds;
 	
 	construct
@@ -46,19 +44,12 @@ public class Feedler.Window : Gtk.Window
 			this.ui_welcome ();		
 			
         this.stat = new Feedler.Statusbar ();
+        this.stat.add_feed.button_press_event.connect (this.add_feed_pressed);
+        this.stat.delete_feed.button_press_event.connect (this.del_feed_pressed);
+        this.stat.edit_feed.button_press_event.connect (this.edit_feed_pressed);
+        this.stat.mark_feed.button_press_event.connect (this.mark_feed_pressed);
         //this.stat.set_unreaded (3);
 
-        this.add_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.MENU));
-        this.add_feed.set_tooltip (_("Add new subscription URL"));
-        this.add_feed.button_press_event.connect (this.add_feed_pressed);
-
-        this.del_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("list-remove-symbolic", Gtk.IconSize.MENU));
-        this.del_feed.set_tooltip (_("Remove selected subscription"));
-        this.del_feed.button_press_event.connect (this.del_feed_pressed);
-
-        this.stat.insert_widget (this.add_feed, true);
-        this.stat.insert_widget (this.del_feed, true);
-        //this.stat.insert_widget (new Gtk.Button.with_label ("Test"));
         this.vbox.pack_end (this.stat, false, true, 0);
 		this.add (vbox);
 		this.history = new Feedler.History ();
@@ -73,8 +64,7 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.forward.clicked.connect (history_next);
         this.toolbar.next.clicked.connect (next_unreaded);
         this.toolbar.update.clicked.connect (update_all);
-        this.toolbar.mark.clicked.connect (mark_all);
-        //this.toolbar.add_new.clicked.connect (add_subscription);
+        //this.toolbar.mark.clicked.connect (mark_all);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.search.activate.connect (search_list); 
         
@@ -518,20 +508,79 @@ public class Feedler.Window : Gtk.Window
 		return false;
 	}
 
+    public virtual bool edit_feed_pressed (Gdk.EventButton event)
+    {
+		if (event.type == Gdk.EventType.BUTTON_PRESS)
+        {
+            int id = this.selection_tree ();
+            if (id != -1)
+            {
+			    Feedler.CreateSubs subs = new Feedler.CreateSubs ();
+		        subs.set_transient_for (this);
+                subs.feed_added.connect (add_feed_added);
+		        foreach (Feedler.Folder folder in this.db.folders)
+			        subs.add_folder (folder.name);
+                subs.show_all ();
+            }
+            else
+            {
+                var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Please first select channel to edit.");
+                info.run ();
+                info.destroy ();
+            }
+		}
+		return false;
+	}
+
     public virtual bool del_feed_pressed (Gdk.EventButton event)
     {
-        int id = this.selection_tree ();
-		if (event.type == Gdk.EventType.BUTTON_PRESS && id != -1)
+		if (event.type == Gdk.EventType.BUTTON_PRESS)
         {
-            Gtk.MessageDialog info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Are you sure you want to delete this channel?");
-			if (info.run () == Gtk.ResponseType.YES)
-			{
-				this.side.remove_channel (id);
-				this.db.remove_subscription (id, this.db.channels.nth_data (id).id_db);
-				for (uint i = this.db.channels.length ()-1; i >= id; i--)
-					this.db.channels.nth_data (i).id--;
-			}
-            info.destroy ();
+            int id = this.selection_tree ();
+            if (id != -1)
+            {
+                Gtk.MessageDialog info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Are you sure you want to delete this channel?");
+			    if (info.run () == Gtk.ResponseType.YES)
+			    {
+				    this.side.remove_channel (id);
+				    this.db.remove_subscription (id, this.db.channels.nth_data (id).id_db);
+				    for (uint i = this.db.channels.length ()-1; i >= id; i--)
+					    this.db.channels.nth_data (i).id--;
+			    }
+                info.destroy ();
+            }
+            else
+            {
+                var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Please first select channel to delete.");
+                info.run ();
+                info.destroy ();
+            }
+		}
+		return false;
+	}
+
+    public virtual bool mark_feed_pressed (Gdk.EventButton event)
+    {
+		if (event.type == Gdk.EventType.BUTTON_PRESS)
+        {
+			stderr.printf ("Feedler.App.mark_all ()\n");
+		    foreach (Feedler.Channel ch in this.db.channels)
+		    {
+			    foreach (Feedler.Item it in ch.items)
+			    {
+				    if (it.state == State.UNREADED)
+				    {
+					    it.state = State.READED;
+					    ch.unreaded--;
+				    }
+				    else if (ch.unreaded > 0)
+					    continue;
+				    else
+					    break;
+			    }
+			    this.side.mark_readed (ch.id);
+		    }
+		    this.load_channel ();
 		}
 		return false;
 	}

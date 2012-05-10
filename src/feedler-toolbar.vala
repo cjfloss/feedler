@@ -44,7 +44,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Gtk.ToolButton forward = new Gtk.ToolButton.from_stock (Gtk.Stock.GO_FORWARD);
     internal Gtk.ToolButton next = new Gtk.ToolButton.from_stock (Gtk.Stock.JUMP_TO);
 	internal Gtk.ToolButton update = new Gtk.ToolButton.from_stock (Gtk.Stock.REFRESH);
-    internal Gtk.ToolButton mark = new Gtk.ToolButton.from_stock (Gtk.Stock.APPLY);
+    //internal Gtk.ToolButton mark = new Gtk.ToolButton.from_stock (Gtk.Stock.APPLY);
     //internal Gtk.ToolButton add_new = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
     
     Gtk.ToolItem progress_item;
@@ -103,9 +103,9 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		this.insert (new Gtk.SeparatorToolItem (), 3);
         this.insert (update, 4);
         this.update.tooltip_text = _("Refresh");
+        /*
         this.insert (mark, 5);
         this.mark.tooltip_text = _("Mark All As Read");
-        /*
         this.insert (add_new, 6);
         this.add_new.tooltip_text = _("Add New Feed");
         this.insert (progress_item, 7);
@@ -114,10 +114,10 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.insert (appmenu, 10);
         this.appmenu.tooltip_text = _("Menu");
         */
-        this.insert (progress_item, 6);
-        this.insert (search_item, 7);
-        this.insert (mode_item, 8);
-        this.insert (appmenu, 9);
+        this.insert (progress_item, 5);
+        this.insert (search_item, 6);
+        this.insert (mode_item, 7);
+        this.insert (appmenu, 8);
         this.appmenu.tooltip_text = _("Menu");
 
         this.align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
@@ -134,7 +134,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		this.forward.set_sensitive (state);
 		this.next.set_sensitive (state);
 		this.update.set_sensitive (state);
-		this.mark.set_sensitive (state);
+		//this.mark.set_sensitive (state);
 		//this.add_new.set_sensitive (state);
 		
 		this.search_item.set_sensitive (state);
