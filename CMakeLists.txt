@@ -114,6 +114,7 @@ vala_precompile(VALA_C
 	src/feedler-opml.vala
 	src/feedler-history.vala
 	src/feedler-create-subscription.vala
+	src/feedler-edit-subscription.vala
 	src/feedler-cardlayout.vala
 	src/feedler-view-cell.vala
 	src/feedler-sidebar-cell.vala

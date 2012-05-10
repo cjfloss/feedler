@@ -191,6 +191,22 @@ public class Feedler.Window : Gtk.Window
 		else
 			return -1;
 	}
+
+    private ChannelStore selected_item ()
+	{
+		Gtk.TreeModel model;
+		Gtk.TreeIter iter;
+		Gtk.TreeSelection selection = this.side.get_selection ();
+		
+		if (selection.get_selected (out model, out iter))
+		{
+			ChannelStore channel;
+			model.get (iter, 0, out channel);
+			return channel;
+		}
+		else
+			return null;
+	}
 	
 	protected void history_prev ()
 	{
@@ -512,14 +528,18 @@ public class Feedler.Window : Gtk.Window
     {
 		if (event.type == Gdk.EventType.BUTTON_PRESS)
         {
-            int id = this.selection_tree ();
-            if (id != -1)
+            ChannelStore ch = this.selected_item ();
+            if (ch != null)
             {
-			    Feedler.CreateSubs subs = new Feedler.CreateSubs ();
+			    Feedler.EditSubs subs = new Feedler.EditSubs ();
 		        subs.set_transient_for (this);
                 subs.feed_added.connect (add_feed_added);
 		        foreach (Feedler.Folder folder in this.db.folders)
 			        subs.add_folder (folder.name);
+                Feedler.Channel chl = this.db.get_channel (ch.id);
+                subs.set_channel (ch.channel);
+                subs.set_folder (chl.folder);
+                subs.set_uri (chl.source);
                 subs.show_all ();
             }
             else

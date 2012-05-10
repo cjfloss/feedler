@@ -42,6 +42,16 @@ public class Feedler.Database : GLib.Object
 	{
 		return channels;
 	}
+
+    public Feedler.Channel? get_channel (int id)
+	{
+        foreach (Feedler.Channel channel in channels)
+        {
+            if (id == channel.id)
+                return channel;
+        }
+		return null;
+	}
 	
 	public void create ()
 	{
