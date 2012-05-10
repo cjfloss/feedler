@@ -13,6 +13,6 @@ public class Feedler.Settings : Granite.Services.Settings
 
     public Settings ()
     {
-		base ("apps.feedler");
+		base ("org.elementary.feedler");
     }
 }
