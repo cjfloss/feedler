@@ -7,7 +7,8 @@
 
 public class Feedler.EditSubs : Granite.Widgets.LightWindow
 {
-    public signal void feed_added (int folder, string url);
+    public signal void feed_edited (int id, int folder, string channel,  string url);
+    private int id;
 	private Gtk.ComboBoxText folder;
     private Granite.Widgets.HintedEntry channel;
 	private Granite.Widgets.HintedEntry uri;
@@ -28,7 +29,7 @@ public class Feedler.EditSubs : Granite.Widgets.LightWindow
 
         var save = new Gtk.Button.with_label (_("Save"));
         save.valign = save.halign = Gtk.Align.END;
-        save.clicked.connect_after (() => { feed_added (this.folder.get_active (), this.uri.get_text ()); });
+        save.clicked.connect_after (() => { feed_edited (this.id, this.folder.get_active () + 1, this.channel.get_text () ,this.uri.get_text ()); this.destroy (); });
 
         var cancel = new Gtk.Button.with_label (_("Cancel"));
         cancel.valign = cancel.halign = Gtk.Align.END;
@@ -67,6 +68,11 @@ public class Feedler.EditSubs : Granite.Widgets.LightWindow
     public void add_folder (string folder_name)
     {
 		this.folder.append_text (folder_name);
+	}
+
+    public void set_id (int id)
+    {
+		this.id = id;
 	}
 
     public void set_folder (int id)

@@ -52,6 +52,25 @@ public class Feedler.Database : GLib.Object
         }
 		return null;
 	}
+
+    public void update_channel (int id, int folder, string channel,  string url)
+    {
+        try
+        {
+			transaction = db.begin_transaction ();
+			query = transaction.prepare ("UPDATE `channels` SET `title`=:channel, `source`=:url, `folder`=:folder WHERE `id`=:id;");
+			query.set_string (":channel", channel);
+            query.set_string (":url", url);
+			query.set_int (":folder", folder);
+            query.set_int (":id", id);
+			query.execute ();
+			transaction.commit();
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Feedler.Database.update_channel (%i, %s): I cannot update channel.", id, channel);
+		}
+    }
 	
 	public void create ()
 	{

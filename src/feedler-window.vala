@@ -533,13 +533,14 @@ public class Feedler.Window : Gtk.Window
             {
 			    Feedler.EditSubs subs = new Feedler.EditSubs ();
 		        subs.set_transient_for (this);
-                subs.feed_added.connect (add_feed_added);
+                subs.feed_edited.connect (edit_feed_edited);
 		        foreach (Feedler.Folder folder in this.db.folders)
 			        subs.add_folder (folder.name);
                 Feedler.Channel chl = this.db.get_channel (ch.id);
                 subs.set_channel (ch.channel);
                 subs.set_folder (chl.folder);
                 subs.set_uri (chl.source);
+                subs.set_id (chl.id);
                 subs.show_all ();
             }
             else
@@ -608,6 +609,12 @@ public class Feedler.Window : Gtk.Window
     public virtual void add_feed_added (int folder, string url)
     {
         this.create_subscription (url, folder);
+    }
+
+    public virtual void edit_feed_edited (int id, int folder, string channel,  string url)
+    {
+        this.db.update_channel (id, folder, channel, url);
+        this.side.set_channel_name (id, channel);
     }
 	
 	protected void config ()

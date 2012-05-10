@@ -26,7 +26,7 @@ public enum Type
             case ATOM:
                 return "atom";
             default:
-                assert_not_reached();
+                assert_not_reached ();
         }
     }
 }
