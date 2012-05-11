@@ -1,5 +1,5 @@
 <schemalist>
-	<schema path="/org/elementary/feedler/" id="apps.feedler" gettext-domain="feedler">
+	<schema path="/org/elementary/feedler/" id="org.elementary.feedler" gettext-domain="feedler">
 		<key name="width" type="i">
 			<default>800</default>
 			<summary>Window Width</summary>

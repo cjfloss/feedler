@@ -5,7 +5,6 @@
  * @see COPYING
  */
 
-[DBus (name = "org.elementary.Feedler")]
 public class Feedler.App : Granite.Application
 {
 	private Feedler.Window window = null;
