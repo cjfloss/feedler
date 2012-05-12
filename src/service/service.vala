@@ -8,11 +8,19 @@
 [DBus (name = "org.example.Feedler")]
 public class FeedlerService : Object
 {
+  	public signal void updated (int channel, int unreaded);
+    private static Soup.Session session;
     private bool autoupdate = true;  
     //private FeedlerClient client;    
     //private uint watch;    
     private GLib.MainLoop loop;
     private int counter;
+
+    static construct
+	{
+		session = new Soup.SessionAsync ();
+		//session.timeout = 5;
+	}
     
     public FeedlerService ()
     {
@@ -41,11 +49,26 @@ public class FeedlerService : Object
         }
     }
 
-    public int ping (string msg)
+    public void update (string uri)
     {
-        stdout.printf ("%s\n", msg);
-        return counter++;
+        stderr.printf ("Feedler.Service.update (%s)\n", uri);
+        Soup.Message msg = new Soup.Message ("GET", uri);
+        session.queue_message (msg, update_func);
     }
+
+    private void update_func (Soup.Session session, Soup.Message message)
+	{
+        stderr.printf ("Feedler.Service.update_func\n");
+		string rss = (string) message.response_body.data;
+
+		if (rss != null)
+		{
+            this.updated (this.counter, this.counter+10);
+            this.send_notify ("%i new feeds".printf (this.counter));
+            stderr.printf ("%s\n", rss);
+            //TODO Parse XML
+		}
+	}
     
     public void start ()
     {
@@ -66,6 +89,7 @@ public class FeedlerService : Object
         while (autoupdate)
         {
             //client.ping ("UPDATE");
+            //TODO: Interval update
             this.counter++;
 
             if (autoupdate)

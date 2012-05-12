@@ -5,15 +5,21 @@
  * @see COPYING
  */
 
+/**
+ * Update callback return:
+ * 0> - error,
+ * 0  - no new feed,
+ * 0< - number of new feeds.
+ */
 [DBus (name = "org.example.Feedler")]
 interface FeedlerClient : Object
 {
-    public abstract int ping (string msg) throws IOError;
+    public abstract void update (string uri) throws IOError;
     public abstract void stop () throws IOError;
+  	public signal void updated (int channel, int unreaded);
 }
 
 interface Backend : Object
 {
-    public abstract int ping (string msg) throws IOError;
-    public abstract void stop () throws IOError;
+    //TODO: Interface for backends
 }
