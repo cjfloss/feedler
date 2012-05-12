@@ -18,8 +18,3 @@ interface FeedlerClient : Object
     public abstract void stop () throws IOError;
   	public signal void updated (int channel, int unreaded);
 }
-
-interface Backend : Object
-{
-    //TODO: Interface for backends
-}

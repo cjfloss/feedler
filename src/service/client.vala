@@ -18,24 +18,13 @@ void main ()
         demo = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
                                                     "/org/example/feedler");
 
-        /* Connecting to signal pong! */
-        /*demo.pong.connect((c, m) => {
-            stdout.printf ("Got pong %d for msg '%s'\n", c, m);
-            loop.quit ();
-        });*/
         demo.updated.connect ((channel, unreaded) =>
         {
             stdout.printf ("Channel: %i with %i unreaded items\n", channel, unreaded);
         });
         demo.update ("http://elementaryos.org/journal/rss.xml");        
         demo.update ("http://elementaryluna.blogspot.com/feeds/posts/default");
-/*
-        pong = demo.ping_with_sender ("Hello from Vala with sender");
-        stdout.printf ("%d\n", pong);
 
-        pong = demo.ping_with_signal ("Hello from Vala with signal");
-        stdout.printf ("%d\n", pong);
-*/
         GLib.Timeout.add_seconds (10, () =>
         {
             demo.stop();

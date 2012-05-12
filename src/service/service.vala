@@ -10,10 +10,9 @@ public class FeedlerService : Object
 {
   	public signal void updated (int channel, int unreaded);
     private static Soup.Session session;
-    private bool autoupdate = true;  
-    //private FeedlerClient client;    
-    //private uint watch;    
+    private Backend backend;
     private GLib.MainLoop loop;
+    private bool autoupdate;
     private int counter;
 
     static construct
@@ -21,32 +20,30 @@ public class FeedlerService : Object
 		session = new Soup.SessionAsync ();
 		//session.timeout = 5;
 	}
+
+    public FeedlerService.with_backend (BACKENDS back)
+    {
+        stderr.printf ("Feedler.Service.construct (%s)\n", back.to_string ());
+        Notify.init ("org.example.Feedler");
+        Bus.own_name (BusType.SESSION, "org.example.Feedler",
+                      BusNameOwnerFlags.NONE, on_bus_aquired,
+                      () => {}, () => stderr.printf ("Cannot aquire name.\n"));
+        this.autoupdate = true;
+        this.counter = 0;
+        switch (back)
+        {
+            case BACKENDS.XML:
+                this.backend = new BackendXml ();
+                break;
+            default:
+                this.backend = new BackendXml ();
+                break;
+        }
+    }
     
     public FeedlerService ()
     {
-        try
-        {
-            Bus.own_name (BusType.SESSION, "org.example.Feedler",
-                          BusNameOwnerFlags.NONE, on_bus_aquired,
-                          () => {}, () => stderr.printf ("Cannot aquire name.\n"));
-/*
-            watch = Bus.watch_name (BusType.SESSION, "org.example.Feedler",
-                                    BusNameWatcherFlags.AUTO_START, () => {},
-                                    on_name_vanished);
-            
-            client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
-                                                          "/org/example/feedler");
-*/
-            autoupdate = true;
-            counter = 0;
-            Notify.init ("org.example.Feedler");
-            this.send_notify ("There are new feeds to read!");
-        }
-        catch (GLib.IOError e)
-        {
-            stderr.printf ("%s\n", e.message);
-            autoupdate = false;
-        }
+        this.with_backend (BACKENDS.XML);
     }
 
     public void update (string uri)
@@ -59,23 +56,37 @@ public class FeedlerService : Object
     private void update_func (Soup.Session session, Soup.Message message)
 	{
         stderr.printf ("Feedler.Service.update_func\n");
-		string rss = (string) message.response_body.data;
+        string xml = (string)message.response_body.flatten ().data;
+        GLib.List<string?> items = null;
 
-		if (rss != null)
+		if (xml != null && this.backend.parse (xml, out items))
 		{
             this.updated (this.counter, this.counter+10);
             this.send_notify ("%i new feeds".printf (this.counter));
-            stderr.printf ("%s\n", rss);
-            //TODO Parse XML
+            stderr.printf ("%s\n", xml);
 		}
 	}
     
     public void start ()
     {
+        stderr.printf ("Feedler.Service.start ()\n");
         loop = new GLib.MainLoop ();
         try
         {
-            Thread.create<void*> (() => { this.run (); return null;}, false);
+            ThreadFunc<void*> thread = () =>
+            { 
+                while (autoupdate)
+                {
+                    //TODO: Interval update
+                    this.counter++;
+
+                    if (autoupdate)
+                        Thread.usleep(1000000);
+                }
+                loop.quit ();
+                return null;
+            };
+            Thread.create<void*> (thread, false);
         }
         catch (GLib.ThreadError e)
         {
@@ -88,7 +99,6 @@ public class FeedlerService : Object
     {
         while (autoupdate)
         {
-            //client.ping ("UPDATE");
             //TODO: Interval update
             this.counter++;
 
@@ -115,13 +125,7 @@ public class FeedlerService : Object
             stderr.printf ("Cannot register service.\n");
         }
     }
-/*    
-    void on_name_vanished (DBusConnection conn, string name)
-    {
-        stdout.printf ("%s vanished, closing down.\n", name);
-        autoupdate = false;
-    }
-*/
+
     private void send_notify (string msg)
     {
         try
