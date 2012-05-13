@@ -8,45 +8,45 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-10 23:28+0200\n"
-"PO-Revision-Date: 2011-12-30 08:55+0000\n"
-"Last-Translator: Nikita Putko <Unknown>\n"
+"PO-Revision-Date: 2012-05-12 13:05+0000\n"
+"Last-Translator: Kirill Ivaha <kirill.ivaha@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
-"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-11 05:29+0000\n"
+"X-Launchpad-Export-Date: 2012-05-13 04:54+0000\n"
 "X-Generator: Launchpad (build 15225)\n"
+"Language: ru\n"
 
 #: ../src/feedler-create-subscription.vala:27
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 #: ../src/feedler-create-subscription.vala:31
 #: ../src/feedler-edit-subscription.vala:34
 msgid "Cancel"
-msgstr ""
+msgstr "Отменить"
 
 #: ../src/feedler-create-subscription.vala:41
 #: ../src/feedler-edit-subscription.vala:44
 #, c-format
 msgid "Folder"
-msgstr ""
+msgstr "Папка"
 
 #: ../src/feedler-create-subscription.vala:44
 #: ../src/feedler-edit-subscription.vala:51
 #, c-format
 msgid "URI Address"
-msgstr ""
+msgstr "URI Адрес"
 
 #: ../src/feedler-edit-subscription.vala:30
 msgid "Save"
-msgstr ""
+msgstr "Сохранить"
 
 #: ../src/feedler-edit-subscription.vala:47
 #, c-format
 msgid "Name"
-msgstr ""
+msgstr "Имя"
 
 #: ../src/feedler-statusbar.vala:46
 #, c-format
@@ -55,72 +55,72 @@ msgstr ""
 
 #: ../src/feedler-statusbar.vala:51
 msgid "Add new subscription URL"
-msgstr ""
+msgstr "Добавить новый URL подписки"
 
 #: ../src/feedler-statusbar.vala:54
 msgid "Remove selected subscription"
-msgstr ""
+msgstr "Удалить выбранные подписки"
 
 #: ../src/feedler-statusbar.vala:57
 msgid "Edit selected subscription"
-msgstr ""
+msgstr "Изменить выбранные подписки"
 
 #: ../src/feedler-statusbar.vala:60
 msgid "Mark selected subscription as readed"
-msgstr ""
+msgstr "Отметить выбранные подписки как прочитанные"
 
 #: ../src/feedler-statusbar.vala:82
 msgid "unreaded feeds"
-msgstr ""
+msgstr "Непрочитанные рассылки"
 
 #: ../src/feedler-statusbar.vala:82
 msgid "unreaded feed"
-msgstr ""
+msgstr "Непрочитанные рассылки"
 
 #: ../src/feedler-toolbar.vala:54
 msgid "Type to Search..."
-msgstr ""
+msgstr "Введите для поиска ..."
 
 #: ../src/feedler-toolbar.vala:59
 msgid "Sidebar Visible"
-msgstr ""
+msgstr "Боковая панель видима"
 
 #: ../src/feedler-toolbar.vala:60
 msgid "Fullscreen"
-msgstr ""
+msgstr "На весь экран"
 
 #: ../src/feedler-toolbar.vala:61
 msgid "Import"
-msgstr ""
+msgstr "Импорт"
 
 #: ../src/feedler-toolbar.vala:62
 msgid "Export"
-msgstr ""
+msgstr "Экспорт"
 
 #: ../src/feedler-toolbar.vala:63
 msgid "Preferences"
-msgstr ""
+msgstr "Настройки"
 
 #: ../src/feedler-toolbar.vala:64
 msgid "About"
-msgstr ""
+msgstr "О программе"
 
 #: ../src/feedler-toolbar.vala:98
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 #: ../src/feedler-toolbar.vala:100
 msgid "Forward"
-msgstr ""
+msgstr "Вперед"
 
 #: ../src/feedler-toolbar.vala:102
 msgid "Next"
-msgstr ""
+msgstr "Следующий"
 
 #: ../src/feedler-toolbar.vala:105
 msgid "Refresh"
-msgstr ""
+msgstr "Обновить"
 
 #: ../src/feedler-toolbar.vala:121
 msgid "Menu"
-msgstr ""
+msgstr "Меню"

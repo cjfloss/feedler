@@ -8,30 +8,30 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-10 23:28+0200\n"
-"PO-Revision-Date: 2012-03-31 17:29+0000\n"
-"Last-Translator: Alfredo Hernández <Unknown>\n"
+"PO-Revision-Date: 2012-05-12 11:10+0000\n"
+"Last-Translator: Arniroig <Unknown>\n"
 "Language-Team: Catalan <ca@li.org>\n"
-"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-11 05:29+0000\n"
+"X-Launchpad-Export-Date: 2012-05-13 04:53+0000\n"
 "X-Generator: Launchpad (build 15225)\n"
+"Language: ca\n"
 
 #: ../src/feedler-create-subscription.vala:27
 msgid "Add"
-msgstr ""
+msgstr "Afegeix"
 
 #: ../src/feedler-create-subscription.vala:31
 #: ../src/feedler-edit-subscription.vala:34
 msgid "Cancel"
-msgstr ""
+msgstr "Canceŀla"
 
 #: ../src/feedler-create-subscription.vala:41
 #: ../src/feedler-edit-subscription.vala:44
 #, c-format
 msgid "Folder"
-msgstr ""
+msgstr "Carpeta"
 
 #: ../src/feedler-create-subscription.vala:44
 #: ../src/feedler-edit-subscription.vala:51
@@ -41,12 +41,12 @@ msgstr ""
 
 #: ../src/feedler-edit-subscription.vala:30
 msgid "Save"
-msgstr ""
+msgstr "Desa"
 
 #: ../src/feedler-edit-subscription.vala:47
 #, c-format
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: ../src/feedler-statusbar.vala:46
 #, c-format
@@ -55,72 +55,72 @@ msgstr ""
 
 #: ../src/feedler-statusbar.vala:51
 msgid "Add new subscription URL"
-msgstr ""
+msgstr "Afegeix una adreça de subscripció nova"
 
 #: ../src/feedler-statusbar.vala:54
 msgid "Remove selected subscription"
-msgstr ""
+msgstr "Esborra la subscripció seleccionada"
 
 #: ../src/feedler-statusbar.vala:57
 msgid "Edit selected subscription"
-msgstr ""
+msgstr "Edita la subscripció seleccionada"
 
 #: ../src/feedler-statusbar.vala:60
 msgid "Mark selected subscription as readed"
-msgstr ""
+msgstr "Marca la subscripció seleccionada com a llegida"
 
 #: ../src/feedler-statusbar.vala:82
 msgid "unreaded feeds"
-msgstr ""
+msgstr "feeds sense llegir"
 
 #: ../src/feedler-statusbar.vala:82
 msgid "unreaded feed"
-msgstr ""
+msgstr "feed sense llegir"
 
 #: ../src/feedler-toolbar.vala:54
 msgid "Type to Search..."
-msgstr ""
+msgstr "Teclegeu per cercar..."
 
 #: ../src/feedler-toolbar.vala:59
 msgid "Sidebar Visible"
-msgstr ""
+msgstr "Barra lateral visible"
 
 #: ../src/feedler-toolbar.vala:60
 msgid "Fullscreen"
-msgstr ""
+msgstr "Pantalla Completa"
 
 #: ../src/feedler-toolbar.vala:61
 msgid "Import"
-msgstr ""
+msgstr "Importa"
 
 #: ../src/feedler-toolbar.vala:62
 msgid "Export"
-msgstr ""
+msgstr "Exportar"
 
 #: ../src/feedler-toolbar.vala:63
 msgid "Preferences"
-msgstr ""
+msgstr "Configuració"
 
 #: ../src/feedler-toolbar.vala:64
 msgid "About"
-msgstr ""
+msgstr "Quant a"
 
 #: ../src/feedler-toolbar.vala:98
 msgid "Back"
-msgstr ""
+msgstr "Tornar"
 
 #: ../src/feedler-toolbar.vala:100
 msgid "Forward"
-msgstr ""
+msgstr "Avança"
 
 #: ../src/feedler-toolbar.vala:102
 msgid "Next"
-msgstr ""
+msgstr "Següent"
 
 #: ../src/feedler-toolbar.vala:105
 msgid "Refresh"
-msgstr ""
+msgstr "Actualitza"
 
 #: ../src/feedler-toolbar.vala:121
 msgid "Menu"
-msgstr ""
+msgstr "Menú"
