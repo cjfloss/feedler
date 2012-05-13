@@ -54,12 +54,20 @@ public class FeedlerService : Object
         string xml = (string)message.response_body.flatten ().data;
         GLib.List<Item?> items = new GLib.List<Item?> ();
 
-		if (xml != null && this.backend.parse (xml, ref items))
+		if (xml != null && this.backend.parse_items (xml, ref items))
 		{
             this.updated (this.counter, (int)items.length ());
             this.send_notify ("%u new feeds".printf (items.length ()));
             foreach (Item? i in items)
                 stderr.printf ("%s by %s on %i\n", i.title, i.author, i.time);
+		}
+
+        Channel ch = Channel ();
+        if (xml != null && this.backend.parse_channel (xml, ref ch))
+		{
+            //this.updated (this.counter, (int)items.length ());
+            //this.send_notify ("%u new feeds".printf (items.length ()));
+            stderr.printf ("\n%s from %s\n", ch.title, ch.link);
 		}
 	}
     

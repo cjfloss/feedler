@@ -37,6 +37,12 @@ public enum BACKENDS
     }
 }
 
+public struct Channel
+{
+	public string title;
+	public string link;
+}
+
 public struct Item
 {
 	public string title;
@@ -48,7 +54,8 @@ public struct Item
 
 public abstract class Backend : GLib.Object
 {
-    public abstract bool parse (string data, ref GLib.List<Item?> items);
+    public abstract bool parse_channel (string data, ref Channel channel);
+    public abstract bool parse_items (string data, ref GLib.List<Item?> items);
     public abstract BACKENDS to_type ();
     public abstract string to_string ();
 }

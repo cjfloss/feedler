@@ -7,34 +7,44 @@
 
 public class BackendXml : Backend
 {
+    private Channel* channel;
     private GLib.List<Item?>** items;
 
-    public override bool parse (string data, ref GLib.List<Item?> items)
+    public override bool parse_channel (string data, ref Channel channel)
     {
-        //items = new GLib.List<Item?> ();
-        this.items = &items;
         unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
-        if (doc == null)
-        {
-            stderr.printf ("Failed to read the source data.\n");
+        if (!is_valid (doc))
             return false;
-        }
-
-        Xml.Node* root = doc.get_root_element ();
-		switch (root->name)
+        
+        this.channel = &channel;
+        unowned Xml.Node root = doc.get_root_element ();
+        switch (root.name)
 		{
-			case "rss":
+            case "rss":
+                rss_channel (root);  break;
+            case "feed":
+                atom_channel (root); break;
+		}
+        this.channel = null;
+        return true;
+    }
+
+    public override bool parse_items (string data, ref GLib.List<Item?> items)
+    {
+        unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
+        if (!is_valid (doc))
+            return false;
+        
+        this.items = &items;
+        unowned Xml.Node root = doc.get_root_element ();
+        switch (root.name)
+		{
+            case "rss":
                 rss (root);  break;
-			case "feed":
+            case "feed":
                 atom (root); break;
-			default:
-                stderr.printf ("Undefined type of feeds.\n");
-                //delete items;
-                this.items = null;
-                return false;
 		}
         this.items = null;
-        //delete items;
         return true;
     }
 
@@ -46,6 +56,23 @@ public class BackendXml : Backend
     public override string to_string ()
     {
         return "Default XML-based backend.";
+    }
+
+    private bool is_valid (Xml.Doc doc)
+    {
+        if (doc == null)
+        {
+            stderr.printf ("Failed to read the source data.\n");
+            return false;
+        }
+
+        unowned Xml.Node root = doc.get_root_element ();
+        if (root.name != "rss" && root.name != "feed")
+        {
+            stderr.printf ("Undefined type of feeds.\n");
+            return false;
+        }
+        return true;
     }
     
     private void rss (Xml.Node* channel)
@@ -61,6 +88,23 @@ public class BackendXml : Backend
 				rss (iter);
         }
     }
+
+    private void rss_channel (Xml.Node* ch)
+	{
+		//this.channel.type = Type.RSS;
+		for (Xml.Node* iter = ch->children; iter != null; iter = iter->next)
+		{
+            if (iter->type != Xml.ElementType.ELEMENT_NODE)
+                continue;
+
+            if (iter->name == "title")
+				this.channel->title = iter->get_content ();
+			else if (iter->name == "link")
+				this.channel->link = iter->get_content ();
+            else
+                rss_channel (iter);
+        }
+	}
 
     private void rss_item (Xml.Node* iitem)
     {
@@ -100,6 +144,23 @@ public class BackendXml : Backend
 				atom_item (iter);
             else
 				atom (iter);
+        }
+	}
+
+    private void atom_channel (Xml.Node* channel)
+	{
+		//this.channel.type = Type.ATOM;
+		for (Xml.Node* iter = channel->children; iter != null; iter = iter->next)
+		{
+            if (iter->type != Xml.ElementType.ELEMENT_NODE)
+                continue;
+                
+            if (iter->name == "title")
+				this.channel->title = iter->get_content ();
+			else if (iter->name == "link" && iter->get_prop ("rel") == "alternate")
+				this.channel->link = iter->get_prop ("href");
+            else
+                atom_channel (iter);	
         }
 	}
 
