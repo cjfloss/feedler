@@ -13,6 +13,7 @@ public class FeedlerService : Object
     private Backend backend;
     private GLib.MainLoop loop;
     private bool autoupdate;
+    private int updatetime;
     private int counter;
 
     static construct
@@ -29,16 +30,10 @@ public class FeedlerService : Object
                       BusNameOwnerFlags.NONE, on_bus_aquired,
                       () => {}, () => stderr.printf ("Cannot aquire name.\n"));
         this.autoupdate = true;
+        this.updatetime = 2000000;
         this.counter = 0;
-        switch (back)
-        {
-            case BACKENDS.XML:
-                this.backend = new BackendXml ();
-                break;
-            default:
-                this.backend = new BackendXml ();
-                break;
-        }
+        this.backend = GLib.Object.new (back.to_type ()) as Backend;
+
     }
     
     public FeedlerService ()
@@ -81,7 +76,7 @@ public class FeedlerService : Object
                     this.counter++;
 
                     if (autoupdate)
-                        Thread.usleep(1000000);
+                        Thread.usleep (updatetime);
                 }
                 loop.quit ();
                 return null;

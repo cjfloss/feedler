@@ -13,6 +13,11 @@ public class BackendXml : Backend
         return true;
     }
 
+    public override BACKENDS to_type ()
+    {
+        return BACKENDS.XML;
+    }
+
     public override string to_string ()
     {
         return "Default XML-based backend.";
