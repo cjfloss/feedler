@@ -52,13 +52,14 @@ public class FeedlerService : Object
 	{
         stderr.printf ("Feedler.Service.update_func\n");
         string xml = (string)message.response_body.flatten ().data;
-        GLib.List<string?> items = null;
+        GLib.List<Item?> items = new GLib.List<Item?> ();
 
-		if (xml != null && this.backend.parse (xml, out items))
+		if (xml != null && this.backend.parse (xml, ref items))
 		{
-            this.updated (this.counter, this.counter+10);
-            this.send_notify ("%i new feeds".printf (this.counter));
-            stderr.printf ("%s\n", xml);
+            this.updated (this.counter, (int)items.length ());
+            this.send_notify ("%u new feeds".printf (items.length ()));
+            foreach (Item? i in items)
+                stderr.printf ("%s by %s on %i\n", i.title, i.author, i.time);
 		}
 	}
     

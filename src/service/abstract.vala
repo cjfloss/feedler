@@ -37,15 +37,18 @@ public enum BACKENDS
     }
 }
 
+public struct Item
+{
+	public string title;
+	public string source;
+	public string author;
+	public string description;
+	public int time;
+}
+
 public abstract class Backend : GLib.Object
 {
-    public abstract bool parse (string data, out GLib.List<string?> items);
+    public abstract bool parse (string data, ref GLib.List<Item?> items);
     public abstract BACKENDS to_type ();
     public abstract string to_string ();
-    
-    protected Backend ()
-    {
-        GLib.Type t = this.get_type ();
-        stderr.printf (t.name ());
-    }
 }
