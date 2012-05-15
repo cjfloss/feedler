@@ -5,21 +5,21 @@
  * @see COPYING
  */
 
-public enum State
+public enum Model.State
 {
 	READED,
 	UNREADED,
 	BOOKMARKED
 }
 
-public struct Folder
+public struct Model.Folder
 {
 	public int id;
 	public string name;
 	public int parent;
 }
 
-public struct Channel
+public struct Model.Channel
 {
     public int id;
 	public string title;
@@ -28,7 +28,7 @@ public struct Channel
     public int folder;
 }
 
-public struct Item
+public struct Model.Item
 {
     public int id;
 	public string title;
@@ -36,4 +36,6 @@ public struct Item
 	public string author;
 	public string description;
 	public int time;
+    public Model.State state;
+    public int channel;
 }

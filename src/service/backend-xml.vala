@@ -7,10 +7,10 @@
 
 public class BackendXml : Backend
 {
-    private Channel* channel;
-    private GLib.List<Item?>** items;
+    private Model.Channel* channel;
+    private GLib.List<Model.Item?>** items;
 
-    public override bool parse_folder (string data)
+    public override bool parse_folders (string data)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
         if (!is_valid (doc))
@@ -19,21 +19,21 @@ public class BackendXml : Backend
         unowned Xml.Node root = doc.get_root_element ();
         if (root.name == "opml")
         {
-			Xml.Node* head_body = root.children;
+			unowned Xml.Node head_body = root.children;
 			while (head_body != null)
 			{
-				if (head_body->name == "body")
+				if (head_body.name == "body")
 				{
 					opml (head_body);
 					break;
 				}
-				head_body = head_body->next;
+				head_body = head_body.next;
 			}
 		}
         return true;
     }
 
-    public override bool parse_channel (string data, ref Channel channel)
+    public override bool parse_channel (string data, ref Model.Channel channel)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
         if (!is_valid (doc))
@@ -52,7 +52,7 @@ public class BackendXml : Backend
         return true;
     }
 
-    public override bool parse_items (string data, ref GLib.List<Item?> items)
+    public override bool parse_items (string data, ref GLib.List<Model.Item?> items)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
         if (!is_valid (doc))
@@ -103,55 +103,53 @@ public class BackendXml : Backend
         return true;
     }
 
-    private void opml (Xml.Node* node)
+    private void opml (Xml.Node node)
 	{
-		Xml.Node* outline = node->children;
+		unowned Xml.Node outline = node.children;
 		string type;
 		
 		while (outline != null)
 		{
-			if (outline->name == "outline")
+			if (outline.name == "outline")
 			{
-				type = outline->get_prop ("type");
+				type = outline.get_prop ("type");
 				if (type == "rss" || type == "atom")
-					this.opml_channel (outline);
+					opml_channel (outline);
 				else if (type == "folder" || type == null)
-				{
-					Folder fo = Folder ();
-					//fo.id = fo_count++;
-					fo.name = outline->get_prop ("title");
-					fo.parent = -1;
-					
-					//if (outline->parent->name != "body")
-						//fo.parent = find_folder_id (outline->parent->get_prop ("title"));
-
-					//this.folders.append (fo);
-					opml (outline);
-				}
+				    opml_folder (outline);
 				else
 				{
 					stderr.printf ("Following type is currently not supported: %s.\n", type);
 					continue;
 				}
 			}
-			outline = outline->next;
+			outline = outline.next;
 		}		
 	}
 
-    private void opml_channel (Xml.Node* node)
+    private void opml_folder (Xml.Node node)
 	{
-		Channel outline = Channel ();
-		//outline.id = ch_count++;
-		outline.title = node->get_prop ("title");
-		outline.source = node->get_prop ("xmlUrl");
-		outline.link = node->get_prop ("htmlUrl");
-		//outline.type = type;
-		//if (node->parent->name != "body")
-			//outline.folder = find_folder_id (node->parent->get_prop ("title"));
-		//else
-			//outline.folder = -1;
-		//outline.favicon ();
-		//this.channels.append (outline);
+		Model.Folder f = Model.Folder ();
+        f.name = node.get_prop ("title");
+        if (node.parent->name != "body")
+    		f.parent = 0; //TODO id from select	node->parent->get_prop ("title")
+		else
+			f.parent = 0;
+		f.id = 0; //TODO id from insert
+		opml (node);
+	}
+
+    private void opml_channel (Xml.Node node)
+	{
+		Model.Channel c = Model.Channel ();
+		c.title = node.get_prop ("title");
+		c.source = node.get_prop ("xmlUrl");
+		c.link = node.get_prop ("htmlUrl");
+        if (node.parent->name != "body")
+			c.folder = 0; //TODO id from select	node->parent->get_prop ("title")
+		else
+			c.folder = -1;
+		c.id = 0; //TODO id from insert
 	}
     
     private void rss (Xml.Node* channel)
@@ -187,7 +185,7 @@ public class BackendXml : Backend
 
     private void rss_item (Xml.Node* iitem)
     {
-		Item item = Item ();
+		Model.Item item = Model.Item ();
 		for (Xml.Node* iter = iitem->children; iter != null; iter = iter->next)
 		{
             if (iter->type != Xml.ElementType.ELEMENT_NODE)
@@ -204,7 +202,7 @@ public class BackendXml : Backend
 			else if (iter->name == "pubDate")
 				item.time = (int)string_to_time_t (iter->get_content ());
         }
-        //item.state = State.UNREADED;
+        item.state = Model.State.UNREADED;
         if (item.author == null)
 			item.author = "Anonymous";
 		if (item.time == 0)
@@ -245,7 +243,7 @@ public class BackendXml : Backend
 
     private void atom_item (Xml.Node* iitem)
     {
-		Item item = Item ();
+		Model.Item item = Model.Item ();
 		for (Xml.Node* iter = iitem->children; iter != null; iter = iter->next)
 		{
             if (iter->type != Xml.ElementType.ELEMENT_NODE)

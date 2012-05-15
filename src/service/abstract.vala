@@ -39,9 +39,9 @@ public enum BACKENDS
 
 public abstract class Backend : GLib.Object
 {
-    public abstract bool parse_folder (string data);
-    public abstract bool parse_channel (string data, ref Channel channel);
-    public abstract bool parse_items (string data, ref GLib.List<Item?> items);
+    public abstract bool parse_folders (string data);
+    public abstract bool parse_channel (string data, ref Model.Channel channel);
+    public abstract bool parse_items (string data, ref GLib.List<Model.Item?> items);
     public abstract BACKENDS to_type ();
     public abstract string to_string ();
     
