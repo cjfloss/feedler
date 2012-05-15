@@ -8,13 +8,15 @@
 [DBus (name = "org.example.Feedler")]
 public class FeedlerService : Object
 {
+    public bool autoupdate;
+    public int updatetime;
   	public signal void updated (int channel, int unreaded);
+
     private static Soup.Session session;
     private Backend backend;
     private GLib.MainLoop loop;
-    private bool autoupdate;
-    private int updatetime;
-    private int counter;
+    private int connection;
+    private int unreaded;
 
     static construct
 	{
@@ -31,7 +33,7 @@ public class FeedlerService : Object
                       () => {}, () => stderr.printf ("Cannot aquire name.\n"));
         this.autoupdate = true;
         this.updatetime = 2000000;
-        this.counter = 0;
+        this.connection = 0;
         this.backend = GLib.Object.new (back.to_type ()) as Backend;
 
     }
@@ -44,6 +46,7 @@ public class FeedlerService : Object
     public void update (string uri)
     {
         stderr.printf ("Feedler.Service.update (%s)\n", uri);
+        ++this.connection;
         Soup.Message msg = new Soup.Message ("GET", uri);
         session.queue_message (msg, update_func);
     }
@@ -56,8 +59,14 @@ public class FeedlerService : Object
 
 		if (xml != null && this.backend.parse_items (xml, ref items))
 		{
-            this.updated (this.counter, (int)items.length ());
-            this.send_notify ("%u new feeds".printf (items.length ()));
+            this.unreaded += (int)items.length ();
+            --this.connection;
+            this.updated (this.connection, (int)items.length ()); //TODO select_channel
+            if (this.connection == 0)
+            {
+                this.send_notify ("%i new feeds".printf (this.unreaded)); //TODO gettext
+                this.unreaded = 0;
+            }
             foreach (Model.Item? i in items)
                 stderr.printf ("%s by %s on %i\n", i.title, i.author, i.time);
 		}
@@ -67,6 +76,7 @@ public class FeedlerService : Object
 		{
             //this.updated (this.counter, (int)items.length ());
             //this.send_notify ("%u new feeds".printf (items.length ()));
+            //--this.connection;
             stderr.printf ("\n%s from %s\n", ch.title, ch.link);
 		}
 	}
@@ -82,7 +92,7 @@ public class FeedlerService : Object
                 while (autoupdate)
                 {
                     //TODO: Interval update
-                    this.counter++;
+                    //this.counter++;
 
                     if (autoupdate)
                         Thread.usleep (updatetime);
@@ -104,7 +114,7 @@ public class FeedlerService : Object
         while (autoupdate)
         {
             //TODO: Interval update
-            this.counter++;
+            //this.counter++;
 
             if (autoupdate)
                 Thread.usleep(1000000);

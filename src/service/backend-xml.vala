@@ -107,7 +107,7 @@ public class BackendXml : Backend
 	{
 		unowned Xml.Node outline = node.children;
 		string type;
-		
+		db.begin ();
 		while (outline != null)
 		{
 			if (outline.name == "outline")
@@ -124,7 +124,8 @@ public class BackendXml : Backend
 				}
 			}
 			outline = outline.next;
-		}		
+		}
+        db.commit ();		
 	}
 
     private void opml_folder (Xml.Node node)
@@ -132,10 +133,10 @@ public class BackendXml : Backend
 		Model.Folder f = Model.Folder ();
         f.name = node.get_prop ("title");
         if (node.parent->name != "body")
-    		f.parent = 0; //TODO id from select	node->parent->get_prop ("title")
+    		f.parent = db.select_parent (node.parent->get_prop ("title"));
 		else
 			f.parent = 0;
-		f.id = 0; //TODO id from insert
+		f.id = db.insert_folder (f);
 		opml (node);
 	}
 
@@ -146,10 +147,10 @@ public class BackendXml : Backend
 		c.source = node.get_prop ("xmlUrl");
 		c.link = node.get_prop ("htmlUrl");
         if (node.parent->name != "body")
-			c.folder = 0; //TODO id from select	node->parent->get_prop ("title")
+			c.folder = db.select_parent (node.parent->get_prop ("title"));
 		else
-			c.folder = -1;
-		c.id = 0; //TODO id from insert
+			c.folder = 0;
+		c.id = db.insert_channel (c);
 	}
     
     private void rss (Xml.Node* channel)
@@ -168,7 +169,6 @@ public class BackendXml : Backend
 
     private void rss_channel (Xml.Node* ch)
 	{
-		//this.channel.type = Type.RSS;
 		for (Xml.Node* iter = ch->children; iter != null; iter = iter->next)
 		{
             if (iter->type != Xml.ElementType.ELEMENT_NODE)
@@ -204,7 +204,7 @@ public class BackendXml : Backend
         }
         item.state = Model.State.UNREADED;
         if (item.author == null)
-			item.author = "Anonymous";
+			item.author = "Anonymous"; //TODO gettext
 		if (item.time == 0)
 			item.time = (int)time_t ();
         items[0]->append (item);
@@ -226,7 +226,6 @@ public class BackendXml : Backend
 
     private void atom_channel (Xml.Node* channel)
 	{
-		//this.channel.type = Type.ATOM;
 		for (Xml.Node* iter = channel->children; iter != null; iter = iter->next)
 		{
             if (iter->type != Xml.ElementType.ELEMENT_NODE)
@@ -260,7 +259,7 @@ public class BackendXml : Backend
 			else if (iter->name == "updated" || iter->name == "published")
 				item.time = (int)string_to_time_t (iter->get_content ());
         }
-        //item.state = State.UNREADED;
+        item.state = Model.State.UNREADED;
 		if (item.time == 0)
 			item.time = (int)time_t ();
         items[0]->append (item);

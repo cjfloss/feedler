@@ -32,6 +32,20 @@ public class Database : GLib.Object
 		}
     }
 
+    public bool begin ()
+    {
+        try
+		{
+			this.transaction = db.begin_transaction ();
+            return true;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot begin transaction.\n");
+			return false;
+		}
+    }
+
     public bool commit ()
     {
         try
@@ -46,42 +60,77 @@ public class Database : GLib.Object
 		}
     }
 
-    public void insert_folder (Model.Folder folder, bool autocommit = false)
+    public int select_parent (string name)
+	{
+        try
+        {
+			query = new SQLHeavy.Query (db, "SELECT `id` FROM `folders` WHERE `name`=:name;");
+            query.set_string (":name", name);
+			for (SQLHeavy.QueryResult results = query.execute (); !results.finished; results.next ())
+                return results.fetch_int (1);
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot select parent folder for %s.\n", name);
+		}
+        return 0;
+	}
+
+    public int select_channel (string uri)
+	{
+        try
+        {
+			query = new SQLHeavy.Query (db, "SELECT `id` FROM `channels` WHERE `source`=:uri;");
+            query.set_string (":uri", uri);
+			for (SQLHeavy.QueryResult results = query.execute (); !results.finished; results.next ())
+                return results.fetch_int (1);
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot select channel for %s.\n", uri);
+		}
+        return 0;
+	}
+
+    public int insert_folder (Model.Folder folder, bool autocommit = false)
 	{
 		try
         {
-			this.transaction = db.begin_transaction ();
+			//this.transaction = db.begin_transaction ();
 			query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
 			query.set_string (":name", folder.name);
 			query.set_int (":parent", folder.parent);
-			query.execute ();
+            int id = (int)query.execute_insert ();
             if (autocommit)
     			this.transaction.commit ();
+            return id;
 		}
 		catch (SQLHeavy.Error e)
 		{
 			stderr.printf ("Cannot insert folder %s.", folder.name);
+            return 0;
 		}
 	}
 
-    public void insert_channel (Model.Channel channel, bool autocommit = false)
+    public int insert_channel (Model.Channel channel, bool autocommit = false)
 	{
 		try
         {
-            this.transaction = db.begin_transaction ();
+            //this.transaction = db.begin_transaction ();
             query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `link`, `folder`) VALUES (:title, :source, :homepage, :folder);");
 			query.set_string (":title", channel.title);
 			query.set_string (":source", channel.source);
 			query.set_string (":link", channel.link);
 			query.set_int (":folder", channel.folder);
-			query.execute ();
-            //channel.id_db =  (int)query.execute_insert ();
+            int id = (int)query.execute_insert ();
             if (autocommit)
     			this.transaction.commit ();
+            return id;
 		}
 		catch (SQLHeavy.Error e)
 		{
 			stderr.printf ("Cannot insert channel %s.", channel.title);
+            return 0;
 		}
 	}
 
@@ -89,7 +138,7 @@ public class Database : GLib.Object
 	{
         try
         {
-			this.transaction = db.begin_transaction ();
+			//this.transaction = db.begin_transaction ();
 		    query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `time`, `state`, `channel`) VALUES (:title, :source, :description, :author, :time, :state, :channel);");
 			query.set_string (":title", item.title);
 			query.set_string (":source", item.source);

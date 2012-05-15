@@ -45,7 +45,7 @@ public abstract class Backend : GLib.Object
     public abstract BACKENDS to_type ();
     public abstract string to_string ();
     
-    private static Database db;
+    protected static Database db;
 
     static construct
     {
