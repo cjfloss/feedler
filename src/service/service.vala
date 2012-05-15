@@ -15,6 +15,7 @@ public class FeedlerService : Object
     private static Soup.Session session;
     private Backend backend;
     private GLib.MainLoop loop;
+    private unowned Thread<void*> thread;
     private int connection;
     private int unreaded;
 
@@ -32,7 +33,7 @@ public class FeedlerService : Object
                       BusNameOwnerFlags.NONE, on_bus_aquired,
                       () => {}, () => stderr.printf ("Cannot aquire name.\n"));
         this.autoupdate = true;
-        this.updatetime = 2000000;
+        this.updatetime = 15;
         this.connection = 0;
         this.backend = GLib.Object.new (back.to_type ()) as Backend;
 
@@ -51,9 +52,16 @@ public class FeedlerService : Object
         session.queue_message (msg, update_func);
     }
 
+    public void update_all ()
+    {
+        stderr.printf ("Feedler.Service.update_all ()\n");
+        foreach (var uri in this.backend.db.select_channels_uri ())
+            this.update (uri);
+    }
+
     private void update_func (Soup.Session session, Soup.Message message)
 	{
-        stderr.printf ("Feedler.Service.update_func\n");
+        stderr.printf ("Feedler.Service.update_func %s\n", message.uri.to_string (false));
         string xml = (string)message.response_body.flatten ().data;
         GLib.List<Model.Item?> items = new GLib.List<Model.Item?> ();
 
@@ -61,23 +69,16 @@ public class FeedlerService : Object
 		{
             this.unreaded += (int)items.length ();
             --this.connection;
-            this.updated (this.connection, (int)items.length ()); //TODO select_channel
+            this.updated (this.backend.db.select_channel (message.uri.to_string (false)), (int)items.length ());
             if (this.connection == 0)
             {
                 this.send_notify ("%i new feeds".printf (this.unreaded)); //TODO gettext
                 this.unreaded = 0;
             }
-            foreach (Model.Item? i in items)
-                stderr.printf ("%s by %s on %i\n", i.title, i.author, i.time);
-		}
-
-        Model.Channel ch = Model.Channel ();
-        if (xml != null && this.backend.parse_channel (xml, ref ch))
-		{
-            //this.updated (this.counter, (int)items.length ());
-            //this.send_notify ("%u new feeds".printf (items.length ()));
-            //--this.connection;
-            stderr.printf ("\n%s from %s\n", ch.title, ch.link);
+            this.backend.db.begin ();
+            foreach (Model.Item item in items)
+                this.backend.db.insert_item (item);
+            this.backend.db.commit ();
 		}
 	}
     
@@ -87,20 +88,12 @@ public class FeedlerService : Object
         loop = new GLib.MainLoop ();
         try
         {
-            ThreadFunc<void*> thread = () =>
+            ThreadFunc<void*> thread_func = () =>
             { 
-                while (autoupdate)
-                {
-                    //TODO: Interval update
-                    //this.counter++;
-
-                    if (autoupdate)
-                        Thread.usleep (updatetime);
-                }
-                loop.quit ();
+                this.run ();
                 return null;
             };
-            Thread.create<void*> (thread, false);
+            this.thread = Thread.create<void*> (thread_func, false);
         }
         catch (GLib.ThreadError e)
         {
@@ -111,13 +104,13 @@ public class FeedlerService : Object
     
     public void run ()
     {
+        Thread.usleep (10000000);
         while (autoupdate)
         {
-            //TODO: Interval update
-            //this.counter++;
+            this.update_all ();
 
             if (autoupdate)
-                Thread.usleep(1000000);
+                Thread.usleep (this.updatetime * 1000000);
         }
         loop.quit ();
     }
@@ -125,6 +118,7 @@ public class FeedlerService : Object
     public void stop ()
     {
         autoupdate = false;
+        //this.thread.exit (null);
         stderr.printf ("Feedler.Service.stop ()\n");
     }
 
@@ -149,7 +143,7 @@ public class FeedlerService : Object
         }
         catch (GLib.Error e)
         {
-            stderr.printf ("Cannot send notify: Feedler.Service.send_notify (%s)\n", msg);
+            stderr.printf ("Cannot send notify %s.\n", msg);
         }
     }
 }

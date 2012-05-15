@@ -24,6 +24,7 @@ void main ()
         });
         demo.update ("http://elementaryos.org/journal/rss.xml");        
         demo.update ("http://elementaryluna.blogspot.com/feeds/posts/default");
+        //demo.update_all ();
 
         GLib.Timeout.add_seconds (10, () =>
         {

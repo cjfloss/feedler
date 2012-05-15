@@ -15,7 +15,7 @@ public class Database : GLib.Object
 	construct
 	{
 		this.location = GLib.Environment.get_user_data_dir () + "/feedler/feedler.db";
-        this. open ();
+        this.open ();
 	}
 
     public bool open ()
@@ -67,7 +67,7 @@ public class Database : GLib.Object
 			query = new SQLHeavy.Query (db, "SELECT `id` FROM `folders` WHERE `name`=:name;");
             query.set_string (":name", name);
 			for (SQLHeavy.QueryResult results = query.execute (); !results.finished; results.next ())
-                return results.fetch_int (1);
+                return results.fetch_int (0);
 		}
 		catch (SQLHeavy.Error e)
 		{
@@ -83,13 +83,31 @@ public class Database : GLib.Object
 			query = new SQLHeavy.Query (db, "SELECT `id` FROM `channels` WHERE `source`=:uri;");
             query.set_string (":uri", uri);
 			for (SQLHeavy.QueryResult results = query.execute (); !results.finished; results.next ())
-                return results.fetch_int (1);
+                return results.fetch_int (0);
 		}
 		catch (SQLHeavy.Error e)
 		{
 			stderr.printf ("Cannot select channel for %s.\n", uri);
 		}
         return 0;
+	}
+
+    public string[]? select_channels_uri ()
+	{
+        try
+        {
+			query = new SQLHeavy.Query (db, "SELECT `source` FROM `channels`;");
+            SQLHeavy.QueryResult results = query.execute ();
+            string[] uri = new string[0];
+			for (; !results.finished; results.next ())
+                uri += results.fetch_string (0);
+            return uri;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot select channels uri.\n");
+		}
+        return null;
 	}
 
     public int insert_folder (Model.Folder folder, bool autocommit = false)
