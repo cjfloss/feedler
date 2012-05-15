@@ -11,7 +11,7 @@ void main ()
     var loop = new MainLoop();
 
     /* Important: keep demo variable out of try/catch scope not lose signals! */
-    FeedlerClient demo = null;
+    Feedler.Client demo = null;
 
     try
     {

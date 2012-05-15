@@ -11,20 +11,45 @@ msgstr ""
 "PO-Revision-Date: 2011-12-31 18:46+0000\n"
 "Last-Translator: abuyop <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
+"Language: ms\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-05-14 04:54+0000\n"
 "X-Generator: Launchpad (build 15238)\n"
-"Language: ms\n"
+
+#: ../src/feedler-statusbar.vala:46
+#, c-format
+msgid "%u %s"
+msgstr ""
+
+#: ../src/feedler-toolbar.vala:64
+msgid "About"
+msgstr ""
 
 #: ../src/feedler-create-subscription.vala:27
 msgid "Add"
 msgstr ""
 
+#: ../src/feedler-statusbar.vala:51
+msgid "Add new subscription URL"
+msgstr ""
+
+#: ../src/feedler-toolbar.vala:98
+msgid "Back"
+msgstr ""
+
 #: ../src/feedler-create-subscription.vala:31
 #: ../src/feedler-edit-subscription.vala:34
 msgid "Cancel"
+msgstr ""
+
+#: ../src/feedler-statusbar.vala:57
+msgid "Edit selected subscription"
+msgstr ""
+
+#: ../src/feedler-toolbar.vala:62
+msgid "Export"
 msgstr ""
 
 #: ../src/feedler-create-subscription.vala:41
@@ -33,56 +58,8 @@ msgstr ""
 msgid "Folder"
 msgstr ""
 
-#: ../src/feedler-create-subscription.vala:44
-#: ../src/feedler-edit-subscription.vala:51
-#, c-format
-msgid "URI Address"
-msgstr ""
-
-#: ../src/feedler-edit-subscription.vala:30
-msgid "Save"
-msgstr ""
-
-#: ../src/feedler-edit-subscription.vala:47
-#, c-format
-msgid "Name"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:46
-#, c-format
-msgid "%u %s"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:51
-msgid "Add new subscription URL"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:54
-msgid "Remove selected subscription"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:57
-msgid "Edit selected subscription"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:60
-msgid "Mark selected subscription as readed"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:82
-msgid "unreaded feeds"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:82
-msgid "unreaded feed"
-msgstr ""
-
-#: ../src/feedler-toolbar.vala:54
-msgid "Type to Search..."
-msgstr ""
-
-#: ../src/feedler-toolbar.vala:59
-msgid "Sidebar Visible"
+#: ../src/feedler-toolbar.vala:100
+msgid "Forward"
 msgstr ""
 
 #: ../src/feedler-toolbar.vala:60
@@ -93,34 +70,57 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:62
-msgid "Export"
+#: ../src/feedler-statusbar.vala:60
+msgid "Mark selected subscription as readed"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:63
-msgid "Preferences"
+#: ../src/feedler-toolbar.vala:121
+msgid "Menu"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:64
-msgid "About"
-msgstr ""
-
-#: ../src/feedler-toolbar.vala:98
-msgid "Back"
-msgstr ""
-
-#: ../src/feedler-toolbar.vala:100
-msgid "Forward"
+#: ../src/feedler-edit-subscription.vala:47
+#, c-format
+msgid "Name"
 msgstr ""
 
 #: ../src/feedler-toolbar.vala:102
 msgid "Next"
 msgstr ""
 
+#: ../src/feedler-toolbar.vala:63
+msgid "Preferences"
+msgstr ""
+
 #: ../src/feedler-toolbar.vala:105
 msgid "Refresh"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:121
-msgid "Menu"
+#: ../src/feedler-statusbar.vala:54
+msgid "Remove selected subscription"
+msgstr ""
+
+#: ../src/feedler-edit-subscription.vala:30
+msgid "Save"
+msgstr ""
+
+#: ../src/feedler-toolbar.vala:59
+msgid "Sidebar Visible"
+msgstr ""
+
+#: ../src/feedler-toolbar.vala:54
+msgid "Type to Search..."
+msgstr ""
+
+#: ../src/feedler-create-subscription.vala:44
+#: ../src/feedler-edit-subscription.vala:51
+#, c-format
+msgid "URI Address"
+msgstr ""
+
+#: ../src/feedler-statusbar.vala:82
+msgid "unreaded feed"
+msgstr ""
+
+#: ../src/feedler-statusbar.vala:82
+msgid "unreaded feeds"
 msgstr ""

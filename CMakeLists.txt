@@ -10,9 +10,9 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/vala)
 set (DATADIR "${CMAKE_INSTALL_PREFIX}/share")
 set (PKGDATADIR "${DATADIR}/feedler")
 set (GETTEXT_PACKAGE "feedler")
-set (RELEASE_NAME "Just weakling.")
-set (VERSION "0.0.1")
-set (VERSION_INFO "Alpha")
+set (RELEASE_NAME "Growing up.")
+set (VERSION "0.2")
+set (VERSION_INFO "Alpha 2")
 
 #
 # Niceties
@@ -119,6 +119,7 @@ vala_precompile(VALA_C
 	src/feedler-view-cell.vala
 	src/feedler-sidebar-cell.vala
 	src/feedler-statusbar.vala
+    src/service/interface.vala
 PACKAGES
 	gtk+-3.0
     granite

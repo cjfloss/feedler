@@ -12,7 +12,7 @@
  * 0< - number of new feeds.
  */
 [DBus (name = "org.example.Feedler")]
-interface FeedlerClient : Object
+interface Feedler.Client : Object
 {
     public abstract void update (string uri) throws IOError;
     public abstract void update_all () throws IOError;

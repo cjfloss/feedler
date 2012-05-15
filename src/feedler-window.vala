@@ -21,9 +21,34 @@ public class Feedler.Window : Gtk.Window
 	private Gtk.ScrolledWindow scroll_side;
 	private Feedler.CardLayout layout;
 	private bool new_feeds;
+    private Feedler.Client client;
 	
 	construct
 	{
+            stderr.printf ("TEST\n");
+        try
+        {
+            client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
+                                                        "/org/example/feedler");
+
+            client.updated.connect ((channel, unreaded) =>
+            {
+                var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Channel: %i with %i unreaded items".printf (channel, unreaded));
+                info.run ();
+                info.destroy ();
+                //stdout.printf ("Channel: %i with %i unreaded items\n", channel, unreaded);
+            });
+            client.update ("http://elementaryos.org/journal/rss.xml");        
+            //demo.update ("http://elementaryluna.blogspot.com/feeds/posts/default");
+            //demo.update_all ();
+        }
+        catch (GLib.Error e)
+        {
+            var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Cannot connect to service!");
+                info.run ();
+                info.destroy ();
+            stderr.printf ("%s\n", e.message);
+        }
         //Icons.init ();
 		Notify.init ("org.elementary.Feedler");
 		this.settings = new Feedler.Settings ();
@@ -142,7 +167,7 @@ public class Feedler.Window : Gtk.Window
 		this.toolbar.set_enable (false);
 		Granite.Widgets.Welcome welcome = new Granite.Widgets.Welcome ("Get Some Feeds", "Feedler can't seem to find your feeds.");
 		welcome.append ("gtk-new", "Import", "Add a subscriptions from OPML file.");
-		//welcome.append ("tag-new", "Create", "Add a subscription from URL.");		
+		//welcome.append ("tag-new", "Create", "Add a subscription from URL.");
 		welcome.activated.connect (catch_activated);
 		this.vbox.pack_start (welcome, true);
 	}
