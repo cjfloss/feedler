@@ -109,6 +109,22 @@ public class Database : GLib.Object
         return 0;
 	}
 
+    public int select_channel_title (string title)
+	{
+        try
+        {
+			query = new SQLHeavy.Query (db, "SELECT `id` FROM `channels` WHERE `title`=:title;");
+            query.set_string (":title", title);
+			for (SQLHeavy.QueryResult results = query.execute (); !results.finished; results.next ())
+                return results.fetch_int (0);
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot select channel for %s.\n", title);
+		}
+        return 0;
+	}
+
     public string[]? select_channels_uri ()
 	{
         try

@@ -421,8 +421,10 @@ public class Feedler.Window : Gtk.Window
 		this.view.clear ();
 		string time_format;
 		GLib.Time current_time = GLib.Time.local (time_t ());
-		foreach (Model.Item item in this.db.channels.nth_data (channel_id).items)
+stderr.printf ("\n%u\n", this.db.get_channel (channel_id).items.length ());
+		foreach (Model.Item item in this.db.get_channel (channel_id).items)
 		{
+stderr.printf ("\nAA\n");
 			GLib.Time feed_time = GLib.Time.local (item.time);
 			if (feed_time.day_of_year + 6 < current_time.day_of_year)
 				time_format = feed_time.format ("%d %B %Y");

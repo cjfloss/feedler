@@ -139,13 +139,14 @@ public class Feedler.Database : GLib.Object
         {
 			query = new SQLHeavy.Query (db, "SELECT * FROM `channels`;");
 			for (var results = query.execute (); !results.finished; results.next ())
-			{				
-				Model.Channel ch = Model.Channel ();
+			{
+				Model.Channel ch = new Model.Channel ();
 				ch.id = results.fetch_int (0);
 				ch.title = results.fetch_string (1);
 				ch.source = results.fetch_string (2);
 				ch.link = results.fetch_string (3);
 				ch.folder = results.fetch_int (4);
+                ch.items = new GLib.List<Model.Item?> ();;
 				
 				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`=:id;");//TODO order by date??
                 q.set_int (":id", ch.id);

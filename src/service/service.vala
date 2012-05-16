@@ -98,8 +98,9 @@ public class Feedler.Service : Object
 		if (xml != null && this.backend.parse_items (xml, ref items))
 		{
             this.unreaded += (int)items.length ();
+            int channel = this.backend.db.select_channel (message.uri.to_string (false));
             --this.connection;
-            this.updated (this.backend.db.select_channel (message.uri.to_string (false)), (int)items.length ());
+            this.updated (channel, (int)items.length ());
             if (this.connection == 0)
             {
                 this.send_notify ("%i new feeds".printf (this.unreaded)); //TODO gettext
@@ -107,7 +108,10 @@ public class Feedler.Service : Object
             }
             this.backend.db.begin ();
             foreach (Model.Item item in items)
+            {
+                item.channel = channel;
                 this.backend.db.insert_item (item);
+            }
             this.backend.db.commit ();
 		}
 	}
