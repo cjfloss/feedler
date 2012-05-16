@@ -9,7 +9,6 @@ public class Feedler.Window : Gtk.Window
 {
 	private Feedler.Settings settings;
 	private Feedler.Database db;
-	private Feedler.OPML opml;
 	internal Feedler.Toolbar toolbar;
 	private Feedler.Sidebar side;
 	private Feedler.Statusbar stat;
@@ -25,35 +24,19 @@ public class Feedler.Window : Gtk.Window
 	
 	construct
 	{
-            stderr.printf ("TEST\n");
         try
         {
             client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
                                                         "/org/example/feedler");
-
-            client.updated.connect ((channel, unreaded) =>
-            {
-                var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Channel: %i with %i unreaded items".printf (channel, unreaded));
-                info.run ();
-                info.destroy ();
-                //stdout.printf ("Channel: %i with %i unreaded items\n", channel, unreaded);
-            });
-            client.update ("http://elementaryos.org/journal/rss.xml");        
-            //demo.update ("http://elementaryluna.blogspot.com/feeds/posts/default");
-            //demo.update_all ();
+            client.updated.connect (updated_cb);
+            this.dialog (client.test (), Gtk.MessageType.INFO);
         }
         catch (GLib.Error e)
         {
-            var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Cannot connect to service!");
-                info.run ();
-                info.destroy ();
-            stderr.printf ("%s\n", e.message);
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
         }
-        //Icons.init ();
-		Notify.init ("org.elementary.Feedler");
 		this.settings = new Feedler.Settings ();
 		this.db = new Feedler.Database ();
-		this.opml = new Feedler.OPML ();
 		this.layout = new Feedler.CardLayout ();
 		this.title = "Feedler";
 		this.icon_name = "internet-feed-reader";
@@ -141,7 +124,7 @@ public class Feedler.Window : Gtk.Window
 	private void ui_feeds ()
 	{
 		this.ui_workspace ();        
-        foreach (Feedler.Folder folder in this.db.select_folders ())
+        foreach (Model.Folder folder in this.db.select_folders ())
 		{
 			if (folder.parent != -1)
 				this.side.add_folder_to_folder (folder.id, folder.name, folder.parent);
@@ -149,14 +132,14 @@ public class Feedler.Window : Gtk.Window
 				this.side.add_folder (folder.id, folder.name);
 		}
 			
-		foreach (Feedler.Channel channel in this.db.select_channels ())
+		foreach (Model.Channel channel in this.db.select_channels ())
 		{
 			if (channel.folder != -1)
 				this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
 			else
 				this.side.add_channel (channel.id, channel.title);
-			channel.updated.connect (updated_channel);
-			channel.faviconed.connect (faviconed_channel);
+			//channel.updated.connect (updated_channel);
+			//channel.faviconed.connect (faviconed_channel);
 		}			
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);
@@ -179,6 +162,14 @@ public class Feedler.Window : Gtk.Window
 		this.vbox.remove (box.nth_data (box.length ()-1));
 		this.ui_workspace ();
 	}
+
+    private void dialog (string msg, Gtk.MessageType msg_type = Gtk.MessageType.INFO)
+    {
+         var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                           msg_type, Gtk.ButtonsType.OK, msg);
+         info.run ();
+         info.destroy ();
+    }
 	
 	protected void destroy_app ()
 	{
@@ -280,9 +271,9 @@ public class Feedler.Window : Gtk.Window
 	protected void next_unreaded ()
 	{	
 		stderr.printf ("Feedler.App.next_unreaded ()\n");
-		foreach (Feedler.Channel ch in this.db.channels)
+		foreach (Model.Channel ch in this.db.channels)
 		{
-			if (ch.unreaded > 0)
+			//if (ch.unreaded > 0)
 			{
 				this.side.select_channel (ch.id);
 				this.load_channel ();
@@ -294,25 +285,23 @@ public class Feedler.Window : Gtk.Window
 	protected void update_all ()
 	{
 		this.toolbar.progressbar_show ();
-		foreach (Feedler.Channel ch in this.db.channels)
-		{
-			ch.update ();
-		}
+		this.client.update_all ();
+        //this.client.stop ();
 	}
 	
-	protected void updated_channel (int channel, int unreaded)
+	protected void updated_cb (int id, int unreaded)
 	{
-		Feedler.Channel ch = this.db.channels.nth_data (channel);
+		Model.Channel ch = this.db.get_channel (id);
 		this.toolbar.progressbar_text ("Updating "+ch.title);
 		
 		if (unreaded > 0)
 		{
 			this.new_feeds = true;
 			this.side.add_unreaded (ch.id, unreaded);
-			this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
+			//this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
 			
-			if (this.selection_tree () == channel)
-				this.load_channel ();
+			//if (this.selection_tree () == channel)
+			//	this.load_channel ();
 		}
 		else if (unreaded == -1)
 		{
@@ -322,8 +311,6 @@ public class Feedler.Window : Gtk.Window
 			this.side.set_empty (ch.id);
 		if (this.toolbar.progressbar_progress (1.0 / this.db.channels.length ()) && this.new_feeds)
 		{
-			Notify.Notification notify = new Notify.Notification ("Feedler News Reader", "There are new feeds to read!", "internet-feed-reader");
-			notify.show ();
 			this.new_feeds = false;
 		}
 	}
@@ -331,15 +318,15 @@ public class Feedler.Window : Gtk.Window
 	protected void favicon_all ()
 	{
 		this.toolbar.progressbar_show ();
-		foreach (Feedler.Channel ch in this.db.channels)
+		foreach (Model.Channel ch in this.db.channels)
 		{
-			ch.favicon ();
+			//ch.favicon ();
 		}
 	}
 	
 	protected void faviconed_channel (int channel, bool state)
 	{
-		Feedler.Channel ch = this.db.channels.nth_data (channel);
+		Model.Channel ch = this.db.channels.nth_data (channel);
 		this.toolbar.progressbar_text ("Favicon for "+ch.title);
 		this.toolbar.progressbar_progress (1.0 / this.db.channels.length ());		
 		if (state)
@@ -351,17 +338,17 @@ public class Feedler.Window : Gtk.Window
 	protected void mark_all ()
 	{
 		stderr.printf ("Feedler.App.mark_all ()\n");
-		foreach (Feedler.Channel ch in this.db.channels)
+		foreach (Model.Channel ch in this.db.channels)
 		{
-			foreach (Feedler.Item it in ch.items)
+			foreach (Model.Item it in ch.items)
 			{
-				if (it.state == State.UNREADED)
+				if (it.state == Model.State.UNREADED)
 				{
-					it.state = State.READED;
-					ch.unreaded--;
+					it.state = Model.State.READED;
+					//ch.unreaded--;
 				}
-				else if (ch.unreaded > 0)
-					continue;
+				//else if (ch.unreaded > 0)
+				//	continue;
 				else
 					break;
 			}
@@ -377,19 +364,19 @@ public class Feedler.Window : Gtk.Window
 			
 		if (id != -1)
 		{
-			unowned Feedler.Channel ch = this.db.channels.nth_data (id);
+			unowned Model.Channel ch = this.db.channels.nth_data (id);
 			if (item_id == -1)
 			{
 				this.side.mark_readed (ch.id);
-				foreach (Feedler.Item it in ch.items)
+				foreach (Model.Item it in ch.items)
 				{
-					if (it.state == State.UNREADED)
+					if (it.state == Model.State.UNREADED)
 					{
-						it.state = State.READED;
-						ch.unreaded--;
+						it.state = Model.State.READED;
+						//ch.unreaded--;
 					}
-					else if (ch.unreaded > 0)
-						continue;
+					//else if (ch.unreaded > 0)
+					//	continue;
 					else
 						break;
 				}
@@ -397,9 +384,9 @@ public class Feedler.Window : Gtk.Window
 			else
 			{
 				this.side.dec_unreaded (ch.id);
-				ch.unreaded--;
-				unowned Feedler.Item it = ch.items.nth_data (ch.items.length () - item_id - 1);
-				it.state = State.READED;
+				//ch.unreaded--;
+				unowned Model.Item it = ch.items.nth_data (ch.items.length () - item_id - 1);
+				it.state = Model.State.READED;
 			}
 		}
 	}
@@ -431,7 +418,7 @@ public class Feedler.Window : Gtk.Window
 		this.view.clear ();
 		string time_format;
 		GLib.Time current_time = GLib.Time.local (time_t ());
-		foreach (Feedler.Item item in this.db.channels.nth_data (channel_id).items)
+		foreach (Model.Item item in this.db.channels.nth_data (channel_id).items)
 		{
 			GLib.Time feed_time = GLib.Time.local (item.time);
 			if (feed_time.day_of_year + 6 < current_time.day_of_year)
@@ -446,7 +433,7 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void import (string filename)
 	{
-		try
+		/*try
 		{
 			this.opml.import (filename, (int)this.db.folders.length (), (int)this.db.channels.length ());
 			if (!this.db.created)
@@ -457,7 +444,7 @@ public class Feedler.Window : Gtk.Window
 			
 			this.db.insert_opml (this.opml.get_folders (), this.opml.get_channels ());
 			
-			foreach (Feedler.Folder folder in this.opml.get_folders ())
+			foreach (Model.Folder folder in this.opml.get_folders ())
 			{
 				if (folder.parent != -1)
 					this.side.add_folder_to_folder (folder.id, folder.name, folder.parent);
@@ -465,7 +452,7 @@ public class Feedler.Window : Gtk.Window
 					this.side.add_folder (folder.id, folder.name);
 			}
 
-			foreach (Feedler.Channel channel in this.opml.get_channels ())
+			foreach (Model.Channel channel in this.opml.get_channels ())
 			{
 				if (channel.folder != -1)
 					this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
@@ -473,7 +460,7 @@ public class Feedler.Window : Gtk.Window
 					this.side.add_channel (channel.id, channel.title);
 			}
 			
-			foreach (Feedler.Channel channel in this.db.channels.nth (this.db.channels.length () - this.opml.get_channels ().length ()))
+			foreach (Model.Channel channel in this.db.channels.nth (this.db.channels.length () - this.opml.get_channels ().length ()))
 			{
 				channel.updated.connect (updated_channel);
 				channel.faviconed.connect (faviconed_channel);
@@ -485,19 +472,19 @@ public class Feedler.Window : Gtk.Window
 		{
 			this.ui_welcome ();
 			stderr.printf ("ERROR: %s\n", error.message);
-		}
+		}*/
 	}
 	
 	protected void export (string filename)
 	{
-		try
+		/*try
 		{
 			this.opml.export (filename, this.db.folders, this.db.channels);
 		}
 		catch (GLib.Error error)
 		{
 			stderr.printf ("ERROR: %s\n", error.message);
-		}
+		}*/
 	}
 	
 	protected void import_file ()
@@ -542,7 +529,7 @@ public class Feedler.Window : Gtk.Window
 			Feedler.CreateSubs subs = new Feedler.CreateSubs ();
 		    subs.set_transient_for (this);
             subs.feed_added.connect (add_feed_added);
-		    foreach (Feedler.Folder folder in this.db.folders)
+		    foreach (Model.Folder folder in this.db.folders)
 			    subs.add_folder (folder.name);
             subs.show_all ();
 		}
@@ -559,9 +546,9 @@ public class Feedler.Window : Gtk.Window
 			    Feedler.EditSubs subs = new Feedler.EditSubs ();
 		        subs.set_transient_for (this);
                 subs.feed_edited.connect (edit_feed_edited);
-		        foreach (Feedler.Folder folder in this.db.folders)
+		        foreach (Model.Folder folder in this.db.folders)
 			        subs.add_folder (folder.name);
-                Feedler.Channel chl = this.db.get_channel (ch.id);
+                Model.Channel chl = this.db.get_channel (ch.id);
                 subs.set_channel (ch.channel);
                 subs.set_folder (chl.folder);
                 subs.set_uri (chl.source);
@@ -589,7 +576,7 @@ public class Feedler.Window : Gtk.Window
 			    if (info.run () == Gtk.ResponseType.YES)
 			    {
 				    this.side.remove_channel (id);
-				    this.db.remove_subscription (id, this.db.channels.nth_data (id).id_db);
+				    //this.db.remove_subscription (id, this.db.channels.nth_data (id).id_db);
 				    for (uint i = this.db.channels.length ()-1; i >= id; i--)
 					    this.db.channels.nth_data (i).id--;
 			    }
@@ -610,17 +597,17 @@ public class Feedler.Window : Gtk.Window
 		if (event.type == Gdk.EventType.BUTTON_PRESS)
         {
 			stderr.printf ("Feedler.App.mark_all ()\n");
-		    foreach (Feedler.Channel ch in this.db.channels)
+		    foreach (Model.Channel ch in this.db.channels)
 		    {
-			    foreach (Feedler.Item it in ch.items)
+			    foreach (Model.Item it in ch.items)
 			    {
-				    if (it.state == State.UNREADED)
+				    if (it.state == Model.State.UNREADED)
 				    {
-					    it.state = State.READED;
-					    ch.unreaded--;
+					    it.state = Model.State.READED;
+					    //ch.unreaded--;
 				    }
-				    else if (ch.unreaded > 0)
-					    continue;
+				    //else if (ch.unreaded > 0)
+					    //continue;
 				    else
 					    break;
 			    }
@@ -658,9 +645,9 @@ public class Feedler.Window : Gtk.Window
 	protected void create_subscription (string url, int folder)
 	{
 		stderr.printf ("create_\n");
-		Feedler.Channel.last_id = folder;
+		//Model.Channel.last_id = folder;
         Soup.Message msg = new Soup.Message("GET", url);
-        Feedler.Channel.session.queue_message (msg, create_subscription_func);
+        //Model.Channel.session.queue_message (msg, create_subscription_func);
 	}
 	
 	public void create_subscription_func (Soup.Session session, Soup.Message message)
@@ -669,10 +656,10 @@ public class Feedler.Window : Gtk.Window
 		string rss = (string) message.response_body.data;
 		
 		if (rss != null)
-		{
+		{/*
 			unowned Xml.Doc doc = Xml.Parser.parse_memory (rss, rss.length);
 			Feedler.Parser parser = new Feedler.Parser ();
-			Feedler.Channel channel = parser.parse_new (doc);
+			Model.Channel channel = parser.parse_new (doc);
 			channel.source = message.get_uri ().to_string (false);
 			channel.folder = Feedler.Channel.last_id;
 			this.db.insert_subscription (ref channel);
@@ -683,7 +670,7 @@ public class Feedler.Window : Gtk.Window
 			this.side.select_channel (channel.id);
 			this.side.add_unreaded (channel.id, channel.unreaded);
 			this.load_channel ();
-			channel.favicon ();
+			channel.favicon ();*/
 		}
 	}
 	
@@ -728,7 +715,7 @@ public class Feedler.Window : Gtk.Window
 			if (info.run () == Gtk.ResponseType.YES)
 			{
 				this.side.remove_channel (id);
-				this.db.remove_subscription (id, this.db.channels.nth_data (id).id_db);
+				//this.db.remove_subscription (id, this.db.channels.nth_data (id).id_db);
 				for (uint i = this.db.channels.length ()-1; i >= id; i--)
 					this.db.channels.nth_data (i).id--;
 			}

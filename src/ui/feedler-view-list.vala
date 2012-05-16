@@ -14,14 +14,14 @@ public class FeedStore : GLib.Object
     public string author { set; get; }
     public bool unreaded { set; get; }
 	
-	public FeedStore (Feedler.Item item, string time_format)
+	public FeedStore (Model.Item item, string time_format)
 	{
 		this.subject = item.title;
 		this.date = time_format;		
 		this.source = item.source;
 		this.text = item.description;
 		this.author = item.author;
-		if (item.state == State.UNREADED)
+		if (item.state == Model.State.UNREADED)
 			this.unreaded = true;
 		else
 			this.unreaded = false;
@@ -86,7 +86,7 @@ public class Feedler.ViewList : Feedler.View
 		this.store.clear ();
 	}
 	
-	public override void add_feed (Feedler.Item item, string time_format)
+	public override void add_feed (Model.Item item, string time_format)
 	{
 		Gtk.TreeIter feed_iter;
 		this.store.prepend (out feed_iter);

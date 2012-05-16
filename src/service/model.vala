@@ -26,6 +26,7 @@ public struct Model.Channel
 	public string link;
 	public string source;
     public int folder;
+    public unowned GLib.List<Model.Item?> items;
 }
 
 public struct Model.Item

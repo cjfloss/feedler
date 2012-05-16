@@ -102,24 +102,25 @@ vala_precompile(VALA_C
 	src/feedler-app.vala
 	src/feedler-window.vala
 	src/feedler-database.vala
-	src/feedler-datatype.vala
-	src/feedler-sidebar.vala
+	#src/feedler-datatype.vala
 	src/feedler-settings.vala
-	src/feedler-preferences.vala
-	src/feedler-view.vala
-	src/feedler-view-list.vala
-	src/feedler-view-web.vala
-	src/feedler-toolbar.vala
-	src/feedler-parser.vala
-	src/feedler-opml.vala
+	#src/feedler-parser.vala
+	#src/feedler-opml.vala
 	src/feedler-history.vala
-	src/feedler-create-subscription.vala
-	src/feedler-edit-subscription.vala
-	src/feedler-cardlayout.vala
-	src/feedler-view-cell.vala
-	src/feedler-sidebar-cell.vala
-	src/feedler-statusbar.vala
+	src/ui/feedler-sidebar.vala
+	src/ui/feedler-preferences.vala
+	src/ui/feedler-view.vala
+	src/ui/feedler-view-list.vala
+	src/ui/feedler-view-web.vala
+	src/ui/feedler-toolbar.vala
+	src/ui/feedler-create-subscription.vala
+	src/ui/feedler-edit-subscription.vala
+	src/ui/feedler-cardlayout.vala
+	src/ui/feedler-view-cell.vala
+	src/ui/feedler-sidebar-cell.vala
+	src/ui/feedler-statusbar.vala
     src/service/interface.vala
+    src/service/model.vala
 PACKAGES
 	gtk+-3.0
     granite

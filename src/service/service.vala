@@ -6,10 +6,11 @@
  */
 
 [DBus (name = "org.example.Feedler")]
-public class FeedlerService : Object
+public class Feedler.Service : Object
 {
     public bool autoupdate;
     public int updatetime;
+    private signal void iconed (int channel, bool state);
   	public signal void updated (int channel, int unreaded);
 
     private static Soup.Session session;
@@ -25,24 +26,53 @@ public class FeedlerService : Object
 		//session.timeout = 5;
 	}
 
-    public FeedlerService.with_backend (BACKENDS back)
+    public Service.with_backend (BACKENDS back)
     {
         stderr.printf ("Feedler.Service.construct (%s)\n", back.to_string ());
         Notify.init ("org.example.Feedler");
         Bus.own_name (BusType.SESSION, "org.example.Feedler",
                       BusNameOwnerFlags.NONE, on_bus_aquired,
                       () => {}, () => stderr.printf ("Cannot aquire name.\n"));
-        this.autoupdate = true;
+        this.autoupdate = false;
         this.updatetime = 15;
         this.connection = 0;
         this.backend = GLib.Object.new (back.to_type ()) as Backend;
 
     }
     
-    public FeedlerService ()
+    public Service ()
     {
         this.with_backend (BACKENDS.XML);
     }
+
+    public void favicon (string url)
+	{
+		//stderr.printf ("http://getfavicon.appspot.com/%s\n", url);
+		Soup.Message msg = new Soup.Message("GET", "http://getfavicon.appspot.com/"+url);
+        session.queue_message (msg, favicon_func);
+	}
+
+    private void favicon_func (Soup.Session session, Soup.Message message)
+	{
+		try
+		{
+            int id = 0;
+            //TODO select channel
+			var loader = new Gdk.PixbufLoader.with_type ("ico");
+			loader.write (message.response_body.data);
+			loader.close ();
+			var pix = loader.get_pixbuf ();
+			if (pix.get_height () != 16)
+				pix.scale_simple (16, 16, Gdk.InterpType.BILINEAR);
+            pix.save ("%s/feedler/fav/%i.png".printf (GLib.Environment.get_user_data_dir (), id), "png");
+			this.iconed (id, true);
+		}
+		catch (GLib.Error e)
+		{
+			//this.iconed (id, false);
+			stderr.printf ("Cannot get favicon from %s\n", message.uri.to_string (false));
+		}
+	}
 
     public void update (string uri)
     {
@@ -112,7 +142,7 @@ public class FeedlerService : Object
             if (autoupdate)
                 Thread.usleep (this.updatetime * 1000000);
         }
-        loop.quit ();
+        //loop.quit ();
     }
 
     public void stop ()
@@ -120,6 +150,12 @@ public class FeedlerService : Object
         autoupdate = false;
         //this.thread.exit (null);
         stderr.printf ("Feedler.Service.stop ()\n");
+        loop.quit ();
+    }
+
+    public string test ()
+    {
+        return "Welcome in Feedler service!\n";
     }
 
     void on_bus_aquired (DBusConnection conn)
@@ -150,6 +186,6 @@ public class FeedlerService : Object
 
 void main ()
 {
-    FeedlerService demo = new FeedlerService ();
-    demo.start ();
+    Feedler.Service service = new Feedler.Service ();
+    service.start ();
 }

@@ -30,7 +30,7 @@ public class Feedler.ViewWeb : Feedler.View
 		this.item_selected ("");
 	}
 	
-	public override void add_feed (Feedler.Item item, string time_format)
+	public override void add_feed (Model.Item item, string time_format)
 	{
 		this.content.prepend (generate_item (item.title, time_format, item.author, item.description));
 	}
