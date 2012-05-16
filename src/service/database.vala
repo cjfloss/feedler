@@ -32,6 +32,23 @@ public class Database : GLib.Object
 		}
     }
 
+    public void create ()
+	{
+        try
+        {
+			GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler", 0755);
+			GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler/fav", 0755);
+			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE | SQLHeavy.FileMode.CREATE);
+			db.execute ("CREATE TABLE folders (`id` INTEGER PRIMARY KEY,`name` TEXT,`parent` INT);");
+			db.execute ("CREATE TABLE channels (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`link` TEXT,`folder` INT);");
+			db.execute ("CREATE TABLE items (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`author` TEXT,`description` TEXT,`time` INT,`state` INT,`channel` INT);");
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot create new database.\n");
+		}
+	}
+
     public bool begin ()
     {
         try
@@ -114,7 +131,7 @@ public class Database : GLib.Object
 	{
 		try
         {
-			//this.transaction = db.begin_transaction ();
+			this.transaction = db.begin_transaction ();
 			query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
 			query.set_string (":name", folder.name);
 			query.set_int (":parent", folder.parent);
@@ -134,8 +151,8 @@ public class Database : GLib.Object
 	{
 		try
         {
-            //this.transaction = db.begin_transaction ();
-            query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `link`, `folder`) VALUES (:title, :source, :homepage, :folder);");
+            this.transaction = db.begin_transaction ();
+            query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `link`, `folder`) VALUES (:title, :source, :link, :folder);");
 			query.set_string (":title", channel.title);
 			query.set_string (":source", channel.source);
 			query.set_string (":link", channel.link);

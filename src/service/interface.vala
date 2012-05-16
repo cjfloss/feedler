@@ -14,6 +14,7 @@
 [DBus (name = "org.example.Feedler")]
 interface Feedler.Client : Object
 {
+    public abstract void import (string uri) throws IOError;
     public abstract void update (string uri) throws IOError;
     public abstract void update_all () throws IOError;
     public abstract string test () throws IOError;

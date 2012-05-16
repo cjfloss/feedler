@@ -101,6 +101,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.appmenu.tooltip_text = _("Menu");
         this.back.set_sensitive (false);
 		this.forward.set_sensitive (false); //TODO improve history
+        this.next.set_sensitive (false);
         
         this.insert (back, 0);
         this.insert (forward, 1);

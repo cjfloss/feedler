@@ -12,10 +12,10 @@ public class BackendXml : Backend
 
     public override bool parse_folders (string data)
     {
-        unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
+        unowned Xml.Doc doc = Xml.Parser.parse_file (data);
         if (!is_valid (doc))
             return false;
-        
+        db.create ();
         unowned Xml.Node root = doc.get_root_element ();
         if (root.name == "opml")
         {
@@ -107,7 +107,7 @@ public class BackendXml : Backend
 	{
 		unowned Xml.Node outline = node.children;
 		string type;
-		db.begin ();
+		//db.begin ();
 		while (outline != null)
 		{
 			if (outline.name == "outline")
@@ -125,7 +125,7 @@ public class BackendXml : Backend
 			}
 			outline = outline.next;
 		}
-        db.commit ();		
+        //db.commit ();		
 	}
 
     private void opml_folder (Xml.Node node)
@@ -136,7 +136,8 @@ public class BackendXml : Backend
     		f.parent = db.select_parent (node.parent->get_prop ("title"));
 		else
 			f.parent = 0;
-		f.id = db.insert_folder (f);
+       //db.begin ();
+		f.id = db.insert_folder (f, true);
 		opml (node);
 	}
 
@@ -150,7 +151,8 @@ public class BackendXml : Backend
 			c.folder = db.select_parent (node.parent->get_prop ("title"));
 		else
 			c.folder = 0;
-		c.id = db.insert_channel (c);
+        //db.begin ();
+		c.id = db.insert_channel (c, true);
 	}
     
     private void rss (Xml.Node* channel)

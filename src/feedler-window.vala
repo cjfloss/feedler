@@ -15,8 +15,8 @@ public class Feedler.Window : Gtk.Window
 	private Gtk.Menu context;
 	private Feedler.History history;
 	private weak Feedler.View view;
-	private Gtk.HPaned hpane;
-	private Gtk.VBox vbox;
+	private Gtk.Paned pane;
+	private Gtk.Box content;
 	private Gtk.ScrolledWindow scroll_side;
 	private Feedler.CardLayout layout;
 	private bool new_feeds;
@@ -38,35 +38,24 @@ public class Feedler.Window : Gtk.Window
 		this.settings = new Feedler.Settings ();
 		this.db = new Feedler.Database ();
 		this.layout = new Feedler.CardLayout ();
-		this.title = "Feedler";
-		this.icon_name = "internet-feed-reader";
 		this.destroy.connect (destroy_app);
 		this.set_default_size (settings.width, settings.height);
 		this.set_size_request (820, 520);
-		
-		this.vbox = new Gtk.VBox (false, 0);	
+		this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);	
 		this.ui_toolbar ();
 		if (this.db.created)
 			this.ui_feeds ();
 		else
 			this.ui_welcome ();		
 			
-        this.stat = new Feedler.Statusbar ();
-        this.stat.add_feed.button_press_event.connect (this.add_feed_pressed);
-        this.stat.delete_feed.button_press_event.connect (this.del_feed_pressed);
-        this.stat.edit_feed.button_press_event.connect (this.edit_feed_pressed);
-        this.stat.mark_feed.button_press_event.connect (this.mark_feed_pressed);
-        //this.stat.set_unreaded (3);
-
-        this.vbox.pack_end (this.stat, false, true, 0);
-		this.add (vbox);
+		this.add (content);
 		this.history = new Feedler.History ();
 	}
 	
 	private void ui_toolbar ()
 	{
 		this.toolbar = new Feedler.Toolbar ();   
-        this.vbox.pack_start (toolbar, false, false, 0);
+        this.content.pack_start (toolbar, false, false, 0);
         
         this.toolbar.back.clicked.connect (history_prev);
         this.toolbar.forward.clicked.connect (history_next);
@@ -101,14 +90,14 @@ public class Feedler.Window : Gtk.Window
 		it_delete.activate.connect (delete_channel);
 		this.context.show_all ();
 		
-		this.hpane = new Gtk.HPaned ();
+		this.pane = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
 		this.side.name = "SidebarContent";
         this.side.get_style_context ().add_class ("sidebar");
-		this.hpane.get_style_context().add_class("sidebar-pane-separator");
-		this.hpane.set_position (settings.hpane_width);
-        this.vbox.pack_start (hpane, true);
-        this.hpane.add1 (scroll_side);
-        this.hpane.add2 (layout);
+		this.pane.get_style_context().add_class("sidebar-pane-separator");
+		this.pane.set_position (settings.hpane_width);
+        this.content.pack_start (pane, true);
+        this.pane.add1 (scroll_side);
+        this.pane.add2 (layout);
         
         var vlist = new Feedler.ViewList ();
         var vweb = new Feedler.ViewWeb ();
@@ -119,28 +108,35 @@ public class Feedler.Window : Gtk.Window
 		this.view = (Feedler.View)layout.get_nth_page (0);
 		this.view.item_selected.connect (history_add);
 		this.view.item_browsed.connect (history_remove);
+
+        this.stat = new Feedler.Statusbar ();
+        this.stat.add_feed.button_press_event.connect (this.add_feed_pressed);
+        this.stat.delete_feed.button_press_event.connect (this.del_feed_pressed);
+        this.stat.edit_feed.button_press_event.connect (this.edit_feed_pressed);
+        this.stat.mark_feed.button_press_event.connect (this.mark_feed_pressed);
+        //this.stat.set_unreaded (3);
+        this.content.pack_end (this.stat, false, true, 0);
 	}
 	
 	private void ui_feeds ()
 	{
-		this.ui_workspace ();        
+		this.ui_workspace ();   
         foreach (Model.Folder folder in this.db.select_folders ())
 		{
-			if (folder.parent != -1)
+			if (folder.parent != 0)
 				this.side.add_folder_to_folder (folder.id, folder.name, folder.parent);
 			else
 				this.side.add_folder (folder.id, folder.name);
 		}
-			
 		foreach (Model.Channel channel in this.db.select_channels ())
 		{
-			if (channel.folder != -1)
-				this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
+			if (channel.folder != 0)
+				this.side.add_channel_to_folder (channel.folder-1, channel.id, channel.title);
 			else
 				this.side.add_channel (channel.id, channel.title);
 			//channel.updated.connect (updated_channel);
 			//channel.faviconed.connect (faviconed_channel);
-		}			
+		}	
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);
 	}
@@ -148,18 +144,18 @@ public class Feedler.Window : Gtk.Window
 	private void ui_welcome ()
 	{
 		this.toolbar.set_enable (false);
-		Granite.Widgets.Welcome welcome = new Granite.Widgets.Welcome ("Get Some Feeds", "Feedler can't seem to find your feeds.");
-		welcome.append ("gtk-new", "Import", "Add a subscriptions from OPML file.");
-		//welcome.append ("tag-new", "Create", "Add a subscription from URL.");
+		Granite.Widgets.Welcome welcome = new Granite.Widgets.Welcome (_("Get Some Feeds"), _("Feedler can't seem to find your feeds."));
+		welcome.append ("gtk-new", _("Import"), _("Add a subscriptions from OPML file."));
+		welcome.append ("tag-new", _("Create"), _("Add manually subscriptions from URL."));
 		welcome.activated.connect (catch_activated);
-		this.vbox.pack_start (welcome, true);
+		this.content.pack_start (welcome, true);
 	}
 	
 	private void ui_welcome_to_workspace ()
 	{
 		this.toolbar.set_enable (true);
-		GLib.List<Gtk.Widget> box = this.vbox.get_children ();
-		this.vbox.remove (box.nth_data (box.length ()-1));
+		GLib.List<Gtk.Widget> box = this.content.get_children ();
+		this.content.remove (box.nth_data (box.length ()-1));
 		this.ui_workspace ();
 	}
 
@@ -177,7 +173,7 @@ public class Feedler.Window : Gtk.Window
         get_allocation(out alloc);
         settings.width = alloc.width;
         settings.height = alloc.height;
-        settings.hpane_width = this.hpane.position;
+        settings.hpane_width = this.pane.position;
 		
 		Gtk.main_quit ();
 	}
@@ -208,7 +204,7 @@ public class Feedler.Window : Gtk.Window
 			return -1;
 	}
 
-    private ChannelStore selected_item ()
+    private ChannelStore? selected_item ()
 	{
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
@@ -284,9 +280,15 @@ public class Feedler.Window : Gtk.Window
 		
 	protected void update_all ()
 	{
-		this.toolbar.progressbar_show ();
-		this.client.update_all ();
-        //this.client.stop ();
+        try
+        {
+            this.client.update_all ();
+            this.toolbar.progressbar_show ();
+        }
+        catch (GLib.Error e)
+        {
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+        }
 	}
 	
 	protected void updated_cb (int id, int unreaded)
@@ -433,6 +435,14 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void import (string filename)
 	{
+        try
+        {
+            this.client.import (filename);
+        }
+        catch (GLib.Error e)
+        {
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+        }
 		/*try
 		{
 			this.opml.import (filename, (int)this.db.folders.length (), (int)this.db.channels.length ());

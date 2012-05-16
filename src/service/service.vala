@@ -111,6 +111,12 @@ public class Feedler.Service : Object
             this.backend.db.commit ();
 		}
 	}
+
+    public void import (string uri)
+    {
+        stderr.printf ("Feedler.Service.import (%s)\n", uri);
+        this.backend.parse_folders (uri);
+    }
     
     public void start ()
     {
