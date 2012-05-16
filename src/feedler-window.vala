@@ -43,6 +43,7 @@ public class Feedler.Window : Gtk.Window
 		this.set_size_request (820, 520);
 		this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);	
 		this.ui_toolbar ();
+        this.ui_layout ();
 		if (this.db.created)
 			this.ui_feeds ();
 		else
@@ -71,15 +72,26 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
         this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
 	}
-
-	private void ui_workspace ()
-	{
-		this.toolbar.mode.selected = 0;
-		this.side = new Feedler.Sidebar ();
+    
+    private void ui_layout ()
+    {
+        this.side = new Feedler.Sidebar ();
 		this.side.button_press_event.connect (context_menu);
 		this.scroll_side = new Gtk.ScrolledWindow (null, null);
 		this.scroll_side.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 		this.scroll_side.add (side);
+
+        this.pane = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
+		this.pane.get_style_context().add_class("sidebar-pane-separator");
+        this.content.pack_start (pane, true);
+        this.pane.add2 (layout);
+    }
+
+	private void ui_workspace ()
+	{
+		this.toolbar.mode.selected = 0;
+        this.pane.set_position (settings.hpane_width);
+        this.pane.add1 (scroll_side);
 		
 		this.context = new Gtk.Menu ();
 		Gtk.MenuItem it_delete = new Gtk.MenuItem.with_label ("Delete");
@@ -88,23 +100,11 @@ public class Feedler.Window : Gtk.Window
 		this.context.append (it_delete);
 		//this.context.append (it_rename);
 		it_delete.activate.connect (delete_channel);
-		this.context.show_all ();
-		
-		this.pane = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
-		this.side.name = "SidebarContent";
-        this.side.get_style_context ().add_class ("sidebar");
-		this.pane.get_style_context().add_class("sidebar-pane-separator");
-		this.pane.set_position (settings.hpane_width);
-        this.content.pack_start (pane, true);
-        this.pane.add1 (scroll_side);
-        this.pane.add2 (layout);
+		this.context.show_all ();		
         
-        var vlist = new Feedler.ViewList ();
-        var vweb = new Feedler.ViewWeb ();
-        vlist.item_readed.connect (mark_channel);
-        vweb.item_readed.connect (mark_channel);
-		this.layout.append_page (vlist, null);
-		this.layout.append_page (vweb, null);
+        this.layout.init_views ();
+        this.layout.list.item_readed.connect (mark_channel);
+        this.layout.web.item_readed.connect (mark_channel);
 		this.view = (Feedler.View)layout.get_nth_page (0);
 		this.view.item_selected.connect (history_add);
 		this.view.item_browsed.connect (history_remove);
@@ -144,18 +144,18 @@ public class Feedler.Window : Gtk.Window
 	private void ui_welcome ()
 	{
 		this.toolbar.set_enable (false);
-		Granite.Widgets.Welcome welcome = new Granite.Widgets.Welcome (_("Get Some Feeds"), _("Feedler can't seem to find your feeds."));
-		welcome.append ("gtk-new", _("Import"), _("Add a subscriptions from OPML file."));
-		welcome.append ("tag-new", _("Create"), _("Add manually subscriptions from URL."));
-		welcome.activated.connect (catch_activated);
-		this.content.pack_start (welcome, true);
+        this.pane.set_position (0);
+        //this.set_size_request (0, 0);
+        this.layout.init_welcome ();
+		this.layout.welcome.activated.connect (catch_activated);
 	}
 	
 	private void ui_welcome_to_workspace ()
 	{
 		this.toolbar.set_enable (true);
-		GLib.List<Gtk.Widget> box = this.content.get_children ();
-		this.content.remove (box.nth_data (box.length ()-1));
+		//GLib.List<Gtk.Widget> box = this.content.get_children ();
+		//this.content.remove (box.nth_data (box.length ()-1));
+        this.layout.reinit ();
 		this.ui_workspace ();
 	}
 
@@ -180,6 +180,7 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void catch_activated (int index)
 	{
+        stderr.printf ("\n%i\n", this.pane.get_position ());
 		stderr.printf ("Activated: %i\n", index);
 		switch (index)
 		{
@@ -438,6 +439,7 @@ public class Feedler.Window : Gtk.Window
         try
         {
             this.client.import (filename);
+            this.ui_welcome_to_workspace ();
         }
         catch (GLib.Error e)
         {

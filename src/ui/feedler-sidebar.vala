@@ -33,6 +33,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 		this.store = new Gtk.TreeStore (1, typeof (ChannelStore));
 		this.scell = new Feedler.SidebarCell ();
 		this.name = "SidebarContent";
+        this.get_style_context ().add_class ("sidebar");
 		this.headers_visible = false;
 		this.enable_search = false;
         this.model = store;
