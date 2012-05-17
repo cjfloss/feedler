@@ -9,6 +9,8 @@ public class BackendXml : Backend
 {
     private Model.Channel** ch;
     private GLib.List<Model.Item?>** its;
+    private GLib.List<Model.Folder?>** fls;
+    private GLib.List<Model.Channel?>** chs;
 
     public override bool subscriptions (string data)
     {
@@ -16,6 +18,10 @@ public class BackendXml : Backend
         if (!is_valid (doc))
             return false;
         db.create ();
+        var channels = new GLib.List<Model.Channel?> ();
+        var folders = new GLib.List<Model.Folder?> ();
+        this.chs = &channels;
+        this.fls = &folders;
         unowned Xml.Node root = doc.get_root_element ();
         if (root.name == "opml")
         {
@@ -29,16 +35,24 @@ public class BackendXml : Backend
 				}
 				head_body = head_body.next;
 			}
+            db.begin ();
+            foreach (Model.Folder f in (GLib.List<Model.Folder?>)this.fls[0])
+                db.insert_folder (f);
+            foreach (Model.Channel c in (GLib.List<Model.Channel?>)this.chs[0])
+                db.insert_channel (c);
+            db.commit ();
 		}
+        this.chs = null;
+        this.fls = null;
         return true;
     }
 
-    public override bool channel (string data, ref Model.Channel channel)
+    public override bool channel (string data)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
         if (!is_valid (doc))
             return false;
-        
+        var channel = new Model.Channel ();
         this.ch = &channel;
         unowned Xml.Node root = doc.get_root_element ();
         switch (root.name)
@@ -52,12 +66,12 @@ public class BackendXml : Backend
         return true;
     }
 
-    public override bool items (string data, ref GLib.List<Model.Item?> items)
+    public override bool items (string data)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
         if (!is_valid (doc))
             return false;
-        
+        var items = new GLib.List<Model.Item?> ();
         this.its = &items;
         unowned Xml.Node root = doc.get_root_element ();
         switch (root.name)
@@ -87,7 +101,7 @@ public class BackendXml : Backend
         string xml = (string)message.response_body.flatten ().data;
         GLib.List<Model.Item?> items = new GLib.List<Model.Item?> ();
 
-		if (xml != null && this.items (xml, ref items))
+		if (xml != null && this.items (xml))
 		{
             int channel = db.select_channel (message.uri.to_string (false));
             string last = db.select_last_title (channel);
@@ -139,7 +153,6 @@ public class BackendXml : Backend
 	{
 		unowned Xml.Node outline = node.children;
 		string type;
-		//db.begin ();
 		while (outline != null)
 		{
 			if (outline.name == "outline")
@@ -156,35 +169,40 @@ public class BackendXml : Backend
 				}
 			}
 			outline = outline.next;
-		}
-        //db.commit ();		
+		}		
 	}
 
     private void opml_folder (Xml.Node node)
 	{
 		Model.Folder f = Model.Folder ();
-        f.name = node.get_prop ("title");
+        f.name = node.get_prop ("text");
+        f.parent = 0;
         if (node.parent->name != "body")
-    		f.parent = db.select_parent (node.parent->get_prop ("title"));
-		else
-			f.parent = 0;
-       //db.begin ();
-		f.id = db.insert_folder (f, true);
+            foreach (Model.Folder folder in (GLib.List<Model.Folder?>)this.fls)
+			    if (folder.name == node.parent->get_prop ("text"))
+                {
+				    f.parent = folder.id;
+                    break;
+                }
+        this.fls[0]->append (f);
 		opml (node);
 	}
 
     private void opml_channel (Xml.Node node)
 	{
 		Model.Channel c = new Model.Channel ();
-		c.title = node.get_prop ("title");
+		c.title = node.get_prop ("text");
 		c.source = node.get_prop ("xmlUrl");
 		c.link = node.get_prop ("htmlUrl");
+        c.folder = 0;
         if (node.parent->name != "body")
-			c.folder = db.select_parent (node.parent->get_prop ("title"));
-		else
-			c.folder = 0;
-        //db.begin ();
-		c.id = db.insert_channel (c, true);
+            foreach (Model.Folder folder in (GLib.List<Model.Folder?>)this.fls[0])
+			    if (folder.name == node.parent->get_prop ("text"))
+                {
+				    c.folder = folder.id;
+                    break;
+                }
+        this.chs[0]->append (c);
 	}
     
     private void rss (Xml.Node* channel)

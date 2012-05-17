@@ -150,7 +150,8 @@ public class Feedler.Window : Gtk.Window
 	{
 		this.toolbar.set_enable (true);
         this.layout.reinit ();
-		this.ui_workspace ();
+		//this.ui_workspace ();
+        this.ui_feeds ();
 	}
 
     private void dialog (string msg, Gtk.MessageType msg_type = Gtk.MessageType.INFO)
@@ -430,6 +431,7 @@ public class Feedler.Window : Gtk.Window
         try
         {
             this.client.import (filename);
+            this.db.open ();
             this.ui_welcome_to_workspace ();
         }
         catch (GLib.Error e)

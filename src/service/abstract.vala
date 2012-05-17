@@ -40,8 +40,8 @@ public enum BACKENDS
 public abstract class Backend : GLib.Object
 {
     public abstract bool subscriptions (string data);
-    public abstract bool channel (string data, ref Model.Channel channel);
-    public abstract bool items (string data, ref GLib.List<Model.Item?> items);
+    public abstract bool channel (string data);
+    public abstract bool items (string data);
     public abstract BACKENDS to_type ();
     public abstract string to_string ();
     internal abstract void update_func (Soup.Session session, Soup.Message message);

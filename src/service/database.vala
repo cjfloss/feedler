@@ -77,22 +77,6 @@ public class Database : GLib.Object
 		}
     }
 
-    public int select_parent (string name)
-	{
-        try
-        {
-			query = new SQLHeavy.Query (db, "SELECT `id` FROM `folders` WHERE `name`=:name;");
-            query.set_string (":name", name);
-			for (SQLHeavy.QueryResult results = query.execute (); !results.finished; results.next ())
-                return results.fetch_int (0);
-		}
-		catch (SQLHeavy.Error e)
-		{
-			stderr.printf ("Cannot select parent folder for %s.\n", name);
-		}
-        return 0;
-	}
-
     public int select_channel (string uri)
 	{
         try
@@ -147,7 +131,7 @@ public class Database : GLib.Object
 	{
 		try
         {
-			this.transaction = db.begin_transaction ();
+			//this.transaction = db.begin_transaction ();
 			query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
 			query.set_string (":name", folder.name);
 			query.set_int (":parent", folder.parent);
@@ -167,7 +151,7 @@ public class Database : GLib.Object
 	{
 		try
         {
-            this.transaction = db.begin_transaction ();
+            //this.transaction = db.begin_transaction ();
             query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `link`, `folder`) VALUES (:title, :source, :link, :folder);");
 			query.set_string (":title", channel.title);
 			query.set_string (":source", channel.source);

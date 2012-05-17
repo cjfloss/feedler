@@ -20,18 +20,23 @@ public class Feedler.Database : GLib.Object
 		this.location = GLib.Environment.get_user_data_dir () + "/feedler/feedler.db";
 		this.channels = new GLib.List<Model.Channel?> ();
 		this.folders = new GLib.List<Model.Folder?> ();
+        this.open ();
+	}
 
-		try
+    public void open ()
+    {
+        try
 		{
-			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE);
+			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.WRITE);
 			this.created = true;
 		}
 		catch (SQLHeavy.Error e)
 		{
+            this.db = null;
 			stderr.printf ("Cannot find database.\n");
 			this.created = false;
 		}
-	}
+    }
 	
 	public unowned GLib.List<Model.Folder?> get_folders ()
 	{
