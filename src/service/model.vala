@@ -27,6 +27,14 @@ public class Model.Channel
 	public string source;
     public int folder;
     public GLib.List<Model.Item?> items;
+
+    public Model.Item? get_item (int id)
+    {
+        foreach (Model.Item item in this.items)
+            if (id == item.id)
+                return item;
+        return null;
+    }
 }
 
 public struct Model.Item

@@ -7,6 +7,7 @@
  
 public class FeedStore : GLib.Object
 {
+    public int id {set; get; }
     public string subject { set; get; }
     public string date { set; get; }
     public string source { set; get; }
@@ -16,6 +17,7 @@ public class FeedStore : GLib.Object
 	
 	public FeedStore (Model.Item item, string time_format)
 	{
+        this.id = item.id;
 		this.subject = item.title;
 		this.date = time_format;		
 		this.source = item.source;
@@ -41,7 +43,7 @@ public class Feedler.ViewList : Feedler.View
 	private WebKit.WebView browser;
 	private Gtk.ScrolledWindow scroll_list;
 	private Gtk.ScrolledWindow scroll_web;
-	private Gtk.VPaned vpane;
+	private Gtk.Paned pane;
 
 	construct
 	{
@@ -73,12 +75,12 @@ public class Feedler.ViewList : Feedler.View
 		this.scroll_web.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 		this.scroll_web.add (browser);
 		
-		this.vpane = new Gtk.VPaned ();
-		this.vpane.set_position (240);
+		this.pane = new Gtk.Paned (Gtk.Orientation.VERTICAL);
+		this.pane.set_position (240);
 		
-		this.vpane.add1 (scroll_list);
-		this.vpane.add2 (scroll_web);
-		this.add (vpane);
+		this.pane.add1 (scroll_list);
+		this.pane.add2 (scroll_web);
+		this.add (pane);
 	}
 	
 	public override void clear ()
@@ -157,7 +159,7 @@ public class Feedler.ViewList : Feedler.View
 			{
 				feed.unreaded = false;
 				this.store.set (iter, 0, feed);
-				this.item_readed (model.get_path (iter).get_indices ()[0]);
+				this.item_readed (feed.id);
 			}
 			if (history)
 				this.item_selected (model.get_path (iter).to_string ());

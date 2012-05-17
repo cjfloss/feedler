@@ -363,7 +363,7 @@ public class Feedler.Window : Gtk.Window
 			
 		if (id != -1)
 		{
-			unowned Model.Channel ch = this.db.channels.nth_data (id);
+			Model.Channel ch = this.db.get_channel (id);
 			if (item_id == -1)
 			{
 				this.side.mark_readed (ch.id);
@@ -372,10 +372,8 @@ public class Feedler.Window : Gtk.Window
 					if (it.state == Model.State.UNREADED)
 					{
 						it.state = Model.State.READED;
-						//ch.unreaded--;
+                        this.db.mark_item (it.id);
 					}
-					//else if (ch.unreaded > 0)
-					//	continue;
 					else
 						break;
 				}
@@ -383,8 +381,8 @@ public class Feedler.Window : Gtk.Window
 			else
 			{
 				this.side.dec_unreaded (ch.id);
-				//ch.unreaded--;
-				unowned Model.Item it = ch.items.nth_data (ch.items.length () - item_id - 1);
+                this.db.mark_item (item_id);
+                Model.Item it = ch.get_item (item_id);
 				it.state = Model.State.READED;
 			}
 		}

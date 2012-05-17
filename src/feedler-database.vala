@@ -53,6 +53,17 @@ public class Feedler.Database : GLib.Object
 		return null;
 	}
 
+    public Model.Item? get_item (int channel, int id)
+	{
+        Model.Channel ch = this.get_channel (channel);
+        foreach (Model.Item item in ch.items)
+        {
+            if (id == item.id)
+                return item;
+        }
+		return null;
+	}
+
     public void update_channel (int id, int folder, string channel,  string url)
     {
         try
@@ -110,6 +121,23 @@ public class Feedler.Database : GLib.Object
 			stderr.printf ("Cannot remove subscription.\n");
 		}
 	}
+
+    public void mark_item (int id, Model.State state = Model.State.READED)
+    {
+        try
+        {
+			transaction = db.begin_transaction ();
+			query = transaction.prepare ("UPDATE `items` SET `state`=:state WHERE `id`=:id;");
+			query.set_int (":state", (int)state);
+            query.set_int (":id", id);
+			query.execute ();
+			transaction.commit();
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot mark item %i.", id);
+		}
+    }
 	
 	public unowned GLib.List<Model.Folder?> select_folders ()
 	{
@@ -182,7 +210,7 @@ public class Feedler.Database : GLib.Object
             query.set_int (":unreaded", unreaded);
 			for (var r = query.execute (); !r.finished; r.next ())
 			{
-				Model.Item it = new Model.Item ();
+				Model.Item it = Model.Item ();
 				it.id = r.fetch_int (0);
 				it.title = r.fetch_string (1);
 				it.source = r.fetch_string (2);
