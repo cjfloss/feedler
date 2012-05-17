@@ -146,7 +146,7 @@ public class Feedler.Database : GLib.Object
 				ch.source = results.fetch_string (2);
 				ch.link = results.fetch_string (3);
 				ch.folder = results.fetch_int (4);
-                ch.items = new GLib.List<Model.Item?> ();;
+                ch.items = new GLib.List<Model.Item?> ();
 				
 				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`=:id;");//TODO order by date??
                 q.set_int (":id", ch.id);
@@ -160,6 +160,7 @@ public class Feedler.Database : GLib.Object
 					it.description = r.fetch_string (4);
 					it.time = r.fetch_int (5);
 					it.state = (Model.State)r.fetch_int (6);
+                    stderr.printf ("%s\n", it.title);
 					ch.items.append (it);				
 				}
 				this.channels.append (ch);

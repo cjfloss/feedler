@@ -25,8 +25,8 @@ public class Feedler.Sidebar : Gtk.TreeView
 {
 	private Gtk.TreeStore store;
 	private Feedler.SidebarCell scell;
-	internal GLib.List<Gtk.TreeIter?> folders;
-	internal GLib.List<Gtk.TreeIter?> channels;
+    private Gee.HashMap<int, Gtk.TreeIter?> folders;
+    private Gee.HashMap<int, Gtk.TreeIter?> channels;
 	
 	construct
 	{
@@ -43,61 +43,48 @@ public class Feedler.Sidebar : Gtk.TreeView
 		column.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 		column.set_cell_data_func (scell, render_scell);
 		this.insert_column (column, -1); 
+        this.folders = new Gee.HashMap<int, Gtk.TreeIter?> ();
+		this.channels = new Gee.HashMap<int, Gtk.TreeIter?> ();
+	}
 
-		this.folders = new GLib.List<Gtk.TreeIter?> ();
-		this.channels = new GLib.List<Gtk.TreeIter?> ();
-	}
-	
-	public void add_folder (int folder_id, string folder_name)
+    public void add_folder (Model.Folder f)
+    {
+        Gtk.TreeIter folder_iter;
+        if (f.parent > 0)
+            this.store.append (out folder_iter, this.folders.get (f.parent));
+        else
+            this.store.append (out folder_iter, null);
+        this.store.set (folder_iter, 0, new ChannelStore (f.id, f.name, 0, 0), -1);
+        this.folders.set (f.id, folder_iter);
+    }
+
+    public void add_channel (int id, string name, int folder)
 	{
-		Gtk.TreeIter folder_iter;
-		this.store.append (out folder_iter, null);
-        this.store.set (folder_iter, 0, new ChannelStore (folder_id, folder_name, 0, 0), -1);
-        this.folders.append (folder_iter);
+		Gtk.TreeIter channel_iter;
+        if (folder > 0)
+            this.store.append (out channel_iter, this.folders.get (folder));
+        else
+            this.store.append (out channel_iter, null);
+        this.store.set (channel_iter, 0, new ChannelStore (id, name, 0, 1), -1);
+        this.channels.set (id, channel_iter);
 	}
-	
-	public void add_folder_to_folder (int folder_id, string folder_name, int folder_parent)
-	{       
-        unowned Gtk.TreeIter parent_iter = folders.nth_data (folder_parent);
-		Gtk.TreeIter folder_iter;
-		this.store.append (out folder_iter, parent_iter);
-        this.store.set (folder_iter, 0, new ChannelStore (folder_id, folder_name, 0, 0), -1);
-        this.folders.append (folder_iter);
-	}
-	
+
 	public void remove_folder (int folder_id)
 	{
-		unowned Gtk.TreeIter folder_iter = folders.nth_data (folder_id);
+		Gtk.TreeIter folder_iter = folders.get (folder_id);
 		this.store.remove (folder_iter);
-		this.folders.remove (folder_iter);
-	}
-	
-	public void add_channel (int channel_id, string channel_name)
-	{
-		Gtk.TreeIter channel_iter;		
-		this.store.append (out channel_iter, null);		
-        this.store.set (channel_iter, 0, new ChannelStore (channel_id, channel_name, 0, 1), -1);
-        this.channels.append (channel_iter);
-	}
-	
-	public void add_channel_to_folder (int folder_id, int channel_id, string channel_name)
-	{
-		unowned Gtk.TreeIter folder_iter = folders.nth_data (folder_id);
-		Gtk.TreeIter channel_iter;
-		this.store.append (out channel_iter, folder_iter);	
-        this.store.set (channel_iter, 0, new ChannelStore (channel_id, channel_name, 0, 1), -1);
-        this.channels.append (channel_iter);
+		this.folders.unset (folder_id);
 	}
 	
 	public void remove_channel (int channel_id)
 	{
-		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		this.store.remove (channel_iter);
-		this.channels.remove (channels.nth_data (channel_id));
-		for (uint i = this.channels.length ()-1; i > channel_id; i--)
+		this.channels.unset (channel_id);
+		for (int i = this.channels.size-1; i > channel_id; i--)
 		{
 			ChannelStore channel;
-			unowned Gtk.TreeIter ch_iter = channels.nth_data (i);
+			Gtk.TreeIter ch_iter = channels.get (i);
 			this.model.get (ch_iter, 0, out channel);
 			--channel.id;
 			this.store.set_value (ch_iter, 0, channel);
@@ -106,7 +93,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 
 	public void mark_readed (int channel_id)
 	{
-		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unreaded = 0;
@@ -115,7 +102,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 	
 	public void add_unreaded (int channel_id, int unreaded)
 	{
-		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unreaded += unreaded;
@@ -125,7 +112,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 	
 	public void dec_unreaded (int channel_id)
 	{
-		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unreaded--;
@@ -134,7 +121,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 
     public void set_channel_name (int channel_id, string name)
 	{
-		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.channel = name;
@@ -143,7 +130,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 	
 	public void set_error (int channel_id)
 	{
-		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.mode = 2;
@@ -152,7 +139,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 	
 	public void set_empty (int channel_id)
 	{
-		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.mode = 1;
@@ -161,7 +148,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 	
 	public void select_channel (int channel_id)
 	{
-		unowned Gtk.TreeIter channel_iter = channels.nth_data (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		this.get_selection ().select_iter (channel_iter);
 	}
 	

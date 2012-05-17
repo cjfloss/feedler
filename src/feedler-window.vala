@@ -120,23 +120,20 @@ public class Feedler.Window : Gtk.Window
 	
 	private void ui_feeds ()
 	{
-		this.ui_workspace ();   
-        foreach (Model.Folder folder in this.db.select_folders ())
+		this.ui_workspace (); 
+        
+        foreach (Model.Folder f in this.db.select_folders ())
+        {
+            this.side.add_folder (f);
+        }
+
+        foreach (Model.Channel c in this.db.select_channels ())
 		{
-			if (folder.parent != 0)
-				this.side.add_folder_to_folder (folder.id, folder.name, folder.parent);
-			else
-				this.side.add_folder (folder.id, folder.name);
-		}
-		foreach (Model.Channel channel in this.db.select_channels ())
-		{
-			if (channel.folder != 0)
-				this.side.add_channel_to_folder (channel.folder-1, channel.id, channel.title);
-			else
-				this.side.add_channel (channel.id, channel.title);
+            this.side.add_channel (c.id, c.title, c.folder);
 			//channel.updated.connect (updated_channel);
 			//channel.faviconed.connect (faviconed_channel);
-		}	
+		}
+		
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);
 	}
@@ -145,7 +142,6 @@ public class Feedler.Window : Gtk.Window
 	{
 		this.toolbar.set_enable (false);
         this.pane.set_position (0);
-        //this.set_size_request (0, 0);
         this.layout.init_welcome ();
 		this.layout.welcome.activated.connect (catch_activated);
 	}
@@ -416,12 +412,14 @@ public class Feedler.Window : Gtk.Window
 	
 	private void load_channel_from_id (int channel_id)
 	{
-		stderr.printf ("Feedler.App.load_channel ()\n");
+		stderr.printf ("Feedler.App.load_channel (%i)\n", channel_id);
 		this.view.clear ();
 		string time_format;
 		GLib.Time current_time = GLib.Time.local (time_t ());
+stderr.printf ("%u\n", this.db.get_channel (channel_id).items.length ());
 		foreach (Model.Item item in this.db.get_channel (channel_id).items)
 		{
+stderr.printf ("%s\n", item.title);
 			GLib.Time feed_time = GLib.Time.local (item.time);
 			if (feed_time.day_of_year + 6 < current_time.day_of_year)
 				time_format = feed_time.format ("%d %B %Y");
