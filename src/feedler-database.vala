@@ -160,7 +160,6 @@ public class Feedler.Database : GLib.Object
 					it.description = r.fetch_string (4);
 					it.time = r.fetch_int (5);
 					it.state = (Model.State)r.fetch_int (6);
-                    stderr.printf ("%s\n", it.title);
 					ch.items.append (it);				
 				}
 				this.channels.append (ch);
@@ -171,5 +170,32 @@ public class Feedler.Database : GLib.Object
 			stderr.printf ("Cannot select all channels.\n");
 		}
 		return channels;
+	}
+    
+    public void select_unreaded (int id, int unreaded)
+	{
+        try
+        {
+            Model.Channel ch = this.get_channel (id);
+			query = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`=:id ORDER BY id DESC LIMIT :unreaded;");
+            query.set_int (":id", id);
+            query.set_int (":unreaded", unreaded);
+			for (var r = query.execute (); !r.finished; r.next ())
+			{
+				Model.Item it = new Model.Item ();
+				it.id = r.fetch_int (0);
+				it.title = r.fetch_string (1);
+				it.source = r.fetch_string (2);
+				it.author = r.fetch_string (3);
+				it.description = r.fetch_string (4);
+				it.time = r.fetch_int (5);
+				it.state = (Model.State)r.fetch_int (6);
+				ch.items.append (it);
+			}
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot select unreaded items.\n");
+		}
 	}
 }

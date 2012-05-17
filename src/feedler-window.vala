@@ -295,11 +295,12 @@ public class Feedler.Window : Gtk.Window
 		{
 			this.new_feeds = true;
 			this.side.add_unreaded (ch.id, unreaded);
+            this.db.select_unreaded (id, unreaded);
             //TODO select unreaded item
 			//this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
 			
-			//if (this.selection_tree () == channel)
-			//	this.load_channel ();
+			if (this.selection_tree () == id)
+				this.load_channel ();
 		}
 		else if (unreaded == -1)
 		{
@@ -414,19 +415,14 @@ public class Feedler.Window : Gtk.Window
 	{
 		stderr.printf ("Feedler.App.load_channel (%i)\n", channel_id);
 		this.view.clear ();
-		string time_format;
 		GLib.Time current_time = GLib.Time.local (time_t ());
-stderr.printf ("%u\n", this.db.get_channel (channel_id).items.length ());
 		foreach (Model.Item item in this.db.get_channel (channel_id).items)
 		{
-stderr.printf ("%s\n", item.title);
 			GLib.Time feed_time = GLib.Time.local (item.time);
-			if (feed_time.day_of_year + 6 < current_time.day_of_year)
-				time_format = feed_time.format ("%d %B %Y");
+            if (feed_time.day_of_year + 6 < current_time.day_of_year)
+                this.view.add_feed (item, feed_time.format ("%d %B %Y"));
 			else
-				time_format = feed_time.format ("%A %R");
-
-			this.view.add_feed (item, time_format);
+                this.view.add_feed (item, feed_time.format ("%A %R"));
 		}
 		this.view.load_feeds ();
 	}
