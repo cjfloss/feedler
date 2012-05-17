@@ -92,6 +92,7 @@ public class BackendXml : Backend
             int channel = db.select_channel (message.uri.to_string (false));
             string last = db.select_last_title (channel);
             db.begin ();
+            items.reverse ();
             foreach (Model.Item item in items)
             {
                 if (last == item.title)
@@ -106,7 +107,7 @@ public class BackendXml : Backend
             this.service.updated (channel, (int)items.length ());
             if (this.service.connection == 0)
             {
-                this.service.notify (("%i new feeds").printf (this.service.unreaded)); //TODO gettext
+                this.service.notification (("%i new feeds").printf (this.service.unreaded)); //TODO gettext
                 this.service.unreaded = 0;
             }
 		}

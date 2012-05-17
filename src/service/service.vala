@@ -147,7 +147,7 @@ public class Feedler.Service : Object
         }
     }
 
-    public void notify (string msg)
+    public void notification (string msg)
     {
         try
         {
