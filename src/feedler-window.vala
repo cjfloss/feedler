@@ -153,8 +153,6 @@ public class Feedler.Window : Gtk.Window
 	private void ui_welcome_to_workspace ()
 	{
 		this.toolbar.set_enable (true);
-		//GLib.List<Gtk.Widget> box = this.content.get_children ();
-		//this.content.remove (box.nth_data (box.length ()-1));
         this.layout.reinit ();
 		this.ui_workspace ();
 	}
@@ -295,12 +293,13 @@ public class Feedler.Window : Gtk.Window
 	protected void updated_cb (int id, int unreaded)
 	{
 		Model.Channel ch = this.db.get_channel (id);
-		this.toolbar.progressbar_text ("Updating "+ch.title);
+		this.toolbar.progressbar_text ("Updating " + ch.title);
 		
 		if (unreaded > 0)
 		{
 			this.new_feeds = true;
 			this.side.add_unreaded (ch.id, unreaded);
+            //TODO select unreaded item
 			//this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
 			
 			//if (this.selection_tree () == channel)
@@ -421,10 +420,8 @@ public class Feedler.Window : Gtk.Window
 		this.view.clear ();
 		string time_format;
 		GLib.Time current_time = GLib.Time.local (time_t ());
-stderr.printf ("\n%u\n", this.db.get_channel (channel_id).items.length ());
 		foreach (Model.Item item in this.db.get_channel (channel_id).items)
 		{
-stderr.printf ("\nAA\n");
 			GLib.Time feed_time = GLib.Time.local (item.time);
 			if (feed_time.day_of_year + 6 < current_time.day_of_year)
 				time_format = feed_time.format ("%d %B %Y");

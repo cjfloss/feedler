@@ -13,18 +13,11 @@ public class Feedler.Service : Object
     private signal void iconed (int channel, bool state);
   	public signal void updated (int channel, int unreaded);
 
-    private static Soup.Session session;
     private Backend backend;
     private GLib.MainLoop loop;
     private unowned Thread<void*> thread;
-    private int connection;
-    private int unreaded;
-
-    static construct
-	{
-		session = new Soup.SessionAsync ();
-		//session.timeout = 5;
-	}
+    internal int connection;
+    internal int unreaded;
 
     public Service.with_backend (BACKENDS back)
     {
@@ -37,7 +30,8 @@ public class Feedler.Service : Object
         this.updatetime = 15;
         this.connection = 0;
         this.backend = GLib.Object.new (back.to_type ()) as Backend;
-
+        this.backend.service = this;
+        stderr.printf (this.backend.service.test ());
     }
     
     public Service ()
@@ -49,7 +43,7 @@ public class Feedler.Service : Object
 	{
 		//stderr.printf ("http://getfavicon.appspot.com/%s\n", url);
 		Soup.Message msg = new Soup.Message("GET", "http://getfavicon.appspot.com/"+url);
-        session.queue_message (msg, favicon_func);
+        this.backend.session.queue_message (msg, favicon_func);
 	}
 
     private void favicon_func (Soup.Session session, Soup.Message message)
@@ -79,7 +73,7 @@ public class Feedler.Service : Object
         stderr.printf ("Feedler.Service.update (%s)\n", uri);
         ++this.connection;
         Soup.Message msg = new Soup.Message ("GET", uri);
-        session.queue_message (msg, update_func);
+        this.backend.session.queue_message (msg, this.backend.update_func);
     }
 
     public void update_all ()
@@ -89,37 +83,10 @@ public class Feedler.Service : Object
             this.update (uri);
     }
 
-    private void update_func (Soup.Session session, Soup.Message message)
-	{
-        stderr.printf ("Feedler.Service.update_func %s\n", message.uri.to_string (false));
-        string xml = (string)message.response_body.flatten ().data;
-        GLib.List<Model.Item?> items = new GLib.List<Model.Item?> ();
-
-		if (xml != null && this.backend.parse_items (xml, ref items))
-		{
-            this.unreaded += (int)items.length ();
-            int channel = this.backend.db.select_channel (message.uri.to_string (false));
-            --this.connection;
-            this.updated (channel, (int)items.length ());
-            if (this.connection == 0)
-            {
-                this.send_notify ("%i new feeds".printf (this.unreaded)); //TODO gettext
-                this.unreaded = 0;
-            }
-            this.backend.db.begin ();
-            foreach (Model.Item item in items)
-            {
-                item.channel = channel;
-                this.backend.db.insert_item (item);
-            }
-            this.backend.db.commit ();
-		}
-	}
-
     public void import (string uri)
     {
         stderr.printf ("Feedler.Service.import (%s)\n", uri);
-        this.backend.parse_folders (uri);
+        this.backend.subscriptions (uri);
     }
     
     public void start ()
@@ -180,7 +147,7 @@ public class Feedler.Service : Object
         }
     }
 
-    private void send_notify (string msg)
+    public void notify (string msg)
     {
         try
         {

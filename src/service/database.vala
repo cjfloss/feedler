@@ -109,20 +109,20 @@ public class Database : GLib.Object
         return 0;
 	}
 
-    public int select_channel_title (string title)
+    public string select_last_title (int channel)
 	{
         try
         {
-			query = new SQLHeavy.Query (db, "SELECT `id` FROM `channels` WHERE `title`=:title;");
-            query.set_string (":title", title);
+			query = new SQLHeavy.Query (db, "SELECT `title` FROM `items` WHERE `channel`=:channel ORDER BY `id` DESC LIMIT 1;");
+            query.set_int (":channel", channel);
 			for (SQLHeavy.QueryResult results = query.execute (); !results.finished; results.next ())
-                return results.fetch_int (0);
+                return results.fetch_string (0);
 		}
 		catch (SQLHeavy.Error e)
 		{
-			stderr.printf ("Cannot select channel for %s.\n", title);
+			stderr.printf ("Cannot select last title for %i.\n", channel);
 		}
-        return 0;
+        return "";
 	}
 
     public string[]? select_channels_uri ()

@@ -7,10 +7,10 @@
 
 public class BackendXml : Backend
 {
-    private Model.Channel* channel;
-    private GLib.List<Model.Item?>** items;
+    private Model.Channel** ch;
+    private GLib.List<Model.Item?>** its;
 
-    public override bool parse_folders (string data)
+    public override bool subscriptions (string data)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_file (data);
         if (!is_valid (doc))
@@ -33,13 +33,13 @@ public class BackendXml : Backend
         return true;
     }
 
-    public override bool parse_channel (string data, ref Model.Channel channel)
+    public override bool channel (string data, ref Model.Channel channel)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
         if (!is_valid (doc))
             return false;
         
-        this.channel = &channel;
+        this.ch = &channel;
         unowned Xml.Node root = doc.get_root_element ();
         switch (root.name)
 		{
@@ -48,17 +48,17 @@ public class BackendXml : Backend
             case "feed":
                 atom_channel (root); break;
 		}
-        this.channel = null;
+        this.ch = null;
         return true;
     }
 
-    public override bool parse_items (string data, ref GLib.List<Model.Item?> items)
+    public override bool items (string data, ref GLib.List<Model.Item?> items)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
         if (!is_valid (doc))
             return false;
         
-        this.items = &items;
+        this.its = &items;
         unowned Xml.Node root = doc.get_root_element ();
         switch (root.name)
 		{
@@ -67,7 +67,7 @@ public class BackendXml : Backend
             case "feed":
                 atom (root); break;
 		}
-        this.items = null;
+        this.its = null;
         return true;
     }
 
@@ -80,6 +80,37 @@ public class BackendXml : Backend
     {
         return "Default XML-based backend.";
     }
+
+    internal override void update_func (Soup.Session session, Soup.Message message)
+	{
+        stderr.printf ("BackendXML.update_func %s\n", message.uri.to_string (false));
+        string xml = (string)message.response_body.flatten ().data;
+        GLib.List<Model.Item?> items = new GLib.List<Model.Item?> ();
+
+		if (xml != null && this.items (xml, ref items))
+		{
+            int channel = db.select_channel (message.uri.to_string (false));
+            string last = db.select_last_title (channel);
+            db.begin ();
+            foreach (Model.Item item in items)
+            {
+                if (last == item.title)
+                    break;
+                item.channel = channel;
+                db.insert_item (item);
+                this.service.unreaded++;
+            }
+            db.commit ();
+            
+            --this.service.connection;
+            this.service.updated (channel, (int)items.length ());
+            if (this.service.connection == 0)
+            {
+                this.service.notify (("%i new feeds").printf (this.service.unreaded)); //TODO gettext
+                this.service.unreaded = 0;
+            }
+		}
+	}
 
     private bool is_valid (Xml.Doc doc)
     {
@@ -143,7 +174,7 @@ public class BackendXml : Backend
 
     private void opml_channel (Xml.Node node)
 	{
-		Model.Channel c = Model.Channel ();
+		Model.Channel c = new Model.Channel ();
 		c.title = node.get_prop ("title");
 		c.source = node.get_prop ("xmlUrl");
 		c.link = node.get_prop ("htmlUrl");
@@ -177,9 +208,9 @@ public class BackendXml : Backend
                 continue;
 
             if (iter->name == "title")
-				this.channel->title = iter->get_content ();
+				this.ch[0]->title = iter->get_content ();
 			else if (iter->name == "link")
-				this.channel->link = iter->get_content ();
+				this.ch[0]->link = iter->get_content ();
             else
                 rss_channel (iter);
         }
@@ -209,7 +240,7 @@ public class BackendXml : Backend
 			item.author = "Anonymous"; //TODO gettext
 		if (item.time == 0)
 			item.time = (int)time_t ();
-        items[0]->append (item);
+        its[0]->append (item);
 	}
     
     private void atom (Xml.Node* channel)
@@ -234,9 +265,9 @@ public class BackendXml : Backend
                 continue;
                 
             if (iter->name == "title")
-				this.channel->title = iter->get_content ();
+				this.ch[0]->title = iter->get_content ();
 			else if (iter->name == "link" && iter->get_prop ("rel") == "alternate")
-				this.channel->link = iter->get_prop ("href");
+				this.ch[0]->link = iter->get_prop ("href");
             else
                 atom_channel (iter);	
         }
@@ -264,7 +295,7 @@ public class BackendXml : Backend
         item.state = Model.State.UNREADED;
 		if (item.time == 0)
 			item.time = (int)time_t ();
-        items[0]->append (item);
+        its[0]->append (item);
 	}
 
     private string atom_author (Xml.Node* iitem)
