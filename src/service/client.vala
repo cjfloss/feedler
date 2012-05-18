@@ -18,12 +18,14 @@ void main ()
         demo = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
                                                     "/org/example/feedler");
 
-        demo.updated.connect ((channel, unreaded) =>
+        demo.updated.connect ((channel) =>
         {
-            stdout.printf ("Channel: %i with %i unreaded items\n", channel, unreaded);
+            stdout.printf ("%s with %i items\n", channel.title, channel.items.length);
+            foreach (var i in channel.items)
+                stdout.printf ("\t%s by %s\n", i.title, i.author);
         });
         demo.update ("http://elementaryos.org/journal/rss.xml");        
-        demo.update ("http://elementaryluna.blogspot.com/feeds/posts/default");
+        //demo.update ("http://elementaryluna.blogspot.com/feeds/posts/default");
         //demo.update_all ();
 
         GLib.Timeout.add_seconds (10, () =>

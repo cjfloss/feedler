@@ -122,6 +122,7 @@ vala_precompile(VALA_C
 	src/ui/feedler-statusbar.vala
     src/service/interface.vala
     src/service/model.vala
+    src/service/serializer.vala
 PACKAGES
 	gtk+-3.0
     granite

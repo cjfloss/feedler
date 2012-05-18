@@ -238,7 +238,7 @@ public class BackendXml : Backend
 
     public override bool refresh (string data, out Serializer.Channel? channel)
     {
-        unowned Xml.Doc doc = Xml.Parser.parse_file (data);
+        unowned Xml.Doc doc = Xml.Parser.parse_memory (data, data.length);
         if (is_valid (doc))
         {
             var feeds = new Feeds ();

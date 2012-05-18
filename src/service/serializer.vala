@@ -31,20 +31,44 @@ public struct Serializer.Channel
 	public string link;
 	public string source;
     public int folder;
-    public Model.Item[] items;
+    public Serializer.Item[]? items;
 
-    public Channel.from_model (Model.Channel model, bool items = true)
+    public Channel.from_model (Model.Channel model, bool full = true)
     {
         //this.id = model.id;
         this.title = model.title;
         this.link = model.link;
-        this.source = model.source;
+        this.source = model.source ?? "";
         this.folder = model.folder;
-        if (items)
+        if (full)
         {
-            this.items = new Model.Item[model.items.length ()];
-            for (uint i = 0, j = model.items.length ()-1; i <= j; i++, j--)
-                this.items[i] = model.items.nth_data (j);
+            int i = 0;
+            this.items = new Serializer.Item[model.items.length ()];
+            foreach (var item in model.items)
+                this.items[i++] = Serializer.Item.from_model (item);
         }
+    }
+}
+
+public struct Serializer.Item
+{
+    //public int id;
+	public string title;
+	public string source;
+	public string author;
+	public string description;
+	public int time;
+    //public Model.State state;
+    //public int channel;
+
+    public Item.from_model (Model.Item model)
+    {
+        //this.id = model.id;
+        this.title = model.title ?? "No title";
+        this.source = model.source;
+        this.author = model.author;
+        this.description = model.description ?? "";
+        this.time = model.time;
+        //this.state = model.state;
     }
 }
