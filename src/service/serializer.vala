@@ -24,6 +24,36 @@ namespace Serializer.List
     }
 }
 
+/*public struct Serializer.Folder
+{
+    public int id;
+	public string name;
+	public int parent;
+
+    //public int id;
+	public string title;
+	public string link;
+	public string source;
+    public int folder;
+    public Serializer.Item[]? items;
+
+    public Folder.from_model (Model.Folder model, bool full = true)
+    {
+        //this.id = model.id;
+        this.title = model.title;
+        this.link = model.link;
+        this.source = model.source ?? "";
+        this.folder = model.folder;
+        if (full)
+        {
+            int i = 0;
+            this.items = new Serializer.Item[model.items.length ()];
+            foreach (var item in model.items)
+                this.items[i++] = Serializer.Item.from_model (item);
+        }
+    }
+}*/
+
 public struct Serializer.Channel
 {
     //public int id;

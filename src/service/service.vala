@@ -15,7 +15,7 @@ public class Feedler.Service : Object
     public signal void updated (Serializer.Channel channel);
 
     private Backend backend;
-    private GLib.MainLoop loop;
+    internal GLib.MainLoop loop;
     private unowned Thread<void*> thread;
     internal int connection;
     internal int unreaded;
@@ -32,6 +32,7 @@ public class Feedler.Service : Object
         this.connection = 0;
         this.backend = GLib.Object.new (back.to_type ()) as Backend;
         this.backend.service = this;
+        this.loop = new GLib.MainLoop ();
     }
     
     public Service ()
@@ -91,7 +92,6 @@ public class Feedler.Service : Object
     public void start ()
     {
         stderr.printf ("Feedler.Service.start ()\n");
-        loop = new GLib.MainLoop ();
         try
         {
             ThreadFunc<void*> thread_func = () =>

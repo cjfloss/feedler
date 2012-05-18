@@ -11,7 +11,7 @@ internal class Subscriptions
     internal GLib.List<Model.Channel?> channels;
 
     internal bool parse (Xml.Doc data)
-    {
+    { 
         unowned Xml.Node root = data.get_root_element ();
         if (root.name == "opml")
         {
@@ -218,6 +218,7 @@ internal class Feeds
 
 public class BackendXml : Backend
 {
+    private string cache;
     public override bool subscribe (string data, out Model.Folder[]? folders, out Serializer.Channel[]? channels)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_file (data);
@@ -255,24 +256,15 @@ public class BackendXml : Backend
     public override void import (string uri)
     {
         stderr.printf ("BackendXML.import (%s)\n", uri);
+        this.cache = uri;
         try
         {
-            ThreadFunc<void*> thread_func = () =>
-            {
-                Model.Folder[]? folders = null;
-                Serializer.Channel[]? channels = null;
-                if (this.subscribe (uri, out folders, out channels))
-                {
-                    this.service.imported (folders, channels);
-                }
-                return null;
-            };
-            Thread.create<void*> (thread_func, false);
+            Thread.create<void*> (this.import_func, false);
         }
         catch (GLib.ThreadError e)
         {
             stderr.printf ("Cannot run threads.\n");
-        }        
+        }
     }
 
     public override void update (string uri)
@@ -290,6 +282,18 @@ public class BackendXml : Backend
     public override string to_string ()
     {
         return "Default XML-based backend.";
+    }
+
+    private void* import_func ()
+    {
+        string uri = this.cache;
+        Model.Folder[]? folders = null;
+        Serializer.Channel[]? channels = null;
+        if (this.subscribe (uri, out folders, out channels))
+        {
+            this.service.imported (folders, channels);
+        }
+        return null;
     }
 
     private void update_func (Soup.Session session, Soup.Message message)

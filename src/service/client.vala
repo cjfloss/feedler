@@ -20,12 +20,23 @@ void main ()
 
         demo.updated.connect ((channel) =>
         {
-            stdout.printf ("%s with %i items\n", channel.title, channel.items.length);
+            stdout.printf ("%s with %i items:\n", channel.title, channel.items.length);
             foreach (var i in channel.items)
                 stdout.printf ("\t%s by %s\n", i.title, i.author);
         });
-        demo.update ("http://elementaryos.org/journal/rss.xml");        
-        //demo.update ("http://elementaryluna.blogspot.com/feeds/posts/default");
+        demo.imported.connect ((folders, channels) =>
+        {
+            stdout.printf ("Folders:\n");
+            foreach (var f in folders)
+                stdout.printf ("\t%s\n", f.name);
+            stdout.printf ("Channels:\n");
+            foreach (var c in channels)
+                stdout.printf ("\t(%i)%s from %s\n", c.folder, c.title, c.source);
+        });
+        demo.update ("http://elementaryos.org/journal/rss.xml");       
+        //demo.import ("/home/d3ny/Pobrane/google-reader-subscriptions.xml");
+        //demo.import ("/home/d3ny/Pobrane/livemarks.opml");
+        demo.update ("http://elementaryluna.blogspot.com/feeds/posts/default");
         //demo.update_all ();
 
         GLib.Timeout.add_seconds (10, () =>
