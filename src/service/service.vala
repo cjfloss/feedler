@@ -11,7 +11,8 @@ public class Feedler.Service : Object
     public bool autoupdate;
     public int updatetime;
     private signal void iconed (int channel, bool state);
-  	public signal void updated (int channel, int unreaded);
+    public signal void imported (Model.Folder[] folders, Serializer.Channel[] channels);
+    public signal void updated (Serializer.Channel channel);
 
     private Backend backend;
     private GLib.MainLoop loop;
@@ -31,7 +32,6 @@ public class Feedler.Service : Object
         this.connection = 0;
         this.backend = GLib.Object.new (back.to_type ()) as Backend;
         this.backend.service = this;
-        stderr.printf (this.backend.service.test ());
     }
     
     public Service ()
@@ -72,21 +72,20 @@ public class Feedler.Service : Object
     {
         stderr.printf ("Feedler.Service.update (%s)\n", uri);
         ++this.connection;
-        Soup.Message msg = new Soup.Message ("GET", uri);
-        this.backend.session.queue_message (msg, this.backend.update_func);
+        this.backend.update (uri);
     }
 
-    public void update_all ()
+    public void update_all (string[] uris)
     {
         stderr.printf ("Feedler.Service.update_all ()\n");
-        foreach (var uri in this.backend.db.select_channels_uri ())
+        foreach (string uri in uris)
             this.update (uri);
     }
 
     public void import (string uri)
     {
         stderr.printf ("Feedler.Service.import (%s)\n", uri);
-        this.backend.subscriptions (uri);
+        this.backend.import (uri);
     }
     
     public void start ()
@@ -114,7 +113,8 @@ public class Feedler.Service : Object
         Thread.usleep (10000000);
         while (autoupdate)
         {
-            this.update_all ();
+            //TODO string[] uris
+            //this.update_all ();
 
             if (autoupdate)
                 Thread.usleep (this.updatetime * 1000000);
@@ -130,7 +130,7 @@ public class Feedler.Service : Object
         loop.quit ();
     }
 
-    public string test ()
+    public string ping ()
     {
         return "Welcome in Feedler service!\n";
     }

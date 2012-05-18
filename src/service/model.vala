@@ -5,13 +5,6 @@
  * @see COPYING
  */
 
-public enum Model.State
-{
-	READED,
-	UNREADED,
-	BOOKMARKED
-}
-
 public struct Model.Folder
 {
 	public int id;
@@ -47,4 +40,11 @@ public struct Model.Item
 	public int time;
     public Model.State state;
     public int channel;
+}
+
+public enum Model.State
+{
+	READED,
+	UNREADED,
+	BOOKMARKED
 }

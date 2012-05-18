@@ -39,20 +39,19 @@ public enum BACKENDS
 
 public abstract class Backend : GLib.Object
 {
-    public abstract bool subscriptions (string data);
-    public abstract bool channel (string data);
-    public abstract bool items (string data);
+    public abstract bool subscribe (string data, out Model.Folder[]? folders, out Serializer.Channel[]? channels);
+    public abstract bool refresh (string data, out Serializer.Channel? channel);
+    public abstract void import (string uri);
+    public abstract void update (string uri);
     public abstract BACKENDS to_type ();
     public abstract string to_string ();
-    internal abstract void update_func (Soup.Session session, Soup.Message message);
+
     internal unowned Feedler.Service service;
     internal static Soup.Session session;
-    internal static Database db;
 
     static construct
     {
         session = new Soup.SessionAsync ();
 		//session.timeout = 5;
-        db = new Database ();
     }
 }

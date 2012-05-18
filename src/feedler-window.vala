@@ -29,7 +29,7 @@ public class Feedler.Window : Gtk.Window
             client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
                                                         "/org/example/feedler");
             client.updated.connect (updated_cb);
-            this.dialog (client.test (), Gtk.MessageType.INFO);
+            this.dialog (client.ping (), Gtk.MessageType.INFO);
         }
         catch (GLib.Error e)
         {
@@ -278,7 +278,7 @@ public class Feedler.Window : Gtk.Window
 	{
         try
         {
-            this.client.update_all ();
+            this.client.update_all ({this.db.get_channel (1).source});
             this.toolbar.progressbar_show ();
         }
         catch (GLib.Error e)
@@ -287,7 +287,7 @@ public class Feedler.Window : Gtk.Window
         }
 	}
 	
-	protected void updated_cb (int id, int unreaded)
+	protected void updated_cb (Serializer.Channel channel)
 	{
 		Model.Channel ch = this.db.get_channel (id);
 		this.toolbar.progressbar_text ("Updating " + ch.title);

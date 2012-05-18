@@ -16,8 +16,10 @@ interface Feedler.Client : Object
 {
     public abstract void import (string uri) throws IOError;
     public abstract void update (string uri) throws IOError;
-    public abstract void update_all () throws IOError;
-    public abstract string test () throws IOError;
+    public abstract void update_all (string[] uris) throws IOError;
+    public abstract string ping () throws IOError;
     public abstract void stop () throws IOError;
-  	public signal void updated (int channel, int unreaded);
+
+    public signal void imported (Model.Folder[] folders, Serializer.Channel[] channels);
+  	public signal void updated (Serializer.Channel channel);
 }
