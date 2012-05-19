@@ -11,7 +11,6 @@ public class Feedler.Database : GLib.Object
 	private SQLHeavy.Transaction transaction;
 	private SQLHeavy.Query query;
 	private string location;
-	internal bool created;
 	internal GLib.List<Model.Channel?> channels;
 	internal GLib.List<Model.Folder?> folders;
 	
@@ -28,13 +27,64 @@ public class Feedler.Database : GLib.Object
         try
 		{
 			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.WRITE);
-			this.created = true;
 		}
 		catch (SQLHeavy.Error e)
 		{
             this.db = null;
 			stderr.printf ("Cannot find database.\n");
-			this.created = false;
+		}
+    }
+
+    public bool is_created ()
+    {
+        if (this.db != null)
+            return true;
+        return false;
+    }
+
+    public void create ()
+	{
+        try
+        {
+			GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler", 0755);
+			GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler/fav", 0755);
+			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE | SQLHeavy.FileMode.CREATE);
+			db.execute ("CREATE TABLE folders (`id` INTEGER PRIMARY KEY,`name` TEXT,`parent` INT);");
+			db.execute ("CREATE TABLE channels (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`homepage` TEXT,`folder` INT);");
+			db.execute ("CREATE TABLE items (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`author` TEXT,`description` TEXT,`time` INT,`state` INT,`channel` INT);");
+		}
+		catch (SQLHeavy.Error e)
+		{
+            this.db = null;
+			stderr.printf ("Cannot create new database in %s.\n", location);
+		}
+	}
+
+    public bool begin ()
+    {
+        try
+		{
+			this.transaction = db.begin_transaction ();
+            return true;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot begin transaction.\n");
+			return false;
+		}
+    }
+
+    public bool commit ()
+    {
+        try
+		{
+			this.transaction.commit ();
+            return true;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot commit transaction.\n");
+			return false;
 		}
     }
 	
@@ -48,23 +98,28 @@ public class Feedler.Database : GLib.Object
 		return channels;
 	}
 
+    public string[]? get_uris ()
+	{
+        int i = 0;
+        string[] uri = new string[this.channels.length ()];
+        foreach (var c in this.channels)
+            uri[i++] = c.source;
+        return uri;
+	}
+
     public Model.Channel? get_channel (int id)
 	{
         foreach (Model.Channel channel in this.channels)
-        {
             if (id == channel.id)
                 return channel;
-        }
 		return null;
 	}
 
     public Model.Channel? from_source (string source)
 	{
         foreach (Model.Channel channel in this.channels)
-        {
             if (source == channel.source)
                 return channel;
-        }
 		return null;
 	}
 
@@ -72,10 +127,8 @@ public class Feedler.Database : GLib.Object
 	{
         Model.Channel ch = this.get_channel (channel);
         foreach (Model.Item item in ch.items)
-        {
             if (id == item.id)
                 return item;
-        }
 		return null;
 	}
 
@@ -97,25 +150,6 @@ public class Feedler.Database : GLib.Object
 			stderr.printf ("Cannot update channel %s with id %i.", channel, id);
 		}
     }
-	
-	public void create ()
-	{
-        try
-        {
-			GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler", 0755);
-			GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler/fav", 0755);
-			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE | SQLHeavy.FileMode.CREATE);
-			db.execute ("CREATE TABLE folders (`id` INTEGER PRIMARY KEY,`name` TEXT,`parent` INT);");
-			db.execute ("CREATE TABLE channels (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`homepage` TEXT,`folder` INT);");
-			db.execute ("CREATE TABLE items (`id` INTEGER PRIMARY KEY,`title` TEXT,`source` TEXT,`author` TEXT,`description` TEXT,`time` INT,`state` INT,`channel` INT);");
-			this.created = true;
-		}
-		catch (SQLHeavy.Error e)
-		{
-			stderr.printf ("Cannot create new database.\n");
-			stderr.printf (location);
-		}
-	}
 	
 	public void remove_subscription (int channel_id, int db_id)
 	{
@@ -215,30 +249,93 @@ public class Feedler.Database : GLib.Object
 		return channels;
 	}
     
-    public void select_unreaded (int id, int unreaded)
+    public int insert_folder (Model.Folder folder, bool autocommit = false)
 	{
-        try
+		try
         {
-            Model.Channel ch = this.get_channel (id);
-			query = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`=:id ORDER BY id DESC LIMIT :unreaded;");
-            query.set_int (":id", id);
-            query.set_int (":unreaded", unreaded);
-			for (var r = query.execute (); !r.finished; r.next ())
-			{
-				Model.Item it = Model.Item ();
-				it.id = r.fetch_int (0);
-				it.title = r.fetch_string (1);
-				it.source = r.fetch_string (2);
-				it.author = r.fetch_string (3);
-				it.description = r.fetch_string (4);
-				it.time = r.fetch_int (5);
-				it.state = (Model.State)r.fetch_int (6);
-				ch.items.append (it);
-			}
+            if (autocommit)
+    			this.transaction = db.begin_transaction ();
+			query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
+			query.set_string (":name", folder.name);
+			query.set_int (":parent", folder.parent);
+            int id = (int)query.execute_insert ();
+            if (autocommit)
+    			this.transaction.commit ();
+            return id;
 		}
 		catch (SQLHeavy.Error e)
 		{
-			stderr.printf ("Cannot select unreaded items.\n");
+			stderr.printf ("Cannot insert folder %s.", folder.name);
+            return 0;
+		}
+	}
+
+    public int insert_channel (Model.Channel channel, bool autocommit = false)
+	{
+		try
+        {
+            if (autocommit)
+    			this.transaction = db.begin_transaction ();
+            query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `link`, `folder`) VALUES (:title, :source, :link, :folder);");
+			query.set_string (":title", channel.title);
+			query.set_string (":source", channel.source);
+			query.set_string (":link", channel.link);
+			query.set_int (":folder", channel.folder);
+            int id = (int)query.execute_insert ();
+            if (autocommit)
+    			this.transaction.commit ();
+            return id;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot insert channel %s.", channel.title);
+            return 0;
+		}
+	}
+
+    public void insert_item (Model.Item item, bool autocommit = false)
+	{
+        try
+        {
+            if (autocommit)
+    			this.transaction = db.begin_transaction ();
+		    query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `time`, `state`, `channel`) VALUES (:title, :source, :description, :author, :time, :state, :channel);");
+			query.set_string (":title", item.title);
+			query.set_string (":source", item.source);
+			query.set_string (":author", item.author);
+			query.set_string (":description", item.description);
+			query.set_int (":time", item.time);
+			query.set_int (":state", (int)item.state);
+			query.set_int (":channel", item.channel);
+			query.execute ();
+            if (autocommit)
+    			this.transaction.commit ();
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot insert items %s.\n", item.title);
+		}
+	}
+
+    public int insert_serialized_item (int channel, Serializer.Item item)
+	{
+        try
+        {
+		    query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `time`, `state`, `channel`) VALUES (:title, :source, :description, :author, :time, :state, :channel);");
+			query.set_string (":title", item.title);
+			query.set_string (":source", item.source);
+			query.set_string (":author", item.author);
+			query.set_string (":description", item.description);
+			query.set_int (":time", item.time);
+			query.set_int (":state", (int)Model.State.UNREADED);
+			query.set_int (":channel", channel);
+			int id = (int)query.execute_insert ();
+            return id;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot insert items %s.\n", item.title);
+            return 0;
 		}
 	}
 }

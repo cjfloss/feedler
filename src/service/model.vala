@@ -33,10 +33,10 @@ public class Model.Channel
 public struct Model.Item
 {
     public int id;
-	public string? title;
-	public string? source;
-	public string? author;
-	public string? description;
+	public string title;
+	public string source;
+	public string author;
+	public string description;
 	public int time;
     public Model.State state;
     public int channel;

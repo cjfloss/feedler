@@ -44,7 +44,7 @@ public class Feedler.Window : Gtk.Window
 		this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);	
 		this.ui_toolbar ();
         this.ui_layout ();
-		if (this.db.created)
+		if (this.db.is_created ())
 			this.ui_feeds ();
 		else
 			this.ui_welcome ();		
@@ -277,30 +277,27 @@ public class Feedler.Window : Gtk.Window
 	{
         Model.Channel ch = this.db.from_source (channel.source);
 		this.toolbar.progressbar_text ("Updating " + channel.title);
-        Model.Item it = ch.items.nth_data (0) ?? Model.Item ();
+        Model.Item last = ch.items.nth_data (0) ?? Model.Item ();
         int unreaded = 0;
+        this.db.begin ();
         foreach (var i in channel.items)
-            if (it.title != i.title)
+            if (last.title != i.title)
             {
                 unreaded++;
                 stderr.printf ("%s\n", i.title);
-                //TODO insert to db
+                int id = this.db.insert_serialized_item (ch.id, i);
+                Model.Item it = {id, i.title, i.source, i.author, i.description,
+                                 i.time, Model.State.UNREADED, ch.id};
+                ch.items.append (it);
             }
+        this.db.commit ();
 
 		if (unreaded > 0)
 		{
 			this.new_feeds = true;
-			this.side.add_unreaded (ch.id, unreaded);
-            //this.db.select_unreaded (id, unreaded);
-            //TODO select unreaded item
-			//this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
-			
+			this.side.add_unreaded (ch.id, unreaded);			
 			if (this.selection_tree () == ch.id)
 				this.load_channel ();
-		}
-		else if (unreaded == -1)
-		{
-			this.side.set_error (ch.id);
 		}
 		else
 			this.side.set_empty (ch.id);
@@ -426,53 +423,14 @@ public class Feedler.Window : Gtk.Window
         try
         {
             this.client.import (filename);
-            this.db.open ();
+            if (!this.db.is_created ())
+                this.db.create ();
             this.ui_welcome_to_workspace ();
         }
         catch (GLib.Error e)
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
         }
-		/*try
-		{
-			this.opml.import (filename, (int)this.db.folders.length (), (int)this.db.channels.length ());
-			if (!this.db.created)
-			{
-				this.ui_welcome_to_workspace ();
-				this.db.create ();
-			}
-			
-			this.db.insert_opml (this.opml.get_folders (), this.opml.get_channels ());
-			
-			foreach (Model.Folder folder in this.opml.get_folders ())
-			{
-				if (folder.parent != -1)
-					this.side.add_folder_to_folder (folder.id, folder.name, folder.parent);
-				else
-					this.side.add_folder (folder.id, folder.name);
-			}
-
-			foreach (Model.Channel channel in this.opml.get_channels ())
-			{
-				if (channel.folder != -1)
-					this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
-				else
-					this.side.add_channel (channel.id, channel.title);
-			}
-			
-			foreach (Model.Channel channel in this.db.channels.nth (this.db.channels.length () - this.opml.get_channels ().length ()))
-			{
-				channel.updated.connect (updated_channel);
-				channel.faviconed.connect (faviconed_channel);
-			}
-			this.side.expand_all ();
-			this.update_all ();
-		}
-		catch (GLib.Error error)
-		{
-			this.ui_welcome ();
-			stderr.printf ("ERROR: %s\n", error.message);
-		}*/
 	}
 	
 	protected void export (string filename)
