@@ -28,6 +28,7 @@ public class Feedler.Window : Gtk.Window
         {
             client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
                                                         "/org/example/feedler");
+            client.imported.connect (imported_cb);            
             client.updated.connect (updated_cb);
             this.dialog (client.ping (), Gtk.MessageType.INFO);
         }
@@ -130,8 +131,6 @@ public class Feedler.Window : Gtk.Window
         foreach (Model.Channel c in this.db.select_channels ())
 		{
             this.side.add_channel (c.id, c.title, c.folder);
-			//channel.updated.connect (updated_channel);
-			//channel.faviconed.connect (faviconed_channel);
 		}
 		
 		this.side.expand_all ();
@@ -271,6 +270,26 @@ public class Feedler.Window : Gtk.Window
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
         }
+	}
+
+    protected void imported_cb (Serializer.Folder[] folders)
+	{
+        this.db.begin ();
+        foreach (var f in folders)
+        {
+            int fid = this.db.insert_serialized_folder (f);
+            Model.Folder fo = {fid, f.name, 0};
+            this.side.add_folder (fo);
+            this.db.folders.append (fo);
+            foreach (var c in f.channels)
+            {
+                int cid = this.db.insert_serialized_channel (fid, c);
+                this.side.add_channel (cid, c.title, fid);
+                Model.Channel ch = new Model.Channel.with_data (cid, c.title, c.link, c.source, fid);
+                this.db.channels.append (ch);
+            }
+        }
+        this.db.commit ();
 	}
 	
 	protected void updated_cb (Serializer.Channel channel)

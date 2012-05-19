@@ -11,7 +11,7 @@ public class Feedler.Service : Object
     public bool autoupdate;
     public int updatetime;
     private signal void iconed (int channel, bool state);
-    public signal void imported (Model.Folder[] folders, Serializer.Channel[] channels);
+    public signal void imported (Serializer.Folder[] folders);
     public signal void updated (Serializer.Channel channel);
 
     private Backend backend;

@@ -317,6 +317,43 @@ public class Feedler.Database : GLib.Object
 		}
 	}
 
+    public int insert_serialized_folder (Serializer.Folder folder)
+	{
+		try
+        {
+            query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
+			query.set_string (":name", folder.name);
+			//query.set_int (":parent", folder.parent);
+            query.set_int (":parent", 0);
+		    int id = (int)query.execute_insert ();
+            return id;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot insert folder %s.\n", folder.name);
+            return 0;
+		}
+	}
+
+    public int insert_serialized_channel (int folder, Serializer.Channel channel)
+	{
+        try
+        {
+            query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `link`, `folder`) VALUES (:title, :source, :link, :folder);");
+			query.set_string (":title", channel.title);
+			query.set_string (":source", channel.source);
+			query.set_string (":link", channel.link);
+			query.set_int (":folder", folder);
+            int id = (int)query.execute_insert ();
+            return id;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot insert channel %s.\n", channel.title);
+            return 0;
+		}
+	}
+
     public int insert_serialized_item (int channel, Serializer.Item item)
 	{
         try
@@ -334,7 +371,7 @@ public class Feedler.Database : GLib.Object
 		}
 		catch (SQLHeavy.Error e)
 		{
-			stderr.printf ("Cannot insert items %s.\n", item.title);
+			stderr.printf ("Cannot insert item %s.\n", item.title);
             return 0;
 		}
 	}

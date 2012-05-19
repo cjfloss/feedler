@@ -20,6 +20,6 @@ interface Feedler.Client : Object
     public abstract string ping () throws IOError;
     public abstract void stop () throws IOError;
 
-    public signal void imported (Model.Folder[] folders, Serializer.Channel[] channels);
+    public signal void imported (Serializer.Folder[] folders);
   	public signal void updated (Serializer.Channel channel);
 }

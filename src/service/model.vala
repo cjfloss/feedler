@@ -21,6 +21,15 @@ public class Model.Channel
     public int folder;
     public GLib.List<Model.Item?> items;
 
+    public Channel.with_data (int id, string title, string link, string source, int folder)
+    {
+        this.id = id;
+        this.title = title;
+        this.link = link;
+        this.source = source;
+        this.folder = folder;
+    }
+
     public Model.Item? get_item (int id)
     {
         foreach (Model.Item item in this.items)

@@ -7,16 +7,14 @@
 
 internal class Subscriptions
 {
-    internal GLib.List<Model.Folder?> folders;
-    internal GLib.List<Model.Channel?> channels;
+    internal Gee.HashMap<Model.Folder?, unowned GLib.List<Model.Channel?>> folders;
 
     internal bool parse (Xml.Doc data)
     { 
         unowned Xml.Node root = data.get_root_element ();
         if (root.name == "opml")
         {
-            this.channels = new GLib.List<Model.Channel?> ();
-            this.folders = new GLib.List<Model.Folder?> ();
+            this.folders = new Gee.HashMap<Model.Folder?, unowned GLib.List<Model.Channel?>> ();
 			unowned Xml.Node head_body = root.children;
 			while (head_body != null)
 			{
@@ -60,9 +58,8 @@ internal class Subscriptions
 		Model.Folder f = Model.Folder ();
         f.name = node.get_prop ("text");
         f.parent = 0;
-        if (node.parent->name != "body")
-            f.parent = get_parent (node.parent->get_prop ("text"));
-        this.folders.append (f);
+        //TODO if (node.parent->name != "body")
+        this.folders.set (f, new GLib.List<Model.Channel?> ());
 		opml (node);
 	}
 
@@ -74,16 +71,14 @@ internal class Subscriptions
 		c.link = node.get_prop ("htmlUrl");
         c.folder = 0;
         if (node.parent->name != "body")
-            c.folder = get_parent (node.parent->get_prop ("text"));
-        this.channels.append (c);
+            this.append_channel (node.parent->get_prop ("text"), c);
 	}
 
-    private int get_parent (string name)
+    private void append_channel (string name, Model.Channel channel)
     {
-        foreach (Model.Folder folder in this.folders)
-            if (folder.name == name)
-                return folder.id;
-        return 0;
+        foreach (var f in this.folders.entries)
+            if (f.key.name == name)
+                f.value.append (channel);
     }
 }
 
@@ -219,7 +214,7 @@ internal class Feeds
 public class BackendXml : Backend
 {
     private string cache;
-    public override bool subscribe (string data, out Model.Folder[]? folders, out Serializer.Channel[]? channels)
+    public override bool subscribe (string data, out Serializer.Folder[]? folders)
     {
         unowned Xml.Doc doc = Xml.Parser.parse_file (data);
         if (is_valid (doc))
@@ -227,13 +222,14 @@ public class BackendXml : Backend
             var subs = new Subscriptions ();
             if (subs.parse (doc))
             {
-                folders = Serializer.List.folders_array (subs.folders);
-                channels = Serializer.List.channels_array (subs.channels);
+                int i = 0;
+                folders = new Serializer.Folder[subs.folders.size];
+                foreach (var f in subs.folders.entries)
+                    folders[i++] = Serializer.Folder.from_model (f.key, f.value);
                 return true;
             }
         }
         folders = null;
-        channels = null;
         return false;
     }
 
@@ -286,12 +282,10 @@ public class BackendXml : Backend
 
     private void* import_func ()
     {
-        string uri = this.cache;
-        Model.Folder[]? folders = null;
-        Serializer.Channel[]? channels = null;
-        if (this.subscribe (uri, out folders, out channels))
+        Serializer.Folder[]? folders = null;
+        if (this.subscribe (this.cache, out folders))
         {
-            this.service.imported (folders, channels);
+            this.service.imported (folders);
         }
         return null;
     }
@@ -306,13 +300,6 @@ public class BackendXml : Backend
         {
             channel.source = message.uri.to_string (false);
             this.service.updated (channel);
-            /*--this.service.connection;
-            this.service.unreaded++;
-            if (this.service.connection == 0)
-            {
-                this.service.notification (("%i new feeds").printf (this.service.unreaded)); //TODO gettext
-                this.service.unreaded = 0;
-            }*/
         }
 	}
 
