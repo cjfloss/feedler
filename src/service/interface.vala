@@ -17,6 +17,7 @@ interface Feedler.Client : Object
     public abstract void import (string uri) throws IOError;
     public abstract void update (string uri) throws IOError;
     public abstract void update_all (string[] uris) throws IOError;
+    public abstract void notification (string msg) throws IOError;
     public abstract string ping () throws IOError;
     public abstract void stop () throws IOError;
 

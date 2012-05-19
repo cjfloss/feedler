@@ -10,15 +10,13 @@ public class Feedler.Service : Object
 {
     public bool autoupdate;
     public int updatetime;
-    private signal void iconed (int channel, bool state);
+    private signal void iconed (int channel, bool state);//TODO favicons
     public signal void imported (Serializer.Folder[] folders);
     public signal void updated (Serializer.Channel channel);
 
     private Backend backend;
-    internal GLib.MainLoop loop;
+    private GLib.MainLoop loop;
     private unowned Thread<void*> thread;
-    internal int connection;
-    internal int unreaded;
 
     public Service.with_backend (BACKENDS back)
     {
@@ -29,7 +27,6 @@ public class Feedler.Service : Object
                       () => {}, () => stderr.printf ("Cannot aquire name.\n"));
         this.autoupdate = false;
         this.updatetime = 15;
-        this.connection = 0;
         this.backend = GLib.Object.new (back.to_type ()) as Backend;
         this.backend.service = this;
         this.loop = new GLib.MainLoop ();
@@ -72,7 +69,6 @@ public class Feedler.Service : Object
     public void update (string uri)
     {
         stderr.printf ("Feedler.Service.update (%s)\n", uri);
-        ++this.connection;
         this.backend.update (uri);
     }
 

@@ -263,7 +263,7 @@ public class Feedler.Window : Gtk.Window
 	{
         try
         {
-            this.client.update_all ({this.db.get_channel (1).source});
+            this.client.update_all (this.db.get_uris ());
             this.toolbar.progressbar_show ();
         }
         catch (GLib.Error e)
@@ -274,6 +274,7 @@ public class Feedler.Window : Gtk.Window
 
     protected void imported_cb (Serializer.Folder[] folders)
 	{
+        int count = 0;
         this.db.begin ();
         foreach (var f in folders)
         {
@@ -281,6 +282,7 @@ public class Feedler.Window : Gtk.Window
             Model.Folder fo = {fid, f.name, 0};
             this.side.add_folder (fo);
             this.db.folders.append (fo);
+            count += f.channels.length;
             foreach (var c in f.channels)
             {
                 int cid = this.db.insert_serialized_channel (fid, c);
@@ -290,6 +292,7 @@ public class Feedler.Window : Gtk.Window
             }
         }
         this.db.commit ();
+        this.client.notification (_("Imported %i channels in %i folders.").printf (count, folders.length));
 	}
 	
 	protected void updated_cb (Serializer.Channel channel)
@@ -303,7 +306,6 @@ public class Feedler.Window : Gtk.Window
             if (last.title != i.title)
             {
                 unreaded++;
-                stderr.printf ("%s\n", i.title);
                 int id = this.db.insert_serialized_item (ch.id, i);
                 Model.Item it = {id, i.title, i.source, i.author, i.description,
                                  i.time, Model.State.UNREADED, ch.id};
@@ -317,6 +319,7 @@ public class Feedler.Window : Gtk.Window
 			this.side.add_unreaded (ch.id, unreaded);			
 			if (this.selection_tree () == ch.id)
 				this.load_channel ();
+            this.client.notification (_("%i new feeds.").printf (unreaded));
 		}
 		else
 			this.side.set_empty (ch.id);
