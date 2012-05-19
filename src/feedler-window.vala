@@ -265,7 +265,7 @@ public class Feedler.Window : Gtk.Window
         try
         {
             this.client.update_all (this.db.get_uris ());
-            this.toolbar.progressbar_show ();
+            this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating");
         }
         catch (GLib.Error e)
         {
@@ -299,7 +299,7 @@ public class Feedler.Window : Gtk.Window
 	protected void updated_cb (Serializer.Channel channel)
 	{
         Model.Channel ch = this.db.from_source (channel.source);
-		this.toolbar.progressbar_text ("Updating " + channel.title);
+        this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating " + ch.title);
         Model.Item last = ch.items.nth_data (0) ?? Model.Item ();
         int unreaded = 0;
         this.db.begin ();
@@ -320,19 +320,15 @@ public class Feedler.Window : Gtk.Window
 			this.side.add_unreaded (ch.id, unreaded);			
 			if (this.selection_tree () == ch.id)
 				this.load_channel ();
-            this.client.notification (_("%i new feeds.").printf (unreaded));
+            //this.client.notification (_("%i new feeds.").printf (unreaded));
 		}
 		else
 			this.side.set_empty (ch.id);
-		if (this.toolbar.progressbar_progress (1.0 / this.db.channels.length ()) && this.new_feeds)
-		{
-			this.new_feeds = false;
-		}
 	}
 	
 	protected void favicon_all ()
 	{
-		this.toolbar.progressbar_show ();
+		this.toolbar.progressbar (1.0 / this.db.channels.length (), "Faviconing");
 		foreach (Model.Channel ch in this.db.channels)
 		{
 			//ch.favicon ();
@@ -342,8 +338,7 @@ public class Feedler.Window : Gtk.Window
 	protected void faviconed_channel (int channel, bool state)
 	{
 		Model.Channel ch = this.db.channels.nth_data (channel);
-		this.toolbar.progressbar_text ("Favicon for "+ch.title);
-		this.toolbar.progressbar_progress (1.0 / this.db.channels.length ());		
+		this.toolbar.progressbar (1.0 / this.db.channels.length (), "Favicon for "+ch.title);		
 		if (state)
 			this.side.set_empty (ch.id);
 		else
@@ -420,6 +415,7 @@ public class Feedler.Window : Gtk.Window
 	{
         if (this.view.to_type () == 1)
             this.view.change ();
+        this.toolbar.progressbar (0.2, "TEST");
 	}
 	
 	protected void search_list ()

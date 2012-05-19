@@ -7,25 +7,44 @@
  
 public class Progress : Gtk.VBox
 {
-	internal Gtk.ProgressBar progressbar;
-	internal Gtk.Label label;
+	private Gtk.ProgressBar bar;
+	private Gtk.Label label;
 	
 	construct
 	{
-		this.progressbar = new Gtk.ProgressBar ();
+		this.bar = new Gtk.ProgressBar ();
+        this.bar.fraction = 0.1;
 		this.label = new Gtk.Label (null);
 		this.label.set_justify (Gtk.Justification.CENTER);
 		this.label.set_single_line_mode (true);
 		this.label.ellipsize = Pango.EllipsizeMode.END;
 		
 		this.pack_start (label, false, false, 0);
-		this.pack_end (progressbar, false, false, 0);
+		this.pack_end (bar, false, false, 0);
+        this.set_no_show_all (true);
+       	this.hide ();
 	}
-		
-	public void set_progress_value (double progress)
-	{
-		progressbar.set_fraction (progressbar.fraction + progress);
-	}
+
+    public void progress (double progress, string text)
+    {
+        if (this.bar.fraction >= 0.0 && this.bar.fraction < 1.0)
+        {
+            this.bar.set_fraction (this.bar.fraction + progress);
+            this.label.set_text (text);
+            this.set_no_show_all (false);
+		    this.show_all ();
+		}
+		else
+        {
+			this.set_no_show_all (true);
+        	this.hide ();
+		}
+    }
+
+    public void clear ()
+    {
+        this.bar.set_fraction (0.0);
+    }
 }
 
 public class Feedler.Toolbar : Gtk.Toolbar
@@ -34,8 +53,8 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Gtk.ToolButton forward = new Gtk.ToolButton.from_stock (Gtk.Stock.GO_FORWARD);
 	internal Gtk.ToolButton update = new Gtk.ToolButton.from_stock (Gtk.Stock.REFRESH);
 
-    Gtk.Alignment align;
-    Progress progress = new Progress ();    
+    internal Gtk.Alignment align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
+    internal Progress progress = new Progress ();
     internal Granite.Widgets.ModeButton mode = new Granite.Widgets.ModeButton ();
     internal Granite.Widgets.SearchBar search = new Granite.Widgets.SearchBar (_("Type to Search..."));
     internal Gtk.ToggleButton column = new Gtk.ToggleButton ();
@@ -64,11 +83,11 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (about_program);
         this.appmenu = new Granite.Widgets.AppMenu (menu);
         
-        //this.mode = new Granite.Widgets.ModeButton ();
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-details-symbolic", Gtk.IconSize.MENU));
         this.column.set_image (new Gtk.Image.from_icon_name ("view-list-column-symbolic", Gtk.IconSize.MENU));
         this.column.valign = Gtk.Align.CENTER;
+		this.align.add (progress);
         Gtk.ToolItem mode_item = new Gtk.ToolItem ();
 		mode_item.margin = 5;
         mode_item.add (mode);
@@ -76,17 +95,14 @@ public class Feedler.Toolbar : Gtk.Toolbar
         column_item.add (column);
         Gtk.ToolItem search_item = new Gtk.ToolItem ();
         search_item.add (search);
-		
-		this.progress = new Progress ();
 		Gtk.ToolItem progress_item = new Gtk.ToolItem ();
 		progress_item.set_expand (true);
+		progress_item.add (align);
 
         this.back.tooltip_text = _("Go to the previous readed item");
         this.forward.tooltip_text = _("Go to the next readed item");
         this.update.tooltip_text = _("Refresh all subscriptions");
         this.appmenu.tooltip_text = _("Menu");
-        this.back.set_sensitive (false);
-		this.forward.set_sensitive (false); //TODO improve history
         
         this.insert (back, 0);
         this.insert (forward, 1);
@@ -97,13 +113,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.insert (progress_item, 6);
         this.insert (search_item, 7);
         this.insert (appmenu, 8);
-
-        this.align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
-		progress_item.add (align);
-		align.add (progress);
-		progress_item.show_all ();
-		align.set_no_show_all (true);
-		align.hide ();
 	}
 	
 	public void set_enable (bool state)
@@ -117,31 +126,9 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		this.export_feeds.set_sensitive (state);
 		this.sidebar_visible.set_sensitive (state);
 	}
-	
-	public void progressbar_show ()
-	{
-		this.progress.progressbar.set_fraction (0.01);
-		this.align.show ();
-	}
-	
-	public void progressbar_hide ()
-	{
-		this.align.hide ();
-	}
-	
-	public void progressbar_text (string text)
-	{
-		this.progress.label.set_text (text);
-	}
-	
-	public bool progressbar_progress (double value)
-	{
-		this.progress.set_progress_value (value);
-		if (progress.progressbar.fraction >= 1.0)
-		{
-			this.align.hide ();
-			return true;
-		}
-		return false;
+
+    public void progressbar (double progress, string text)
+    {
+		this.progress.progress (progress, text);
 	}
 }
