@@ -19,8 +19,9 @@ public class Feedler.Window : Gtk.Window
 	private Gtk.Box content;
 	private Gtk.ScrolledWindow scroll_side;
 	private Feedler.CardLayout layout;
-	private bool new_feeds;
     private Feedler.Client client;
+    private int connections;
+    private int unreaded;
 	
 	construct
 	{
@@ -61,9 +62,7 @@ public class Feedler.Window : Gtk.Window
         
         this.toolbar.back.clicked.connect (history_prev);
         this.toolbar.forward.clicked.connect (history_next);
-        //this.toolbar.next.clicked.connect (next_unreaded);
         this.toolbar.update.clicked.connect (update_all);
-        //this.toolbar.mark.clicked.connect (mark_all);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.column.clicked.connect (change_column);
         this.toolbar.search.activate.connect (search_list); 
@@ -264,7 +263,9 @@ public class Feedler.Window : Gtk.Window
 	{
         try
         {
-            this.client.update_all (this.db.get_uris ());
+            string[] uris = this.db.get_uris ();
+            this.connections = uris.length;
+            this.client.update_all (uris);
             this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating");
         }
         catch (GLib.Error e)
@@ -279,6 +280,7 @@ public class Feedler.Window : Gtk.Window
         this.db.begin ();
         foreach (var f in folders)
         {
+            this.toolbar.progressbar (1.0 / folders.length, "Importing " + f.name);
             int fid = this.db.insert_serialized_folder (f);
             Model.Folder fo = {fid, f.name, 0};
             this.side.add_folder (fo);
@@ -301,29 +303,33 @@ public class Feedler.Window : Gtk.Window
         Model.Channel ch = this.db.from_source (channel.source);
         this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating " + ch.title);
         Model.Item last = ch.items.nth_data (0) ?? Model.Item ();
-        int unreaded = 0;
+        int news = 0; 
         this.db.begin ();
         foreach (var i in channel.items)
             if (last.title != i.title)
             {
-                unreaded++;
+                news++;
                 int id = this.db.insert_serialized_item (ch.id, i);
                 Model.Item it = {id, i.title, i.source, i.author, i.description,
                                  i.time, Model.State.UNREADED, ch.id};
                 ch.items.append (it);
             }
         this.db.commit ();
-
+        this.connections--;
+        this.unreaded += news;
 		if (unreaded > 0)
 		{
-			this.new_feeds = true;
-			this.side.add_unreaded (ch.id, unreaded);			
+			this.side.add_unreaded (ch.id, news);			
 			if (this.selection_tree () == ch.id)
 				this.load_channel ();
-            //this.client.notification (_("%i new feeds.").printf (unreaded));
 		}
 		else
 			this.side.set_empty (ch.id);
+        if (connections == 0)
+        {
+            this.client.notification (_("%i new feeds.").printf (unreaded));
+            this.unreaded = 0;
+        }
 	}
 	
 	protected void favicon_all ()
@@ -455,6 +461,7 @@ public class Feedler.Window : Gtk.Window
             if (!this.db.is_created ())
                 this.db.create ();
             this.ui_welcome_to_workspace ();
+            this.toolbar.progressbar (0.1, "Importing subscriptions");
         }
         catch (GLib.Error e)
         {

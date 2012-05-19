@@ -127,8 +127,8 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		this.sidebar_visible.set_sensitive (state);
 	}
 
-    public void progressbar (double progress, string text)
+    public void progressbar (double fraction, string text)
     {
-		this.progress.progress (progress, text);
+		this.progress.progress (fraction, text);
 	}
 }
