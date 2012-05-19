@@ -101,13 +101,10 @@ ensure_vala_version("0.14.2" MINIMUM)
 include(ValaPrecompile)
 vala_precompile(VALA_C
 	src/feedler-app.vala
-	src/feedler-window.vala
 	src/feedler-database.vala
-	#src/feedler-datatype.vala
-	src/feedler-settings.vala
-	#src/feedler-parser.vala
-	#src/feedler-opml.vala
 	src/feedler-history.vala
+	src/feedler-settings.vala
+	src/feedler-window.vala
 	src/ui/feedler-sidebar.vala
 	src/ui/feedler-preferences.vala
 	src/ui/feedler-view.vala

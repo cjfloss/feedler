@@ -18,14 +18,39 @@ msgstr ""
 "X-Launchpad-Export-Date: 2012-05-19 05:39+0000\n"
 "X-Generator: Launchpad (build 15259)\n"
 
+#: ../src/feedler-statusbar.vala:46
+#, c-format
+msgid "%u %s"
+msgstr "%u %s"
+
+#: ../src/feedler-toolbar.vala:64
+msgid "About"
+msgstr "Hakkında"
+
 #: ../src/feedler-create-subscription.vala:27
 msgid "Add"
 msgstr "Ekle"
+
+#: ../src/feedler-statusbar.vala:51
+msgid "Add new subscription URL"
+msgstr ""
+
+#: ../src/feedler-toolbar.vala:98
+msgid "Back"
+msgstr "Geri dön"
 
 #: ../src/feedler-create-subscription.vala:31
 #: ../src/feedler-edit-subscription.vala:34
 msgid "Cancel"
 msgstr "İptal et"
+
+#: ../src/feedler-statusbar.vala:57
+msgid "Edit selected subscription"
+msgstr ""
+
+#: ../src/feedler-toolbar.vala:62
+msgid "Export"
+msgstr "Dışa Aktar"
 
 #: ../src/feedler-create-subscription.vala:41
 #: ../src/feedler-edit-subscription.vala:44
@@ -33,57 +58,9 @@ msgstr "İptal et"
 msgid "Folder"
 msgstr "Dosya"
 
-#: ../src/feedler-create-subscription.vala:44
-#: ../src/feedler-edit-subscription.vala:51
-#, c-format
-msgid "URI Address"
-msgstr "Adres"
-
-#: ../src/feedler-edit-subscription.vala:30
-msgid "Save"
-msgstr "Kaydet"
-
-#: ../src/feedler-edit-subscription.vala:47
-#, c-format
-msgid "Name"
-msgstr "İsim"
-
-#: ../src/feedler-statusbar.vala:46
-#, c-format
-msgid "%u %s"
-msgstr "%u %s"
-
-#: ../src/feedler-statusbar.vala:51
-msgid "Add new subscription URL"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:54
-msgid "Remove selected subscription"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:57
-msgid "Edit selected subscription"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:60
-msgid "Mark selected subscription as readed"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:82
-msgid "unreaded feeds"
-msgstr ""
-
-#: ../src/feedler-statusbar.vala:82
-msgid "unreaded feed"
-msgstr ""
-
-#: ../src/feedler-toolbar.vala:54
-msgid "Type to Search..."
-msgstr "Aramak için Birşey Yazın..."
-
-#: ../src/feedler-toolbar.vala:59
-msgid "Sidebar Visible"
-msgstr "Kenar Çubuğu Görünür"
+#: ../src/feedler-toolbar.vala:100
+msgid "Forward"
+msgstr "İleri Git"
 
 #: ../src/feedler-toolbar.vala:60
 msgid "Fullscreen"
@@ -93,34 +70,57 @@ msgstr "Tam Ekran"
 msgid "Import"
 msgstr "İçe Aktar"
 
-#: ../src/feedler-toolbar.vala:62
-msgid "Export"
-msgstr "Dışa Aktar"
+#: ../src/feedler-statusbar.vala:60
+msgid "Mark selected subscription as readed"
+msgstr ""
 
-#: ../src/feedler-toolbar.vala:63
-msgid "Preferences"
-msgstr "Tercihler"
+#: ../src/feedler-toolbar.vala:121
+msgid "Menu"
+msgstr "Menü"
 
-#: ../src/feedler-toolbar.vala:64
-msgid "About"
-msgstr "Hakkında"
-
-#: ../src/feedler-toolbar.vala:98
-msgid "Back"
-msgstr "Geri dön"
-
-#: ../src/feedler-toolbar.vala:100
-msgid "Forward"
-msgstr "İleri Git"
+#: ../src/feedler-edit-subscription.vala:47
+#, c-format
+msgid "Name"
+msgstr "İsim"
 
 #: ../src/feedler-toolbar.vala:102
 msgid "Next"
 msgstr "Sonraki"
 
+#: ../src/feedler-toolbar.vala:63
+msgid "Preferences"
+msgstr "Tercihler"
+
 #: ../src/feedler-toolbar.vala:105
 msgid "Refresh"
 msgstr "Tazele"
 
-#: ../src/feedler-toolbar.vala:121
-msgid "Menu"
-msgstr "Menü"
+#: ../src/feedler-statusbar.vala:54
+msgid "Remove selected subscription"
+msgstr ""
+
+#: ../src/feedler-edit-subscription.vala:30
+msgid "Save"
+msgstr "Kaydet"
+
+#: ../src/feedler-toolbar.vala:59
+msgid "Sidebar Visible"
+msgstr "Kenar Çubuğu Görünür"
+
+#: ../src/feedler-toolbar.vala:54
+msgid "Type to Search..."
+msgstr "Aramak için Birşey Yazın..."
+
+#: ../src/feedler-create-subscription.vala:44
+#: ../src/feedler-edit-subscription.vala:51
+#, c-format
+msgid "URI Address"
+msgstr "Adres"
+
+#: ../src/feedler-statusbar.vala:82
+msgid "unreaded feed"
+msgstr ""
+
+#: ../src/feedler-statusbar.vala:82
+msgid "unreaded feeds"
+msgstr ""

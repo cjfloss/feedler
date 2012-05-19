@@ -42,7 +42,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 {
 	internal Gtk.ToolButton back = new Gtk.ToolButton.from_stock (Gtk.Stock.GO_BACK);
     internal Gtk.ToolButton forward = new Gtk.ToolButton.from_stock (Gtk.Stock.GO_FORWARD);
-    internal Gtk.ToolButton next = new Gtk.ToolButton.from_stock (Gtk.Stock.JUMP_TO);
+    //internal Gtk.ToolButton next = new Gtk.ToolButton.from_stock (Gtk.Stock.JUMP_TO);
 	internal Gtk.ToolButton update = new Gtk.ToolButton.from_stock (Gtk.Stock.REFRESH);
     //internal Gtk.ToolButton mark = new Gtk.ToolButton.from_stock (Gtk.Stock.APPLY);
     //internal Gtk.ToolButton add_new = new Gtk.ToolButton.from_stock (Gtk.Stock.ADD);
@@ -68,7 +68,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		sidebar_visible.active = true;
 
 	// Toolbar properties compliant with elementary HIG
-	get_style_context ().add_class ("primary-toolbar");
+        get_style_context ().add_class ("primary-toolbar");
 		
         Gtk.Menu menu = new Gtk.Menu ();
         menu.append (import_feeds);
@@ -96,22 +96,22 @@ public class Feedler.Toolbar : Gtk.Toolbar
 
         this.back.tooltip_text = _("Go to the previous readed item");
         this.forward.tooltip_text = _("Go to the next readed item");
-        this.next.tooltip_text = _("Go to the next unreaded item");
+        //this.next.tooltip_text = _("Go to the next unreaded item");
         this.update.tooltip_text = _("Refresh all subscriptions");
         this.appmenu.tooltip_text = _("Menu");
         this.back.set_sensitive (false);
 		this.forward.set_sensitive (false); //TODO improve history
-        this.next.set_sensitive (false);
+        //this.next.set_sensitive (false);
         
         this.insert (back, 0);
         this.insert (forward, 1);
-        this.insert (next, 2);
-        this.insert (update, 3);
-        this.insert (new Gtk.SeparatorToolItem (), 4);
-        this.insert (mode_item, 5);
-        this.insert (progress_item, 6);
-        this.insert (search_item, 7);
-        this.insert (appmenu, 8);
+        //this.insert (next, 2);
+        this.insert (update, 2);
+        this.insert (new Gtk.SeparatorToolItem (), 3);
+        this.insert (mode_item, 4);
+        this.insert (progress_item, 5);
+        this.insert (search_item, 6);
+        this.insert (appmenu, 7);
 
         this.align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
 		this.progress_item.add (align);
@@ -125,7 +125,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 	{
 		this.back.set_sensitive (state);
 		this.forward.set_sensitive (state);
-		this.next.set_sensitive (state);
+		//this.next.set_sensitive (state);
 		this.update.set_sensitive (state);
 		//this.mark.set_sensitive (state);
 		//this.add_new.set_sensitive (state);
