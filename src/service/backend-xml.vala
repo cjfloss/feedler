@@ -304,6 +304,7 @@ public class BackendXml : Backend
         
         if (xml != null && this.refresh (xml, out channel))
         {
+            channel.source = message.uri.to_string (false);
             this.service.updated (channel);
             /*--this.service.connection;
             this.service.unreaded++;

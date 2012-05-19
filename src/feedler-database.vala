@@ -58,6 +58,16 @@ public class Feedler.Database : GLib.Object
 		return null;
 	}
 
+    public Model.Channel? from_source (string source)
+	{
+        foreach (Model.Channel channel in this.channels)
+        {
+            if (source == channel.source)
+                return channel;
+        }
+		return null;
+	}
+
     public Model.Item? get_item (int channel, int id)
 	{
         Model.Channel ch = this.get_channel (channel);

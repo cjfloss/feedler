@@ -289,18 +289,27 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void updated_cb (Serializer.Channel channel)
 	{
-		Model.Channel ch = this.db.get_channel (id);
-		this.toolbar.progressbar_text ("Updating " + ch.title);
-		
+        Model.Channel ch = this.db.from_source (channel.source);
+		this.toolbar.progressbar_text ("Updating " + channel.title);
+        Model.Item it = ch.items.nth_data (0) ?? Model.Item ();
+        int unreaded = 0;
+        foreach (var i in channel.items)
+            if (it.title != i.title)
+            {
+                unreaded++;
+                stderr.printf ("%s\n", i.title);
+                //TODO insert to db
+            }
+
 		if (unreaded > 0)
 		{
 			this.new_feeds = true;
 			this.side.add_unreaded (ch.id, unreaded);
-            this.db.select_unreaded (id, unreaded);
+            //this.db.select_unreaded (id, unreaded);
             //TODO select unreaded item
 			//this.db.insert_items (ch.items.nth (ch.items.length () - unreaded), channel);
 			
-			if (this.selection_tree () == id)
+			if (this.selection_tree () == ch.id)
 				this.load_channel ();
 		}
 		else if (unreaded == -1)
