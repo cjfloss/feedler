@@ -51,6 +51,16 @@ public class Feedler.ViewWeb : Feedler.View
 	{
 		stderr.printf ("Feedler.ViewWeb.select ()");
 	}
+
+    public override void change ()
+    {
+		stderr.printf ("Feedler.ViewWeb.change ()");
+    }
+
+    public override int to_type ()
+    {
+        return 2;
+    }
 	
 	private string generate_item (string title, string time, string author, string description)
 	{

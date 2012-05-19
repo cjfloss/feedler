@@ -110,6 +110,19 @@ public class Feedler.ViewList : Feedler.View
 		this.tree.get_selection ().select_path (path);
 		this.load_item_history (false);
 	}
+
+    public override void change ()
+    {
+        if (this.pane.get_orientation () == Gtk.Orientation.VERTICAL)
+            this.pane.set_orientation (Gtk.Orientation.HORIZONTAL);
+        else
+            this.pane.set_orientation (Gtk.Orientation.VERTICAL);
+    }
+
+    public override int to_type ()
+    {
+        return 1;
+    }
 	
 	protected void load_article (string content)
 	{

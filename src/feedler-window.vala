@@ -65,6 +65,7 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.update.clicked.connect (update_all);
         //this.toolbar.mark.clicked.connect (mark_all);
         this.toolbar.mode.mode_changed.connect (change_mode);
+        this.toolbar.column.clicked.connect (change_column);
         this.toolbar.search.activate.connect (search_list); 
         
         this.toolbar.import_feeds.activate.connect (import_file);
@@ -408,7 +409,17 @@ public class Feedler.Window : Gtk.Window
 		stderr.printf ("Feedler.App.change_mode ()\n");
 		this.layout.set_current_page (this.toolbar.mode.selected);
 		this.view = (Feedler.View)layout.get_nth_page (this.toolbar.mode.selected);
+        if (this.view.to_type () == 2)
+            this.toolbar.column.set_sensitive (false);
+        else
+            this.toolbar.column.set_sensitive (true);
 		this.load_channel ();
+	}
+
+    protected void change_column ()
+	{
+        if (this.view.to_type () == 1)
+            this.view.change ();
 	}
 	
 	protected void search_list ()

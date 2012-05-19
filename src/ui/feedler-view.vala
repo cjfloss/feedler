@@ -33,4 +33,8 @@ public abstract class Feedler.View : Gtk.Viewport
 	public abstract void refilter (string text);
 	
 	public abstract void select (Gtk.TreePath path);
+
+	public abstract void change ();
+
+    public abstract int to_type ();
 }
