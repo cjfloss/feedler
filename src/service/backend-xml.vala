@@ -140,7 +140,7 @@ internal class Feeds
 			else if (iter->name == "pubDate")
 				item.time = (int)string_to_time_t (iter->get_content ());
         }
-        item.state = Model.State.UNREADED;
+        item.state = Model.State.UNREAD;
         if (item.author == null)
 			item.author = "Anonymous"; //TODO gettext
 		if (item.time == 0)
@@ -185,7 +185,7 @@ internal class Feeds
 			else if (iter->name == "updated" || iter->name == "published")
 				item.time = (int)string_to_time_t (iter->get_content ());
         }
-        item.state = Model.State.UNREADED;
+        item.state = Model.State.UNREAD;
 		if (item.time == 0)
 			item.time = (int)time_t ();
         this.channel.items.append (item);

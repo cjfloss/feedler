@@ -9,14 +9,14 @@ public class ChannelStore : GLib.Object
 {
 	public int id;
     public string channel { set; get; }
-    public int unreaded { set; get; }
+    public int unread { set; get; }
     public int mode { set; get; }
     
-    public ChannelStore (int id, string channel, int unreaded, int mode)
+    public ChannelStore (int id, string channel, int unread, int mode)
     {
 		this.id = id;
 		this.channel = channel;
-		this.unreaded = unreaded;
+		this.unread = unread;
 		this.mode = mode; //0-Folder;1-Channel
 	}
 }
@@ -96,26 +96,26 @@ public class Feedler.Sidebar : Gtk.TreeView
 		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
-		channel.unreaded = 0;
+		channel.unread = 0;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
-	public void add_unreaded (int channel_id, int unreaded)
+	public void add_unread (int channel_id, int unread)
 	{
 		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
-		channel.unreaded += unreaded;
+		channel.unread += unread;
 		channel.mode = 1;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
-	public void dec_unreaded (int channel_id)
+	public void dec_unread (int channel_id)
 	{
 		Gtk.TreeIter channel_iter = channels.get (channel_id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
-		channel.unreaded--;
+		channel.unread--;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 
@@ -164,7 +164,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 		model.get (iter, 0, out channel);
 		
 		renderer.channel = channel.channel;
-		renderer.unreaded = channel.unreaded;
+		renderer.unread = channel.unread;
 		renderer.type = (Feedler.SidebarCell.Type)channel.mode;
 	}
 }

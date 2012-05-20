@@ -9,7 +9,7 @@ public class Feedler.MenuSide : Gtk.Menu
 {
     internal Gtk.Menu news = new Gtk.Menu ();
     internal Gtk.MenuItem upd = new Gtk.MenuItem.with_label (_("Update"));
-    internal Gtk.MenuItem mark = new Gtk.MenuItem.with_label (_("Mark as readed"));
+    internal Gtk.MenuItem mark = new Gtk.MenuItem.with_label (_("Mark as read"));
     internal Gtk.MenuItem rem = new Gtk.MenuItem.with_label (_("Delete"));
     internal Gtk.MenuItem edit = new Gtk.MenuItem.with_label (_("Properties"));
     internal Gtk.MenuItem anew = new Gtk.MenuItem.with_label (_("New"));

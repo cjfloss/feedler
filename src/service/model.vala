@@ -53,7 +53,7 @@ public struct Model.Item
 
 public enum Model.State
 {
-	READED,
-	UNREADED,
-	BOOKMARKED
+	READ,
+	UNREAD,
+	BOOKMARK
 }

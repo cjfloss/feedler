@@ -21,7 +21,7 @@ public class Feedler.Window : Gtk.Window
 	private Feedler.CardLayout layout;
     private Feedler.Client client;
     private int connections;
-    private int unreaded;
+    private int unread;
 	
 	construct
 	{
@@ -317,15 +317,15 @@ public class Feedler.Window : Gtk.Window
         foreach (var i in reverse)
         {
             int id = this.db.insert_serialized_item (ch.id, i);
-            Model.Item it = {id, i.title, i.source, i.author, i.description, i.time, Model.State.UNREADED, ch.id};
+            Model.Item it = {id, i.title, i.source, i.author, i.description, i.time, Model.State.UNREAD, ch.id};
             ch.items.append (it);
         }
         this.db.commit ();
         this.connections--;
-        this.unreaded += (int)reverse.length ();
-		if (unreaded > 0)
+        this.unread += (int)reverse.length ();
+		if (unread > 0)
 		{
-			this.side.add_unreaded (ch.id, (int)reverse.length ());			
+			this.side.add_unread (ch.id, (int)reverse.length ());			
 			if (this.selection_tree () == ch.id)
 				this.load_channel ();
 		}
@@ -333,9 +333,9 @@ public class Feedler.Window : Gtk.Window
 			this.side.set_empty (ch.id);
         if (connections == 0)
         {
-            this.client.notification (_("%i new feeds.").printf (unreaded));
-            this.stat.set_unreaded (unreaded);
-            this.unreaded = 0;
+            this.client.notification (_("%i new feeds.").printf (unread));
+            this.stat.set_unread (unread);
+            this.unread = 0;
         }
 	}
 	
@@ -365,12 +365,12 @@ public class Feedler.Window : Gtk.Window
 		{
 			foreach (Model.Item it in ch.items)
 			{
-				if (it.state == Model.State.UNREADED)
+				if (it.state == Model.State.UNREAD)
 				{
-					it.state = Model.State.READED;
-					//ch.unreaded--;
+					it.state = Model.State.READ;
+					//ch.unread--;
 				}
-				//else if (ch.unreaded > 0)
+				//else if (ch.unread > 0)
 				//	continue;
 				else
 					break;
@@ -393,9 +393,9 @@ public class Feedler.Window : Gtk.Window
 				this.side.mark_readed (ch.id);
 				foreach (Model.Item it in ch.items)
 				{
-					if (it.state == Model.State.UNREADED)
+					if (it.state == Model.State.UNREAD)
 					{
-						it.state = Model.State.READED;
+						it.state = Model.State.READ;
                         this.db.mark_item (it.id);
 					}
 					else
@@ -404,10 +404,10 @@ public class Feedler.Window : Gtk.Window
 			}
 			else
 			{
-				this.side.dec_unreaded (ch.id);
+				this.side.dec_unread (ch.id);
                 this.db.mark_item (item_id);
                 Model.Item it = ch.get_item (item_id);
-				it.state = Model.State.READED;
+				it.state = Model.State.READ;
 			}
 		}
 	}
@@ -566,12 +566,12 @@ public class Feedler.Window : Gtk.Window
 		    {
 			    foreach (Model.Item it in ch.items)
 			    {
-				    if (it.state == Model.State.UNREADED)
+				    if (it.state == Model.State.UNREAD)
 				    {
-					    it.state = Model.State.READED;
-					    //ch.unreaded--;
+					    it.state = Model.State.READ;
+					    //ch.unread--;
 				    }
-				    //else if (ch.unreaded > 0)
+				    //else if (ch.unread > 0)
 					    //continue;
 				    else
 					    break;
@@ -633,7 +633,7 @@ public class Feedler.Window : Gtk.Window
 			else
 				this.side.add_channel (channel.id, channel.title);
 			this.side.select_channel (channel.id);
-			this.side.add_unreaded (channel.id, channel.unreaded);
+			this.side.add_unread (channel.id, channel.unread);
 			this.load_channel ();
 			channel.favicon ();*/
 		}

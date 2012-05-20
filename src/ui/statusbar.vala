@@ -37,7 +37,7 @@ public class Feedler.StatusButton : Gtk.EventBox
 
 public class Feedler.Statusbar : Granite.Widgets.StatusBar
 {
-    public uint total_unreaded { get; private set; default = 0; }
+    public uint total_unread { get; private set; default = 0; }
     internal Feedler.StatusButton add_feed;
     internal Feedler.StatusButton delete_feed;
 	//internal Feedler.StatusButton edit_feed;
@@ -57,7 +57,7 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
         //this.edit_feed.set_tooltip (_("Edit selected subscription"));
 
         this.mark_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("go-bottom-symbolic", Gtk.IconSize.MENU));
-        this.mark_feed.set_tooltip (_("Mark selected subscription as readed"));
+        this.mark_feed.set_tooltip (_("Mark selected subscription as read"));
 
         this.insert_widget (this.add_feed, true);
         this.insert_widget (this.delete_feed, true);
@@ -65,21 +65,21 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
         this.insert_widget (this.mark_feed, false);
     }
 
-    public void set_unreaded (uint total_unreaded)
+    public void set_unread (uint total_unread)
     {
-        this.total_unreaded = total_unreaded;
+        this.total_unread = total_unread;
         this.update_label ();
     }
 
     private void update_label ()
     {
-        if (this.total_unreaded == 0)
+        if (this.total_unread == 0)
         {
             status_label.set_text ("");
             return;
         }
 
-        string description = total_unreaded > 1 ? _("unreaded feeds") : _("unreaded feed");
-        this.set_text (STATUS_TEXT_FORMAT.printf (total_unreaded, description));
+        string description = total_unread > 1 ? _("unread feeds") : _("unread feed");
+        this.set_text (STATUS_TEXT_FORMAT.printf (total_unread, description));
     }
 }

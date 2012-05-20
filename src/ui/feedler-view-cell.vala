@@ -12,7 +12,7 @@ public class Feedler.ViewCell : Gtk.CellRenderer
     public string author { set; get; }
     public string channel { set; get; }
     public string date { set; get; }
-    public bool unreaded { set; get; }
+    public bool unread { set; get; }
 
     double sender_height = 0.0;
     double subject_height = 0.0;
@@ -118,7 +118,7 @@ public class Feedler.ViewCell : Gtk.CellRenderer
        
         //Subject
         layout = widget.create_pango_layout (subject);
-        if (unreaded)
+        if (unread)
 			layout.set_font_description (font_bold);
         layout.set_ellipsize (Pango.EllipsizeMode.END);
         layout.set_width (Pango.units_from_double (area.width - 5));

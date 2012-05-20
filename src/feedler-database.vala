@@ -171,7 +171,7 @@ public class Feedler.Database : GLib.Object
 		}
 	}
 
-    public void mark_item (int id, Model.State state = Model.State.READED)
+    public void mark_item (int id, Model.State state = Model.State.READ)
     {
         try
         {
@@ -364,7 +364,7 @@ public class Feedler.Database : GLib.Object
 			query.set_string (":author", item.author);
 			query.set_string (":description", item.description);
 			query.set_int (":time", item.time);
-			query.set_int (":state", (int)Model.State.UNREADED);
+			query.set_int (":state", (int)Model.State.UNREAD);
 			query.set_int (":channel", channel);
 			int id = (int)query.execute_insert ();
             return id;

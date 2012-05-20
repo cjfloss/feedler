@@ -13,7 +13,7 @@ public class FeedStore : GLib.Object
     public string source { set; get; }
     public string text { set; get; }
     public string author { set; get; }
-    public bool unreaded { set; get; }
+    public bool unread { set; get; }
 	
 	public FeedStore (Model.Item item, string time_format)
 	{
@@ -23,10 +23,10 @@ public class FeedStore : GLib.Object
 		this.source = item.source;
 		this.text = item.description;
 		this.author = item.author;
-		if (item.state == Model.State.UNREADED)
-			this.unreaded = true;
+		if (item.state == Model.State.UNREAD)
+			this.unread = true;
 		else
-			this.unreaded = false;
+			this.unread = false;
 	}
 }
 
@@ -168,9 +168,9 @@ public class Feedler.ViewList : Feedler.View
 			FeedStore feed;
 			this.tree.model.get (iter, 0, out feed);
 			this.load_article (feed.text);
-			if (feed.unreaded)
+			if (feed.unread)
 			{
-				feed.unreaded = false;
+				feed.unread = false;
 				this.store.set (iter, 0, feed);
 				this.item_readed (feed.id);
 			}
@@ -203,6 +203,6 @@ public class Feedler.ViewList : Feedler.View
 		renderer.date = feed.date;
 		renderer.author = feed.author;
 		renderer.channel = feed.source;
-		renderer.unreaded = feed.unreaded;
+		renderer.unread = feed.unread;
 	}
 }

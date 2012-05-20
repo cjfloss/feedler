@@ -17,7 +17,7 @@ public class Feedler.SidebarCell : Gtk.CellRenderer
 		ERROR
 	}
 	public string channel { set; get; }
-	public int unreaded { set; get; }
+	public int unread { set; get; }
 	public Type type;
 	
 	double height_centered;
@@ -131,10 +131,10 @@ static void custom_rounded (Cairo.Context cr, double x, double y, double w, doub
 		double unread_width = 0.0;
 		height_centered = area.y + area.height / 2 - 11 + margin;
 		
-        /* Unreaded */
-        if (unreaded > 0)
+        /* unread */
+        if (unread > 0)
         {
-            layout = widget.create_pango_layout (unreaded.to_string ());
+            layout = widget.create_pango_layout (unread.to_string ());
             double rect_width = get_layout_width (layout) + margin * 2;
             double rect_height = get_layout_height (layout) + margin * 2;
             unread_width = rect_width + 5;
