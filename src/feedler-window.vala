@@ -565,17 +565,18 @@ public class Feedler.Window : Gtk.Window
 /* **************************************************************************** */
     private void create_subscription ()
     {
-        Feedler.CreateSubs subs = new Feedler.CreateSubs ();
+        Feedler.Subscription subs = new Feedler.Subscription ();
 		subs.set_transient_for (this);
-        subs.created.connect (created_cb);
+        subs.saved.connect (created_cb);
 		foreach (Model.Folder folder in this.db.folders)
 		    subs.add_folder (folder.name);
         subs.show_all ();
 	}
 
-    private void created_cb (int folder, string url)
+    private void created_cb (int id, int folder, string title, string url)
     {
-        //TODO create subs
+        int i = this.db.add_channel (title, url, folder);
+        this.side.add_channel (i, title, folder);
     }
 
     private void update_subscription ()
@@ -631,9 +632,9 @@ public class Feedler.Window : Gtk.Window
         ChannelStore ch = this.selected_item ();
         if (ch != null)
         {
-            Feedler.EditSubs subs = new Feedler.EditSubs ();
+            Feedler.Subscription subs = new Feedler.Subscription ();
 		    subs.set_transient_for (this);
-            subs.edited.connect (edited_cb);
+            subs.saved.connect (edited_cb);
 		    foreach (Model.Folder folder in this.db.folders)
 			    subs.add_folder (folder.name);
             Model.Channel c = this.db.get_channel (ch.id);
@@ -642,8 +643,9 @@ public class Feedler.Window : Gtk.Window
         }
 	}
 
-    private void edited_cb (int id, int folder, string channel, string url)
+    private void edited_cb (int id, int folder, string title, string url)
     {
-        //TODO edit subs
+        this.side.update_channel (id, title, folder);
+        this.db.update_channel (id, folder, title, url);
     }
 }

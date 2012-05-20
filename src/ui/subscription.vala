@@ -5,15 +5,15 @@
  * @see COPYING
  */
 
-public class Feedler.EditSubs : Granite.Widgets.LightWindow
+public class Feedler.Subscription : Granite.Widgets.LightWindow
 {
-    public signal void edited (int id, int folder, string channel, string url);
+    public signal void saved (int id, int folder, string name, string url);
     private int id;
 	private Gtk.ComboBoxText folder;
-    private Granite.Widgets.HintedEntry channel;
+    private Granite.Widgets.HintedEntry name;
 	private Granite.Widgets.HintedEntry uri;
 	
-	public EditSubs ()
+	public Subscription ()
 	{
         this.border_width = 15;
         this.window_position = Gtk.WindowPosition.CENTER;
@@ -22,14 +22,14 @@ public class Feedler.EditSubs : Granite.Widgets.LightWindow
 		this.destroy_with_parent = true;
         this.set_size_request (320, -1);
 		this.resizable = false;
-
+        this.id = 0;
 		this.folder = new Gtk.ComboBoxText ();
-		this.channel = new Granite.Widgets.HintedEntry ("Name");
-        this.uri = new Granite.Widgets.HintedEntry ("URI");
+		this.name = new Granite.Widgets.HintedEntry (_("Name"));
+        this.uri = new Granite.Widgets.HintedEntry (_("URI"));
 
         var save = new Gtk.Button.with_label (_("Save"));
         save.valign = save.halign = Gtk.Align.END;
-        save.clicked.connect_after (() => { edited (this.id, this.folder.get_active () + 1, this.channel.get_text () ,this.uri.get_text ()); this.destroy (); });
+        save.clicked.connect_after (() => { saved (this.id, this.folder.get_active () + 1, this.name.get_text (), this.uri.get_text ()); this.destroy (); });
 
         var cancel = new Gtk.Button.with_label (_("Cancel"));
         cancel.valign = cancel.halign = Gtk.Align.END;
@@ -47,18 +47,18 @@ public class Feedler.EditSubs : Granite.Widgets.LightWindow
         n_label.set_markup ("<b>%s</b>".printf (_("Name")));
         n_label.set_halign (Gtk.Align.START);
         n_label.margin_top = 5;
-        var c_label = new Gtk.Label ("");
-        c_label.set_markup ("<b>%s</b>".printf (_("URI Address")));
-        c_label.set_halign (Gtk.Align.START);
-        c_label.margin_top = 5;
+        var u_label = new Gtk.Label ("");
+        u_label.set_markup ("<b>%s</b>".printf (_("URI Address")));
+        u_label.set_halign (Gtk.Align.START);
+        u_label.margin_top = 5;
         
         var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 5);
         content.pack_start (f_label);
-        content.pack_start (this.folder, false, true, 0);
+        content.pack_start (folder, false, true, 0);
         content.pack_start (n_label);
-        content.pack_start (this.channel, false, true, 0);
-        content.pack_start (c_label);
-        content.pack_start (this.uri, false, true, 0);
+        content.pack_start (name, false, true, 0);
+        content.pack_start (u_label);
+        content.pack_start (uri, false, true, 0);
         content.pack_end (button_box, false, false, 0);
         
 		this.add (content);
@@ -73,7 +73,7 @@ public class Feedler.EditSubs : Granite.Widgets.LightWindow
     public void set_model (int id, string title, string uri, int folder)
     {
         this.id = id;
-		this.channel.set_text (title);
+		this.name.set_text (title);
 		this.uri.set_text (uri);
         this.folder.set_active (folder);
     }

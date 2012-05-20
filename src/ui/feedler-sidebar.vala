@@ -69,95 +69,84 @@ public class Feedler.Sidebar : Gtk.TreeView
         this.channels.set (id, channel_iter);
 	}
 
-	public void remove_folder (int folder_id)
+	public void remove_folder (int id)
 	{
-		Gtk.TreeIter folder_iter = folders.get (folder_id);
+		Gtk.TreeIter folder_iter = folders.get (id);
 		this.store.remove (folder_iter);
-		this.folders.unset (folder_id);
+		this.folders.unset (id);
 	}
 	
-	public void remove_channel (int channel_id)
+	public void remove_channel (int id)
 	{
-		Gtk.TreeIter channel_iter = channels.get (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (id);
 		this.store.remove (channel_iter);
-		this.channels.unset (channel_id);
-		for (int i = this.channels.size-1; i > channel_id; i--)
-		{
-			ChannelStore channel;
-			Gtk.TreeIter ch_iter = channels.get (i);
-			this.model.get (ch_iter, 0, out channel);
-			--channel.id;
-			this.store.set_value (ch_iter, 0, channel);
-		}
+		this.channels.unset (id);
 	}
 
-    public void mark_channel (int channel_id)
+    public void update_channel (int id, string name, int folder)
 	{
-		Gtk.TreeIter channel_iter = channels.get (channel_id);
+        this.remove_channel (id);
+        this.add_channel (id, name, folder);
+	}
+
+    public void mark_channel (int id)
+	{
+		Gtk.TreeIter channel_iter = channels.get (id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unread = 0;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 
-	public void mark_readed (int channel_id)
+	public void mark_readed (int id)
 	{
-		Gtk.TreeIter channel_iter = channels.get (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unread = 0;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
-	public void add_unread (int channel_id, int unread)
+	public void add_unread (int id, int unread)
 	{
-		Gtk.TreeIter channel_iter = channels.get (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unread += unread;
-		channel.mode = 1;
+		//channel.mode = 1;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
-	public void dec_unread (int channel_id)
+	public void dec_unread (int id)
 	{
-		Gtk.TreeIter channel_iter = channels.get (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unread--;
 		this.store.set_value (channel_iter, 0, channel);
 	}
-
-    public void set_channel_name (int channel_id, string name)
-	{
-		Gtk.TreeIter channel_iter = channels.get (channel_id);
-		ChannelStore channel;
-		this.model.get (channel_iter, 0, out channel);
-		channel.channel = name;
-		this.store.set_value (channel_iter, 0, channel);
-	}
 	
-	public void set_error (int channel_id)
+	public void set_error (int id)
 	{
-		Gtk.TreeIter channel_iter = channels.get (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.mode = 2;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
-	public void set_empty (int channel_id)
+	public void set_empty (int id)
 	{
-		Gtk.TreeIter channel_iter = channels.get (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.mode = 1;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
-	public void select_channel (int channel_id)
+	public void select_channel (int id)
 	{
-		Gtk.TreeIter channel_iter = channels.get (channel_id);
+		Gtk.TreeIter channel_iter = channels.get (id);
 		this.get_selection ().select_iter (channel_iter);
 	}
 	

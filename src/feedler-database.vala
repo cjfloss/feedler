@@ -132,22 +132,46 @@ public class Feedler.Database : GLib.Object
 		return null;
 	}
 
-    public void update_channel (int id, int folder, string channel,  string url)
+    public int add_channel (string title, string url, int folder)
+	{
+		try
+        {
+    		this.transaction = db.begin_transaction ();
+            query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `folder`) VALUES (:title, :source, :folder);");
+			query.set_string (":title", title);
+			query.set_string (":source", url);
+			query.set_int (":folder", folder);
+            this.transaction.commit ();
+            int id = (int)query.execute_insert ();
+            return id;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot insert channel %s.", title);
+            return 0;
+		}
+	}
+
+    public void update_channel (int id, int folder, string title,  string url)
     {
         try
         {
 			transaction = db.begin_transaction ();
-			query = transaction.prepare ("UPDATE `channels` SET `title`=:channel, `source`=:url, `folder`=:folder WHERE `id`=:id;");
-			query.set_string (":channel", channel);
+			query = transaction.prepare ("UPDATE `channels` SET `title`=:title, `source`=:url, `folder`=:folder WHERE `id`=:id;");
+			query.set_string (":title", title);
             query.set_string (":url", url);
 			query.set_int (":folder", folder);
             query.set_int (":id", id);
-			query.execute ();
-			transaction.commit();
+			query.execute_async ();
+			transaction.commit ();
+            Model.Channel c = this.get_channel (id);
+            c.folder = folder;
+            c.title = title;
+            c.source = url;
 		}
 		catch (SQLHeavy.Error e)
 		{
-			stderr.printf ("Cannot update channel %s with id %i.", channel, id);
+			stderr.printf ("Cannot update channel %s with id %i.", title, id);
 		}
     }
 	
@@ -268,7 +292,7 @@ public class Feedler.Database : GLib.Object
 		return channels;
 	}
     
-    public int insert_folder (Model.Folder folder, bool autocommit = false)
+    /*public int insert_folder (Model.Folder folder, bool autocommit = false)
 	{
 		try
         {
@@ -334,7 +358,7 @@ public class Feedler.Database : GLib.Object
 		{
 			stderr.printf ("Cannot insert items %s.\n", item.title);
 		}
-	}
+	}*/
 
     public int insert_serialized_folder (Serializer.Folder folder)
 	{

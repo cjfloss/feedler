@@ -113,8 +113,7 @@ vala_precompile(VALA_C
 	src/ui/cardlayout.vala
 	src/ui/menu.vala
 	src/ui/statusbar.vala
-	src/ui/subscription-creator.vala
-	src/ui/subscription-editor.vala
+	src/ui/subscription.vala
 	src/ui/toolbar.vala
 	src/ui/feedler-view-cell.vala
 	src/ui/feedler-sidebar-cell.vala
