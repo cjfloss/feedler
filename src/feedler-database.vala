@@ -151,18 +151,18 @@ public class Feedler.Database : GLib.Object
 		}
     }
 	
-	public void remove_subscription (int channel_id, int db_id)
+	public void remove_channel (int channel)
 	{
         try
         {
 			transaction = db.begin_transaction ();
 			query = transaction.prepare ("DELETE FROM `channels` WHERE `id` = :id;");
-			query.set_int (":id", db_id);
+			query.set_int (":id", channel);
 			query.execute_async ();
-			query = transaction.prepare ("DELETE FROM `items` WHERE `channel` = :ch;");
-			query.set_int (":ch", db_id-1);
+			query = transaction.prepare ("DELETE FROM `items` WHERE `channel` = :id;");
+			query.set_int (":ch", channel);
 			query.execute_async ();
-			this.channels.remove (this.channels.nth_data (channel_id));
+			this.channels.remove (this.get_channel (channel));
 			transaction.commit();
 		}
 		catch (SQLHeavy.Error e)

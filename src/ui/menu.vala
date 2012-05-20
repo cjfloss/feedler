@@ -8,11 +8,11 @@
 public class Feedler.MenuSide : Gtk.Menu
 {
     internal Gtk.Menu news = new Gtk.Menu ();
-    internal Gtk.MenuItem update = new Gtk.MenuItem.with_label (_("Update"));
+    internal Gtk.MenuItem upd = new Gtk.MenuItem.with_label (_("Update"));
     internal Gtk.MenuItem mark = new Gtk.MenuItem.with_label (_("Mark as readed"));
-    internal Gtk.MenuItem remove = new Gtk.MenuItem.with_label (_("Delete"));
+    internal Gtk.MenuItem rem = new Gtk.MenuItem.with_label (_("Delete"));
     internal Gtk.MenuItem edit = new Gtk.MenuItem.with_label (_("Properties"));
-    internal Gtk.MenuItem add = new Gtk.MenuItem.with_label (_("New"));
+    internal Gtk.MenuItem anew = new Gtk.MenuItem.with_label (_("New"));
     internal Gtk.MenuItem add_sub = new Gtk.MenuItem.with_label (_("Subscription"));
     internal Gtk.MenuItem add_fol = new Gtk.MenuItem.with_label (_("Folder"));
     
@@ -20,13 +20,13 @@ public class Feedler.MenuSide : Gtk.Menu
 	{
         this.news.append (add_sub);
         this.news.append (add_fol);
-        this.add.set_submenu (news);
+        this.anew.set_submenu (news);
 
-        this.append (add);
+        this.append (anew);
         this.append (new Gtk.SeparatorMenuItem ());
-        this.append (update);
+        this.append (upd);
         this.append (mark);
-        this.append (remove);
+        this.append (rem);
         this.append (new Gtk.SeparatorMenuItem ());
         this.append (edit);
 	}
