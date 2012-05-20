@@ -1,5 +1,5 @@
 /**
- * feedler-toolbar.vala
+ * toolbar.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING

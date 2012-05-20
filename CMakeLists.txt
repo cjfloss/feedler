@@ -110,7 +110,8 @@ vala_precompile(VALA_C
 	src/ui/feedler-view.vala
 	src/ui/feedler-view-list.vala
 	src/ui/feedler-view-web.vala
-	src/ui/feedler-toolbar.vala
+	src/ui/menu.vala
+	src/ui/toolbar.vala
 	src/ui/feedler-create-subscription.vala
 	src/ui/feedler-edit-subscription.vala
 	src/ui/feedler-cardlayout.vala

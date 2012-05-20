@@ -12,7 +12,7 @@ public class Feedler.Window : Gtk.Window
 	internal Feedler.Toolbar toolbar;
 	private Feedler.Sidebar side;
 	private Feedler.Statusbar stat;
-	private Gtk.Menu context;
+	private Feedler.MenuSide sidemenu;
 	private Feedler.History history;
 	private weak Feedler.View view;
 	private Gtk.Paned pane;
@@ -94,16 +94,10 @@ public class Feedler.Window : Gtk.Window
         this.pane.set_position (settings.hpane_width);
         this.pane.add1 (scroll_side);
 		
-		this.context = new Gtk.Menu ();
-		Gtk.MenuItem it_delete = new Gtk.MenuItem.with_label ("Delete");
-		Gtk.MenuItem it_edit = new Gtk.MenuItem.with_label ("Edit");
-		Gtk.MenuItem it_mark = new Gtk.MenuItem.with_label ("Mark as readed");
-		//it_rename.set_sensitive (false);
-		this.context.append (it_delete);
-		this.context.append (it_edit);
-		this.context.append (it_mark);
-		it_delete.activate.connect (delete_channel);
-		this.context.show_all ();		
+		this.sidemenu = new Feedler.MenuSide ();
+		this.sidemenu.remove.activate.connect (delete_channel);
+		//this.sidemenu.edit.activate.connect (edit_channel);
+		this.sidemenu.show_all ();		
         
         this.layout.init_views ();
         this.layout.list.item_readed.connect (mark_channel);
@@ -117,7 +111,6 @@ public class Feedler.Window : Gtk.Window
         this.stat.delete_feed.button_press_event.connect (this.del_feed_pressed);
         this.stat.edit_feed.button_press_event.connect (this.edit_feed_pressed);
         this.stat.mark_feed.button_press_event.connect (this.mark_feed_pressed);
-        //this.stat.set_unreaded (3);
         this.content.pack_end (this.stat, false, true, 0);
 	}
 	
@@ -268,6 +261,7 @@ public class Feedler.Window : Gtk.Window
             string[] uris = this.db.get_uris ();
             this.connections = uris.length;
             this.client.update_all (uris);
+            this.toolbar.progress.clear ();
             this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating");
         }
         catch (GLib.Error e)
@@ -339,6 +333,7 @@ public class Feedler.Window : Gtk.Window
         if (connections == 0)
         {
             this.client.notification (_("%i new feeds.").printf (unreaded));
+            this.stat.set_unreaded (unreaded);
             this.unreaded = 0;
         }
 	}
@@ -706,7 +701,7 @@ public class Feedler.Window : Gtk.Window
 		if (this.side.get_path_at_pos ((int) e.x, (int) e.y, out path, out column, out cell_x, out cell_y))
 		{
 			this.side.select_path (path);
-			this.context.popup (null, null, null, e.button, e.time);
+			this.sidemenu.popup (null, null, null, e.button, e.time);
 			return true;
 		}
 		return false;
