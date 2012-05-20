@@ -67,8 +67,8 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.column.clicked.connect (change_column);
         this.toolbar.search.activate.connect (search_list); 
         
-        this.toolbar.import_feeds.activate.connect (import_file);
-        this.toolbar.export_feeds.activate.connect (export_file);
+        this.toolbar.import_feeds.activate.connect (import_subscription);
+        this.toolbar.export_feeds.activate.connect (export_subscription);
         this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
         this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
@@ -146,7 +146,6 @@ public class Feedler.Window : Gtk.Window
 	{
 		this.toolbar.set_enable (true);
         this.layout.reinit ();
-		//this.ui_workspace ();
         this.ui_feeds ();
 	}
 
@@ -175,7 +174,7 @@ public class Feedler.Window : Gtk.Window
 		stderr.printf ("Activated: %i\n", index);
 		switch (index)
 		{
-			case 0: this.import_file (); break;
+			case 0: this.import_subscription (); break;
 			//case 1: this.add_subscription (); break;
 		}
 	}
@@ -255,22 +254,6 @@ public class Feedler.Window : Gtk.Window
 	{	
 		this.history.remove_double ();
 	}
-		
-	protected void update_all ()
-	{
-        try
-        {
-            string[] uris = this.db.get_uris ();
-            this.connections = uris.length;
-            this.client.update_all (uris);
-            this.toolbar.progress.clear ();
-            this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating");
-        }
-        catch (GLib.Error e)
-        {
-            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
-        }
-	}
 
     protected void imported_cb (Serializer.Folder[] folders)
 	{
@@ -334,7 +317,8 @@ public class Feedler.Window : Gtk.Window
 			this.side.set_empty (ch.id);
         if (connections == 0)
         {
-            this.client.notification (_("%i new feeds.").printf (unread));
+            string description = unread > 1 ? _("new feeds") : _("new feed");
+            this.client.notification ("%i %s".printf (unread, description));
             this.stat.set_unread (unread);
             this.unread = 0;
         }
@@ -461,62 +445,6 @@ public class Feedler.Window : Gtk.Window
 		this.view.load_feeds ();
 	}
 	
-	protected void import (string filename)
-	{
-        try
-        {
-            this.client.import (filename);
-            if (!this.db.is_created ())
-                this.db.create ();
-            this.ui_welcome_to_workspace ();
-            this.toolbar.progressbar (0.1, "Importing subscriptions");
-        }
-        catch (GLib.Error e)
-        {
-            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
-        }
-	}
-	
-	protected void export (string filename)
-	{
-		//TODO
-	}
-	
-	protected void import_file ()
-	{
-		var file_chooser = new Gtk.FileChooserDialog ("Open File", this,
-                                      Gtk.FileChooserAction.OPEN,
-                                      Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
-                                      Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
-		
-		Gtk.FileFilter filter_opml = new Gtk.FileFilter ();
-		filter_opml.set_filter_name ("Subscriptions");
-		filter_opml.add_pattern ("*.opml");
-		filter_opml.add_pattern ("*.xml");
-		file_chooser.add_filter (filter_opml);
-
-		Gtk.FileFilter filter_all = new Gtk.FileFilter ();
-		filter_all.set_filter_name ("All files");
-		filter_all.add_pattern ("*");
-		file_chooser.add_filter (filter_all);
-
-        if (file_chooser.run () == Gtk.ResponseType.ACCEPT)
-            import (file_chooser.get_filename ());
-        file_chooser.destroy ();
-        this.show_all ();
-	}
-	
-	protected void export_file ()
-	{
-		var file_chooser = new Gtk.FileChooserDialog ("Save File", this,
-                                      Gtk.FileChooserAction.SAVE,
-                                      Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
-                                      Gtk.Stock.SAVE, Gtk.ResponseType.ACCEPT);
-        if (file_chooser.run () == Gtk.ResponseType.ACCEPT)
-            export (file_chooser.get_filename ());
-        file_chooser.destroy ();
-	}
-	
 	protected void config ()
 	{
 		Feedler.Preferences pref = new Feedler.Preferences ();
@@ -563,6 +491,68 @@ public class Feedler.Window : Gtk.Window
 		return false;
 	}
 /* **************************************************************************** */
+    private void update_all ()
+	{
+        try
+        {
+            string[] uris = this.db.get_uris ();
+            this.connections = uris.length;
+            this.client.update_all (uris);
+            this.toolbar.progress.clear ();
+            this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating");
+        }
+        catch (GLib.Error e)
+        {
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+        }
+	}
+
+    private void import_subscription ()
+	{
+		var file = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN,
+                                              Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
+                                              Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
+		
+		Gtk.FileFilter filter_opml = new Gtk.FileFilter ();
+		filter_opml.set_filter_name ("Subscriptions");
+		filter_opml.add_pattern ("*.opml");
+		filter_opml.add_pattern ("*.xml");
+		file.add_filter (filter_opml);
+
+		Gtk.FileFilter filter_all = new Gtk.FileFilter ();
+		filter_all.set_filter_name ("All files");
+		filter_all.add_pattern ("*");
+		file.add_filter (filter_all);
+
+        if (file.run () == Gtk.ResponseType.ACCEPT)
+        {
+            try
+            {
+                this.client.import (file.get_filename ());
+                if (!this.db.is_created ())
+                    this.db.create ();
+                this.ui_welcome_to_workspace ();
+                this.toolbar.progressbar (0.1, "Importing subscriptions");
+            }
+            catch (GLib.Error e)
+            {
+                this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+            }
+        }
+        file.destroy ();
+        this.show_all ();
+	}
+
+	private void export_subscription ()
+	{
+		var file = new Gtk.FileChooserDialog ("Save File", this, Gtk.FileChooserAction.SAVE,
+                                              Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
+                                              Gtk.Stock.SAVE, Gtk.ResponseType.ACCEPT);
+        if (file.run () == Gtk.ResponseType.ACCEPT)
+            this.dialog ("Not implemented yet (%s)".printf (file.get_filename ()));
+        file.destroy ();
+	}
+
     private void create_subscription ()
     {
         Feedler.Subscription subs = new Feedler.Subscription ();

@@ -42,8 +42,6 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
     internal Feedler.StatusButton delete_feed;
     internal Feedler.StatusButton mark_feed;
 
-    private string STATUS_TEXT_FORMAT = _("%u %s");
-
     public Statusbar ()
     {
         this.add_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.MENU));
@@ -75,6 +73,6 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
         }
 
         string description = total_unread > 1 ? _("unread feeds") : _("unread feed");
-        this.set_text (STATUS_TEXT_FORMAT.printf (total_unread, description));
+        this.set_text ("%u %s".printf (total_unread, description));
     }
 }

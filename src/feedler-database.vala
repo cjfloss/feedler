@@ -184,10 +184,10 @@ public class Feedler.Database : GLib.Object
 			query.set_int (":id", id);
 			query.execute_async ();
 			query = transaction.prepare ("DELETE FROM `items` WHERE `channel` = :id;");
-			query.set_int (":ch", id);
+			query.set_int (":id", id);
 			query.execute_async ();
+			transaction.commit ();
 			this.channels.remove (this.get_channel (id));
-			transaction.commit();
 		}
 		catch (SQLHeavy.Error e)
 		{

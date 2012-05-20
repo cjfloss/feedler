@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-10 23:28+0200\n"
+"POT-Creation-Date: 2012-05-20 20:32+0200\n"
 "PO-Revision-Date: 2012-03-05 15:48+0000\n"
 "Last-Translator: Simon <Unknown>\n"
 "Language-Team: Danish <da@li.org>\n"
@@ -18,109 +18,155 @@ msgstr ""
 "X-Launchpad-Export-Date: 2012-05-14 04:54+0000\n"
 "X-Generator: Launchpad (build 15238)\n"
 
-#: ../src/feedler-statusbar.vala:46
+#: ../src/ui/statusbar.vala:45
 #, c-format
 msgid "%u %s"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:64
+#: ../src/ui/toolbar.vala:68
 msgid "About"
 msgstr ""
 
-#: ../src/feedler-create-subscription.vala:27
-msgid "Add"
+#: ../src/ui/cardlayout.vala:24
+msgid "Add a subscriptions from OPML file."
 msgstr ""
 
-#: ../src/feedler-statusbar.vala:51
+#: ../src/ui/statusbar.vala:50
 msgid "Add new subscription URL"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:98
-msgid "Back"
+#: ../src/feedler-window.vala:609
+msgid "Are you sure you want to delete this subscription?"
 msgstr ""
 
-#: ../src/feedler-create-subscription.vala:31
-#: ../src/feedler-edit-subscription.vala:34
+#: ../src/feedler-window.vala:593
+msgid "Are you sure you want to mark this subscription as read?"
+msgstr ""
+
+#: ../src/ui/subscription.vala:34
 msgid "Cancel"
 msgstr ""
 
-#: ../src/feedler-statusbar.vala:57
-msgid "Edit selected subscription"
+#: ../src/ui/menu.vala:13
+msgid "Delete"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:62
+#: ../src/ui/toolbar.vala:66
 msgid "Export"
 msgstr ""
 
-#: ../src/feedler-create-subscription.vala:41
-#: ../src/feedler-edit-subscription.vala:44
+#: ../src/ui/cardlayout.vala:23
+msgid "Feedler can't seem to find your feeds."
+msgstr ""
+
+#: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:44
 #, c-format
 msgid "Folder"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:100
-msgid "Forward"
-msgstr ""
-
-#: ../src/feedler-toolbar.vala:60
+#: ../src/ui/toolbar.vala:64
 msgid "Fullscreen"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:61
+#: ../src/ui/cardlayout.vala:23
+msgid "Get Some Feeds"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:103
+msgid "Go to the next readed item"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:102
+msgid "Go to the previous readed item"
+msgstr ""
+
+#: ../src/ui/cardlayout.vala:24 ../src/ui/toolbar.vala:65
 msgid "Import"
 msgstr ""
 
-#: ../src/feedler-statusbar.vala:60
-msgid "Mark selected subscription as readed"
+#: ../src/feedler-window.vala:279
+#, c-format
+msgid "Imported %i channels in %i folders."
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:121
+#: ../src/ui/menu.vala:12
+msgid "Mark as read"
+msgstr ""
+
+#: ../src/ui/statusbar.vala:56
+msgid "Mark selected subscription as read"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:105
 msgid "Menu"
 msgstr ""
 
-#: ../src/feedler-edit-subscription.vala:47
+#: ../src/ui/subscription.vala:27 ../src/ui/subscription.vala:47
 #, c-format
 msgid "Name"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:102
-msgid "Next"
+#: ../src/ui/menu.vala:15
+msgid "New"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:63
+#: ../src/ui/toolbar.vala:67
 msgid "Preferences"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:105
-msgid "Refresh"
+#: ../src/ui/menu.vala:14
+msgid "Properties"
 msgstr ""
 
-#: ../src/feedler-statusbar.vala:54
+#: ../src/ui/toolbar.vala:104
+msgid "Refresh all subscriptions"
+msgstr ""
+
+#: ../src/ui/statusbar.vala:53
 msgid "Remove selected subscription"
 msgstr ""
 
-#: ../src/feedler-edit-subscription.vala:30
+#: ../src/ui/subscription.vala:30
 msgid "Save"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:59
+#: ../src/ui/toolbar.vala:63
 msgid "Sidebar Visible"
 msgstr ""
 
-#: ../src/feedler-toolbar.vala:54
+#: ../src/ui/menu.vala:16
+msgid "Subscription"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:59
 msgid "Type to Search..."
 msgstr ""
 
-#: ../src/feedler-create-subscription.vala:44
-#: ../src/feedler-edit-subscription.vala:51
+#: ../src/ui/subscription.vala:28
+msgid "URI"
+msgstr ""
+
+#: ../src/ui/subscription.vala:51
 #, c-format
 msgid "URI Address"
 msgstr ""
 
-#: ../src/feedler-statusbar.vala:82
-msgid "unreaded feed"
+#: ../src/ui/menu.vala:11
+msgid "Update"
 msgstr ""
 
-#: ../src/feedler-statusbar.vala:82
-msgid "unreaded feeds"
+#: ../src/feedler-window.vala:320
+msgid "new feed"
+msgstr ""
+
+#: ../src/feedler-window.vala:320
+msgid "new feeds"
+msgstr ""
+
+#: ../src/ui/statusbar.vala:77
+msgid "unread feed"
+msgstr ""
+
+#: ../src/ui/statusbar.vala:77
+msgid "unread feeds"
 msgstr ""
