@@ -151,25 +151,44 @@ public class Feedler.Database : GLib.Object
 		}
     }
 	
-	public void remove_channel (int channel)
+	public void remove_channel (int id)
 	{
         try
         {
 			transaction = db.begin_transaction ();
 			query = transaction.prepare ("DELETE FROM `channels` WHERE `id` = :id;");
-			query.set_int (":id", channel);
+			query.set_int (":id", id);
 			query.execute_async ();
 			query = transaction.prepare ("DELETE FROM `items` WHERE `channel` = :id;");
-			query.set_int (":ch", channel);
+			query.set_int (":ch", id);
 			query.execute_async ();
-			this.channels.remove (this.get_channel (channel));
+			this.channels.remove (this.get_channel (id));
 			transaction.commit();
 		}
 		catch (SQLHeavy.Error e)
 		{
-			stderr.printf ("Cannot remove subscription.\n");
+			stderr.printf ("Cannot remove channel.\n");
 		}
 	}
+
+    public void mark_channel (int id, Model.State state = Model.State.READ)
+    {
+        try
+        {
+			transaction = db.begin_transaction ();
+			query = transaction.prepare ("UPDATE `items` SET `state`=:state WHERE `channel`=:id;");
+			query.set_int (":state", (int)state);
+            query.set_int (":id", id);
+			query.execute_async ();
+			transaction.commit ();
+            foreach (var i in this.get_channel (id).items)
+                i.state = state;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot mark channel %i.", id);
+		}
+    }
 
     public void mark_item (int id, Model.State state = Model.State.READ)
     {

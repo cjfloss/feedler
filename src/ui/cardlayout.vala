@@ -1,5 +1,5 @@
 /**
- * feedler-cardlayout.vala
+ * cardlayout.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING

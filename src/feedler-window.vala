@@ -95,23 +95,24 @@ public class Feedler.Window : Gtk.Window
         this.pane.add1 (scroll_side);
 		
 		this.sidemenu = new Feedler.MenuSide ();
+		this.sidemenu.add_sub.activate.connect (create_subscription);
 		this.sidemenu.upd.activate.connect (update_subscription);
+		this.sidemenu.mark.activate.connect (mark_subscription);
 		this.sidemenu.rem.activate.connect (remove_subscription);
 		this.sidemenu.edit.activate.connect (edit_subscription);
 		this.sidemenu.show_all ();		
         
         this.layout.init_views ();
-        this.layout.list.item_readed.connect (mark_channel);
-        this.layout.web.item_readed.connect (mark_channel);
+        //this.layout.list.item_readed.connect (mark_channel);
+        //this.layout.web.item_readed.connect (mark_channel);
 		this.view = (Feedler.View)layout.get_nth_page (0);
 		this.view.item_selected.connect (history_add);
 		this.view.item_browsed.connect (history_remove);
 
         this.stat = new Feedler.Statusbar ();
-        this.stat.add_feed.button_press_event.connect (this.add_feed_pressed);
-        this.stat.delete_feed.button_press_event.connect (this.del_feed_pressed);
-        //this.stat.edit_feed.button_press_event.connect (this.edit_feed_pressed);
-        this.stat.mark_feed.button_press_event.connect (this.mark_feed_pressed);
+        this.stat.add_feed.button_press_event.connect (()=>{create_subscription (); return false;});
+        this.stat.delete_feed.button_press_event.connect (()=>{remove_subscription (); return false;});
+        this.stat.mark_feed.button_press_event.connect (()=>{mark_subscription (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
 	}
 	
@@ -428,7 +429,6 @@ public class Feedler.Window : Gtk.Window
 	{
         if (this.view.to_type () == 1)
             this.view.change ();
-        this.toolbar.progressbar (0.2, "TEST");
 	}
 	
 	protected void search_list ()
@@ -451,6 +451,7 @@ public class Feedler.Window : Gtk.Window
 		GLib.Time current_time = GLib.Time.local (time_t ());
 		foreach (Model.Item item in this.db.get_channel (channel_id).items)
 		{
+//stderr.printf ("Stan: %s-%i", item.title, item.state);
 			GLib.Time feed_time = GLib.Time.local (item.time);
             if (feed_time.day_of_year + 6 < current_time.day_of_year)
                 this.view.add_feed (item, feed_time.format ("%d %B %Y"));
@@ -515,84 +516,6 @@ public class Feedler.Window : Gtk.Window
             export (file_chooser.get_filename ());
         file_chooser.destroy ();
 	}
-
-    public virtual bool add_feed_pressed (Gdk.EventButton event)
-    {
-		if (event.type == Gdk.EventType.BUTTON_PRESS)
-        {
-			Feedler.CreateSubs subs = new Feedler.CreateSubs ();
-		    subs.set_transient_for (this);
-            subs.feed_added.connect (add_feed_added);
-		    foreach (Model.Folder folder in this.db.folders)
-			    subs.add_folder (folder.name);
-            subs.show_all ();
-		}
-		return false;
-	}
-
-    public virtual bool del_feed_pressed (Gdk.EventButton event)
-    {
-		if (event.type == Gdk.EventType.BUTTON_PRESS)
-        {
-            int id = this.selection_tree ();
-            if (id != -1)
-            {
-                Gtk.MessageDialog info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, "Are you sure you want to delete this channel?");
-			    if (info.run () == Gtk.ResponseType.YES)
-			    {
-				    this.side.remove_channel (id);
-				    //this.db.remove_subscription (id, this.db.channels.nth_data (id).id_db);
-				    for (uint i = this.db.channels.length ()-1; i >= id; i--)
-					    this.db.channels.nth_data (i).id--;
-			    }
-                info.destroy ();
-            }
-            else
-            {
-                var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, Gtk.MessageType.INFO, Gtk.ButtonsType.OK, "Please first select channel to delete.");
-                info.run ();
-                info.destroy ();
-            }
-		}
-		return false;
-	}
-
-    public virtual bool mark_feed_pressed (Gdk.EventButton event)
-    {
-		if (event.type == Gdk.EventType.BUTTON_PRESS)
-        {
-			stderr.printf ("Feedler.App.mark_all ()\n");
-		    foreach (Model.Channel ch in this.db.channels)
-		    {
-			    foreach (Model.Item it in ch.items)
-			    {
-				    if (it.state == Model.State.UNREAD)
-				    {
-					    it.state = Model.State.READ;
-					    //ch.unread--;
-				    }
-				    //else if (ch.unread > 0)
-					    //continue;
-				    else
-					    break;
-			    }
-			    this.side.mark_readed (ch.id);
-		    }
-		    this.load_channel ();
-		}
-		return false;
-	}
-
-    public virtual void add_feed_added (int folder, string url)
-    {
-        this.create_subscription (url, folder);
-    }
-
-    public virtual void edit_feed_edited (int id, int folder, string channel,  string url)
-    {
-        this.db.update_channel (id, folder, channel, url);
-        this.side.set_channel_name (id, channel);
-    }
 	
 	protected void config ()
 	{
@@ -605,38 +528,6 @@ public class Feedler.Window : Gtk.Window
         }
         pref.favicons.disconnect (favicon_all);
         pref.destroy ();
-	}
-	
-	protected void create_subscription (string url, int folder)
-	{
-		stderr.printf ("create_\n");
-		//Model.Channel.last_id = folder;
-        Soup.Message msg = new Soup.Message("GET", url);
-        //Model.Channel.session.queue_message (msg, create_subscription_func);
-	}
-	
-	public void create_subscription_func (Soup.Session session, Soup.Message message)
-	{
-		stderr.printf ("create_func\n");
-		string rss = (string) message.response_body.data;
-		
-		if (rss != null)
-		{/*
-			unowned Xml.Doc doc = Xml.Parser.parse_memory (rss, rss.length);
-			Feedler.Parser parser = new Feedler.Parser ();
-			Model.Channel channel = parser.parse_new (doc);
-			channel.source = message.get_uri ().to_string (false);
-			channel.folder = Feedler.Channel.last_id;
-			this.db.insert_subscription (ref channel);
-			if (channel.folder != -1)
-				this.side.add_channel_to_folder (channel.folder, channel.id, channel.title);
-			else
-				this.side.add_channel (channel.id, channel.title);
-			this.side.select_channel (channel.id);
-			this.side.add_unread (channel.id, channel.unread);
-			this.load_channel ();
-			channel.favicon ();*/
-		}
 	}
 	
 	protected void sidebar_update ()
@@ -671,6 +562,21 @@ public class Feedler.Window : Gtk.Window
 		}
 		return false;
 	}
+/* **************************************************************************** */
+    private void create_subscription ()
+    {
+        Feedler.CreateSubs subs = new Feedler.CreateSubs ();
+		subs.set_transient_for (this);
+        subs.created.connect (created_cb);
+		foreach (Model.Folder folder in this.db.folders)
+		    subs.add_folder (folder.name);
+        subs.show_all ();
+	}
+
+    private void created_cb (int folder, string url)
+    {
+        //TODO create subs
+    }
 
     private void update_subscription ()
     {
@@ -688,6 +594,22 @@ public class Feedler.Window : Gtk.Window
             }
         }
 	}
+
+    private void mark_subscription ()
+    {
+        var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                          Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, 
+                                          _("Are you sure you want to mark this subscription as read?"));
+		int id = this.selection_tree ();
+		if (id != -1)
+			if (info.run () == Gtk.ResponseType.YES)
+			{
+				this.side.mark_channel (id);
+				this.db.mark_channel (id);
+			    //this.load_channel ();
+			}
+		info.destroy ();
+    }
 	
     private void remove_subscription ()
     {
@@ -711,7 +633,7 @@ public class Feedler.Window : Gtk.Window
         {
             Feedler.EditSubs subs = new Feedler.EditSubs ();
 		    subs.set_transient_for (this);
-            subs.feed_edited.connect (edit_feed_edited);
+            subs.edited.connect (edited_cb);
 		    foreach (Model.Folder folder in this.db.folders)
 			    subs.add_folder (folder.name);
             Model.Channel c = this.db.get_channel (ch.id);
@@ -719,4 +641,9 @@ public class Feedler.Window : Gtk.Window
             subs.show_all ();
         }
 	}
+
+    private void edited_cb (int id, int folder, string channel, string url)
+    {
+        //TODO edit subs
+    }
 }

@@ -7,8 +7,7 @@
 
 public class Feedler.CreateSubs : Granite.Widgets.LightWindow
 {
-    public signal void feed_added (int folder, string url);
-    public signal void subscription_created (int folder, string url);
+    public signal void created (int folder, string url);
 	private Gtk.ComboBoxText folder;
 	private Granite.Widgets.HintedEntry channel;
 	
@@ -27,7 +26,7 @@ public class Feedler.CreateSubs : Granite.Widgets.LightWindow
 
         var save = new Gtk.Button.with_label (_("Add"));
         save.valign = save.halign = Gtk.Align.END;
-        save.clicked.connect_after (() => { feed_added (this.folder.get_active (), this.channel.get_text ()); this.destroy (); });
+        save.clicked.connect_after (() => { created (this.folder.get_active (), this.channel.get_text ()); this.destroy (); });
 
         var cancel = new Gtk.Button.with_label (_("Cancel"));
         cancel.valign = cancel.halign = Gtk.Align.END;

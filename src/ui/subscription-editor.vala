@@ -7,8 +7,7 @@
 
 public class Feedler.EditSubs : Granite.Widgets.LightWindow
 {
-    public signal void feed_edited (int id, int folder, string channel,  string url);
-    public signal void subscription_edited (int id, int folder, string channel, string url);
+    public signal void edited (int id, int folder, string channel, string url);
     private int id;
 	private Gtk.ComboBoxText folder;
     private Granite.Widgets.HintedEntry channel;
@@ -30,7 +29,7 @@ public class Feedler.EditSubs : Granite.Widgets.LightWindow
 
         var save = new Gtk.Button.with_label (_("Save"));
         save.valign = save.halign = Gtk.Align.END;
-        save.clicked.connect_after (() => { feed_edited (this.id, this.folder.get_active () + 1, this.channel.get_text () ,this.uri.get_text ()); this.destroy (); });
+        save.clicked.connect_after (() => { edited (this.id, this.folder.get_active () + 1, this.channel.get_text () ,this.uri.get_text ()); this.destroy (); });
 
         var cancel = new Gtk.Button.with_label (_("Cancel"));
         cancel.valign = cancel.halign = Gtk.Align.END;
