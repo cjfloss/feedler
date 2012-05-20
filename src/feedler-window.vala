@@ -96,10 +96,12 @@ public class Feedler.Window : Gtk.Window
 		
 		this.context = new Gtk.Menu ();
 		Gtk.MenuItem it_delete = new Gtk.MenuItem.with_label ("Delete");
-		//Gtk.MenuItem it_rename = new Gtk.MenuItem.with_label ("Rename");
+		Gtk.MenuItem it_edit = new Gtk.MenuItem.with_label ("Edit");
+		Gtk.MenuItem it_mark = new Gtk.MenuItem.with_label ("Mark as readed");
 		//it_rename.set_sensitive (false);
 		this.context.append (it_delete);
-		//this.context.append (it_rename);
+		this.context.append (it_edit);
+		this.context.append (it_mark);
 		it_delete.activate.connect (delete_channel);
 		this.context.show_all ();		
         
@@ -300,26 +302,35 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void updated_cb (Serializer.Channel channel)
 	{
+        //stderr.printf ("updated_cb\n");
         Model.Channel ch = this.db.from_source (channel.source);
         this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating " + ch.title);
-        Model.Item last = ch.items.nth_data (0) ?? Model.Item ();
-        int news = 0; 
-        this.db.begin ();
+        GLib.List<Serializer.Item?> reverse = new GLib.List<Serializer.Item?> ();
+        string last;
+        if (ch.items.length () > 0)
+            last = ch.items.last ().data.title;
+        else
+            last = "";
         foreach (var i in channel.items)
-            if (last.title != i.title)
-            {
-                news++;
-                int id = this.db.insert_serialized_item (ch.id, i);
-                Model.Item it = {id, i.title, i.source, i.author, i.description,
-                                 i.time, Model.State.UNREADED, ch.id};
-                ch.items.append (it);
-            }
+        {
+            if (last == i.title)
+                break;
+            reverse.append (i);
+        }
+        reverse.reverse ();
+        this.db.begin ();
+        foreach (var i in reverse)
+        {
+            int id = this.db.insert_serialized_item (ch.id, i);
+            Model.Item it = {id, i.title, i.source, i.author, i.description, i.time, Model.State.UNREADED, ch.id};
+            ch.items.append (it);
+        }
         this.db.commit ();
         this.connections--;
-        this.unreaded += news;
+        this.unreaded += (int)reverse.length ();
 		if (unreaded > 0)
 		{
-			this.side.add_unreaded (ch.id, news);			
+			this.side.add_unreaded (ch.id, (int)reverse.length ());			
 			if (this.selection_tree () == ch.id)
 				this.load_channel ();
 		}
