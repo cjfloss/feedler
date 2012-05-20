@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-20 20:32+0200\n"
+"POT-Creation-Date: 2012-05-20 20:35+0200\n"
 "PO-Revision-Date: 2012-05-14 20:12+0000\n"
 "Last-Translator: Kirill Ivaha <kirill.ivaha@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -18,11 +18,6 @@ msgstr ""
 "X-Launchpad-Export-Date: 2012-05-15 05:13+0000\n"
 "X-Generator: Launchpad (build 15238)\n"
 
-#: ../src/ui/statusbar.vala:45
-#, c-format
-msgid "%u %s"
-msgstr "%u %s"
-
 #: ../src/ui/toolbar.vala:68
 msgid "About"
 msgstr "О программе"
@@ -32,7 +27,7 @@ msgstr "О программе"
 msgid "Add a subscriptions from OPML file."
 msgstr "Добавить новый URL подписки"
 
-#: ../src/ui/statusbar.vala:50
+#: ../src/ui/statusbar.vala:48
 msgid "Add new subscription URL"
 msgstr "Добавить новый URL подписки"
 
@@ -94,7 +89,7 @@ msgstr ""
 msgid "Mark as read"
 msgstr ""
 
-#: ../src/ui/statusbar.vala:56
+#: ../src/ui/statusbar.vala:54
 #, fuzzy
 msgid "Mark selected subscription as read"
 msgstr "Отметить выбранные подписки как прочитанные"
@@ -125,7 +120,7 @@ msgstr ""
 msgid "Refresh all subscriptions"
 msgstr "Удалить выбранные подписки"
 
-#: ../src/ui/statusbar.vala:53
+#: ../src/ui/statusbar.vala:51
 msgid "Remove selected subscription"
 msgstr "Удалить выбранные подписки"
 
@@ -169,15 +164,18 @@ msgstr "Непрочитанные рассылки"
 msgid "new feeds"
 msgstr "Непрочитанные рассылки"
 
-#: ../src/ui/statusbar.vala:77
+#: ../src/ui/statusbar.vala:75
 #, fuzzy
 msgid "unread feed"
 msgstr "Непрочитанные рассылки"
 
-#: ../src/ui/statusbar.vala:77
+#: ../src/ui/statusbar.vala:75
 #, fuzzy
 msgid "unread feeds"
 msgstr "Непрочитанные рассылки"
+
+#~ msgid "%u %s"
+#~ msgstr "%u %s"
 
 #~ msgid "Add"
 #~ msgstr "Добавить"

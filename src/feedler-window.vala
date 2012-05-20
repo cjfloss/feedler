@@ -96,6 +96,7 @@ public class Feedler.Window : Gtk.Window
 		
 		this.sidemenu = new Feedler.MenuSide ();
 		this.sidemenu.add_sub.activate.connect (create_subscription);
+		this.sidemenu.add_fol.activate.connect (create_folder);
 		this.sidemenu.upd.activate.connect (update_subscription);
 		this.sidemenu.mark.activate.connect (mark_subscription);
 		this.sidemenu.rem.activate.connect (remove_subscription);
@@ -148,6 +149,18 @@ public class Feedler.Window : Gtk.Window
         this.layout.reinit ();
         this.ui_feeds ();
 	}
+
+    private void notification (string msg)
+    {
+        try
+        {
+            this.client.notification (msg);
+        }
+        catch (GLib.Error e)
+        {
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+        }
+    }
 
     private void dialog (string msg, Gtk.MessageType msg_type = Gtk.MessageType.INFO)
     {
@@ -276,7 +289,7 @@ public class Feedler.Window : Gtk.Window
             }
         }
         this.db.commit ();
-        this.client.notification (_("Imported %i channels in %i folders.").printf (count, folders.length));
+        this.notification (_("Imported %i channels in %i folders.").printf (count, folders.length));
 	}
 	
 	protected void updated_cb (Serializer.Channel channel)
@@ -318,7 +331,7 @@ public class Feedler.Window : Gtk.Window
         if (connections == 0)
         {
             string description = unread > 1 ? _("new feeds") : _("new feed");
-            this.client.notification ("%i %s".printf (unread, description));
+            this.notification ("%i %s".printf (unread, description));
             this.stat.set_unread (unread);
             this.unread = 0;
         }
@@ -552,6 +565,20 @@ public class Feedler.Window : Gtk.Window
             this.dialog ("Not implemented yet (%s)".printf (file.get_filename ()));
         file.destroy ();
 	}
+
+    private void create_folder ()
+    {
+        Feedler.Folder fol = new Feedler.Folder ();
+		fol.set_transient_for (this);
+        fol.saved.connect (folder_cb);
+        fol.show_all ();
+	}
+
+    private void folder_cb (int id, string title)
+    {
+        int i = this.db.add_folder (title);
+        this.side.add_folder_ (i, title, 0);
+    }
 
     private void create_subscription ()
     {

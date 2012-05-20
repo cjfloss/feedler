@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-20 20:32+0200\n"
+"POT-Creation-Date: 2012-05-20 20:35+0200\n"
 "PO-Revision-Date: 2012-05-16 16:30+0000\n"
 "Last-Translator: Ebubekir KARUL <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
@@ -18,11 +18,6 @@ msgstr ""
 "X-Launchpad-Export-Date: 2012-05-20 04:51+0000\n"
 "X-Generator: Launchpad (build 15259)\n"
 
-#: ../src/ui/statusbar.vala:45
-#, c-format
-msgid "%u %s"
-msgstr "%u %s"
-
 #: ../src/ui/toolbar.vala:68
 msgid "About"
 msgstr "Hakkında"
@@ -31,7 +26,7 @@ msgstr "Hakkında"
 msgid "Add a subscriptions from OPML file."
 msgstr ""
 
-#: ../src/ui/statusbar.vala:50
+#: ../src/ui/statusbar.vala:48
 msgid "Add new subscription URL"
 msgstr ""
 
@@ -93,7 +88,7 @@ msgstr ""
 msgid "Mark as read"
 msgstr ""
 
-#: ../src/ui/statusbar.vala:56
+#: ../src/ui/statusbar.vala:54
 msgid "Mark selected subscription as read"
 msgstr ""
 
@@ -122,7 +117,7 @@ msgstr ""
 msgid "Refresh all subscriptions"
 msgstr ""
 
-#: ../src/ui/statusbar.vala:53
+#: ../src/ui/statusbar.vala:51
 msgid "Remove selected subscription"
 msgstr ""
 
@@ -163,13 +158,16 @@ msgstr ""
 msgid "new feeds"
 msgstr ""
 
-#: ../src/ui/statusbar.vala:77
+#: ../src/ui/statusbar.vala:75
 msgid "unread feed"
 msgstr ""
 
-#: ../src/ui/statusbar.vala:77
+#: ../src/ui/statusbar.vala:75
 msgid "unread feeds"
 msgstr ""
+
+#~ msgid "%u %s"
+#~ msgstr "%u %s"
 
 #~ msgid "Add"
 #~ msgstr "Ekle"

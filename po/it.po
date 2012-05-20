@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-20 20:32+0200\n"
+"POT-Creation-Date: 2012-05-20 20:35+0200\n"
 "PO-Revision-Date: 2012-05-13 11:04+0000\n"
 "Last-Translator: Bennici Piercarlo <vesnarteach@gmail.com>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -18,11 +18,6 @@ msgstr ""
 "X-Launchpad-Export-Date: 2012-05-14 04:54+0000\n"
 "X-Generator: Launchpad (build 15238)\n"
 
-#: ../src/ui/statusbar.vala:45
-#, c-format
-msgid "%u %s"
-msgstr "%u %s"
-
 #: ../src/ui/toolbar.vala:68
 msgid "About"
 msgstr "Circa"
@@ -32,7 +27,7 @@ msgstr "Circa"
 msgid "Add a subscriptions from OPML file."
 msgstr "Aggiungi un nuovo abbonamento URL"
 
-#: ../src/ui/statusbar.vala:50
+#: ../src/ui/statusbar.vala:48
 msgid "Add new subscription URL"
 msgstr "Aggiungi un nuovo abbonamento URL"
 
@@ -94,7 +89,7 @@ msgstr ""
 msgid "Mark as read"
 msgstr ""
 
-#: ../src/ui/statusbar.vala:56
+#: ../src/ui/statusbar.vala:54
 #, fuzzy
 msgid "Mark selected subscription as read"
 msgstr "Mark seleziona abbonamento come lettura"
@@ -125,7 +120,7 @@ msgstr ""
 msgid "Refresh all subscriptions"
 msgstr "Rimuovi abbonamento selezionato"
 
-#: ../src/ui/statusbar.vala:53
+#: ../src/ui/statusbar.vala:51
 msgid "Remove selected subscription"
 msgstr "Rimuovi abbonamento selezionato"
 
@@ -169,15 +164,18 @@ msgstr "feed non letto"
 msgid "new feeds"
 msgstr "Feed non letti"
 
-#: ../src/ui/statusbar.vala:77
+#: ../src/ui/statusbar.vala:75
 #, fuzzy
 msgid "unread feed"
 msgstr "feed non letto"
 
-#: ../src/ui/statusbar.vala:77
+#: ../src/ui/statusbar.vala:75
 #, fuzzy
 msgid "unread feeds"
 msgstr "Feed non letti"
+
+#~ msgid "%u %s"
+#~ msgstr "%u %s"
 
 #~ msgid "Add"
 #~ msgstr "Aggiungi"

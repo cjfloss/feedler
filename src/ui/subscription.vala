@@ -1,5 +1,5 @@
 /**
- * subscription-editor.vala
+ * subscription.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
@@ -10,12 +10,12 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
     public signal void saved (int id, int folder, string name, string url);
     private int id;
 	private Gtk.ComboBoxText folder;
-    private Granite.Widgets.HintedEntry name;
+    private Granite.Widgets.HintedEntry channel;
 	private Granite.Widgets.HintedEntry uri;
 	
 	public Subscription ()
 	{
-        this.border_width = 15;
+        this.border_width = 10;
         this.window_position = Gtk.WindowPosition.CENTER;
         this.type_hint = Gdk.WindowTypeHint.DIALOG;
 		this.set_modal (false);
@@ -24,12 +24,12 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
 		this.resizable = false;
         this.id = 0;
 		this.folder = new Gtk.ComboBoxText ();
-		this.name = new Granite.Widgets.HintedEntry (_("Name"));
+		this.channel = new Granite.Widgets.HintedEntry (_("Name"));
         this.uri = new Granite.Widgets.HintedEntry (_("URI"));
 
         var save = new Gtk.Button.with_label (_("Save"));
         save.valign = save.halign = Gtk.Align.END;
-        save.clicked.connect_after (() => { saved (this.id, this.folder.get_active () + 1, this.name.get_text (), this.uri.get_text ()); this.destroy (); });
+        save.clicked.connect_after (() => { saved (this.id, this.folder.get_active () + 1, this.channel.get_text (), this.uri.get_text ()); this.destroy (); });
 
         var cancel = new Gtk.Button.with_label (_("Cancel"));
         cancel.valign = cancel.halign = Gtk.Align.END;
@@ -52,11 +52,11 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
         u_label.set_halign (Gtk.Align.START);
         u_label.margin_top = 5;
         
-        var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 5);
+        var content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         content.pack_start (f_label);
         content.pack_start (folder, false, true, 0);
         content.pack_start (n_label);
-        content.pack_start (name, false, true, 0);
+        content.pack_start (channel, false, true, 0);
         content.pack_start (u_label);
         content.pack_start (uri, false, true, 0);
         content.pack_end (button_box, false, false, 0);
@@ -73,7 +73,7 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
     public void set_model (int id, string title, string uri, int folder)
     {
         this.id = id;
-		this.name.set_text (title);
+		this.channel.set_text (title);
 		this.uri.set_text (uri);
         this.folder.set_active (folder);
     }

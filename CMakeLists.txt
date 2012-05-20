@@ -111,6 +111,7 @@ vala_precompile(VALA_C
 	src/ui/feedler-view-list.vala
 	src/ui/feedler-view-web.vala
 	src/ui/cardlayout.vala
+	src/ui/folder.vala
 	src/ui/menu.vala
 	src/ui/statusbar.vala
 	src/ui/subscription.vala

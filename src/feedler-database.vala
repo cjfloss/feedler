@@ -132,6 +132,27 @@ public class Feedler.Database : GLib.Object
 		return null;
 	}
 
+    public int add_folder (string title)
+	{
+		try
+        {
+   			this.transaction = db.begin_transaction ();
+			query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
+			query.set_string (":name", title);
+			//query.set_int (":parent", folder.parent);
+            int id = (int)query.execute_insert ();
+    		this.transaction.commit ();
+            Model.Folder f = {id, title, 0};
+            this.folders.append (f);
+            return id;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot insert folder %s.", title);
+            return 0;
+		}
+	}
+
     public int add_channel (string title, string url, int folder)
 	{
 		try
@@ -141,8 +162,10 @@ public class Feedler.Database : GLib.Object
 			query.set_string (":title", title);
 			query.set_string (":source", url);
 			query.set_int (":folder", folder);
-            this.transaction.commit ();
             int id = (int)query.execute_insert ();
+            this.transaction.commit ();
+            Model.Channel c = new Model.Channel.with_data (id, title, "", url, folder);
+            this.channels.append (c);
             return id;
 		}
 		catch (SQLHeavy.Error e)
@@ -235,9 +258,8 @@ public class Feedler.Database : GLib.Object
 	{
         try
         {
-			int count = 0;
 			query = new SQLHeavy.Query (db, "SELECT * FROM `folders`;");
-			for (SQLHeavy.QueryResult results = query.execute(); !results.finished; results.next())
+			for (var results = query.execute (); !results.finished; results.next ())
 			{
 				Model.Folder fo = Model.Folder ();
 				fo.id = results.fetch_int (0);
@@ -268,7 +290,7 @@ public class Feedler.Database : GLib.Object
 				ch.folder = results.fetch_int (4);
                 ch.items = new GLib.List<Model.Item?> ();
 				
-				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`=:id;");//TODO order by date??
+				var q = new SQLHeavy.Query (db, "SELECT * FROM `items` WHERE `channel`=:id;");
                 q.set_int (":id", ch.id);
 				for (var r = q.execute (); !r.finished; r.next ())
 				{

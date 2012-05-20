@@ -49,13 +49,18 @@ public class Feedler.Sidebar : Gtk.TreeView
 
     public void add_folder (Model.Folder f)
     {
+        this.add_folder_ (f.id, f.name, f.parent);
+    }
+
+    public void add_folder_ (int id, string name, int folder)
+    {
         Gtk.TreeIter folder_iter;
-        if (f.parent > 0)
-            this.store.append (out folder_iter, this.folders.get (f.parent));
+        if (folder > 0)
+            this.store.append (out folder_iter, this.folders.get (folder));
         else
             this.store.append (out folder_iter, null);
-        this.store.set (folder_iter, 0, new ChannelStore (f.id, f.name, 0, 0), -1);
-        this.folders.set (f.id, folder_iter);
+        this.store.set (folder_iter, 0, new ChannelStore (id, name, 0, 0), -1);
+        this.folders.set (id, folder_iter);
     }
 
     public void add_channel (int id, string name, int folder)
