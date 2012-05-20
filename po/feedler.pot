@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-20 20:35+0200\n"
+"POT-Creation-Date: 2012-05-20 23:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,6 +31,20 @@ msgstr ""
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Add a subscriptions from OPML file."
+msgstr ""
+
+#: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
+#: ../src/ui/subscription.vala:27 ../src/ui/subscription.vala:47
+#, c-format
+msgid "Name"
+msgstr ""
+
+#: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:30
+msgid "Save"
+msgstr ""
+
+#: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:34
+msgid "Cancel"
 msgstr ""
 
 #: ../src/ui/menu.vala:11
@@ -82,21 +96,8 @@ msgstr ""
 msgid "unread feed"
 msgstr ""
 
-#: ../src/ui/subscription.vala:27 ../src/ui/subscription.vala:47
-#, c-format
-msgid "Name"
-msgstr ""
-
 #: ../src/ui/subscription.vala:28
 msgid "URI"
-msgstr ""
-
-#: ../src/ui/subscription.vala:30
-msgid "Save"
-msgstr ""
-
-#: ../src/ui/subscription.vala:34
-msgid "Cancel"
 msgstr ""
 
 #: ../src/ui/subscription.vala:51
@@ -144,23 +145,23 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: ../src/feedler-window.vala:279
+#: ../src/feedler-window.vala:284
 #, c-format
 msgid "Imported %i channels in %i folders."
 msgstr ""
 
-#: ../src/feedler-window.vala:320
+#: ../src/feedler-window.vala:325
 msgid "new feeds"
 msgstr ""
 
-#: ../src/feedler-window.vala:320
+#: ../src/feedler-window.vala:325
 msgid "new feed"
 msgstr ""
 
-#: ../src/feedler-window.vala:593
-msgid "Are you sure you want to mark this subscription as read?"
+#: ../src/feedler-window.vala:602
+msgid "Are you sure you want to mark as read?"
 msgstr ""
 
-#: ../src/feedler-window.vala:609
-msgid "Are you sure you want to delete this subscription?"
+#: ../src/feedler-window.vala:618
+msgid "Are you sure you want to delete?"
 msgstr ""

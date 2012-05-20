@@ -62,13 +62,13 @@ public class Feedler.Window : Gtk.Window
         
         this.toolbar.back.clicked.connect (history_prev);
         this.toolbar.forward.clicked.connect (history_next);
-        this.toolbar.update.clicked.connect (update_all);
+        this.toolbar.update.clicked.connect (_update_all);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.column.clicked.connect (change_column);
         this.toolbar.search.activate.connect (search_list); 
         
-        this.toolbar.import_feeds.activate.connect (import_subscription);
-        this.toolbar.export_feeds.activate.connect (export_subscription);
+        this.toolbar.import_feeds.activate.connect (_import);
+        this.toolbar.export_feeds.activate.connect (_export);
         this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
         this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
@@ -95,12 +95,12 @@ public class Feedler.Window : Gtk.Window
         this.pane.add1 (scroll_side);
 		
 		this.sidemenu = new Feedler.MenuSide ();
-		this.sidemenu.add_sub.activate.connect (create_subscription);
-		this.sidemenu.add_fol.activate.connect (create_folder);
-		this.sidemenu.upd.activate.connect (update_subscription);
-		this.sidemenu.mark.activate.connect (mark_subscription);
-		this.sidemenu.rem.activate.connect (remove_subscription);
-		this.sidemenu.edit.activate.connect (edit_subscription);
+		this.sidemenu.add_sub.activate.connect (_create_subs);
+		this.sidemenu.add_fol.activate.connect (_create_folder);
+		this.sidemenu.upd.activate.connect (_update);
+		this.sidemenu.mark.activate.connect (_mark);
+		this.sidemenu.rem.activate.connect (_remove);
+		this.sidemenu.edit.activate.connect (_edit);
 		this.sidemenu.show_all ();		
         
         this.layout.init_views ();
@@ -111,9 +111,9 @@ public class Feedler.Window : Gtk.Window
 		this.view.item_browsed.connect (history_remove);
 
         this.stat = new Feedler.Statusbar ();
-        this.stat.add_feed.button_press_event.connect (()=>{create_subscription (); return false;});
-        this.stat.delete_feed.button_press_event.connect (()=>{remove_subscription (); return false;});
-        this.stat.mark_feed.button_press_event.connect (()=>{mark_subscription (); return false;});
+        this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
+        this.stat.delete_feed.button_press_event.connect (()=>{_remove (); return false;});
+        this.stat.mark_feed.button_press_event.connect (()=>{_mark (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
 	}
 	
@@ -183,12 +183,10 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void catch_activated (int index)
 	{
-        stderr.printf ("\n%i\n", this.pane.get_position ());
-		stderr.printf ("Activated: %i\n", index);
 		switch (index)
 		{
-			case 0: this.import_subscription (); break;
-			//case 1: this.add_subscription (); break;
+			case 0: this._import (); break;
+			case 1: this._create_subs (); break;
 		}
 	}
 	
@@ -196,32 +194,26 @@ public class Feedler.Window : Gtk.Window
 	{
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
-		Gtk.TreeSelection selection = this.side.get_selection ();
 		
-		if (selection.get_selected (out model, out iter))
+		if (this.side.get_selection ().get_selected (out model, out iter))
 		{
 			ChannelStore channel;
 			model.get (iter, 0, out channel);
-			return channel.id;
+            if (channel.mode > 0)
+			    return channel.id;
 		}
-		else
-			return -1;
+		return -1;
 	}
 
     private ChannelStore? selected_item ()
 	{
+        ChannelStore channel = null;
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
-		Gtk.TreeSelection selection = this.side.get_selection ();
 		
-		if (selection.get_selected (out model, out iter))
-		{
-			ChannelStore channel;
+		if (this.side.get_selection ().get_selected (out model, out iter))
 			model.get (iter, 0, out channel);
-			return channel;
-		}
-		else
-			return null;
+    	return channel;
 	}
 	
 	protected void history_prev ()
@@ -504,7 +496,7 @@ public class Feedler.Window : Gtk.Window
 		return false;
 	}
 /* **************************************************************************** */
-    private void update_all ()
+    private void _update_all ()
 	{
         try
         {
@@ -520,7 +512,7 @@ public class Feedler.Window : Gtk.Window
         }
 	}
 
-    private void import_subscription ()
+    private void _import ()
 	{
 		var file = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN,
                                               Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
@@ -556,7 +548,7 @@ public class Feedler.Window : Gtk.Window
         this.show_all ();
 	}
 
-	private void export_subscription ()
+	private void _export ()
 	{
 		var file = new Gtk.FileChooserDialog ("Save File", this, Gtk.FileChooserAction.SAVE,
                                               Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
@@ -566,38 +558,27 @@ public class Feedler.Window : Gtk.Window
         file.destroy ();
 	}
 
-    private void create_folder ()
+    private void _create_folder ()
     {
         Feedler.Folder fol = new Feedler.Folder ();
 		fol.set_transient_for (this);
-        fol.saved.connect (folder_cb);
+        fol.saved.connect (create_folder_cb);
         fol.show_all ();
 	}
 
-    private void folder_cb (int id, string title)
-    {
-        int i = this.db.add_folder (title);
-        this.side.add_folder_ (i, title, 0);
-    }
-
-    private void create_subscription ()
+    private void _create_subs ()
     {
         Feedler.Subscription subs = new Feedler.Subscription ();
 		subs.set_transient_for (this);
-        subs.saved.connect (created_cb);
+        subs.saved.connect (create_subs_cb);
 		foreach (Model.Folder folder in this.db.folders)
 		    subs.add_folder (folder.name);
         subs.show_all ();
 	}
 
-    private void created_cb (int id, int folder, string title, string url)
+    private void _update ()
     {
-        int i = this.db.add_channel (title, url, folder);
-        this.side.add_channel (i, title, folder);
-    }
-
-    private void update_subscription ()
-    {
+        //TODO improve
         ChannelStore ch = this.selected_item ();
         if (ch != null)
         {
@@ -613,11 +594,12 @@ public class Feedler.Window : Gtk.Window
         }
 	}
 
-    private void mark_subscription ()
+    private void _mark ()
     {
+        //TODO improve
         var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                           Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, 
-                                          _("Are you sure you want to mark this subscription as read?"));
+                                          _("Are you sure you want to mark as read?"));
 		int id = this.selection_tree ();
 		if (id != -1)
 			if (info.run () == Gtk.ResponseType.YES)
@@ -629,40 +611,74 @@ public class Feedler.Window : Gtk.Window
 		info.destroy ();
     }
 	
-    private void remove_subscription ()
+    private void _remove ()
     {
         var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                           Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, 
-                                          _("Are you sure you want to delete this subscription?"));
-		int id = this.selection_tree ();
-		if (id != -1)
-			if (info.run () == Gtk.ResponseType.YES)
-			{
-				this.side.remove_channel (id);
-				this.db.remove_channel (id);
-			}
+                                          _("Are you sure you want to delete?"));
+        ChannelStore ch = this.selected_item ();
+        if (ch != null)
+            if (info.run () == Gtk.ResponseType.YES)
+			    if (ch.mode == 1)
+                {
+				    this.side.remove_channel (ch.id);
+				    this.db.remove_channel (ch.id);
+			    }
+                else
+                {
+				    this.side.remove_folder (ch.id);
+				    this.db.remove_folder (ch.id);
+			    }
 		info.destroy ();
     }
 
-    private void edit_subscription ()
+    private void _edit ()
     {
         ChannelStore ch = this.selected_item ();
         if (ch != null)
-        {
-            Feedler.Subscription subs = new Feedler.Subscription ();
-		    subs.set_transient_for (this);
-            subs.saved.connect (edited_cb);
-		    foreach (Model.Folder folder in this.db.folders)
-			    subs.add_folder (folder.name);
-            Model.Channel c = this.db.get_channel (ch.id);
-            subs.set_model (c.id, c.title, c.source, c.folder);
-            subs.show_all ();
-        }
+            if (ch.mode == 1)
+            {
+			    Feedler.Subscription subs = new Feedler.Subscription ();
+		        subs.set_transient_for (this);
+                subs.saved.connect (edit_subs_cb);
+		        foreach (Model.Folder folder in this.db.folders)
+			        subs.add_folder (folder.name);
+                Model.Channel c = this.db.get_channel (ch.id);
+                subs.set_model (c.id, c.title, c.source, c.folder);
+                subs.show_all ();
+			}
+            else
+            {
+                Feedler.Folder fol = new Feedler.Folder ();
+		        fol.set_transient_for (this);
+                fol.saved.connect (edit_folder_cb);
+                Model.Folder f = this.db.get_folder (ch.id);
+                fol.set_model (f.id, f.name);
+                fol.show_all ();
+			}
 	}
 
-    private void edited_cb (int id, int folder, string title, string url)
+    private void create_subs_cb (int id, int folder, string title, string url)
+    {
+        int i = this.db.add_channel (title, url, folder);
+        this.side.add_channel (i, title, folder);
+    }
+
+    private void create_folder_cb (int id, string title)
+    {
+        int i = this.db.add_folder (title);
+        this.side.add_folder_ (i, title, 0);
+    }
+
+    private void edit_subs_cb (int id, int folder, string title, string url)
     {
         this.side.update_channel (id, title, folder);
         this.db.update_channel (id, folder, title, url);
+    }
+
+    private void edit_folder_cb (int id, string name)
+    {
+        this.side.update_folder (id, name);
+        this.db.update_folder (id, name);
     }
 }

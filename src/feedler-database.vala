@@ -107,6 +107,14 @@ public class Feedler.Database : GLib.Object
         return uri;
 	}
 
+    public Model.Folder? get_folder (int id)
+	{
+        foreach (Model.Folder folder in this.folders)
+            if (id == folder.id)
+                return folder;
+		return null;
+	}
+
     public Model.Channel? get_channel (int id)
 	{
         foreach (Model.Channel channel in this.channels)
@@ -150,6 +158,48 @@ public class Feedler.Database : GLib.Object
 		{
 			stderr.printf ("Cannot insert folder %s.", title);
             return 0;
+		}
+	}
+
+    public void update_folder (int id, string title)
+    {
+        try
+        {
+			transaction = db.begin_transaction ();
+			query = transaction.prepare ("UPDATE `folders` SET `name`=:name WHERE `id`=:id;");
+			query.set_string (":name", title);
+            query.set_int (":id", id);
+			query.execute_async ();
+			transaction.commit ();
+            Model.Folder c = this.get_folder (id);
+            c.name = title;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot update folder %s with id %i.", title, id);
+		}
+    }
+
+    public void remove_folder (int id)
+	{
+        try
+        {
+			transaction = db.begin_transaction ();
+            query = transaction.prepare ("DELETE FROM `folders` WHERE `id` = :id;");
+			query.set_int (":id", id);
+			query.execute_async ();
+			query = transaction.prepare ("DELETE FROM `channels` WHERE `folder` = :id;");
+			query.set_int (":id", id);
+			query.execute_async ();
+			query = transaction.prepare ("DELETE FROM `items` WHERE `channel` IN (SELECT id FROM channels WHERE folder=:id);");
+			query.set_int (":id", id);
+			query.execute_async ();
+			transaction.commit ();
+			this.folders.remove (this.get_folder (id));
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot remove channel.\n");
 		}
 	}
 

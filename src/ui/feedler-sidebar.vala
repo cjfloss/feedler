@@ -94,6 +94,15 @@ public class Feedler.Sidebar : Gtk.TreeView
         this.add_channel (id, name, folder);
 	}
 
+    public void update_folder (int id, string name)
+	{
+        Gtk.TreeIter iter = folders.get (id);
+		ChannelStore store;
+		this.model.get (iter, 0, out store);
+		store.channel = name;
+		this.store.set_value (iter, 0, store);
+	}
+
     public void mark_channel (int id)
 	{
 		Gtk.TreeIter channel_iter = channels.get (id);
@@ -118,7 +127,6 @@ public class Feedler.Sidebar : Gtk.TreeView
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
 		channel.unread += unread;
-		//channel.mode = 1;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
