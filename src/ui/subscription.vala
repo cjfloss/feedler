@@ -8,6 +8,8 @@
 public class Feedler.Subscription : Granite.Widgets.LightWindow
 {
     public signal void saved (int id, int folder, string name, string url);
+    internal Gtk.Button favicon;
+    private Gtk.Box button_box;
     private int id;
 	private Gtk.ComboBoxText folder;
     private Granite.Widgets.HintedEntry channel;
@@ -35,10 +37,13 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
         cancel.valign = cancel.halign = Gtk.Align.END;
         cancel.clicked.connect_after (() => { this.destroy (); });
 
-        var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-        button_box.pack_start (cancel, false, false, 0);
-        button_box.pack_end (save, false, false, 0);
-        button_box.margin_top = 10;
+        this.favicon = new Gtk.Button.with_label (_("Load favicon"));
+        this.favicon.valign = this.favicon.halign = Gtk.Align.START;
+
+        this.button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+        this.button_box.pack_end (save, false, false, 0);
+        this.button_box.pack_end (cancel, false, false, 10);
+        this.button_box.margin_top = 10;
 
         var f_label = new Gtk.Label ("");
         f_label.set_markup ("<b>%s</b>".printf (_("Folder")));
@@ -76,5 +81,6 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
 		this.channel.set_text (title);
 		this.uri.set_text (uri);
         this.folder.set_active (folder);
+        this.button_box.pack_start (favicon, false, false, 0);
     }
 }

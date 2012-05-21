@@ -32,8 +32,8 @@ public class Feedler.Folder : Granite.Widgets.LightWindow
         cancel.clicked.connect_after (() => { this.destroy (); });
 
         var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-        button_box.pack_start (cancel, false, false, 0);
         button_box.pack_end (save, false, false, 0);
+        button_box.pack_end (cancel, false, false, 10);
         button_box.margin_top = 10;
 
         var f_label = new Gtk.Label ("");

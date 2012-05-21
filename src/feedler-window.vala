@@ -464,6 +464,34 @@ public class Feedler.Window : Gtk.Window
         }
 	}
 
+    private void _update ()
+    {
+        ChannelStore ch = this.selected_item ();
+        if (ch != null)
+        {
+            try
+            {
+                if (ch.mode == 1)
+                {
+				    Model.Channel c = this.db.get_channel (ch.id);
+                    this.toolbar.progress.pulse (_("Updating %s").printf (c.title), true);
+                    this.client.update (c.source);
+			    }
+                else
+                {
+                    this.toolbar.progress.pulse (_("Updating subscriptions"), true);
+                    string[] uris = this.db.get_folder_uris (ch.id);
+                    this.connections = uris.length;
+                    this.client.update_all (uris);
+			    }
+            }
+            catch (GLib.Error e)
+            {
+                this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+            }
+        }
+	}
+
     private void _favicon_all ()
 	{
         try
@@ -472,6 +500,21 @@ public class Feedler.Window : Gtk.Window
             string[] uris = this.db.get_uris ();
             this.connections = uris.length;
             this.client.favicon_all (uris);
+        }
+        catch (GLib.Error e)
+        {
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+        }
+	}
+
+    private void _favicon ()
+	{
+        try
+        {
+            int id = this.selection_tree ();
+            this.toolbar.progress.pulse (_("Downloading favicons"), true);
+            this.connections++;
+            this.client.favicon (this.db.get_channel (id).source);
         }
         catch (GLib.Error e)
         {
@@ -543,34 +586,6 @@ public class Feedler.Window : Gtk.Window
         subs.show_all ();
 	}
 
-    private void _update ()
-    {
-        ChannelStore ch = this.selected_item ();
-        if (ch != null)
-        {
-            try
-            {
-                if (ch.mode == 1)
-                {
-				    Model.Channel c = this.db.get_channel (ch.id);
-                    this.toolbar.progress.pulse (_("Updating %s").printf (c.title), true);
-                    this.client.update (c.source);
-			    }
-                else
-                {
-                    this.toolbar.progress.pulse (_("Updating subscriptions"), true);
-                    string[] uris = this.db.get_folder_uris (ch.id);
-                    this.connections = uris.length;
-                    this.client.update_all (uris);
-			    }
-            }
-            catch (GLib.Error e)
-            {
-                this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
-            }
-        }
-	}
-
     private void _mark ()
     {
         //TODO improve
@@ -618,6 +633,7 @@ public class Feedler.Window : Gtk.Window
 			    Feedler.Subscription subs = new Feedler.Subscription ();
 		        subs.set_transient_for (this);
                 subs.saved.connect (edit_subs_cb);
+                subs.favicon.clicked.connect (this._favicon);
 		        foreach (Model.Folder folder in this.db.folders)
 			        subs.add_folder (folder.name);
                 Model.Channel c = this.db.get_channel (ch.id);
