@@ -113,11 +113,11 @@ vala_precompile(VALA_C
 	src/ui/folder.vala
 	src/ui/menu.vala
 	src/ui/sidebar.vala
+	src/ui/sidebar-cell.vala
 	src/ui/statusbar.vala
 	src/ui/subscription.vala
 	src/ui/toolbar.vala
 	src/ui/feedler-view-cell.vala
-	src/ui/feedler-sidebar-cell.vala
     src/service/interface.vala
     src/service/model.vala
     src/service/serializer.vala

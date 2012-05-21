@@ -386,28 +386,24 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
 		this.view.refilter (this.toolbar.search.get_text ());
 	}
 	
-	protected void load_channel ()
+	private void load_channel ()
 	{
 		int id = this.selection_tree ();
 		if (id != -1)
-			this.load_channel_from_id (id);
-	}
-	
-	private void load_channel_from_id (int channel_id)
-	{
-		stderr.printf ("Feedler.App.load_channel (%i)\n", channel_id);
-		this.view.clear ();
-		GLib.Time current_time = GLib.Time.local (time_t ());
-		foreach (Model.Item item in this.db.get_channel (channel_id).items)
 		{
-//stderr.printf ("Stan: %s-%i", item.title, item.state);
-			GLib.Time feed_time = GLib.Time.local (item.time);
-            if (feed_time.day_of_year + 6 < current_time.day_of_year)
-                this.view.add_feed (item, feed_time.format ("%d %B %Y"));
-			else
-                this.view.add_feed (item, feed_time.format ("%A %R"));
+			this.view.clear ();
+			GLib.Time current_time = GLib.Time.local (time_t ());
+			foreach (Model.Item item in this.db.get_channel (id).items)
+			{
+	//stderr.printf ("Stan: %s-%i", item.title, item.state);
+				GLib.Time feed_time = GLib.Time.local (item.time);
+		        if (feed_time.day_of_year + 6 < current_time.day_of_year)
+		            this.view.add_feed (item, feed_time.format ("%d %B %Y"));
+				else
+		            this.view.add_feed (item, feed_time.format ("%A %R"));
+			}
+			this.view.load_feeds ();
 		}
-		this.view.load_feeds ();
 	}
 	
 	protected void config ()
@@ -482,6 +478,7 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
                 {
 				    Model.Channel c = this.db.get_channel (ch.id);
                     this.toolbar.progress.pulse (_("Updating %s").printf (c.title), true);
+					this.connections++;
                     this.client.update (c.source);
 			    }
                 else
