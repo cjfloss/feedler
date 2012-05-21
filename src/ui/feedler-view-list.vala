@@ -109,7 +109,7 @@ public class Feedler.ViewList : Feedler.View
 	public override void select (Gtk.TreePath path)
 	{
 		this.tree.get_selection ().select_path (path);
-		this.load_item_history (false);
+		this.load_item ();
 	}
 
     public override void change ()
@@ -154,12 +154,6 @@ public class Feedler.ViewList : Feedler.View
 	protected void load_item ()
 	{
 		stderr.printf ("Feedler.ViewList.load_item ()\n");
-		this.load_item_history (true);
-	}
-	
-	protected void load_item_history (bool history)
-	{
-		stderr.printf ("Feedler.ViewList.load_item_history ()\n");
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;		
 		Gtk.TreeSelection selection = this.tree.get_selection ();

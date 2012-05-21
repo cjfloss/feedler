@@ -102,7 +102,7 @@ include(ValaPrecompile)
 vala_precompile(VALA_C
 	src/feedler-app.vala
 	src/feedler-database.vala
-	src/feedler-history.vala
+	src/history.vala
 	src/feedler-settings.vala
 	src/feedler-window.vala
 	src/ui/feedler-preferences.vala

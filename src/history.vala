@@ -35,31 +35,32 @@ public class Feedler.History : GLib.Object
 stderr.printf ("Add\t");
 		if (current < items.size - 1)
 		{
-stderr.printf ("Extend\n");
+stderr.printf ("Extend\t");
 			this.items = (Gee.LinkedList<Feedler.HistoryItem>)this.items.slice (0, current + 1);
 			this.items.add (new Feedler.HistoryItem (channel, item));
-			current = items.size;
+			this.current = items.size - 1;
+stderr.printf ("OK: %i ?? %i\n", items.size, current);
 		}
 		else
 		{
-stderr.printf ("Simple\n");
+stderr.printf ("Simple\t");
 			this.items.add (new Feedler.HistoryItem (channel, item));
 			this.current++;
+stderr.printf ("OK: %i ?? %i\n", items.size, current);
 		}
 	}
 	}
 	
 	public void next (out string side_path, out string? view_path)
 	{
+		this.current++;
 		side_path = items[current].channel;
 		view_path = items[current].item;
-		++current;
 	}
 
 	public void prev (out string side_path, out string? view_path)
 	{
-stderr.printf ("%i\n", current);
-		--current;
+		this.current--;
 		side_path = items[current].channel;
 		view_path = items[current].item;
 	}

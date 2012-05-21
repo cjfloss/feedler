@@ -219,10 +219,10 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void history_prev ()
 	{
+stderr.printf ("PREV\t");
 		string side_path = null, view_path = null;
-stderr.printf ("prev\n");
         this.history.prev (out side_path, out view_path);
-stderr.printf ("prev\n");
+stderr.printf ("OK: %s :: %s\n", side_path, view_path);
         this.side.get_selection ().select_path (new Gtk.TreePath.from_string (side_path));
         this.load_channel ();
 		if (view_path != null)
@@ -232,8 +232,10 @@ stderr.printf ("prev\n");
 	
 	protected void history_next ()
 	{
+stderr.printf ("NEXT\t");
 		string side_path = null, view_path = null;
         this.history.next (out side_path, out view_path);
+stderr.printf ("OK: %s :: %s\n", side_path, view_path);
         this.side.get_selection ().select_path (new Gtk.TreePath.from_string (side_path));
         this.load_channel ();
 		if (view_path != null)
