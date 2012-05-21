@@ -330,13 +330,23 @@ public class Feedler.Window : Gtk.Window
             this.unread = 0;
         }
 	}
-	
-	protected void favicon_all ()
+
+    private void favicon_cb (string uri, uint8[] data)
 	{
-        this.toolbar.progress.pulse (_("Downloading favicons"), true);
-		foreach (Model.Channel ch in this.db.channels)
+		try
 		{
-			//ch.favicon ();
+            Model.Channel c = this.db.from_source (uri);
+			var loader = new Gdk.PixbufLoader.with_type ("ico");
+			loader.write (data);
+			loader.close ();
+			var pix = loader.get_pixbuf ();
+			if (pix.get_height () != 16)
+				pix.scale_simple (16, 16, Gdk.InterpType.BILINEAR);
+            pix.save ("%s/feedler/fav/%i.png".printf (GLib.Environment.get_user_data_dir (), c.id), "png");
+		}
+		catch (GLib.Error e)
+		{
+			stderr.printf ("Cannot get favicon for %s\n", uri);
 		}
 	}
 	
@@ -455,13 +465,13 @@ public class Feedler.Window : Gtk.Window
 	protected void config ()
 	{
 		Feedler.Preferences pref = new Feedler.Preferences ();
-		pref.favicons.connect (favicon_all);
+		//pref.favicons.connect (favicon_all);
 		if (pref.run () == Gtk.ResponseType.APPLY)
 		{
 			stderr.printf ("Preferences");
 			pref.save ();
         }
-        pref.favicons.disconnect (favicon_all);
+        //pref.favicons.disconnect (favicon_all);
         pref.destroy ();
 	}
 	
@@ -511,6 +521,25 @@ public class Feedler.Window : Gtk.Window
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
         }
+	}
+
+    private void _favicon_all ()
+	{
+        try
+        {
+            this.toolbar.progress.pulse (_("Downloading favicons"), true);
+            string[] uris = this.db.get_uris ();
+            this.connections = uris.length;
+            this.client.update_all (uris);
+        }
+        catch (GLib.Error e)
+        {
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+        }
+		foreach (Model.Channel ch in this.db.channels)
+		{
+			//ch.favicon ();
+		}
 	}
 
     private void _import ()

@@ -277,6 +277,27 @@ public class Feedler.Database : GLib.Object
 		}
 	}
 
+    public void mark_folder (int id, Model.State state = Model.State.READ)
+    {
+        try
+        {
+			transaction = db.begin_transaction ();
+			query = transaction.prepare ("UPDATE `items` SET `state`=:state WHERE `channel` IN (SELECT id FROM channels WHERE folder=:id);");
+			query.set_int (":state", (int)state);
+            query.set_int (":id", id);
+			query.execute_async ();
+			transaction.commit ();
+            foreach (var i in this.channels)
+                if (i.folder == id)
+                    foreach (var j in i.items)
+                        j.state = state;
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot mark folder %i.", id);
+		}
+    }
+
     public void mark_channel (int id, Model.State state = Model.State.READ)
     {
         try

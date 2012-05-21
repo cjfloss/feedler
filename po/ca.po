@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-20 23:31+0200\n"
+"POT-Creation-Date: 2012-05-21 07:09+0200\n"
 "PO-Revision-Date: 2012-05-16 21:09+0000\n"
 "Last-Translator: Alfredo Hernández <Unknown>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Launchpad-Export-Date: 2012-05-20 04:51+0000\n"
 "X-Generator: Launchpad (build 15259)\n"
 
-#: ../src/ui/toolbar.vala:68
+#: ../src/ui/toolbar.vala:63
 msgid "About"
 msgstr "Quant a"
 
@@ -31,11 +31,11 @@ msgstr "Afegeix una adreça de subscripció nova"
 msgid "Add new subscription URL"
 msgstr "Afegeix una adreça de subscripció nova"
 
-#: ../src/feedler-window.vala:618
+#: ../src/feedler-window.vala:629
 msgid "Are you sure you want to delete?"
 msgstr ""
 
-#: ../src/feedler-window.vala:602
+#: ../src/feedler-window.vala:613
 msgid "Are you sure you want to mark as read?"
 msgstr ""
 
@@ -47,9 +47,18 @@ msgstr "Canceŀla"
 msgid "Delete"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:66
+#: ../src/feedler-window.vala:336
+msgid "Downloading favicons"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:61
 msgid "Export"
 msgstr "Exporta"
+
+#: ../src/feedler-window.vala:346
+#, c-format
+msgid "Favicon for %s"
+msgstr ""
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Feedler can't seem to find your feeds."
@@ -60,7 +69,7 @@ msgstr ""
 msgid "Folder"
 msgstr "Carpeta"
 
-#: ../src/ui/toolbar.vala:64
+#: ../src/ui/toolbar.vala:59
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
@@ -68,22 +77,32 @@ msgstr "Pantalla completa"
 msgid "Get Some Feeds"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:103
+#: ../src/ui/toolbar.vala:98
 msgid "Go to the next readed item"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:102
+#: ../src/ui/toolbar.vala:97
 msgid "Go to the previous readed item"
 msgstr ""
 
-#: ../src/ui/cardlayout.vala:24 ../src/ui/toolbar.vala:65
+#: ../src/ui/cardlayout.vala:24 ../src/ui/toolbar.vala:60
 msgid "Import"
 msgstr "Importa"
 
-#: ../src/feedler-window.vala:284
+#: ../src/feedler-window.vala:285
 #, c-format
 msgid "Imported %i channels in %i folders."
 msgstr ""
+
+#: ../src/feedler-window.vala:269
+#, fuzzy, c-format
+msgid "Importing %s"
+msgstr "Importa"
+
+#: ../src/feedler-window.vala:540
+#, fuzzy
+msgid "Importing subscriptions"
+msgstr "Afegeix una adreça de subscripció nova"
 
 #: ../src/ui/menu.vala:12
 msgid "Mark as read"
@@ -94,7 +113,7 @@ msgstr ""
 msgid "Mark selected subscription as read"
 msgstr "Marca la subscripció seleccionada com a llegida"
 
-#: ../src/ui/toolbar.vala:105
+#: ../src/ui/toolbar.vala:100
 msgid "Menu"
 msgstr "Menú"
 
@@ -108,7 +127,7 @@ msgstr "Nom"
 msgid "New"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:67
+#: ../src/ui/toolbar.vala:62
 msgid "Preferences"
 msgstr "Preferències"
 
@@ -116,7 +135,7 @@ msgstr "Preferències"
 msgid "Properties"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:104
+#: ../src/ui/toolbar.vala:99
 #, fuzzy
 msgid "Refresh all subscriptions"
 msgstr "Esborra la subscripció seleccionada"
@@ -129,7 +148,7 @@ msgstr "Esborra la subscripció seleccionada"
 msgid "Save"
 msgstr "Desa"
 
-#: ../src/ui/toolbar.vala:63
+#: ../src/ui/toolbar.vala:58
 msgid "Sidebar Visible"
 msgstr "Barra lateral visible"
 
@@ -138,7 +157,7 @@ msgstr "Barra lateral visible"
 msgid "Subscription"
 msgstr "Afegeix una adreça de subscripció nova"
 
-#: ../src/ui/toolbar.vala:59
+#: ../src/ui/toolbar.vala:54
 msgid "Type to Search..."
 msgstr "Escriviu per cercar..."
 
@@ -155,12 +174,22 @@ msgstr "Adreça URI"
 msgid "Update"
 msgstr ""
 
-#: ../src/feedler-window.vala:325
+#: ../src/feedler-window.vala:292 ../src/feedler-window.vala:590
+#, c-format
+msgid "Updating %s"
+msgstr ""
+
+#: ../src/feedler-window.vala:505 ../src/feedler-window.vala:595
+#, fuzzy
+msgid "Updating subscriptions"
+msgstr "Afegeix una adreça de subscripció nova"
+
+#: ../src/feedler-window.vala:327
 #, fuzzy
 msgid "new feed"
 msgstr "canal web sense llegir"
 
-#: ../src/feedler-window.vala:325
+#: ../src/feedler-window.vala:327
 #, fuzzy
 msgid "new feeds"
 msgstr "canals web sense llegir"

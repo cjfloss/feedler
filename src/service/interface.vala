@@ -14,6 +14,8 @@
 [DBus (name = "org.example.Feedler")]
 interface Feedler.Client : Object
 {
+    public abstract void favicon (string uri) throws IOError;
+    public abstract void favicon_all (string[] uris) throws IOError;
     public abstract void import (string uri) throws IOError;
     public abstract void update (string uri) throws IOError;
     public abstract void update_all (string[] uris) throws IOError;
@@ -21,6 +23,7 @@ interface Feedler.Client : Object
     public abstract string ping () throws IOError;
     public abstract void stop () throws IOError;
 
+    public signal void iconed (string uri, uint8[] data);
     public signal void imported (Serializer.Folder[] folders);
   	public signal void updated (Serializer.Channel channel);
 }

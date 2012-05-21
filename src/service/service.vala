@@ -10,7 +10,7 @@ public class Feedler.Service : Object
 {
     public bool autoupdate;
     public int updatetime;
-    private signal void iconed (int channel, bool state);//TODO favicons
+    public signal void iconed (string uri, uint8[] data);
     public signal void imported (Serializer.Folder[] folders);
     public signal void updated (Serializer.Channel channel);
 
@@ -37,33 +37,25 @@ public class Feedler.Service : Object
         this.with_backend (BACKENDS.XML);
     }
 
-    public void favicon (string url)
+    public void favicon (string uri)
 	{
-		//stderr.printf ("http://getfavicon.appspot.com/%s\n", url);
-		Soup.Message msg = new Soup.Message("GET", "http://getfavicon.appspot.com/"+url);
-        this.backend.session.queue_message (msg, favicon_func);
+        stderr.printf ("Feedler.Service.favicon (%s)\n", uri);
+		Soup.Message msg = new Soup.Message("GET", "http://getfavicon.appspot.com/"+uri);
+        this.backend.session.queue_message (msg, favicon_cb);
 	}
 
-    private void favicon_func (Soup.Session session, Soup.Message message)
+    public void favicon_all (string[] uris)
 	{
-		try
-		{
-            int id = 0;
-            //TODO select channel
-			var loader = new Gdk.PixbufLoader.with_type ("ico");
-			loader.write (message.response_body.data);
-			loader.close ();
-			var pix = loader.get_pixbuf ();
-			if (pix.get_height () != 16)
-				pix.scale_simple (16, 16, Gdk.InterpType.BILINEAR);
-            pix.save ("%s/feedler/fav/%i.png".printf (GLib.Environment.get_user_data_dir (), id), "png");
-			this.iconed (id, true);
-		}
-		catch (GLib.Error e)
-		{
-			//this.iconed (id, false);
-			stderr.printf ("Cannot get favicon from %s\n", message.uri.to_string (false));
-		}
+		stderr.printf ("Feedler.Service.favicon_all ()\n");
+        foreach (string uri in uris)
+            this.favicon (uri);
+	}
+
+    private void favicon_cb (Soup.Session session, Soup.Message message)
+	{
+        string uri = message.uri.to_string (false);
+        //this.iconed (uri, message.response_body.data);
+        stderr.printf ("URI: %s", uri);
 	}
 
     public void update (string uri)
