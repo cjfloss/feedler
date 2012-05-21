@@ -65,8 +65,7 @@ public class Feedler.SidebarCell : Gtk.CellRenderer
 
         /* Compute font size */
         Pango.FontDescription font_medium = widget.get_pango_context ().get_font_description ();
-        //Pango.FontDescription old_desc = font_medium;
-        font_medium.set_size(Pango.units_from_double (Pango.units_to_double (font_medium.get_size()) - 2));
+        font_medium.set_size (Pango.units_from_double (Pango.units_to_double (font_medium.get_size()) - 2));
         Pango.FontDescription font_bold = widget.get_pango_context ().get_font_description ();
         font_bold.set_weight (Pango.Weight.BOLD);
 		
