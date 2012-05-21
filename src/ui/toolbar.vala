@@ -94,6 +94,8 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		progress_item.set_expand (true);
 		progress_item.add (align);
 
+        this.back.set_sensitive (false);
+		this.forward.set_sensitive (false);
         this.back.tooltip_text = _("Go to the previous readed item");
         this.forward.tooltip_text = _("Go to the next readed item");
         this.update.tooltip_text = _("Refresh all subscriptions");
@@ -112,8 +114,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
 	
 	public void set_enable (bool state)
 	{
-		this.back.set_sensitive (state);
-		this.forward.set_sensitive (state);
 		this.update.set_sensitive (state);
         this.search.set_sensitive (state);
         this.mode.set_sensitive (state);

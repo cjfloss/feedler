@@ -1,5 +1,5 @@
 /**
- * feedler-sidebar.vala
+ * sidebar.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
@@ -17,7 +17,7 @@ public class ChannelStore : GLib.Object
 		this.id = id;
 		this.channel = channel;
 		this.unread = unread;
-		this.mode = mode; //0-Folder;1-Channel
+		this.mode = mode; //0-Folder;1-Channel;2-ERROR
 	}
 }
 
@@ -105,21 +105,30 @@ public class Feedler.Sidebar : Gtk.TreeView
 
     public void mark_channel (int id)
 	{
-		Gtk.TreeIter channel_iter = channels.get (id);
+		Gtk.TreeIter iter = channels.get (id);
 		ChannelStore channel;
-		this.model.get (channel_iter, 0, out channel);
+		this.model.get (iter, 0, out channel);
 		channel.unread = 0;
-		this.store.set_value (channel_iter, 0, channel);
+		this.store.set_value (iter, 0, channel);
 	}
 
-	/*public void mark_readed (int id)
+	public void mark_folder (int id)
 	{
-		Gtk.TreeIter channel_iter = channels.get (id);
+		Gtk.TreeIter iter_f = folders.get (id);
+        Gtk.TreeIter iter_c;
 		ChannelStore channel;
-		this.model.get (channel_iter, 0, out channel);
-		channel.unread = 0;
-		this.store.set_value (channel_iter, 0, channel);
-	}*/
+        if (model.iter_children (out iter_c, iter_f))
+        {
+            do
+            {
+                stderr.printf ("T\n");
+                this.model.get (iter_c, 0, out channel);
+        		channel.unread = 0;
+        		this.store.set_value (iter_c, 0, channel);
+            }
+            while (model.iter_next (ref iter_c));
+        }
+	}
 	
 	public void add_unread (int id, int unread)
 	{

@@ -32,6 +32,7 @@ public class FeedStore : GLib.Object
 
 public class Feedler.ViewList : Feedler.View
 {
+	private string cache;
 	/* List with feeds and searching */
 	private Gtk.TreeView tree;
 	private Gtk.ListStore store;
@@ -142,7 +143,6 @@ public class Feedler.ViewList : Feedler.View
 				
 				if (!GLib.Process.spawn_command_line_async ("xdg-open "+feed.source))
 					stderr.printf ("ERROR\n");
-				this.item_browsed ();
 			}
 		}
 		catch (GLib.Error e)
@@ -174,8 +174,9 @@ public class Feedler.ViewList : Feedler.View
 				this.store.set (iter, 0, feed);
 				this.item_readed (feed.id);
 			}
-			if (history)
+			if (feed.source != this.cache)
 				this.item_selected (model.get_path (iter).to_string ());
+			this.cache = feed.source;
 		}
 	}
 	

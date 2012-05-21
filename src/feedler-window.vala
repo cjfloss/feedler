@@ -109,7 +109,7 @@ public class Feedler.Window : Gtk.Window
         //this.layout.web.item_readed.connect (mark_channel);
 		this.view = (Feedler.View)layout.get_nth_page (0);
 		this.view.item_selected.connect (history_add);
-		this.view.item_browsed.connect (history_remove);
+		//this.view.item_browsed.connect (history_remove);
 
         this.stat = new Feedler.Statusbar ();
         this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
@@ -220,29 +220,25 @@ public class Feedler.Window : Gtk.Window
 	protected void history_prev ()
 	{
 		string side_path = null, view_path = null;
-		if (this.history.prev (out side_path, out view_path))
-		{
-			this.side.get_selection ().select_path (new Gtk.TreePath.from_string (side_path));
-			this.load_channel ();
-			if (view_path != null)
-			{
-				this.view.select (new Gtk.TreePath.from_string (view_path));
-			}
-		}
+stderr.printf ("prev\n");
+        this.history.prev (out side_path, out view_path);
+stderr.printf ("prev\n");
+        this.side.get_selection ().select_path (new Gtk.TreePath.from_string (side_path));
+        this.load_channel ();
+		if (view_path != null)
+			this.view.select (new Gtk.TreePath.from_string (view_path));
+        this.history_sensitive ();
 	}
 	
 	protected void history_next ()
 	{
-		string side_path, view_path;
-		if (this.history.next (out side_path, out view_path))
-		{
-			this.side.get_selection ().select_path (new Gtk.TreePath.from_string (side_path));
-			this.load_channel ();
-			if (view_path != null)
-			{
-				this.view.select (new Gtk.TreePath.from_string (view_path));
-			}
-		}
+		string side_path = null, view_path = null;
+        this.history.next (out side_path, out view_path);
+        this.side.get_selection ().select_path (new Gtk.TreePath.from_string (side_path));
+        this.load_channel ();
+		if (view_path != null)
+			this.view.select (new Gtk.TreePath.from_string (view_path));
+        this.history_sensitive ();
 	}
 	
 	protected void history_add (string item)
@@ -253,13 +249,22 @@ public class Feedler.Window : Gtk.Window
 		if (this.side.get_selection ().get_selected (out model, out iter))
 		{
 			this.history.add (model.get_path (iter).to_string (), item);
+            this.history_sensitive ();
 		}
 	}
-	
-	protected void history_remove ()
-	{	
-		this.history.remove_double ();
-	}
+
+    private void history_sensitive ()
+    {
+        if (history.current >= 1)
+            this.toolbar.back.sensitive = true;
+        else
+            this.toolbar.back.sensitive = false;
+
+        if (history.current < history.items.size - 1)
+            this.toolbar.forward.sensitive = true;
+        else
+            this.toolbar.forward.sensitive = false;
+    }
 
     protected void imported_cb (Serializer.Folder[] folders)
 	{
@@ -588,18 +593,22 @@ public class Feedler.Window : Gtk.Window
 
     private void _mark ()
     {
-        //TODO improve
         var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                           Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, 
                                           _("Are you sure you want to mark as read?"));
-		int id = this.selection_tree ();
-		if (id != -1)
-			if (info.run () == Gtk.ResponseType.YES)
-			{
-				this.side.mark_channel (id);
-				this.db.mark_channel (id);
-			    //this.load_channel ();
-			}
+        ChannelStore ch = this.selected_item ();
+        if (ch != null)
+            if (info.run () == Gtk.ResponseType.YES)
+			    if (ch.mode == 1)
+                {
+				    this.side.mark_channel (ch.id);
+				    this.db.mark_channel (ch.id);
+			    }
+                else
+                {
+				    this.side.mark_folder (ch.id);
+				    this.db.mark_folder (ch.id);
+			    }
 		info.destroy ();
     }
 	
