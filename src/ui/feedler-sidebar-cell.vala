@@ -16,6 +16,7 @@ public class Feedler.SidebarCell : Gtk.CellRenderer
 		CHANNEL,
 		ERROR
 	}
+	public int id { set; get; }
 	public string channel { set; get; }
 	public int unread { set; get; }
 	public Type type;
@@ -175,9 +176,10 @@ static void custom_rounded (Cairo.Context cr, double x, double y, double w, doub
 		}
         else if (type == Type.CHANNEL)
         {
-            if (GLib.FileUtils.test (location+channel+".png", GLib.FileTest.EXISTS))
+            string png = "%s%i.png".printf (location, id);
+            if (GLib.FileUtils.test (png, GLib.FileTest.EXISTS))
 		    {
-			    cr.set_source_surface (new Cairo.ImageSurface.from_png (location+channel+".png"),
+			    cr.set_source_surface (new Cairo.ImageSurface.from_png (png),
 								       area.x - 8, height_centered - 2);
 			    cr.paint ();
 		    }

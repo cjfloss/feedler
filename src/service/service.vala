@@ -41,7 +41,7 @@ public class Feedler.Service : Object
 	{
         stderr.printf ("Feedler.Service.favicon (%s)\n", uri);
 		Soup.Message msg = new Soup.Message("GET", "http://getfavicon.appspot.com/"+uri);
-        this.backend.session.queue_message (msg, favicon_cb);
+        this.backend.session.queue_message (msg, favicon_func);
 	}
 
     public void favicon_all (string[] uris)
@@ -51,11 +51,11 @@ public class Feedler.Service : Object
             this.favicon (uri);
 	}
 
-    private void favicon_cb (Soup.Session session, Soup.Message message)
+    private void favicon_func (Soup.Session session, Soup.Message message)
 	{
-        string uri = message.uri.to_string (false);
-        //this.iconed (uri, message.response_body.data);
-        stderr.printf ("URI: %s", uri);
+        string uri = message.uri.to_string (false).substring (30);
+        this.iconed (uri, message.response_body.data);
+        stderr.printf ("Feedler.Service.favicon_func.URI: %s\n", uri);
 	}
 
     public void update (string uri)

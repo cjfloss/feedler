@@ -46,7 +46,6 @@ public class PrefView : Gtk.VBox
  
 public class Feedler.Preferences : Gtk.Dialog
 {
-	public signal void favicons ();
 	private Granite.Widgets.StaticNotebook tabs;
 	private Gtk.Box vbox;
 	internal PrefView web;
@@ -63,7 +62,7 @@ public class Feedler.Preferences : Gtk.Dialog
 		this.tabs.append_page (web, new Gtk.Label ("Views"));
 		this.tabs.append_page (fav, new Gtk.Label ("Other"));
 		
-		this.fav.clicked.connect (() => {this.favicons ();});
+		//this.fav.clicked.connect (() => {this.favicons ();});
         this.vbox = this.get_content_area () as Gtk.Box;
         this.vbox.pack_start (this.tabs, false, true, 0);
 

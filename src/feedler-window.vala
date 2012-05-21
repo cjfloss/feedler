@@ -29,6 +29,7 @@ public class Feedler.Window : Gtk.Window
         {
             client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
                                                         "/org/example/feedler");
+            client.iconed.connect (favicon_cb);
             client.imported.connect (imported_cb);            
             client.updated.connect (updated_cb);
             this.dialog (client.ping (), Gtk.MessageType.INFO);
@@ -320,7 +321,7 @@ public class Feedler.Window : Gtk.Window
 				this.load_channel ();
 		}
 		else
-			this.side.set_empty (ch.id);
+			this.side.set_mode (ch.id, 1);
         if (connections == 0)
         {
             this.toolbar.progress.pulse ("", false);
@@ -333,87 +334,27 @@ public class Feedler.Window : Gtk.Window
 
     private void favicon_cb (string uri, uint8[] data)
 	{
+        this.connections--;
+        Model.Channel c = this.db.from_source (uri);
 		try
 		{
-            Model.Channel c = this.db.from_source (uri);
 			var loader = new Gdk.PixbufLoader.with_type ("ico");
+            loader.set_size (16, 16);
 			loader.write (data);
 			loader.close ();
 			var pix = loader.get_pixbuf ();
-			if (pix.get_height () != 16)
-				pix.scale_simple (16, 16, Gdk.InterpType.BILINEAR);
             pix.save ("%s/feedler/fav/%i.png".printf (GLib.Environment.get_user_data_dir (), c.id), "png");
+            this.side.set_mode (c.id, 1);
 		}
 		catch (GLib.Error e)
 		{
 			stderr.printf ("Cannot get favicon for %s\n", uri);
+            this.side.set_mode (c.id, 2);
 		}
+        if (connections == 0)
+            this.toolbar.progress.pulse ("", false);
 	}
-	
-	protected void faviconed_channel (int channel, bool state)
-	{
-		Model.Channel ch = this.db.channels.nth_data (channel);
-        this.toolbar.progress.pulse (_("Favicon for %s").printf (ch.title), true);
-		if (state)
-			this.side.set_empty (ch.id);
-		else
-			this.side.set_error (ch.id);
-	}
-		
-	protected void mark_all ()
-	{
-		stderr.printf ("Feedler.App.mark_all ()\n");
-		foreach (Model.Channel ch in this.db.channels)
-		{
-			foreach (Model.Item it in ch.items)
-			{
-				if (it.state == Model.State.UNREAD)
-				{
-					it.state = Model.State.READ;
-					//ch.unread--;
-				}
-				//else if (ch.unread > 0)
-				//	continue;
-				else
-					break;
-			}
-			this.side.mark_readed (ch.id);
-		}
-		this.load_channel ();
-	}
-	
-	protected void mark_channel (int item_id)
-	{
-		stderr.printf ("Feedler.App.mark_channel ()\n");
-		int id = this.selection_tree ();
-			
-		if (id != -1)
-		{
-			Model.Channel ch = this.db.get_channel (id);
-			if (item_id == -1)
-			{
-				this.side.mark_readed (ch.id);
-				foreach (Model.Item it in ch.items)
-				{
-					if (it.state == Model.State.UNREAD)
-					{
-						it.state = Model.State.READ;
-                        this.db.mark_item (it.id);
-					}
-					else
-						break;
-				}
-			}
-			else
-			{
-				this.side.dec_unread (ch.id);
-                this.db.mark_item (item_id);
-                Model.Item it = ch.get_item (item_id);
-				it.state = Model.State.READ;
-			}
-		}
-	}
-	
+    	
 	protected void change_mode (Gtk.Widget widget)
 	{
 		stderr.printf ("Feedler.App.change_mode ()\n");
@@ -465,13 +406,13 @@ public class Feedler.Window : Gtk.Window
 	protected void config ()
 	{
 		Feedler.Preferences pref = new Feedler.Preferences ();
-		//pref.favicons.connect (favicon_all);
+		pref.fav.clicked.connect (_favicon_all);
 		if (pref.run () == Gtk.ResponseType.APPLY)
 		{
 			stderr.printf ("Preferences");
 			pref.save ();
         }
-        //pref.favicons.disconnect (favicon_all);
+        pref.fav.clicked.disconnect (_favicon_all);
         pref.destroy ();
 	}
 	
@@ -530,16 +471,12 @@ public class Feedler.Window : Gtk.Window
             this.toolbar.progress.pulse (_("Downloading favicons"), true);
             string[] uris = this.db.get_uris ();
             this.connections = uris.length;
-            this.client.update_all (uris);
+            this.client.favicon_all (uris);
         }
         catch (GLib.Error e)
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
         }
-		foreach (Model.Channel ch in this.db.channels)
-		{
-			//ch.favicon ();
-		}
 	}
 
     private void _import ()

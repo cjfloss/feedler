@@ -33,7 +33,12 @@ void main ()
                     stdout.printf ("\t%s from %s\n", c.title, c.source);
             }
         });
-        demo.update ("http://elementaryos.org/journal/rss.xml");       
+        demo.iconed.connect ((uri, data) =>
+        {
+            stdout.printf ("URI: %s\n", uri);
+        });
+        demo.update ("http://elementaryos.org/journal/rss.xml");      
+        demo.favicon ("http://elementaryos.org/journal/rss.xml");
         //demo.import ("/home/d3ny/Pobrane/google-reader-subscriptions.xml");
         //demo.import ("/home/d3ny/Pobrane/livemarks.opml");
         //demo.update ("http://elementaryluna.blogspot.com/feeds/posts/default");

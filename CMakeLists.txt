@@ -11,7 +11,7 @@ set (DATADIR "${CMAKE_INSTALL_PREFIX}/share")
 set (PKGDATADIR "${DATADIR}/feedler")
 set (GETTEXT_PACKAGE "feedler")
 set (RELEASE_NAME "Growing up.")
-set (VERSION "0.2")
+set (VERSION "0.2 dev")
 set (VERSION_INFO "Alpha 2")
 
 #
