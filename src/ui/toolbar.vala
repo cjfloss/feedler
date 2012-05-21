@@ -13,7 +13,7 @@ public class Progress : Gtk.VBox
 	construct
 	{
 		this.bar = new Gtk.ProgressBar ();
-        this.bar.fraction = 0.1;
+        this.bar.fraction = 0.3;
 		this.label = new Gtk.Label (null);
 		this.label.set_justify (Gtk.Justification.CENTER);
 		this.label.set_single_line_mode (true);
@@ -25,26 +25,21 @@ public class Progress : Gtk.VBox
        	this.hide ();
 	}
 
-    public void progress (double progress, string text)
+    public void pulse (string text, bool show = true)
     {
-        if (this.bar.fraction >= 0.0 && this.bar.fraction < 1.0)
+        if (show)
         {
-            this.bar.set_fraction (this.bar.fraction + progress);
+            this.bar.pulse ();
             this.label.set_text (text);
-            this.set_no_show_all (false);
+            this.set_no_show_all (!show);
 		    this.show_all ();
 		}
 		else
         {
-			this.set_no_show_all (true);
+			this.set_no_show_all (!show);
         	this.hide ();
 		}
-    }
-
-    public void clear ()
-    {
-        this.bar.set_fraction (0.0);
-    }
+    }   
 }
 
 public class Feedler.Toolbar : Gtk.Toolbar
@@ -125,10 +120,5 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.column.set_sensitive (state);
 		this.export_feeds.set_sensitive (state);
 		this.sidebar_visible.set_sensitive (state);
-	}
-
-    public void progressbar (double fraction, string text)
-    {
-		this.progress.progress (fraction, text);
 	}
 }

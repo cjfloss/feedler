@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-20 20:35+0200\n"
+"POT-Creation-Date: 2012-05-20 23:31+0200\n"
 "PO-Revision-Date: 2012-05-11 07:01+0000\n"
 "Last-Translator: Wang Dianjin <Unknown>\n"
 "Language-Team: Chinese (Simplified) <zh_CN@li.org>\n"
@@ -31,15 +31,15 @@ msgstr "添加新的订阅 URL"
 msgid "Add new subscription URL"
 msgstr "添加新的订阅 URL"
 
-#: ../src/feedler-window.vala:609
-msgid "Are you sure you want to delete this subscription?"
+#: ../src/feedler-window.vala:618
+msgid "Are you sure you want to delete?"
 msgstr ""
 
-#: ../src/feedler-window.vala:593
-msgid "Are you sure you want to mark this subscription as read?"
+#: ../src/feedler-window.vala:602
+msgid "Are you sure you want to mark as read?"
 msgstr ""
 
-#: ../src/ui/subscription.vala:34
+#: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:34
 msgid "Cancel"
 msgstr "取消"
 
@@ -80,7 +80,7 @@ msgstr ""
 msgid "Import"
 msgstr "导入"
 
-#: ../src/feedler-window.vala:279
+#: ../src/feedler-window.vala:284
 #, c-format
 msgid "Imported %i channels in %i folders."
 msgstr ""
@@ -98,6 +98,7 @@ msgstr "标记选中的订阅为已读"
 msgid "Menu"
 msgstr "菜单"
 
+#: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
 #: ../src/ui/subscription.vala:27 ../src/ui/subscription.vala:47
 #, c-format
 msgid "Name"
@@ -124,7 +125,7 @@ msgstr "移除选中的订阅"
 msgid "Remove selected subscription"
 msgstr "移除选中的订阅"
 
-#: ../src/ui/subscription.vala:30
+#: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:30
 msgid "Save"
 msgstr "保存"
 
@@ -154,12 +155,12 @@ msgstr "URI 地址"
 msgid "Update"
 msgstr ""
 
-#: ../src/feedler-window.vala:320
+#: ../src/feedler-window.vala:325
 #, fuzzy
 msgid "new feed"
 msgstr "未读的订阅"
 
-#: ../src/feedler-window.vala:320
+#: ../src/feedler-window.vala:325
 #, fuzzy
 msgid "new feeds"
 msgstr "未读的订阅"

@@ -266,7 +266,7 @@ public class Feedler.Window : Gtk.Window
         this.db.begin ();
         foreach (var f in folders)
         {
-            this.toolbar.progressbar (1.0 / folders.length, "Importing " + f.name);
+            this.toolbar.progress.pulse (_("Importing %s").printf (f.name), true);
             int fid = this.db.insert_serialized_folder (f);
             Model.Folder fo = {fid, f.name, 0};
             this.side.add_folder (fo);
@@ -281,6 +281,7 @@ public class Feedler.Window : Gtk.Window
             }
         }
         this.db.commit ();
+        this.toolbar.progress.pulse ("", false);
         this.notification (_("Imported %i channels in %i folders.").printf (count, folders.length));
 	}
 	
@@ -288,7 +289,7 @@ public class Feedler.Window : Gtk.Window
 	{
         //stderr.printf ("updated_cb\n");
         Model.Channel ch = this.db.from_source (channel.source);
-        this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating " + ch.title);
+        this.toolbar.progress.pulse (_("Updating %s").printf (ch.title), true);
         GLib.List<Serializer.Item?> reverse = new GLib.List<Serializer.Item?> ();
         string last;
         if (ch.items.length () > 0)
@@ -322,6 +323,7 @@ public class Feedler.Window : Gtk.Window
 			this.side.set_empty (ch.id);
         if (connections == 0)
         {
+            this.toolbar.progress.pulse ("", false);
             string description = unread > 1 ? _("new feeds") : _("new feed");
             this.notification ("%i %s".printf (unread, description));
             this.stat.set_unread (unread);
@@ -331,7 +333,7 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void favicon_all ()
 	{
-		this.toolbar.progressbar (1.0 / this.db.channels.length (), "Faviconing");
+        this.toolbar.progress.pulse (_("Downloading favicons"), true);
 		foreach (Model.Channel ch in this.db.channels)
 		{
 			//ch.favicon ();
@@ -341,7 +343,7 @@ public class Feedler.Window : Gtk.Window
 	protected void faviconed_channel (int channel, bool state)
 	{
 		Model.Channel ch = this.db.channels.nth_data (channel);
-		this.toolbar.progressbar (1.0 / this.db.channels.length (), "Favicon for "+ch.title);		
+        this.toolbar.progress.pulse (_("Favicon for %s").printf (ch.title), true);
 		if (state)
 			this.side.set_empty (ch.id);
 		else
@@ -500,11 +502,10 @@ public class Feedler.Window : Gtk.Window
 	{
         try
         {
+            this.toolbar.progress.pulse (_("Updating subscriptions"), true);
             string[] uris = this.db.get_uris ();
             this.connections = uris.length;
             this.client.update_all (uris);
-            this.toolbar.progress.clear ();
-            this.toolbar.progressbar (1.0 / this.db.channels.length (), "Updating");
         }
         catch (GLib.Error e)
         {
@@ -536,8 +537,8 @@ public class Feedler.Window : Gtk.Window
                 this.client.import (file.get_filename ());
                 if (!this.db.is_created ())
                     this.db.create ();
+                this.toolbar.progress.pulse (_("Importing subscriptions"), true);
                 this.ui_welcome_to_workspace ();
-                this.toolbar.progressbar (0.1, "Importing subscriptions");
             }
             catch (GLib.Error e)
             {
@@ -578,14 +579,24 @@ public class Feedler.Window : Gtk.Window
 
     private void _update ()
     {
-        //TODO improve
         ChannelStore ch = this.selected_item ();
         if (ch != null)
         {
             try
             {
-                Model.Channel c = this.db.get_channel (ch.id);
-                this.client.update (c.source);
+                if (ch.mode == 1)
+                {
+				    Model.Channel c = this.db.get_channel (ch.id);
+                    this.toolbar.progress.pulse (_("Updating %s").printf (c.title), true);
+                    this.client.update (c.source);
+			    }
+                else
+                {
+                    this.toolbar.progress.pulse (_("Updating subscriptions"), true);
+                    string[] uris = this.db.get_folder_uris (ch.id);
+                    this.connections = uris.length;
+                    this.client.update_all (uris);
+			    }
             }
             catch (GLib.Error e)
             {

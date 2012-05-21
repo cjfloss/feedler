@@ -107,6 +107,15 @@ public class Feedler.Database : GLib.Object
         return uri;
 	}
 
+    public string[]? get_folder_uris (int id)
+	{
+        string[] uri = new string[0];
+        foreach (var c in this.channels)
+            if (c.folder == id)
+                uri += c.source;
+        return uri;
+	}
+
     public Model.Folder? get_folder (int id)
 	{
         foreach (Model.Folder folder in this.folders)

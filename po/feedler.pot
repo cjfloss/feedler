@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-20 23:31+0200\n"
+"POT-Creation-Date: 2012-05-21 07:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Feedler can't seem to find your feeds."
 msgstr ""
 
-#: ../src/ui/cardlayout.vala:24 ../src/ui/toolbar.vala:65
+#: ../src/ui/cardlayout.vala:24 ../src/ui/toolbar.vala:60
 msgid "Import"
 msgstr ""
 
@@ -105,63 +105,90 @@ msgstr ""
 msgid "URI Address"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:59
+#: ../src/ui/toolbar.vala:54
 msgid "Type to Search..."
 msgstr ""
 
-#: ../src/ui/toolbar.vala:63
+#: ../src/ui/toolbar.vala:58
 msgid "Sidebar Visible"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:64
+#: ../src/ui/toolbar.vala:59
 msgid "Fullscreen"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:66
+#: ../src/ui/toolbar.vala:61
 msgid "Export"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:67
+#: ../src/ui/toolbar.vala:62
 msgid "Preferences"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:68
+#: ../src/ui/toolbar.vala:63
 msgid "About"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:102
+#: ../src/ui/toolbar.vala:97
 msgid "Go to the previous readed item"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:103
+#: ../src/ui/toolbar.vala:98
 msgid "Go to the next readed item"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:104
+#: ../src/ui/toolbar.vala:99
 msgid "Refresh all subscriptions"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:105
+#: ../src/ui/toolbar.vala:100
 msgid "Menu"
 msgstr ""
 
-#: ../src/feedler-window.vala:284
+#: ../src/feedler-window.vala:269
+#, c-format
+msgid "Importing %s"
+msgstr ""
+
+#: ../src/feedler-window.vala:285
 #, c-format
 msgid "Imported %i channels in %i folders."
 msgstr ""
 
-#: ../src/feedler-window.vala:325
+#: ../src/feedler-window.vala:292 ../src/feedler-window.vala:590
+#, c-format
+msgid "Updating %s"
+msgstr ""
+
+#: ../src/feedler-window.vala:327
 msgid "new feeds"
 msgstr ""
 
-#: ../src/feedler-window.vala:325
+#: ../src/feedler-window.vala:327
 msgid "new feed"
 msgstr ""
 
-#: ../src/feedler-window.vala:602
+#: ../src/feedler-window.vala:336
+msgid "Downloading favicons"
+msgstr ""
+
+#: ../src/feedler-window.vala:346
+#, c-format
+msgid "Favicon for %s"
+msgstr ""
+
+#: ../src/feedler-window.vala:505 ../src/feedler-window.vala:595
+msgid "Updating subscriptions"
+msgstr ""
+
+#: ../src/feedler-window.vala:540
+msgid "Importing subscriptions"
+msgstr ""
+
+#: ../src/feedler-window.vala:613
 msgid "Are you sure you want to mark as read?"
 msgstr ""
 
-#: ../src/feedler-window.vala:618
+#: ../src/feedler-window.vala:629
 msgid "Are you sure you want to delete?"
 msgstr ""
