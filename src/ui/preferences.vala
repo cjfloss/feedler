@@ -7,40 +7,26 @@
  
 public class PrefView : Gtk.VBox
 {
-	Gtk.CheckButton enable_image;
-	Gtk.CheckButton enable_script;
-	Gtk.CheckButton enable_java;
-	Gtk.CheckButton enable_plugin;
-	Gtk.CheckButton shrink_image;
-	
 	construct
 	{
 		this.border_width = 5;		
-		this.enable_image = new Gtk.CheckButton.with_label ("Enable images");
-		this.enable_script = new Gtk.CheckButton.with_label ("Enable scripts");
-		this.enable_java = new Gtk.CheckButton.with_label ("Enable java");
-		this.enable_plugin = new Gtk.CheckButton.with_label ("Enable plugins");
-		this.shrink_image = new Gtk.CheckButton.with_label ("Shrink image to fit");		
-		this.enable_image.active = Feedler.View.settings.auto_load_images;
-		this.enable_script.active = Feedler.View.settings.enable_scripts;
-		this.enable_java.active = Feedler.View.settings.enable_java_applet;
-		this.enable_plugin.active = Feedler.View.settings.enable_plugins;
-		this.shrink_image.active = Feedler.View.settings.auto_shrink_images;
+		var enable_image = new Gtk.CheckButton.with_label ("Enable images");
+		var enable_script = new Gtk.CheckButton.with_label ("Enable scripts");
+		var enable_java = new Gtk.CheckButton.with_label ("Enable java");
+		var enable_plugin = new Gtk.CheckButton.with_label ("Enable plugins");
+		var shrink_image = new Gtk.CheckButton.with_label ("Shrink image to fit");
+
+		Feedler.SETTING.schema.bind ("enable-image", enable_image, "active", SettingsBindFlags.DEFAULT);
+		Feedler.SETTING.schema.bind ("enable-script", enable_script, "active", SettingsBindFlags.DEFAULT);
+		Feedler.SETTING.schema.bind ("enable-java", enable_java, "active", SettingsBindFlags.DEFAULT);
+		Feedler.SETTING.schema.bind ("enable-plugin", enable_plugin, "active", SettingsBindFlags.DEFAULT);
+		Feedler.SETTING.schema.bind ("shrink-image", shrink_image, "active", SettingsBindFlags.DEFAULT);
 		
 		this.pack_start (enable_image, false, true, 3);
 		this.pack_start (enable_script, false, true, 3);
 		this.pack_start (enable_java, false, true, 3);
 		this.pack_start (enable_plugin, false, true, 3);
 		this.pack_start (shrink_image, false, true, 3);
-	}
-	
-	public void save ()
-	{
-		Feedler.View.settings.auto_load_images = this.enable_image.active;
-		Feedler.View.settings.enable_scripts = this.enable_script.active;
-		Feedler.View.settings.enable_java_applet = this.enable_java.active;
-		Feedler.View.settings.enable_plugins = this.enable_plugin.active;
-		Feedler.View.settings.auto_shrink_images = this.shrink_image.active;
 	}
 }
  
@@ -65,13 +51,7 @@ public class Feedler.Preferences : Gtk.Dialog
         this.vbox = this.get_content_area () as Gtk.Box;
         this.vbox.pack_start (this.tabs, false, true, 0);
 
-        this.add_button (Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL);
-        this.add_button (Gtk.Stock.APPLY, Gtk.ResponseType.APPLY);
+        this.add_button (Gtk.Stock.CLOSE, Gtk.ResponseType.CLOSE);
 		this.show_all ();
     }
-    
-    public void save ()
-	{
-		web.save ();
-	}
 }

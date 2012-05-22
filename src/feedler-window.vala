@@ -424,11 +424,7 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
 	{
 		Feedler.Preferences pref = new Feedler.Preferences ();
 		pref.fav.clicked.connect (_favicon_all);
-		if (pref.run () == Gtk.ResponseType.APPLY)
-		{
-			stderr.printf ("Preferences");
-			pref.save ();
-        }
+		pref.run ();
         pref.fav.clicked.disconnect (_favicon_all);
         pref.destroy ();
 	}

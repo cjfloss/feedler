@@ -28,5 +28,30 @@
 		</key>
 	</schema>
 	<schema path="/org/elementary/feedler/settings/" id="org.elementary.feedler.settings" gettext-domain="feedler">
+		<key name="enable-image" type="b">
+			<default>true</default>
+			<summary>Enable image</summary>
+			<description>Display images in web pages</description>
+		</key>
+		<key name="enable-script" type="b">
+			<default>true</default>
+			<summary>Enable script</summary>
+			<description>Enable scripts in web pages</description>
+		</key>
+		<key name="enable-java" type="b">
+			<default>true</default>
+			<summary>Enable Java</summary>
+			<description>Enable Java in web pages</description>
+		</key>
+		<key name="enable-plugin" type="b">
+			<default>true</default>
+			<summary>Enable plugin</summary>
+			<description>Enable plugins in web pages</description>
+		</key>
+		<key name="shrink-image" type="b">
+			<default>true</default>
+			<summary>Shrink image</summary>
+			<description>Shrink images in web pages</description>
+		</key>
 	</schema>
 </schemalist>

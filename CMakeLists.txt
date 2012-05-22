@@ -103,7 +103,7 @@ vala_precompile(VALA_C
 	src/feedler-app.vala
 	src/feedler-database.vala
 	src/history.vala
-	src/feedler-settings.vala
+	src/settings.vala
 	src/feedler-window.vala
 	src/ui/cardlayout.vala
 	src/ui/folder.vala
