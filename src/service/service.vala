@@ -8,12 +8,10 @@
 [DBus (name = "org.example.Feedler")]
 public class Feedler.Service : Object
 {
-    public bool autoupdate;
-    public int updatetime;
     public signal void iconed (string uri, uint8[] data);
     public signal void imported (Serializer.Folder[] folders);
     public signal void updated (Serializer.Channel channel);
-
+	private Feedler.Settings settings;
     private Backend backend;
     private GLib.MainLoop loop;
     private unowned Thread<void*> thread;
@@ -25,8 +23,7 @@ public class Feedler.Service : Object
         Bus.own_name (BusType.SESSION, "org.example.Feedler",
                       BusNameOwnerFlags.NONE, on_bus_aquired,
                       () => {}, () => stderr.printf ("Cannot aquire name.\n"));
-        this.autoupdate = false;
-        this.updatetime = 15;
+		this.settings = new Feedler.Settings ();
         this.backend = GLib.Object.new (back.to_type ()) as Backend;
         this.backend.service = this;
         this.loop = new GLib.MainLoop ();
@@ -99,20 +96,19 @@ public class Feedler.Service : Object
     public void run ()
     {
         Thread.usleep (10000000);
-        while (autoupdate)
+        while (settings.auto_update)
         {
-            //TODO string[] uris
-            //this.update_all ();
+            //this.update_all (settings.uri);
 
-            if (autoupdate)
-                Thread.usleep (this.updatetime * 1000000);
+            if (settings.auto_update)
+                Thread.usleep (settings.update_time * 1000000);
         }
         //loop.quit ();
     }
 
     public void stop ()
     {
-        autoupdate = false;
+        //autoupdate = false;
         //this.thread.exit (null);
         stderr.printf ("Feedler.Service.stop ()\n");
         loop.quit ();
