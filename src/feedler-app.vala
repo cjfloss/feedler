@@ -5,6 +5,12 @@
  * @see COPYING
  */
 
+namespace Feedler
+{
+    public Feedler.State STATE;
+    public Feedler.Settings SETTING;
+}
+
 public class Feedler.App : Granite.Application
 {
 	private Feedler.Window window = null;
@@ -37,7 +43,8 @@ public class Feedler.App : Granite.Application
 			window.present ();
 			return;
 		}
-		
+		Feedler.STATE = new Feedler.State ();
+		Feedler.SETTING = new Feedler.Settings ();
 		window = new Feedler.Window ();
         window.title = "Feedler";
 		window.icon_name = "internet-feed-reader";

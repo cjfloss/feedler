@@ -7,7 +7,6 @@
 
 public class Feedler.Window : Gtk.Window
 {
-	private Feedler.Settings settings;
 	private Feedler.Database db;
 	internal Feedler.Toolbar toolbar;
 	private Feedler.Sidebar side;
@@ -38,15 +37,22 @@ public class Feedler.Window : Gtk.Window
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
         }
-		this.settings = new Feedler.Settings ();
 		this.db = new Feedler.Database ();
 		this.layout = new Feedler.CardLayout ();
 		this.destroy.connect (destroy_app);
-		this.set_default_size (settings.width, settings.height);
-		this.set_size_request (820, 520);
 		this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);	
 		this.ui_toolbar ();
         this.ui_layout ();
+        if (Feedler.STATE.window_state == Feedler.WindowState.MAXIMIZED)
+			this.maximize ();
+        else if (Feedler.STATE.window_state == Feedler.WindowState.FULLSCREEN)
+		{
+			this.fullscreen ();
+			this.toolbar.fullscreen_mode.active = true;
+		}
+		else
+			this.set_default_size (Feedler.STATE.window_width, Feedler.STATE.window_height);
+
 		if (this.db.is_created ())
 			this.ui_feeds ();
 		else
@@ -92,7 +98,7 @@ public class Feedler.Window : Gtk.Window
 	private void ui_workspace ()
 	{
 		this.toolbar.mode.selected = 0;
-        this.pane.set_position (settings.hpane_width);
+        this.pane.set_position (Feedler.STATE.sidebar_width);
         this.pane.add1 (scroll_side);
 		
 		this.sidemenu = new Feedler.MenuSide ();
@@ -171,14 +177,22 @@ public class Feedler.Window : Gtk.Window
          info.destroy ();
     }
 	
-	protected void destroy_app ()
+	private void destroy_app ()
 	{
-        Gtk.Allocation alloc;
-        get_allocation(out alloc);
-        settings.width = alloc.width;
-        settings.height = alloc.height;
-        settings.hpane_width = this.pane.position;
-		
+stderr.printf ("\nSTATE: %i\n", (get_window ().get_state () & Gdk.WindowState.MAXIMIZED));
+		if ((get_window ().get_state () & Gdk.WindowState.MAXIMIZED) != 0)
+			Feedler.STATE.window_state = Feedler.WindowState.MAXIMIZED;
+		else if ((get_window ().get_state () & Gdk.WindowState.FULLSCREEN) != 0)
+			Feedler.STATE.window_state = Feedler.WindowState.FULLSCREEN;
+		else
+		{
+			Feedler.STATE.window_state = Feedler.WindowState.NORMAL;
+			int width, height;
+			get_size (out width, out height);
+			Feedler.STATE.window_width = width;
+			Feedler.STATE.window_height = height;
+			Feedler.STATE.sidebar_width = this.pane.position;
+		}
 		Gtk.main_quit ();
 	}
 	

@@ -1,5 +1,5 @@
 /**
- * feedler-preferences.vala
+ * preferences.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
