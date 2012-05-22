@@ -1,5 +1,5 @@
 /**
- * feedler-app.vala
+ * feedler.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
@@ -9,6 +9,7 @@ namespace Feedler
 {
     public Feedler.State STATE;
     public Feedler.Settings SETTING;
+    public Feedler.Service SERVICE;
 }
 
 public class Feedler.App : Granite.Application
@@ -45,6 +46,7 @@ public class Feedler.App : Granite.Application
 		}
 		Feedler.STATE = new Feedler.State ();
 		Feedler.SETTING = new Feedler.Settings ();
+		Feedler.SERVICE = new Feedler.Service ();
 		window = new Feedler.Window ();
         window.title = "Feedler";
 		window.icon_name = "internet-feed-reader";

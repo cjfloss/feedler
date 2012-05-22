@@ -13,6 +13,8 @@ public class PreferenceTab : Gtk.Grid
 	{
 		this.id = 0;
 		this.border_width = 5;
+		this.row_spacing = 8;
+		this.column_spacing = 12;
 	}
 
 	public void add_title (string title)
@@ -21,7 +23,7 @@ public class PreferenceTab : Gtk.Grid
 		label.set_markup ("<b>%s</b>".printf (title));
         label.set_halign (Gtk.Align.START);
 		if (id > 0)
-			label.margin_top = 10;
+			label.margin_top = 15;
 		this.attach (label, 0, id++, 2, 1);
 	}
 
@@ -29,6 +31,7 @@ public class PreferenceTab : Gtk.Grid
 	{
 		var label = new Gtk.Label (description);
 		label.halign = Gtk.Align.START;
+		widget.halign = Gtk.Align.END;
 		this.attach (widget, 0, id, 1, 1);
 		this.attach (label, 1, id++, 1, 1);
 	}
@@ -57,8 +60,6 @@ public class Behavior : PreferenceTab
 		Feedler.SETTING.schema.bind ("enable-plugin", enable_plugin, "active", SettingsBindFlags.DEFAULT);
 		Feedler.SETTING.schema.bind ("shrink-image", shrink_image, "active", SettingsBindFlags.DEFAULT);
 		
-		this.row_spacing = 8;
-		this.column_spacing = 12;
 		this.add_title (_("Content"));
 		this.add_widgets (enable_plugin, enable_image);
 		this.add_widgets (enable_script, shrink_image);
@@ -71,14 +72,18 @@ public class Update : PreferenceTab
 	internal Gtk.Button fav;
 	construct
 	{
-		this.row_spacing = 12;
-		this.column_spacing = 12;
-        this.fav = new Gtk.Button.with_label (_("Update"));
+		var auto_update = new Gtk.Switch ();
+		var update_time = new Gtk.SpinButton.with_range (5, 60, 5);
+		Feedler.SERVICE.schema.bind ("auto-update", auto_update, "active", SettingsBindFlags.DEFAULT);
+		Feedler.SERVICE.schema.bind ("update-time", update_time, "value", SettingsBindFlags.DEFAULT);
+
+        this.fav = new Gtk.Button ();
+		this.fav.set_image (new Gtk.Image.from_icon_name ("go-bottom-symbolic", Gtk.IconSize.MENU));
 		this.add_title (_("Subscriptions"));
-		this.add_content (new Gtk.Switch (), _("Enable automatic updates"));
-		this.add_content (new Gtk.SpinButton.with_range (5, 60, 5), _("Time interval between updates"));
+		this.add_content (auto_update, _("Enable automatic updates"));
+		this.add_content (update_time, _("Time interval between updates"));
 		this.add_title (_("Favicons"));
-		this.add_content (fav, _("Update now all favicons"));
+		this.add_content (fav, _("Download now all favicons"));
 	}
 }
  
