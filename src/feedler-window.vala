@@ -423,9 +423,9 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
 	protected void config ()
 	{
 		Feedler.Preferences pref = new Feedler.Preferences ();
-		pref.other.fav.clicked.connect (_favicon_all);
+		pref.update.fav.clicked.connect (_favicon_all);
 		pref.run ();
-        pref.other.fav.clicked.disconnect (_favicon_all);
+        pref.update.fav.clicked.disconnect (_favicon_all);
         pref.destroy ();
 	}
 	
