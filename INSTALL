@@ -1,30 +1,32 @@
-In order to build Feedler, you will need:
-	- CMake >= 2.8.3
-	- GTK+3 >= 3.0.8
-	- Granite Framework >= 0.0.1
-	- libSoup >= 2.34.0
-	- libXml >= 2.7.8
-	- libNotify >= 0.7.2
-	- SQLHeavy >= 0.0.1
-	- WebkitGTK+3 >= 1.4.0
+Dependencies
+------------
+ - libgtk-3.0-dev
+ - libwebkitgtk-3.0-dev
+ - libgranite
+ - libgconf-2.0-dev
+ - sqlheavy-0.1
+ - libsoup-2.4
+ - libxml-2.0
+ - libnotify
+ - gee-1.0
 
+Testing
+------------
+$ cd src/service # in feedler folder
+$ mkdir build
+$ cd build/
+$ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+$ make
+$ ../feedler-service
 
-The various libraries needed by Feedler's source code are handled by CMake.
-When running CMake, it will notify you that it is unable to build Feedler,
-because it is missing certain dependencies. It is up to you to install them.
-	
+$ mkdir build # in feedler folder
+$ cd build/
+$ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+$ make
+$ ./feedler
 
-General build instructions:
-	1) bzr branch lp:feedler
-	2) cd feedler
-	3) mkdir build
-	4) cd build
-	5) cmake .. -DCMAKE_INSTALLPREFIX=/usr
-	6) make 	
-
-To install:
-	7) sudo make install
-
+Installation
+------------
+$ sudo make install # after commands from 'Testing'
 
 Have a nice day with Feedler;)
-
