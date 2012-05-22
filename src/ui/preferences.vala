@@ -5,7 +5,7 @@
  * @see COPYING
  */
  
-public class PrefView : Gtk.VBox
+public class Behavior : Gtk.VBox
 {
 	construct
 	{
@@ -34,7 +34,6 @@ public class Feedler.Preferences : Gtk.Dialog
 {
 	private Granite.Widgets.StaticNotebook tabs;
 	private Gtk.Box vbox;
-	internal PrefView web;
 	internal Gtk.Button fav;
 	
 	construct
@@ -42,10 +41,9 @@ public class Feedler.Preferences : Gtk.Dialog
 		this.title = "Preferences";
         this.border_width = 5;
 		this.set_default_size (300, 300);
-        this.web = new PrefView ();
         this.fav = new Gtk.Button.with_label ("Update favicons");
 		this.tabs = new Granite.Widgets.StaticNotebook ();
-		this.tabs.append_page (web, new Gtk.Label ("Views"));
+		this.tabs.append_page (new Behavior (), new Gtk.Label (_("Behavior")));
 		this.tabs.append_page (fav, new Gtk.Label ("Other"));
 		
         this.vbox = this.get_content_area () as Gtk.Box;

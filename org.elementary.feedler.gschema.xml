@@ -54,4 +54,21 @@
 			<description>Shrink images in web pages</description>
 		</key>
 	</schema>
+	<schema path="/org/elementary/feedler/service/" id="org.elementary.feedler.service" gettext-domain="feedler">
+		<key name="auto-update" type="b">
+			<default>false</default>
+			<summary>Automatic update</summary>
+			<description>Automatic update subscriptions</description>
+		</key>
+		<key name="update-time" type="i">
+			<default>30</default>
+			<summary>Update interval</summary>
+			<description>Interval between updates</description>
+		</key>
+		<key type="as" name="uri">
+			<default>['']</default>
+			<summary>URIs to subscriptions</summary>
+			<description>Auto updated URIs</description>
+        </key>
+	</schema>
 </schemalist>

@@ -17,6 +17,8 @@ public abstract class Feedler.View : Gtk.Viewport
 		settings = new WebKit.WebSettings ();
 		settings.auto_resize_window = false;
 		settings.default_font_size = 9;
+		settings.auto_load_images = Feedler.SETTING.enable_image;
+		settings.auto_shrink_images = Feedler.SETTING.shrink_image;
 	}
 
 	construct

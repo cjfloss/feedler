@@ -22,11 +22,11 @@ public class Feedler.State : Granite.Services.Settings
 
 public class Feedler.Settings : Granite.Services.Settings
 {
-	public bool enable_image;
-	public bool enable_script;
-	public bool enable_java;
-	public bool enable_plugin;
-	public bool shrink_image;
+	public bool enable_image { get; set; }
+	public bool enable_script { get; set; }
+	public bool enable_java { get; set; }
+	public bool enable_plugin { get; set; }
+	public bool shrink_image { get; set; }
 
     public Settings ()
     {
