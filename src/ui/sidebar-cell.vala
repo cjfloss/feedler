@@ -62,8 +62,6 @@ public class Feedler.SidebarCell : Gtk.CellRenderer
         color_insensitive.alpha = 0.5;
         Gdk.RGBA color_selected = style.get_color (Gtk.StateFlags.SELECTED);
 		Gdk.RGBA color_unread = style.get_color (Gtk.StateFlags.ACTIVE);
-
-        /* Compute font size */
         Pango.FontDescription font_medium = widget.get_pango_context ().get_font_description ();
         font_medium.set_size (Pango.units_from_double (Pango.units_to_double (font_medium.get_size()) - 2));
         Pango.FontDescription font_bold = widget.get_pango_context ().get_font_description ();
