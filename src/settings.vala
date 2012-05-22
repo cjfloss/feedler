@@ -33,3 +33,15 @@ public class Feedler.Settings : Granite.Services.Settings
 		base ("org.elementary.feedler.settings");
     }
 }
+
+public class Feedler.Service : Granite.Services.Settings
+{
+	public bool auto_update { get; set; }
+	public int update_time { get; set; }
+	public string[] uri { get; set; }
+
+	public Service ()
+	{
+		base ("org.elementary.feedler.service");
+	}
+}
