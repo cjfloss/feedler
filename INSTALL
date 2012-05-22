@@ -3,7 +3,6 @@ Dependencies
  - libgtk-3.0-dev
  - libwebkitgtk-3.0-dev
  - libgranite
- - libgconf-2.0-dev
  - sqlheavy-0.1
  - libsoup-2.4
  - libxml-2.0
@@ -17,7 +16,7 @@ $ mkdir build
 $ cd build/
 $ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
 $ make
-$ ../feedler-service
+$ ./feedler-service
 
 $ mkdir build # in feedler folder
 $ cd build/
