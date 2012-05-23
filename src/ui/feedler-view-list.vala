@@ -70,6 +70,8 @@ public class Feedler.ViewList : Feedler.View
 		this.viewmenu = new Feedler.MenuView ();
 		this.viewmenu.disp.activate.connect (load_item);
 		this.viewmenu.open.activate.connect (browse_page);
+		this.viewmenu.read.activate.connect (mark_item);
+		this.viewmenu.unre.activate.connect (mark_item);
 		this.viewmenu.show_all ();
 		
 		this.scroll_list = new Gtk.ScrolledWindow (null, null);
@@ -132,21 +134,19 @@ public class Feedler.ViewList : Feedler.View
         return 1;
     }
 	
-	protected void load_article (string content)
+	private void load_article (string content)
 	{
 		this.browser.load_string (content, "text/html", "UTF-8", "");
 	}
 	
-	protected void browse_page () 
+	private void browse_page () 
 	{
 		stderr.printf ("Feedler.ViewList.browse_page ()\n");
 		try
 		{
 			FeedStore? feed = this.selected_item ();
 			if (feed != null)
-			{
 				GLib.Process.spawn_command_line_async ("xdg-open " + feed.source);
-			}
 		}
 		catch (GLib.Error e)
 		{
@@ -154,10 +154,10 @@ public class Feedler.ViewList : Feedler.View
 		}
 	}
 	
-	protected void load_item ()
+	private void load_item ()
 	{
 		stderr.printf ("Feedler.ViewList.load_item ()\n");
-		FeedStore? feed;
+		FeedStore feed;
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
 		if (this.tree.get_selection ().get_selected (out model, out iter))
@@ -176,7 +176,21 @@ public class Feedler.ViewList : Feedler.View
 		}
 	}
 
-	protected FeedStore? selected_item ()
+	private void mark_item ()
+	{
+		FeedStore feed;
+		Gtk.TreeModel model;
+		Gtk.TreeIter iter;
+		if (this.tree.get_selection ().get_selected (out model, out iter))
+		{
+			this.tree.model.get (iter, 0, out feed);
+			feed.unread = !feed.unread;
+			this.store.set (iter, 0, feed);
+			this.item_marked (feed.id, feed.unread);
+		}
+	}
+
+	private FeedStore? selected_item ()
 	{
 		FeedStore feed = null;
 		Gtk.TreeModel model;

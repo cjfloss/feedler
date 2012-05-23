@@ -325,8 +325,8 @@ public class Feedler.Database : GLib.Object
 			query = transaction.prepare ("UPDATE `items` SET `state`=:state WHERE `id`=:id;");
 			query.set_int (":state", (int)state);
             query.set_int (":id", id);
-			query.execute ();
-			transaction.commit();
+			query.execute_async ();
+			transaction.commit ();
 		}
 		catch (SQLHeavy.Error e)
 		{

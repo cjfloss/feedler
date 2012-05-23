@@ -111,10 +111,9 @@ public class Feedler.Window : Gtk.Window
 		this.sidemenu.show_all ();
         
         this.layout.init_views ();
-        //this.layout.list.item_readed.connect (mark_channel);
-        //this.layout.web.item_readed.connect (mark_channel);
 		this.view = (Feedler.View)layout.get_nth_page (0);
 		this.view.item_selected.connect (history_add);
+		this.view.item_marked.connect (mark_item);
 
         this.stat = new Feedler.Statusbar ();
         this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
@@ -374,6 +373,14 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
         if (connections == 0)
             this.toolbar.progress.pulse ("", false);
 	}
+
+	private void mark_item (int id, bool state)
+    {
+		int i = this.selection_tree ();
+        this.db.mark_item (id, state ? Model.State.UNREAD : Model.State.READ);
+		this.side.dec_unread (i, state ? 1 : -1);
+		this.db.get_item (i, id).state = state ? Model.State.UNREAD : Model.State.READ;
+    }
     	
 	protected void change_mode (Gtk.Widget widget)
 	{

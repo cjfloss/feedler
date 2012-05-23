@@ -139,12 +139,14 @@ public class Feedler.Sidebar : Gtk.TreeView
 		this.store.set_value (channel_iter, 0, channel);
 	}
 	
-	public void dec_unread (int id)
+	public void dec_unread (int id, int num = -1)
 	{
 		Gtk.TreeIter channel_iter = channels.get (id);
 		ChannelStore channel;
 		this.model.get (channel_iter, 0, out channel);
-		channel.unread--;
+		channel.unread += num;
+		if (channel.unread < 0)
+			channel.unread = 0;
 		this.store.set_value (channel_iter, 0, channel);
 	}
 

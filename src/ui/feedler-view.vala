@@ -6,6 +6,7 @@
  */
 public abstract class Feedler.View : Gtk.VBox
 {
+	public signal void item_marked (int id, bool state);
 	public signal void item_readed (int item_id);
 	public signal void item_selected (string item_path);
 	
