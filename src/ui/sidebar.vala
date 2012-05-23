@@ -59,18 +59,18 @@ public class Feedler.Sidebar : Gtk.TreeView
             this.store.append (out folder_iter, this.folders.get (folder));
         else
             this.store.append (out folder_iter, null);
-        this.store.set (folder_iter, 0, new ChannelStore (id, name, 0, 0), -1);
+        this.store.set_value (folder_iter, 0, new ChannelStore (id, name, 0, 0));
         this.folders.set (id, folder_iter);
     }
 
-    public void add_channel (int id, string name, int folder)
+    public void add_channel (int id, string name, int folder, int unread = 0)
 	{
 		Gtk.TreeIter channel_iter;
         if (folder > 0)
             this.store.append (out channel_iter, this.folders.get (folder));
         else
             this.store.append (out channel_iter, null);
-        this.store.set (channel_iter, 0, new ChannelStore (id, name, 0, 1), -1);
+        this.store.set_value (channel_iter, 0, new ChannelStore (id, name, unread, 1));
         this.channels.set (id, channel_iter);
 	}
 
@@ -121,7 +121,6 @@ public class Feedler.Sidebar : Gtk.TreeView
         {
             do
             {
-                stderr.printf ("T\n");
                 this.model.get (iter_c, 0, out channel);
         		channel.unread = 0;
         		this.store.set_value (iter_c, 0, channel);

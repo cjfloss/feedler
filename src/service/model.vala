@@ -19,6 +19,7 @@ public class Model.Channel
 	public string link;
 	public string source;
     public int folder;
+	public int unread;
     public GLib.List<Model.Item?> items;
 
     public Channel.with_data (int id, string title, string link, string source, int folder)

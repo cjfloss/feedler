@@ -100,6 +100,7 @@ public class Feedler.ViewList : Feedler.View
 	
 	public override void add_feed (Model.Item item, string time_format)
 	{
+		stderr.printf ("Feedler.ViewList.add_feed ()\n");
 		Gtk.TreeIter feed_iter;
 		this.store.prepend (out feed_iter);
         this.store.set (feed_iter, 0, new FeedStore (item, time_format), -1);
@@ -117,6 +118,7 @@ public class Feedler.ViewList : Feedler.View
 	
 	public override void select (Gtk.TreePath path)
 	{
+		stderr.printf ("Feedler.ViewList.select ()\n");
 		this.tree.get_selection ().select_path (path);
 		this.load_item ();
 	}
@@ -167,13 +169,16 @@ public class Feedler.ViewList : Feedler.View
 			if (feed.unread)
 			{
 				feed.unread = false;
-				this.store.set (iter, 0, feed);
-				this.item_readed (feed.id);
+				this.store.set_value (iter, 0, feed);
+				//this.item_marked (feed.id, feed.unread);
 			}
 			if (feed.source != this.cache)
 				this.item_selected (model.get_path (iter).to_string ());
 			this.cache = feed.source;
 		}
+		int i = -1000000;
+		while (i < 1000000)
+			i++;
 	}
 
 	private void mark_item ()

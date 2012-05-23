@@ -39,7 +39,7 @@ public class Feedler.ViewWeb : Feedler.View
 	{
 		stderr.printf ("Feedler.ViewWeb.load_article ()");
 		this.browser.load_string (content.str, "text/html", "UTF-8", "");
-		this.item_readed (-1);
+		//this.item_readed (-1);
 	}
 	
 	public override void refilter (string text)

@@ -142,7 +142,7 @@ public class Feedler.Database : GLib.Object
 
     public unowned Model.Item? get_item (int channel, int id)
 	{
-		for (uint i = 0; i < this.channels.length (); i++)
+		/*for (uint i = 0; i < this.channels.length (); i++)
 		{
 			if (this.channels.nth_data (i).id == channel)
 				for (uint j = 0; j < this.channels.nth_data (i).items.length (); j++)
@@ -154,7 +154,7 @@ public class Feedler.Database : GLib.Object
 						//return this.channels.nth_data (i).items.nth_data (j);
 					}
 				}
-		}
+		}*/
 		foreach (unowned Model.Channel ch in this.channels)
 			if (ch.id == channel)
 				foreach (unowned Model.Item it in ch.items)
@@ -357,12 +357,6 @@ public class Feedler.Database : GLib.Object
             query.set_int (":id", item);
 			query.execute_async ();
 			transaction.commit ();
-			/*foreach (var ch in this.channels)
-				if (ch.id == channel)
-					foreach (var it in ch.items)
-				        if (id == it.id)
-							it
-		    		        return it;*/
 		}
 		catch (SQLHeavy.Error e)
 		{
@@ -418,6 +412,8 @@ public class Feedler.Database : GLib.Object
 					it.description = r.fetch_string (4);
 					it.time = r.fetch_int (5);
 					it.state = (Model.State)r.fetch_int (6);
+					if (it.state == Model.State.UNREAD)
+						ch.unread++;
 					ch.items.append (it);				
 				}
 				this.channels.append (ch);
@@ -430,74 +426,6 @@ public class Feedler.Database : GLib.Object
 		return channels;
 	}
     
-    /*public int insert_folder (Model.Folder folder, bool autocommit = false)
-	{
-		try
-        {
-            if (autocommit)
-    			this.transaction = db.begin_transaction ();
-			query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
-			query.set_string (":name", folder.name);
-			query.set_int (":parent", folder.parent);
-            int id = (int)query.execute_insert ();
-            if (autocommit)
-    			this.transaction.commit ();
-            return id;
-		}
-		catch (SQLHeavy.Error e)
-		{
-			stderr.printf ("Cannot insert folder %s.", folder.name);
-            return 0;
-		}
-	}
-
-    public int insert_channel (Model.Channel channel, bool autocommit = false)
-	{
-		try
-        {
-            if (autocommit)
-    			this.transaction = db.begin_transaction ();
-            query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `link`, `folder`) VALUES (:title, :source, :link, :folder);");
-			query.set_string (":title", channel.title);
-			query.set_string (":source", channel.source);
-			query.set_string (":link", channel.link);
-			query.set_int (":folder", channel.folder);
-            int id = (int)query.execute_insert ();
-            if (autocommit)
-    			this.transaction.commit ();
-            return id;
-		}
-		catch (SQLHeavy.Error e)
-		{
-			stderr.printf ("Cannot insert channel %s.", channel.title);
-            return 0;
-		}
-	}
-
-    public void insert_item (Model.Item item, bool autocommit = false)
-	{
-        try
-        {
-            if (autocommit)
-    			this.transaction = db.begin_transaction ();
-		    query = transaction.prepare ("INSERT INTO `items` (`title`, `source`, `description`, `author`, `time`, `state`, `channel`) VALUES (:title, :source, :description, :author, :time, :state, :channel);");
-			query.set_string (":title", item.title);
-			query.set_string (":source", item.source);
-			query.set_string (":author", item.author);
-			query.set_string (":description", item.description);
-			query.set_int (":time", item.time);
-			query.set_int (":state", (int)item.state);
-			query.set_int (":channel", item.channel);
-			query.execute ();
-            if (autocommit)
-    			this.transaction.commit ();
-		}
-		catch (SQLHeavy.Error e)
-		{
-			stderr.printf ("Cannot insert items %s.\n", item.title);
-		}
-	}*/
-
     public int insert_serialized_folder (Serializer.Folder folder)
 	{
 		try

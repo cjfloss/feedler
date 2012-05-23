@@ -127,14 +127,10 @@ public class Feedler.Window : Gtk.Window
 		this.ui_workspace (); 
         
         foreach (Model.Folder f in this.db.select_folders ())
-        {
             this.side.add_folder (f);
-        }
 
         foreach (Model.Channel c in this.db.select_channels ())
-		{
-            this.side.add_channel (c.id, c.title, c.folder);
-		}
+            this.side.add_channel (c.id, c.title, c.folder, c.unread);
 		
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);
@@ -380,15 +376,6 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
         this.db.mark_item (i, id, state ? Model.State.UNREAD : Model.State.READ);
 		this.side.dec_unread (i, state ? 1 : -1);
 		this.db.set_item_state (i, id, state ? Model.State.UNREAD : Model.State.READ);
-		/*unowned Model.Item item = this.db.get_item (i, id);
-stderr.printf ("%s - %i\n", item.title, item.state);
-item.title="KUTAS";
-stderr.printf ("%s - %i\n", item.title, item.state);
-		item.state = state ? Model.State.UNREAD : Model.State.READ;
-		item.title = "TEST";
-stderr.printf ("%s - %i\n", item.title, item.state);
-//		this.db.get_item (i, id).state = state ? Model.State.UNREAD : Model.State.READ;
-stderr.printf ("%s - %i\n", item.title, item.state);*/
     }
     	
 	protected void change_mode (Gtk.Widget widget)
