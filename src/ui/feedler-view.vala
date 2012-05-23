@@ -4,11 +4,10 @@
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
-public abstract class Feedler.View : Gtk.Viewport
+public abstract class Feedler.View : Gtk.VBox
 {
 	public signal void item_readed (int item_id);
 	public signal void item_selected (string item_path);
-	public signal void item_browsed ();
 	
 	public static WebKit.WebSettings settings;
 	
@@ -23,7 +22,7 @@ public abstract class Feedler.View : Gtk.Viewport
 
 	construct
 	{
-		this.set_shadow_type (Gtk.ShadowType.NONE);
+		this.show_all ();
 	}
 		
 	public abstract void clear ();

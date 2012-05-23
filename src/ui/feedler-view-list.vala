@@ -34,9 +34,10 @@ public class Feedler.ViewList : Feedler.View
 {
 	private string cache;
 	/* List with feeds and searching */
-	private Gtk.TreeView tree;
+	internal Gtk.TreeView tree;
 	private Gtk.ListStore store;
 	private Feedler.ViewCell cell;
+	private Feedler.MenuView viewmenu;
 	private Gtk.TreeModelFilter filter;
 	private string filter_text;
 	
@@ -56,6 +57,7 @@ public class Feedler.ViewList : Feedler.View
 		this.tree.headers_visible = false;
 		this.tree.enable_search = false;
 		this.tree.get_selection ().set_mode (Gtk.SelectionMode.SINGLE);
+		this.tree.button_press_event.connect (context_menu);
 		this.tree.row_activated.connect (browse_page);
 		this.tree.cursor_changed.connect (load_item);
 		this.filter_text = "";
@@ -64,6 +66,11 @@ public class Feedler.ViewList : Feedler.View
 		column.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 		column.set_cell_data_func (cell, render_cell);
 		this.tree.insert_column (column, -1);
+
+		this.viewmenu = new Feedler.MenuView ();
+		this.viewmenu.disp.activate.connect (load_item);
+		this.viewmenu.open.activate.connect (browse_page);
+		this.viewmenu.show_all ();
 		
 		this.scroll_list = new Gtk.ScrolledWindow (null, null);
 		this.scroll_list.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
@@ -130,19 +137,15 @@ public class Feedler.ViewList : Feedler.View
 		this.browser.load_string (content, "text/html", "UTF-8", "");
 	}
 	
-	protected void browse_page (Gtk.TreePath path, Gtk.TreeViewColumn column) 
+	protected void browse_page () 
 	{
 		stderr.printf ("Feedler.ViewList.browse_page ()\n");
 		try
 		{
-			Gtk.TreeIter iter;
-			if (this.tree.model.get_iter (out iter, path))
+			FeedStore? feed = this.selected_item ();
+			if (feed != null)
 			{
-				FeedStore feed;
-				this.tree.model.get (iter, 0, out feed);
-				
-				if (!GLib.Process.spawn_command_line_async ("xdg-open "+feed.source))
-					stderr.printf ("ERROR\n");
+				GLib.Process.spawn_command_line_async ("xdg-open " + feed.source);
 			}
 		}
 		catch (GLib.Error e)
@@ -154,12 +157,11 @@ public class Feedler.ViewList : Feedler.View
 	protected void load_item ()
 	{
 		stderr.printf ("Feedler.ViewList.load_item ()\n");
+		FeedStore? feed;
 		Gtk.TreeModel model;
-		Gtk.TreeIter iter;		
-		Gtk.TreeSelection selection = this.tree.get_selection ();
-		if (selection.get_selected (out model, out iter))
+		Gtk.TreeIter iter;
+		if (this.tree.get_selection ().get_selected (out model, out iter))
 		{
-			FeedStore feed;
 			this.tree.model.get (iter, 0, out feed);
 			this.load_article (feed.text);
 			if (feed.unread)
@@ -172,6 +174,16 @@ public class Feedler.ViewList : Feedler.View
 				this.item_selected (model.get_path (iter).to_string ());
 			this.cache = feed.source;
 		}
+	}
+
+	protected FeedStore? selected_item ()
+	{
+		FeedStore feed = null;
+		Gtk.TreeModel model;
+		Gtk.TreeIter iter;
+		if (this.tree.get_selection ().get_selected (out model, out iter))
+			this.tree.model.get (iter, 0, out feed);
+		return feed;
 	}
 	
 	private bool search_filter (Gtk.TreeModel model, Gtk.TreeIter iter)
@@ -199,5 +211,23 @@ public class Feedler.ViewList : Feedler.View
 		renderer.author = feed.author;
 		renderer.channel = feed.source;
 		renderer.unread = feed.unread;
+	}
+
+	private bool context_menu (Gdk.EventButton e)
+	{
+		if (e.button != 3)
+			return false;
+		Gtk.TreePath path;
+		Gtk.TreeViewColumn column;
+		int cell_x, cell_y;
+		if (this.tree.get_path_at_pos ((int) e.x, (int) e.y, out path, out column, out cell_x, out cell_y))
+		{
+			this.tree.get_selection ().select_path (path);
+			FeedStore feed = this.selected_item ();
+			this.viewmenu.select_mark (feed.unread);
+			this.viewmenu.popup (null, null, null, e.button, e.time);
+			return true;
+		}
+		return false;
 	}
 }

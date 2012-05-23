@@ -31,3 +31,34 @@ public class Feedler.MenuSide : Gtk.Menu
         this.append (edit);
 	}
 }
+
+public class Feedler.MenuView : Gtk.Menu
+{
+    internal Gtk.MenuItem disp = new Gtk.MenuItem.with_label (_("Display"));
+    internal Gtk.MenuItem open = new Gtk.MenuItem.with_label (_("Open in browser"));
+    internal Gtk.MenuItem read = new Gtk.MenuItem.with_label (_("Mark as read"));
+	internal Gtk.MenuItem unre = new Gtk.MenuItem.with_label (_("Mark as unread"));
+    
+	construct
+	{
+        this.append (disp);
+        this.append (open);
+        this.append (new Gtk.SeparatorMenuItem ());
+        this.append (read);
+        this.append (unre);
+	}
+
+	public void select_mark (bool type)
+	{
+		if (type)
+		{
+			this.read.set_sensitive (true);
+			this.unre.set_sensitive (false);
+		}
+		else
+		{
+			this.read.set_sensitive (false);
+			this.unre.set_sensitive (true);
+		}
+	}
+}

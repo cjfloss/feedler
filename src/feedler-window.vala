@@ -108,14 +108,13 @@ public class Feedler.Window : Gtk.Window
 		this.sidemenu.mark.activate.connect (_mark);
 		this.sidemenu.rem.activate.connect (_remove);
 		this.sidemenu.edit.activate.connect (_edit);
-		this.sidemenu.show_all ();		
+		this.sidemenu.show_all ();
         
         this.layout.init_views ();
         //this.layout.list.item_readed.connect (mark_channel);
         //this.layout.web.item_readed.connect (mark_channel);
 		this.view = (Feedler.View)layout.get_nth_page (0);
 		this.view.item_selected.connect (history_add);
-		//this.view.item_browsed.connect (history_remove);
 
         this.stat = new Feedler.Statusbar ();
         this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
