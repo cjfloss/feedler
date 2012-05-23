@@ -377,9 +377,18 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
 	private void mark_item (int id, bool state)
     {
 		int i = this.selection_tree ();
-        this.db.mark_item (id, state ? Model.State.UNREAD : Model.State.READ);
+        this.db.mark_item (i, id, state ? Model.State.UNREAD : Model.State.READ);
 		this.side.dec_unread (i, state ? 1 : -1);
-		this.db.get_item (i, id).state = state ? Model.State.UNREAD : Model.State.READ;
+		this.db.set_item_state (i, id, state ? Model.State.UNREAD : Model.State.READ);
+		/*unowned Model.Item item = this.db.get_item (i, id);
+stderr.printf ("%s - %i\n", item.title, item.state);
+item.title="KUTAS";
+stderr.printf ("%s - %i\n", item.title, item.state);
+		item.state = state ? Model.State.UNREAD : Model.State.READ;
+		item.title = "TEST";
+stderr.printf ("%s - %i\n", item.title, item.state);
+//		this.db.get_item (i, id).state = state ? Model.State.UNREAD : Model.State.READ;
+stderr.printf ("%s - %i\n", item.title, item.state);*/
     }
     	
 	protected void change_mode (Gtk.Widget widget)

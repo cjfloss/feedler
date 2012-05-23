@@ -140,13 +140,43 @@ public class Feedler.Database : GLib.Object
 		return null;
 	}
 
-    public Model.Item? get_item (int channel, int id)
+    public unowned Model.Item? get_item (int channel, int id)
 	{
-        Model.Channel ch = this.get_channel (channel);
-        foreach (Model.Item item in ch.items)
-            if (id == item.id)
-                return item;
+		for (uint i = 0; i < this.channels.length (); i++)
+		{
+			if (this.channels.nth_data (i).id == channel)
+				for (uint j = 0; j < this.channels.nth_data (i).items.length (); j++)
+				{
+					if (this.channels.nth_data (i).items.nth_data (j).id == id)
+					{
+						this.channels.nth_data (i).items.nth_data (j).title = "A KURWA!";
+						break;
+						//return this.channels.nth_data (i).items.nth_data (j);
+					}
+				}
+		}
+		foreach (unowned Model.Channel ch in this.channels)
+			if (ch.id == channel)
+				foreach (unowned Model.Item it in ch.items)
+		            if (id == it.id)
+        		        return it;
 		return null;
+	}
+
+	public void set_item_state (int channel, int item, Model.State state)
+	{
+		for (uint i = 0; i < this.channels.length (); i++)
+		{
+			if (this.channels.nth_data (i).id == channel)
+				for (uint j = 0; j < this.channels.nth_data (i).items.length (); j++)
+				{
+					if (this.channels.nth_data (i).items.nth_data (j).id == item)
+					{
+						this.channels.nth_data (i).items.nth_data (j).state = state;
+						return;
+					}
+				}
+		}
 	}
 
     public int add_folder (string title)
@@ -317,20 +347,26 @@ public class Feedler.Database : GLib.Object
 		}
     }
 
-    public void mark_item (int id, Model.State state = Model.State.READ)
+    public void mark_item (int channel, int item, Model.State state = Model.State.READ)
     {
         try
         {
 			transaction = db.begin_transaction ();
 			query = transaction.prepare ("UPDATE `items` SET `state`=:state WHERE `id`=:id;");
 			query.set_int (":state", (int)state);
-            query.set_int (":id", id);
+            query.set_int (":id", item);
 			query.execute_async ();
 			transaction.commit ();
+			/*foreach (var ch in this.channels)
+				if (ch.id == channel)
+					foreach (var it in ch.items)
+				        if (id == it.id)
+							it
+		    		        return it;*/
 		}
 		catch (SQLHeavy.Error e)
 		{
-			stderr.printf ("Cannot mark item %i.", id);
+			stderr.printf ("Cannot mark item %i.", item);
 		}
     }
 	
