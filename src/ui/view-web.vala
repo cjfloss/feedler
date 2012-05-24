@@ -1,5 +1,5 @@
 /**
- * feedler-view-web.vala
+ * view-web.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
@@ -37,9 +37,9 @@ public class Feedler.ViewWeb : Feedler.View
 	
 	public override void load_feeds ()
 	{
-		stderr.printf ("Feedler.ViewWeb.load_article ()");
+		stderr.printf ("Feedler.ViewWeb.load_feeds ()\n");
 		this.browser.load_string (content.str, "text/html", "UTF-8", "");
-		//this.item_readed (-1);
+		this.item_marked (-1, true);
 	}
 	
 	public override void refilter (string text)
@@ -73,6 +73,6 @@ public class Feedler.ViewWeb : Feedler.View
 	}
 	private string generate_style (string title_color, string time_color, string content_color, string link_color)
 	{
-		return "<style>	.item{width:100%; float:left; margin-bottom:15px;} .title{color:"+title_color+"; font-size:16px; font-weight:bold;} .time{color:"+time_color+";font-size:9px;} .content{color:"+content_color+";} a,a:link,a:visited{color:"+link_color+"; text-decoration:none;} a:hover{text-decoration:underline;}</style>";
+		return "<style>	.item{width:100%; float:left; margin-bottom:15px;} .title{color:"+title_color+"; font-size:16px; font-weight:bold;} .time{color:"+time_color+";font-size:9px;} .content{color:"+content_color+";text-align:justify;} a,a:link,a:visited{color:"+link_color+"; text-decoration:none;} a:hover{text-decoration:underline;}</style>";
 	}
 }

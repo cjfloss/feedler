@@ -23,10 +23,10 @@ public abstract class Feedler.View : Gtk.VBox
 		settings.enable_java_applet = Feedler.SETTING.enable_java;
 	}
 
-	construct
+	/*construct
 	{
 		this.show_all ();
-	}
+	}*/
 		
 	public abstract void clear ();
 	

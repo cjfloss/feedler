@@ -117,7 +117,7 @@ vala_precompile(VALA_C
 	src/ui/view.vala
 	src/ui/view-cell.vala
 	src/ui/view-list.vala
-	src/ui/feedler-view-web.vala
+	src/ui/view-web.vala
     src/service/interface.vala
     src/service/model.vala
     src/service/serializer.vala

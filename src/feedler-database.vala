@@ -142,19 +142,6 @@ public class Feedler.Database : GLib.Object
 
     public unowned Model.Item? get_item (int channel, int id)
 	{
-		/*for (uint i = 0; i < this.channels.length (); i++)
-		{
-			if (this.channels.nth_data (i).id == channel)
-				for (uint j = 0; j < this.channels.nth_data (i).items.length (); j++)
-				{
-					if (this.channels.nth_data (i).items.nth_data (j).id == id)
-					{
-						this.channels.nth_data (i).items.nth_data (j).title = "A KURWA!";
-						break;
-						//return this.channels.nth_data (i).items.nth_data (j);
-					}
-				}
-		}*/
 		foreach (unowned Model.Channel ch in this.channels)
 			if (ch.id == channel)
 				foreach (unowned Model.Item it in ch.items)
@@ -163,20 +150,27 @@ public class Feedler.Database : GLib.Object
 		return null;
 	}
 
+	public void set_channel_state (int channel, Model.State state)
+	{
+		for (uint i = 0; i < this.channels.length (); i++)
+			if (this.channels.nth_data (i).id == channel)
+			{
+				for (uint j = 0; j < this.channels.nth_data (i).items.length (); j++)
+					this.channels.nth_data (i).items.nth_data (j).state = state;
+				return;
+			}
+	}
+
 	public void set_item_state (int channel, int item, Model.State state)
 	{
 		for (uint i = 0; i < this.channels.length (); i++)
-		{
 			if (this.channels.nth_data (i).id == channel)
 				for (uint j = 0; j < this.channels.nth_data (i).items.length (); j++)
-				{
 					if (this.channels.nth_data (i).items.nth_data (j).id == item)
 					{
 						this.channels.nth_data (i).items.nth_data (j).state = state;
 						return;
 					}
-				}
-		}
 	}
 
     public int add_folder (string title)
@@ -338,8 +332,7 @@ public class Feedler.Database : GLib.Object
             query.set_int (":id", id);
 			query.execute_async ();
 			transaction.commit ();
-            foreach (var i in this.get_channel (id).items)
-                i.state = state;
+            this.set_channel_state (id, state);
 		}
 		catch (SQLHeavy.Error e)
 		{
@@ -357,6 +350,7 @@ public class Feedler.Database : GLib.Object
             query.set_int (":id", item);
 			query.execute_async ();
 			transaction.commit ();
+			this.set_item_state (channel, item, state);
 		}
 		catch (SQLHeavy.Error e)
 		{

@@ -112,8 +112,9 @@ public class Feedler.Window : Gtk.Window
         
         this.layout.init_views ();
 		this.view = (Feedler.View)layout.get_nth_page (0);
-		this.view.item_selected.connect (history_add);
-		this.view.item_marked.connect (mark_item);
+		this.layout.list.item_selected.connect (history_add);
+		this.layout.list.item_marked.connect (mark_item);
+		this.layout.web.item_marked.connect (mark_item);
 
         this.stat = new Feedler.Statusbar ();
         this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
@@ -173,7 +174,6 @@ public class Feedler.Window : Gtk.Window
 	
 	private void destroy_app ()
 	{
-stderr.printf ("\nSTATE: %i\n", (get_window ().get_state () & Gdk.WindowState.MAXIMIZED));
 		if ((get_window ().get_state () & Gdk.WindowState.MAXIMIZED) != 0)
 			Feedler.STATE.window_state = Feedler.WindowState.MAXIMIZED;
 		else if ((get_window ().get_state () & Gdk.WindowState.FULLSCREEN) != 0)
@@ -372,10 +372,17 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
 
 	private void mark_item (int id, bool state)
     {
-		int i = this.selection_tree ();
-        this.db.mark_item (i, id, state ? Model.State.UNREAD : Model.State.READ);
-		this.side.dec_unread (i, state ? 1 : -1);
-		this.db.set_item_state (i, id, state ? Model.State.UNREAD : Model.State.READ);
+		ChannelStore ch = this.selected_item ();
+		if (id > 0)
+		{
+			this.db.mark_item (ch.id, id, state ? Model.State.UNREAD : Model.State.READ);
+			this.side.dec_unread (ch.id, state ? 1 : -1);
+		}
+		else
+		{
+			this.db.mark_channel (ch.id);
+			this.side.mark_channel (ch.id);
+		}        
     }
     	
 	protected void change_mode (Gtk.Widget widget)
@@ -411,7 +418,6 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
 			GLib.Time current_time = GLib.Time.local (time_t ());
 			foreach (Model.Item item in this.db.get_channel (id).items)
 			{
-	//stderr.printf ("Stan: %s-%i", item.title, item.state);
 				GLib.Time feed_time = GLib.Time.local (item.time);
 		        if (feed_time.day_of_year + 6 < current_time.day_of_year)
 		            this.view.add_feed (item, feed_time.format ("%d %B %Y"));
