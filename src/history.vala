@@ -30,25 +30,20 @@ public class Feedler.History : GLib.Object
 	
 	public void add (string channel, string item)
 	{
-	if (items.size == 0 || (items[current].channel != channel || items[current].item != item))
-	{
-stderr.printf ("Add\t");
-		if (current < items.size - 1)
+		if (items.size == 0 || (items[current].channel != channel || items[current].item != item))
 		{
-stderr.printf ("Extend\t");
-			this.items = (Gee.LinkedList<Feedler.HistoryItem>)this.items.slice (0, current + 1);
-			this.items.add (new Feedler.HistoryItem (channel, item));
-			this.current = items.size - 1;
-stderr.printf ("OK: %i ?? %i\n", items.size, current);
+			if (current < items.size - 1)
+			{
+				this.items = (Gee.LinkedList<Feedler.HistoryItem>)this.items.slice (0, current + 1);
+				this.items.add (new Feedler.HistoryItem (channel, item));
+				this.current = items.size - 1;
+			}
+			else
+			{
+				this.items.add (new Feedler.HistoryItem (channel, item));
+				this.current++;
+			}
 		}
-		else
-		{
-stderr.printf ("Simple\t");
-			this.items.add (new Feedler.HistoryItem (channel, item));
-			this.current++;
-stderr.printf ("OK: %i ?? %i\n", items.size, current);
-		}
-	}
 	}
 	
 	public void next (out string side_path, out string? view_path)

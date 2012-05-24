@@ -1,5 +1,5 @@
 /**
- * feedler-window.vala
+ * window.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
@@ -227,10 +227,8 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void history_prev ()
 	{
-stderr.printf ("PREV\t");
 		string side_path = null, view_path = null;
         this.history.prev (out side_path, out view_path);
-stderr.printf ("OK: %s :: %s\n", side_path, view_path);
         this.side.get_selection ().select_path (new Gtk.TreePath.from_string (side_path));
         this.load_channel ();
 		if (view_path != null)
@@ -240,10 +238,8 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
 	
 	protected void history_next ()
 	{
-stderr.printf ("NEXT\t");
 		string side_path = null, view_path = null;
         this.history.next (out side_path, out view_path);
-stderr.printf ("OK: %s :: %s\n", side_path, view_path);
         this.side.get_selection ().select_path (new Gtk.TreePath.from_string (side_path));
         this.load_channel ();
 		if (view_path != null)
@@ -411,20 +407,35 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
 	
 	private void load_channel ()
 	{
-		int id = this.selection_tree ();
-		if (id != -1)
+		Gtk.TreeModel model;
+		Gtk.TreeIter iter;
+		
+		if (this.side.get_selection ().get_selected (out model, out iter))
 		{
-			this.view.clear ();
-			GLib.Time current_time = GLib.Time.local (time_t ());
-			foreach (Model.Item item in this.db.get_channel (id).items)
+			ChannelStore channel;
+			model.get (iter, 0, out channel);
+            if (channel.mode > 0)
 			{
-				GLib.Time feed_time = GLib.Time.local (item.time);
-		        if (feed_time.day_of_year + 6 < current_time.day_of_year)
-		            this.view.add_feed (item, feed_time.format ("%d %B %Y"));
-				else
-		            this.view.add_feed (item, feed_time.format ("%A %R"));
+				this.view.clear ();
+				GLib.Time current_time = GLib.Time.local (time_t ());
+				foreach (Model.Item item in this.db.get_channel (channel.id).items)
+				{
+					GLib.Time feed_time = GLib.Time.local (item.time);
+				    if (feed_time.day_of_year + 6 < current_time.day_of_year)
+				        this.view.add_feed (item, feed_time.format ("%d %B %Y"));
+					else
+				        this.view.add_feed (item, feed_time.format ("%A %R"));
+				}
+				this.view.load_feeds ();
 			}
-			this.view.load_feeds ();
+			else
+			{
+				Gtk.TreePath? path = model.get_path (iter);
+				if (this.side.is_row_expanded (path))
+					this.side.collapse_row (path);
+				else
+					this.side.expand_row (path, false);
+			}
 		}
 	}
 	
