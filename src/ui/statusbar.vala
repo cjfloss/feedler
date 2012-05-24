@@ -40,7 +40,6 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
     public uint total_unread { get; private set; default = 0; }
     internal Feedler.StatusButton add_feed;
     internal Feedler.StatusButton delete_feed;
-    internal Feedler.StatusButton mark_feed;
 
     public Statusbar ()
     {
@@ -50,12 +49,8 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
         this.delete_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("list-remove-symbolic", Gtk.IconSize.MENU));
         this.delete_feed.set_tooltip (_("Remove selected subscription"));
 
-        this.mark_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("go-bottom-symbolic", Gtk.IconSize.MENU));
-        this.mark_feed.set_tooltip (_("Mark selected subscription as read"));
-
         this.insert_widget (this.add_feed, true);
         this.insert_widget (this.delete_feed, true);
-        this.insert_widget (this.mark_feed, false);
     }
 
     public void set_unread (uint total_unread)

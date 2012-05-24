@@ -119,7 +119,6 @@ public class Feedler.Window : Gtk.Window
         this.stat = new Feedler.Statusbar ();
         this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
         this.stat.delete_feed.button_press_event.connect (()=>{_remove (); return false;});
-        this.stat.mark_feed.button_press_event.connect (()=>{_mark (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
 	}
 	

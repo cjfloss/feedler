@@ -53,6 +53,8 @@ file (GLOB _datafiles "${CMAKE_CURRENT_SOURCE_DIR}/data/style/*")
 install (FILES ${_datafiles} DESTINATION ${PKGDATADIR}/style)
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/feedler.desktop DESTINATION /usr/share/applications)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/feedler DESTINATION /usr/share/indicators/messages/applications)
+
 
 #
 # i18n
