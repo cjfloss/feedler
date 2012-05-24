@@ -1,5 +1,5 @@
 /**
- * feedler-view-list.vala
+ * view-list.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
@@ -57,9 +57,8 @@ public class Feedler.ViewList : Feedler.View
 		this.tree.headers_visible = false;
 		this.tree.enable_search = false;
 		this.tree.get_selection ().set_mode (Gtk.SelectionMode.SINGLE);
-		this.tree.button_press_event.connect (context_menu);
+		this.tree.button_press_event.connect (click_item);
 		this.tree.row_activated.connect (browse_page);
-		this.tree.cursor_changed.connect (load_item);
 		this.filter_text = "";
 		
 		var column = new Gtk.TreeViewColumn.with_attributes ("FeedStore", cell, null);
@@ -100,7 +99,6 @@ public class Feedler.ViewList : Feedler.View
 	
 	public override void add_feed (Model.Item item, string time_format)
 	{
-		stderr.printf ("Feedler.ViewList.add_feed ()\n");
 		Gtk.TreeIter feed_iter;
 		this.store.prepend (out feed_iter);
         this.store.set (feed_iter, 0, new FeedStore (item, time_format), -1);
@@ -170,15 +168,12 @@ public class Feedler.ViewList : Feedler.View
 			{
 				feed.unread = false;
 				this.store.set_value (iter, 0, feed);
-				//this.item_marked (feed.id, feed.unread);
+				this.item_marked (feed.id, feed.unread);
 			}
 			if (feed.source != this.cache)
 				this.item_selected (model.get_path (iter).to_string ());
 			this.cache = feed.source;
 		}
-		int i = -1000000;
-		while (i < 1000000)
-			i++;
 	}
 
 	private void mark_item ()
@@ -232,10 +227,8 @@ public class Feedler.ViewList : Feedler.View
 		renderer.unread = feed.unread;
 	}
 
-	private bool context_menu (Gdk.EventButton e)
+	private bool click_item (Gdk.EventButton e)
 	{
-		if (e.button != 3)
-			return false;
 		Gtk.TreePath path;
 		Gtk.TreeViewColumn column;
 		int cell_x, cell_y;
@@ -243,8 +236,13 @@ public class Feedler.ViewList : Feedler.View
 		{
 			this.tree.get_selection ().select_path (path);
 			FeedStore feed = this.selected_item ();
-			this.viewmenu.select_mark (feed.unread);
-			this.viewmenu.popup (null, null, null, e.button, e.time);
+			if (e.button == 1)
+				this.load_item ();
+			else if (e.button == 3)
+			{
+				this.viewmenu.select_mark (feed.unread);
+				this.viewmenu.popup (null, null, null, e.button, e.time);
+			}
 			return true;
 		}
 		return false;

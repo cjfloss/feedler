@@ -114,9 +114,9 @@ vala_precompile(VALA_C
 	src/ui/statusbar.vala
 	src/ui/subscription.vala
 	src/ui/toolbar.vala
-	src/ui/feedler-view.vala
+	src/ui/view.vala
 	src/ui/view-cell.vala
-	src/ui/feedler-view-list.vala
+	src/ui/view-list.vala
 	src/ui/feedler-view-web.vala
     src/service/interface.vala
     src/service/model.vala

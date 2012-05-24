@@ -1,5 +1,5 @@
 /**
- * feedler-view.vala
+ * view.vala
  * 
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
@@ -18,6 +18,9 @@ public abstract class Feedler.View : Gtk.VBox
 		settings.default_font_size = 9;
 		settings.auto_load_images = Feedler.SETTING.enable_image;
 		settings.auto_shrink_images = Feedler.SETTING.shrink_image;
+		settings.enable_plugins = Feedler.SETTING.enable_plugin;
+		settings.enable_scripts = Feedler.SETTING.enable_script;
+		settings.enable_java_applet = Feedler.SETTING.enable_java;
 	}
 
 	construct
