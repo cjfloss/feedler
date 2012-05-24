@@ -21,8 +21,8 @@ public class Feedler.CardLayout : Gtk.Notebook
     public void init_welcome ()
     {
         this.welcome = new Granite.Widgets.Welcome (_("Get Some Feeds"), _("Feedler can't seem to find your feeds."));
-		this.welcome.append ("gtk-new", _("Import"), _("Add a subscriptions from OPML file."));
-		//this.welcome.append ("tag-new", _("Create"), _("Add manually subscriptions from URL."));
+		this.welcome.append ("document-new", _("Create"), _("Add manually subscriptions from URL."));
+		this.welcome.append ("document-import", _("Import"), _("Add a subscriptions from OPML file."));
         this.append_page (welcome, null);
     }
 

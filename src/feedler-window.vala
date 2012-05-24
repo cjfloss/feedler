@@ -194,8 +194,8 @@ stderr.printf ("\nSTATE: %i\n", (get_window ().get_state () & Gdk.WindowState.MA
 	{
 		switch (index)
 		{
-			case 0: this._import (); break;
-			case 1: this._create_subs (); break;
+			case 0: this._create_subs (); break;
+			case 1: this._import (); break;
 		}
 	}
 	
@@ -561,9 +561,12 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
             {
                 this.client.import (file.get_filename ());
                 if (!this.db.is_created ())
+				{
                     this.db.create ();
+	                this.ui_welcome_to_workspace ();
+			        this.show_all ();
+				}
                 this.toolbar.progress.pulse (_("Importing subscriptions"), true);
-                this.ui_welcome_to_workspace ();
             }
             catch (GLib.Error e)
             {
@@ -571,7 +574,6 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
             }
         }
         file.destroy ();
-        this.show_all ();
 	}
 
 	private void _export ()
@@ -673,6 +675,12 @@ stderr.printf ("OK: %s :: %s\n", side_path, view_path);
 
     private void create_subs_cb (int id, int folder, string title, string url)
     {
+		if (!this.db.is_created ())
+		{
+        	this.db.create ();
+	        this.ui_welcome_to_workspace ();
+			this.show_all ();
+		}
         int i = this.db.add_channel (title, url, folder);
         this.side.add_channel (i, title, folder);
     }

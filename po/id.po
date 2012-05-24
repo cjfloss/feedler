@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-22 17:07+0200\n"
+"POT-Creation-Date: 2012-05-24 06:54+0200\n"
 "PO-Revision-Date: 2012-03-13 15:41+0000\n"
 "Last-Translator: iman <Unknown>\n"
 "Language-Team: Indonesian <id@li.org>\n"
@@ -35,11 +35,11 @@ msgstr ""
 msgid "Add new subscription URL"
 msgstr ""
 
-#: ../src/feedler-window.vala:628
+#: ../src/feedler-window.vala:630
 msgid "Are you sure you want to delete?"
 msgstr ""
 
-#: ../src/feedler-window.vala:607
+#: ../src/feedler-window.vala:609
 msgid "Are you sure you want to mark as read?"
 msgstr ""
 
@@ -59,11 +59,15 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#: ../src/ui/menu.vala:37
+msgid "Display"
+msgstr ""
+
 #: ../src/ui/preferences.vala:86
 msgid "Download now all favicons"
 msgstr ""
 
-#: ../src/feedler-window.vala:513 ../src/feedler-window.vala:529
+#: ../src/feedler-window.vala:515 ../src/feedler-window.vala:531
 msgid "Downloading favicons"
 msgstr ""
 
@@ -124,17 +128,17 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: ../src/feedler-window.vala:307
+#: ../src/feedler-window.vala:301
 #, c-format
 msgid "Imported %i channels in %i folders."
 msgstr ""
 
-#: ../src/feedler-window.vala:291
+#: ../src/feedler-window.vala:285
 #, c-format
 msgid "Importing %s"
 msgstr ""
 
-#: ../src/feedler-window.vala:563
+#: ../src/feedler-window.vala:565
 msgid "Importing subscriptions"
 msgstr ""
 
@@ -142,8 +146,12 @@ msgstr ""
 msgid "Load favicon"
 msgstr ""
 
-#: ../src/ui/menu.vala:12
+#: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
 msgid "Mark as read"
+msgstr ""
+
+#: ../src/ui/menu.vala:40
+msgid "Mark as unread"
 msgstr ""
 
 #: ../src/ui/statusbar.vala:54
@@ -162,6 +170,10 @@ msgstr ""
 
 #: ../src/ui/menu.vala:15
 msgid "New"
+msgstr ""
+
+#: ../src/ui/menu.vala:38
+msgid "Open in browser"
 msgstr ""
 
 #: ../src/ui/preferences.vala:99 ../src/ui/toolbar.vala:62
@@ -221,20 +233,20 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: ../src/feedler-window.vala:314 ../src/feedler-window.vala:490
+#: ../src/feedler-window.vala:308 ../src/feedler-window.vala:492
 #, c-format
 msgid "Updating %s"
 msgstr ""
 
-#: ../src/feedler-window.vala:469 ../src/feedler-window.vala:496
+#: ../src/feedler-window.vala:471 ../src/feedler-window.vala:498
 msgid "Updating subscriptions"
 msgstr ""
 
-#: ../src/feedler-window.vala:349
+#: ../src/feedler-window.vala:343
 msgid "new feed"
 msgstr ""
 
-#: ../src/feedler-window.vala:349
+#: ../src/feedler-window.vala:343
 msgid "new feeds"
 msgstr ""
 
