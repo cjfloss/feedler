@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-24 06:54+0200\n"
-"PO-Revision-Date: 2012-05-26 04:26+0000\n"
-"Last-Translator: Yan Gabriel Minario <Unknown>\n"
+"PO-Revision-Date: 2012-05-26 18:31+0000\n"
+"Last-Translator: Leonardo Lemos <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-26 05:25+0000\n"
+"X-Launchpad-Export-Date: 2012-05-27 04:51+0000\n"
 "X-Generator: Launchpad (build 15288)\n"
 "Language: pt_BR\n"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Get Some Feeds"
-msgstr ""
+msgstr "Obtenha Alguns Feeds"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Feedler can't seem to find your feeds."
-msgstr ""
+msgstr "O Feedler não pode visualizar alguns dos seus feeds."
 
 #: ../src/ui/cardlayout.vala:24 ../src/ui/toolbar.vala:60
 msgid "Import"
@@ -32,7 +32,7 @@ msgstr "Importar"
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Add a subscriptions from OPML file."
-msgstr ""
+msgstr "Adicionar assinaturas de um arquivo OPML"
 
 #: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
 #: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
@@ -70,7 +70,7 @@ msgstr "Novo"
 
 #: ../src/ui/menu.vala:16
 msgid "Subscription"
-msgstr ""
+msgstr "Assinatura"
 
 #: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
 #, c-format
@@ -79,7 +79,7 @@ msgstr "Pasta"
 
 #: ../src/ui/menu.vala:37
 msgid "Display"
-msgstr ""
+msgstr "Tela"
 
 #: ../src/ui/menu.vala:38
 msgid "Open in browser"
@@ -115,7 +115,7 @@ msgstr "Conteúdo"
 
 #: ../src/ui/preferences.vala:82
 msgid "Subscriptions"
-msgstr ""
+msgstr "Assinaturas"
 
 #: ../src/ui/preferences.vala:83
 msgid "Enable automatic updates"
@@ -151,23 +151,23 @@ msgstr "Remover assinatura selecionada"
 
 #: ../src/ui/statusbar.vala:54
 msgid "Mark selected subscription as read"
-msgstr ""
+msgstr "Marcar assinatura selecionada como lida"
 
 #: ../src/ui/statusbar.vala:75
 msgid "unread feeds"
-msgstr ""
+msgstr "feeds não lidos"
 
 #: ../src/ui/statusbar.vala:75
 msgid "unread feed"
-msgstr ""
+msgstr "feed não lido"
 
 #: ../src/ui/subscription.vala:30
 msgid "URI"
-msgstr ""
+msgstr "URl"
 
 #: ../src/ui/subscription.vala:40
 msgid "Load favicon"
-msgstr ""
+msgstr "Carregar favicon"
 
 #: ../src/ui/subscription.vala:56
 #, c-format
@@ -196,15 +196,15 @@ msgstr "Sobre"
 
 #: ../src/ui/toolbar.vala:99
 msgid "Go to the previous readed item"
-msgstr ""
+msgstr "Ir para o item lido anterior"
 
 #: ../src/ui/toolbar.vala:100
 msgid "Go to the next readed item"
-msgstr ""
+msgstr "Ir para o próximo item lido"
 
 #: ../src/ui/toolbar.vala:101
 msgid "Refresh all subscriptions"
-msgstr ""
+msgstr "Recarregar todas as assinaturas"
 
 #: ../src/ui/toolbar.vala:102
 msgid "Menu"
@@ -213,47 +213,47 @@ msgstr "Menu"
 #: ../src/ui/view-cell.vala:53
 #, c-format
 msgid "%s, by %s"
-msgstr ""
+msgstr "%s, por %s"
 
 #: ../src/feedler-window.vala:285
 #, c-format
 msgid "Importing %s"
-msgstr ""
+msgstr "Importando %s"
 
 #: ../src/feedler-window.vala:301
 #, c-format
 msgid "Imported %i channels in %i folders."
-msgstr ""
+msgstr "%i canais importados de %i pastas."
 
 #: ../src/feedler-window.vala:308 ../src/feedler-window.vala:492
 #, c-format
 msgid "Updating %s"
-msgstr ""
+msgstr "Atualizando %s"
 
 #: ../src/feedler-window.vala:343
 msgid "new feeds"
-msgstr ""
+msgstr "novos feeds"
 
 #: ../src/feedler-window.vala:343
 msgid "new feed"
-msgstr ""
+msgstr "novo feed"
 
 #: ../src/feedler-window.vala:471 ../src/feedler-window.vala:498
 msgid "Updating subscriptions"
-msgstr ""
+msgstr "Atualizando assinaturas"
 
 #: ../src/feedler-window.vala:515 ../src/feedler-window.vala:531
 msgid "Downloading favicons"
-msgstr ""
+msgstr "Baixando favicons"
 
 #: ../src/feedler-window.vala:565
 msgid "Importing subscriptions"
-msgstr ""
+msgstr "Importando assinaturas"
 
 #: ../src/feedler-window.vala:609
 msgid "Are you sure you want to mark as read?"
-msgstr ""
+msgstr "Você tem certeza que deseja marcar como lido?"
 
 #: ../src/feedler-window.vala:630
 msgid "Are you sure you want to delete?"
-msgstr ""
+msgstr "Você tem certeza que deseja deletar?"
