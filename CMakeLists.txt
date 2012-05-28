@@ -77,7 +77,7 @@ endif (${GETTEXT_FOUND} STREQUAL "TRUE")
 # Feedler
 #
 
-set (FEEDLER_DEPS "webkitgtk-3.0;gtk+-3.0;sqlheavy-0.1;libsoup-2.4;libxml-2.0;libnotify;granite;gee-1.0")
+set (FEEDLER_DEPS "webkitgtk-3.0;gtk+-3.0;sqlheavy-0.1;libsoup-2.4;libxml-2.0;libnotify;granite;gee-1.0;indicate-0.7")
 
 find_package(PkgConfig)
 pkg_check_modules(WEBKIT REQUIRED "webkitgtk-3.0")
@@ -88,6 +88,7 @@ pkg_check_modules(XML REQUIRED "libxml-2.0")
 pkg_check_modules(NOTIFY REQUIRED "libnotify")
 pkg_check_modules(GRANITE REQUIRED "granite")
 pkg_check_modules(GEE REQUIRED "gee-1.0")
+pkg_check_modules(INDICATE REQUIRED "indicate-0.7")
 pkg_check_modules(DEPS REQUIRED ${FEEDLER_DEPS})
 
 add_definitions(${DEPS_CFLAGS})
@@ -104,6 +105,7 @@ include(ValaPrecompile)
 vala_precompile(VALA_C
 	src/database.vala
 	src/feedler.vala
+	src/indicator.vala
 	src/history.vala
 	src/settings.vala
 	src/window.vala
@@ -131,6 +133,9 @@ PACKAGES
 	libxml-2.0
 	sqlheavy-0.1
     gee-1.0
+	Indicate-0.7
+	DbusmenuGtk3-0.4
+	Dbusmenu-0.4
 CUSTOM_VAPIS
     vapi/config.vapi
 	vapi/webkitgtk-3.0.vapi

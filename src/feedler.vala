@@ -7,6 +7,7 @@
 
 namespace Feedler
 {
+    public Feedler.Indicator INDICATOR;
     public Feedler.State STATE;
     public Feedler.Settings SETTING;
     public Feedler.Service SERVICE;
@@ -44,6 +45,7 @@ public class Feedler.App : Granite.Application
 			window.present ();
 			return;
 		}
+		Feedler.INDICATOR = new Feedler.Indicator ();
 		Feedler.STATE = new Feedler.State ();
 		Feedler.SETTING = new Feedler.Settings ();
 		Feedler.SERVICE = new Feedler.Service ();

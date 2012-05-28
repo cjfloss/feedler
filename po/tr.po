@@ -11,91 +11,73 @@ msgstr ""
 "PO-Revision-Date: 2012-05-26 16:46+0000\n"
 "Last-Translator: Ebubekir KARUL <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-05-27 04:51+0000\n"
 "X-Generator: Launchpad (build 15288)\n"
-"Language: tr\n"
 
-#: ../src/ui/cardlayout.vala:23
-msgid "Get Some Feeds"
+#: ../src/ui/view-cell.vala:53
+#, c-format
+msgid "%s, by %s"
 msgstr ""
 
-#: ../src/ui/cardlayout.vala:23
-msgid "Feedler can't seem to find your feeds."
-msgstr ""
-
-#: ../src/ui/cardlayout.vala:24 ../src/ui/toolbar.vala:60
-msgid "Import"
-msgstr "İçe Aktar"
+#: ../src/ui/toolbar.vala:63
+msgid "About"
+msgstr "Hakkında"
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Add a subscriptions from OPML file."
 msgstr ""
 
-#: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
-#: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
-#, c-format
-msgid "Name"
-msgstr "İsim"
+#: ../src/ui/statusbar.vala:48
+msgid "Add new subscription URL"
+msgstr ""
 
-#: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
-msgid "Save"
-msgstr "Kaydet"
+#: ../src/feedler-window.vala:630
+msgid "Are you sure you want to delete?"
+msgstr "Silmek istediğinizden emin misiniz ?"
+
+#: ../src/feedler-window.vala:609
+msgid "Are you sure you want to mark as read?"
+msgstr ""
+
+#: ../src/ui/preferences.vala:105
+msgid "Behavior"
+msgstr ""
 
 #: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:36
 msgid "Cancel"
 msgstr "İptal et"
 
-#: ../src/ui/menu.vala:11 ../src/ui/preferences.vala:106
-msgid "Update"
-msgstr "Güncelle"
-
-#: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
-msgid "Mark as read"
-msgstr "Okundu olarak işaretle"
+#: ../src/ui/preferences.vala:63
+msgid "Content"
+msgstr "İçerik"
 
 #: ../src/ui/menu.vala:13
 msgid "Delete"
 msgstr "Sil"
 
-#: ../src/ui/menu.vala:14
-msgid "Properties"
-msgstr "Tercihler"
-
-#: ../src/ui/menu.vala:15
-msgid "New"
-msgstr "Yeni"
-
-#: ../src/ui/menu.vala:16
-msgid "Subscription"
-msgstr "Abonelik"
-
-#: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
-#, c-format
-msgid "Folder"
-msgstr "Dosya"
-
 #: ../src/ui/menu.vala:37
 msgid "Display"
 msgstr "Görünüm"
 
-#: ../src/ui/menu.vala:38
-msgid "Open in browser"
-msgstr "Tarayıcıda aç"
+#: ../src/ui/preferences.vala:86
+msgid "Download now all favicons"
+msgstr "Tüm site simgelerini indir"
 
-#: ../src/ui/menu.vala:40
-msgid "Mark as unread"
-msgstr "Okunmadı olarak işaretle"
+#: ../src/feedler-window.vala:515 ../src/feedler-window.vala:531
+msgid "Downloading favicons"
+msgstr ""
+
+#: ../src/ui/preferences.vala:83
+msgid "Enable automatic updates"
+msgstr "Otomatik güncellemeleri aç"
 
 #: ../src/ui/preferences.vala:52
 msgid "Enable images"
 msgstr "Resimlere izin ver"
-
-#: ../src/ui/preferences.vala:53
-msgid "Enable scripts"
-msgstr "Betiklere izin ver"
 
 #: ../src/ui/preferences.vala:54
 msgid "Enable java"
@@ -105,114 +87,50 @@ msgstr "Java'yı aktifleştir"
 msgid "Enable plugins"
 msgstr "Eklentileri aktifleştir"
 
-#: ../src/ui/preferences.vala:56
-msgid "Shrink image to fit"
-msgstr ""
-
-#: ../src/ui/preferences.vala:63
-msgid "Content"
-msgstr "İçerik"
-
-#: ../src/ui/preferences.vala:82
-msgid "Subscriptions"
-msgstr "Abonelikler"
-
-#: ../src/ui/preferences.vala:83
-msgid "Enable automatic updates"
-msgstr "Otomatik güncellemeleri aç"
-
-#: ../src/ui/preferences.vala:84
-msgid "Time interval between updates"
-msgstr ""
-
-#: ../src/ui/preferences.vala:85
-msgid "Favicons"
-msgstr "Site Simgeleri"
-
-#: ../src/ui/preferences.vala:86
-msgid "Download now all favicons"
-msgstr "Tüm site simgelerini indir"
-
-#: ../src/ui/preferences.vala:99 ../src/ui/toolbar.vala:62
-msgid "Preferences"
-msgstr "Tercihler"
-
-#: ../src/ui/preferences.vala:105
-msgid "Behavior"
-msgstr ""
-
-#: ../src/ui/statusbar.vala:48
-msgid "Add new subscription URL"
-msgstr ""
-
-#: ../src/ui/statusbar.vala:51
-msgid "Remove selected subscription"
-msgstr ""
-
-#: ../src/ui/statusbar.vala:54
-msgid "Mark selected subscription as read"
-msgstr ""
-
-#: ../src/ui/statusbar.vala:75
-msgid "unread feeds"
-msgstr ""
-
-#: ../src/ui/statusbar.vala:75
-msgid "unread feed"
-msgstr ""
-
-#: ../src/ui/subscription.vala:30
-msgid "URI"
-msgstr "URI"
-
-#: ../src/ui/subscription.vala:40
-msgid "Load favicon"
-msgstr ""
-
-#: ../src/ui/subscription.vala:56
-#, c-format
-msgid "URI Address"
-msgstr "Adres"
-
-#: ../src/ui/toolbar.vala:54
-msgid "Type to Search..."
-msgstr "Aramak için Birşey Yazın..."
-
-#: ../src/ui/toolbar.vala:58
-msgid "Sidebar Visible"
-msgstr "Kenar Çubuğu Görünür"
-
-#: ../src/ui/toolbar.vala:59
-msgid "Fullscreen"
-msgstr "Tam Ekran"
+#: ../src/ui/preferences.vala:53
+msgid "Enable scripts"
+msgstr "Betiklere izin ver"
 
 #: ../src/ui/toolbar.vala:61
 msgid "Export"
 msgstr "Dışa Aktar"
 
-#: ../src/ui/toolbar.vala:63
-msgid "About"
-msgstr "Hakkında"
+#: ../src/ui/preferences.vala:85
+msgid "Favicons"
+msgstr "Site Simgeleri"
 
-#: ../src/ui/toolbar.vala:99
-msgid "Go to the previous readed item"
+#: ../src/ui/cardlayout.vala:23
+msgid "Feedler can't seem to find your feeds."
+msgstr ""
+
+#: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
+#, c-format
+msgid "Folder"
+msgstr "Dosya"
+
+#: ../src/ui/toolbar.vala:59
+msgid "Fullscreen"
+msgstr "Tam Ekran"
+
+#: ../src/ui/cardlayout.vala:23
+msgid "Get Some Feeds"
 msgstr ""
 
 #: ../src/ui/toolbar.vala:100
 msgid "Go to the next readed item"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:101
-msgid "Refresh all subscriptions"
+#: ../src/ui/toolbar.vala:99
+msgid "Go to the previous readed item"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:102
-msgid "Menu"
-msgstr "Menü"
+#: ../src/ui/cardlayout.vala:24 ../src/ui/toolbar.vala:60
+msgid "Import"
+msgstr "İçe Aktar"
 
-#: ../src/ui/view-cell.vala:53
+#: ../src/feedler-window.vala:301
 #, c-format
-msgid "%s, by %s"
+msgid "Imported %i channels in %i folders."
 msgstr ""
 
 #: ../src/feedler-window.vala:285
@@ -220,40 +138,122 @@ msgstr ""
 msgid "Importing %s"
 msgstr "İçe aktarılıyor %s"
 
-#: ../src/feedler-window.vala:301
-#, c-format
-msgid "Imported %i channels in %i folders."
+#: ../src/feedler-window.vala:565
+msgid "Importing subscriptions"
 msgstr ""
+
+#: ../src/ui/subscription.vala:40
+msgid "Load favicon"
+msgstr ""
+
+#: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
+msgid "Mark as read"
+msgstr "Okundu olarak işaretle"
+
+#: ../src/ui/menu.vala:40
+msgid "Mark as unread"
+msgstr "Okunmadı olarak işaretle"
+
+#: ../src/ui/statusbar.vala:54
+msgid "Mark selected subscription as read"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:102
+msgid "Menu"
+msgstr "Menü"
+
+#: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
+#: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
+#, c-format
+msgid "Name"
+msgstr "İsim"
+
+#: ../src/ui/menu.vala:15
+msgid "New"
+msgstr "Yeni"
+
+#: ../src/ui/menu.vala:38
+msgid "Open in browser"
+msgstr "Tarayıcıda aç"
+
+#: ../src/ui/preferences.vala:99 ../src/ui/toolbar.vala:62
+msgid "Preferences"
+msgstr "Tercihler"
+
+#: ../src/ui/menu.vala:14
+msgid "Properties"
+msgstr "Tercihler"
+
+#: ../src/ui/toolbar.vala:101
+msgid "Refresh all subscriptions"
+msgstr ""
+
+#: ../src/ui/statusbar.vala:51
+msgid "Remove selected subscription"
+msgstr ""
+
+#: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
+msgid "Save"
+msgstr "Kaydet"
+
+#: ../src/ui/preferences.vala:56
+msgid "Shrink image to fit"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:58
+msgid "Sidebar Visible"
+msgstr "Kenar Çubuğu Görünür"
+
+#: ../src/ui/menu.vala:16
+msgid "Subscription"
+msgstr "Abonelik"
+
+#: ../src/ui/preferences.vala:82
+msgid "Subscriptions"
+msgstr "Abonelikler"
+
+#: ../src/ui/preferences.vala:84
+msgid "Time interval between updates"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:54
+msgid "Type to Search..."
+msgstr "Aramak için Birşey Yazın..."
+
+#: ../src/ui/subscription.vala:30
+msgid "URI"
+msgstr "URI"
+
+#: ../src/ui/subscription.vala:56
+#, c-format
+msgid "URI Address"
+msgstr "Adres"
+
+#: ../src/ui/menu.vala:11 ../src/ui/preferences.vala:106
+msgid "Update"
+msgstr "Güncelle"
 
 #: ../src/feedler-window.vala:308 ../src/feedler-window.vala:492
 #, c-format
 msgid "Updating %s"
 msgstr "Güncelleniyor %s"
 
-#: ../src/feedler-window.vala:343
-msgid "new feeds"
+#: ../src/feedler-window.vala:471 ../src/feedler-window.vala:498
+msgid "Updating subscriptions"
 msgstr ""
 
 #: ../src/feedler-window.vala:343
 msgid "new feed"
 msgstr ""
 
-#: ../src/feedler-window.vala:471 ../src/feedler-window.vala:498
-msgid "Updating subscriptions"
+#: ../src/feedler-window.vala:343
+msgid "new feeds"
 msgstr ""
 
-#: ../src/feedler-window.vala:515 ../src/feedler-window.vala:531
-msgid "Downloading favicons"
+#: ../src/ui/statusbar.vala:75
+msgid "unread feed"
 msgstr ""
 
-#: ../src/feedler-window.vala:565
-msgid "Importing subscriptions"
+#: ../src/ui/statusbar.vala:75
+msgid "unread feeds"
 msgstr ""
-
-#: ../src/feedler-window.vala:609
-msgid "Are you sure you want to mark as read?"
-msgstr ""
-
-#: ../src/feedler-window.vala:630
-msgid "Are you sure you want to delete?"
-msgstr "Silmek istediğinizden emin misiniz ?"
