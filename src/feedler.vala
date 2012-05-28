@@ -11,6 +11,7 @@ namespace Feedler
     public Feedler.State STATE;
     public Feedler.Settings SETTING;
     public Feedler.Service SERVICE;
+	public Feedler.App APP;
 }
 
 public class Feedler.App : Granite.Application
@@ -38,6 +39,14 @@ public class Feedler.App : Granite.Application
 		//about_license_type = Gtk.License.GPL_3_0;
 	}
 
+	public void switch_display ()
+	{
+		if (window.is_active)
+            this.window.hide ();
+        else
+            this.window.present ();
+	}
+
 	protected override void activate ()
 	{
 		if (window != null)
@@ -59,7 +68,7 @@ public class Feedler.App : Granite.Application
 	
 	public static int main (string[] args)
 	{
-		var app = new Feedler.App ();
-		return app.run (args);
+		Feedler.APP = new Feedler.App ();
+		return APP.run (args);
 	}
 }
