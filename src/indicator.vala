@@ -25,7 +25,8 @@ public class Feedler.Indicator : GLib.Object
 	    //this.indicator.set_property ("subtype", "im");
     	//this.indicator.set_property ("sender", "Test message");
     	//this.indicator.set_property ("body", "Test message body");
-	    //this.indicator.set_property_time ("time", time);
+		this.indicator.set_property ("name", _("Update"));
+	    this.indicator.set_property_time ("time", time);
 		this.indicator.show ();
     	//time = GLib.TimeVal.get_current_time (); indicator.set_property_time ("time", time);
 	    this.indicator.user_display.connect (display);
