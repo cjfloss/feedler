@@ -133,12 +133,12 @@ PACKAGES
 	libxml-2.0
 	sqlheavy-0.1
     gee-1.0
-	Indicate-0.7
 	DbusmenuGtk3-0.4
 	Dbusmenu-0.4
 CUSTOM_VAPIS
     vapi/config.vapi
 	vapi/webkitgtk-3.0.vapi
+	vapi/Indicate-0.7.vapi
 OPTIONS
     --thread
     -g

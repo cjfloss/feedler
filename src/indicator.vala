@@ -17,11 +17,11 @@ public class Feedler.Indicator : GLib.Object
     	this.server.set_type ("message.im");
 		this.server.set_desktop_file ("/usr/share/applications/feedler.desktop");
     	this.server.server_display.connect (Feedler.APP.switch_display);
-    	//this.server.show ();
+    	this.server.show ();
 
 		this.update = new Indicate.Indicator.with_server (server);
 		this.update.user_display.connect (Feedler.APP.update);
-		this.update.set_property ("name", _("Update subscriptions"));
+		this.update.set_property ("name", _("Update"));
 		this.update.show ();
 	}
 
@@ -29,9 +29,8 @@ public class Feedler.Indicator : GLib.Object
 	{
 		this.unread = new Indicate.Indicator.with_server (server);
 		this.unread.user_display.connect (del_unread);
-		this.unread.set_property ("sender", "Unread feeds");
-		this.unread.set_property_int ("count", 5);
-		//this.unread.set_property ("count", "5");
+		this.unread.set_property ("sender", "Unread");
+		this.unread.set_property ("count", count.to_string ());
 		this.unread.set_property_bool ("draw-attention", true);
 		this.unread.show ();
 	}
