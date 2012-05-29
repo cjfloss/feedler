@@ -130,8 +130,12 @@ public class Feedler.Window : Gtk.Window
             this.side.add_folder (f);
 
         foreach (Model.Channel c in this.db.select_channels ())
+		{
             this.side.add_channel (c.id, c.title, c.folder, c.unread);
-		
+			this.unread += c.unread;
+		}
+		Feedler.INDICATOR.new_unread (this.unread);
+		this.unread = 0;
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);
 	}
@@ -338,6 +342,7 @@ public class Feedler.Window : Gtk.Window
             string description = unread > 1 ? _("new feeds") : _("new feed");
             this.notification ("%i %s".printf (unread, description));
             this.stat.set_unread (unread);
+			Feedler.INDICATOR.new_unread (unread);
             this.unread = 0;
         }
 	}
@@ -480,7 +485,7 @@ public class Feedler.Window : Gtk.Window
 		return false;
 	}
 /* **************************************************************************** */
-    private void _update_all ()
+    internal void _update_all ()
 	{
         try
         {

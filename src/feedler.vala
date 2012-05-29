@@ -47,6 +47,11 @@ public class Feedler.App : Granite.Application
             this.window.present ();
 	}
 
+	public void update ()
+	{
+		this.window._update_all ();
+	}
+
 	protected override void activate ()
 	{
 		if (window != null)
