@@ -4,9 +4,9 @@
 #define DATADIR "/usr/share"
 #define PKGDATADIR "/usr/share/feedler"
 #define GETTEXT_PACKAGE "feedler"
-#define RELEASE_NAME "Just weakling."
-#define VERSION "0.0.1"
-#define VERSION_INFO "Alpha"
+#define RELEASE_NAME "Growing up."
+#define VERSION "0.2"
+#define VERSION_INFO "Beta"
 
 #endif // CONFIG_H
 
