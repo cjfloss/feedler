@@ -23,22 +23,32 @@ public class Feedler.Indicator : GLib.Object
 		this.update.user_display.connect (Feedler.APP.update);
 		this.update.set_property ("name", _("Update"));
 		this.update.show ();
-	}
 
-	public void new_unread (int count)
-	{
 		this.unread = new Indicate.Indicator.with_server (server);
 		this.unread.user_display.connect (del_unread);
-		this.unread.set_property ("sender", "Unread");
+		this.unread.set_property ("sender", _("Unread"));
+		this.unread.set_property ("count", "0");
+	}
+
+	public void add_unread (int i)
+	{
+		int count = int.parse (unread.get_property ("count").get_string ()) + i;
 		this.unread.set_property ("count", count.to_string ());
 		this.unread.set_property_bool ("draw-attention", true);
 		this.unread.show ();
+	}
+
+	public void step_unread (int i)
+	{
+		int count = int.parse (unread.get_property ("count").get_string ()) + i;
+		this.unread.set_property ("count", count.to_string ());
+		if (count <= 0)
+			this.del_unread ();
 	}
 
 	private void del_unread ()
 	{
 		this.unread.set_property_bool ("draw-attention", false);
 		this.unread.hide ();
-		this.unread = null;
 	}
 }

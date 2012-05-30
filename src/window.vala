@@ -134,7 +134,7 @@ public class Feedler.Window : Gtk.Window
             this.side.add_channel (c.id, c.title, c.folder, c.unread);
 			this.unread += c.unread;
 		}
-		Feedler.INDICATOR.new_unread (this.unread);
+		Feedler.INDICATOR.add_unread (this.unread);
 		this.unread = 0;
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);
@@ -342,7 +342,7 @@ public class Feedler.Window : Gtk.Window
             string description = unread > 1 ? _("new feeds") : _("new feed");
             this.notification ("%i %s".printf (unread, description));
             this.stat.set_unread (unread);
-			Feedler.INDICATOR.new_unread (unread);
+			Feedler.INDICATOR.add_unread (unread);
             this.unread = 0;
         }
 	}
@@ -377,9 +377,11 @@ public class Feedler.Window : Gtk.Window
 		{
 			this.db.mark_item (ch.id, id, state ? Model.State.UNREAD : Model.State.READ);
 			this.side.dec_unread (ch.id, state ? 1 : -1);
+			Feedler.INDICATOR.step_unread (state ? 1 : -1);
 		}
 		else
 		{
+			Feedler.INDICATOR.step_unread (ch.unread * -1);
 			this.db.mark_channel (ch.id);
 			this.side.mark_channel (ch.id);
 		}        
@@ -497,6 +499,7 @@ public class Feedler.Window : Gtk.Window
         catch (GLib.Error e)
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+            this.connections = 0;
         }
 	}
 
@@ -525,6 +528,7 @@ public class Feedler.Window : Gtk.Window
             catch (GLib.Error e)
             {
                 this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+	            this.connections = 0;
             }
         }
 	}
@@ -635,6 +639,7 @@ public class Feedler.Window : Gtk.Window
             if (info.run () == Gtk.ResponseType.YES)
 			    if (ch.mode == 1)
                 {
+					Feedler.INDICATOR.step_unread (ch.unread * -1);
 				    this.side.mark_channel (ch.id);
 				    this.db.mark_channel (ch.id);
 			    }
