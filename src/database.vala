@@ -478,4 +478,67 @@ public class Feedler.Database : GLib.Object
             return 0;
 		}
 	}
+
+	public string export_to_opml ()
+	{
+		//GLib.List<Xml.Node*> folder_node = new GLib.List<Xml.Node*> ();
+		Gee.Map<int, Xml.Node*> folder_node = new Gee.HashMap<int, Xml.Node*> ();
+        Xml.Doc* doc = new Xml.Doc("1.0");
+        Xml.Node* opml = doc->new_node (null, "opml", null);
+        opml->new_prop ("version", "1.0");
+        doc->set_root_element (opml);
+        
+        Xml.Node* head = new Xml.Node (null, "head");
+        Xml.Node* h_title = doc->new_node (null, "title", "Feedler News Reader");
+        Xml.Node* h_date = doc->new_node (null, "dateCreated", created_time ());
+        head->add_child (h_title);
+        head->add_child (h_date);
+        opml->add_child (head);
+        
+        Xml.Node* body = new Xml.Node (null, "body");
+        foreach (Model.Folder folder in this.folders)
+        {
+			Xml.Node* outline = new Xml.Node (null, "outline");
+			outline->new_prop ("title", folder.name);
+			outline->new_prop ("type", "folder");
+			
+			//folder_node.append (outline);
+			folder_node.set (folder.id, outline);
+			body->add_child (outline);
+		}
+        foreach (Model.Channel channel in this.channels)
+        {
+			Xml.Node* outline = new Xml.Node (null, "outline");
+			outline->new_prop ("title", channel.title);
+			outline->new_prop ("type", "rss");
+			outline->new_prop ("xmlUrl", channel.source);
+			outline->new_prop ("htmlUrl", channel.link);
+			if (channel.folder != -1)
+			{
+				//Xml.Node* folder = folder_node.nth_data (channel.folder);
+				Xml.Node* folder = folder_node.get (channel.folder);
+				folder->add_child (outline);
+			}
+			else
+				body->add_child (outline);
+		}
+        opml->add_child (body);
+
+        string xmlstr;
+        int n;
+        // This throws a compiler warning, see bug 547364
+        doc->dump_memory(out xmlstr, out n);
+        //delete xmldoc; // Don't delete the xmldoc yourself!
+ 
+        return xmlstr;
+	}
+
+	private string created_time ()
+	{
+		string currentLocale = GLib.Intl.setlocale(GLib.LocaleCategory.TIME, null);
+        GLib.Intl.setlocale(GLib.LocaleCategory.TIME, "C");
+		string date = GLib.Time.gm (time_t ()).format ("%a, %d %b %Y %H:%M:%S %z");
+		GLib.Intl.setlocale(GLib.LocaleCategory.TIME, currentLocale);
+		return date;
+	}
 }

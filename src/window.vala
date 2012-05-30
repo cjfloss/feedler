@@ -476,8 +476,7 @@ public class Feedler.Window : Gtk.Window
 			return false;
 		Gtk.TreePath path;
 		Gtk.TreeViewColumn column;
-		int cell_x;
-		int cell_y;
+		int cell_x, cell_y;
 		if (this.side.get_path_at_pos ((int) e.x, (int) e.y, out path, out column, out cell_x, out cell_y))
 		{
 			this.side.select_path (path);
@@ -607,7 +606,16 @@ public class Feedler.Window : Gtk.Window
                                               Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
                                               Gtk.Stock.SAVE, Gtk.ResponseType.ACCEPT);
         if (file.run () == Gtk.ResponseType.ACCEPT)
-            this.dialog ("Not implemented yet (%s)".printf (file.get_filename ()));
+		{
+			try
+			{
+				GLib.FileUtils.set_contents (file.get_filename (), this.db.export_to_opml ());
+			}
+			catch (GLib.Error e)
+			{
+				stderr.printf ("Cannot create opml file %s\n", file.get_filename ());
+			}
+		}
         file.destroy ();
 	}
 
