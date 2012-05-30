@@ -8,6 +8,7 @@
 public class Feedler.Window : Gtk.Window
 {
 	private Feedler.Database db;
+	private Feedler.Dock dock;
 	internal Feedler.Toolbar toolbar;
 	private Feedler.Sidebar side;
 	private Feedler.Statusbar stat;
@@ -38,6 +39,7 @@ public class Feedler.Window : Gtk.Window
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
         }
 		this.db = new Feedler.Database ();
+		this.dock = new Feedler.Dock ();
 		this.layout = new Feedler.CardLayout ();
 		this.destroy.connect (destroy_app);
 		this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);	
@@ -135,6 +137,7 @@ public class Feedler.Window : Gtk.Window
 			this.unread += c.unread;
 		}
 		Feedler.INDICATOR.add_unread (this.unread);
+		this.dock.add_unread (this.unread);
 		this.unread = 0;
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);
@@ -343,6 +346,7 @@ public class Feedler.Window : Gtk.Window
             this.notification ("%i %s".printf (unread, description));
             this.stat.set_unread (unread);
 			Feedler.INDICATOR.add_unread (unread);
+			this.dock.add_unread (unread);
             this.unread = 0;
         }
 	}
@@ -378,9 +382,11 @@ public class Feedler.Window : Gtk.Window
 			this.db.mark_item (ch.id, id, state ? Model.State.UNREAD : Model.State.READ);
 			this.side.dec_unread (ch.id, state ? 1 : -1);
 			Feedler.INDICATOR.step_unread (state ? 1 : -1);
+			this.dock.step_unread (state ? 1 : -1);
 		}
 		else
 		{
+			this.dock.step_unread (ch.unread * -1);
 			Feedler.INDICATOR.step_unread (ch.unread * -1);
 			this.db.mark_channel (ch.id);
 			this.side.mark_channel (ch.id);
@@ -648,6 +654,7 @@ public class Feedler.Window : Gtk.Window
 			    if (ch.mode == 1)
                 {
 					Feedler.INDICATOR.step_unread (ch.unread * -1);
+					this.dock.step_unread (ch.unread * -1);
 				    this.side.mark_channel (ch.id);
 				    this.db.mark_channel (ch.id);
 			    }
