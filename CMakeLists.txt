@@ -15,46 +15,10 @@ set (VERSION "0.2")
 set (VERSION_INFO "Beta")
 
 #
-# Niceties
-#
-set (ARCHIVE_NAME feedler-${VERSION})
-add_custom_target (dist
-    COMMAND bzr export --root=${ARCHIVE_NAME} ${CMAKE_BINARY_DIR}/${ARCHIVE_NAME}.tar.bz2
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-
-add_custom_target (distcheck
-    COMMAND cd ${CMAKE_BINARY_DIR}
-    && rm -rf ${ARCHIVE_NAME}
-    && tar xf ${ARCHIVE_NAME}.tar.bz2
-    && mkdir ${ARCHIVE_NAME}/build
-    && cd ${ARCHIVE_NAME}/build
-    && cmake -DCMAKE_INSTALL_PREFIX=../install -DGSETTINGS_LOCALINSTALL=ON .. -DCMAKE_MODULE_PATH=/usr/share/cmake
-    && make -j8
-    && make -j8 install
-    && make check
-    )
-add_dependencies(distcheck dist)
-
-add_custom_target (uninstall "${CMAKE_COMMAND}" -P
-  "${CMAKE_SOURCE_DIR}/cmake/uninstall.cmake")
-
-#
 # config.h
 #
-
 configure_file (${CMAKE_SOURCE_DIR}/config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 add_definitions(-include config.h)
-
-#
-# Data
-#
-file (GLOB _datafiles "${CMAKE_CURRENT_SOURCE_DIR}/data/style/*")
-install (FILES ${_datafiles} DESTINATION ${PKGDATADIR}/style)
-
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/feedler.desktop DESTINATION /usr/share/applications)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/feedler DESTINATION /usr/share/indicators/messages/applications)
-
 
 #
 # i18n
@@ -74,35 +38,31 @@ if (${GETTEXT_FOUND} STREQUAL "TRUE")
 endif (${GETTEXT_FOUND} STREQUAL "TRUE")
 
 #
-# Feedler
+# Dependencies
 #
-
-set (FEEDLER_DEPS "webkitgtk-3.0;gtk+-3.0;sqlheavy-0.1;libsoup-2.4;libxml-2.0;libnotify;unity;granite;gee-1.0;indicate-0.7")
-
 find_package(PkgConfig)
-pkg_check_modules(WEBKIT REQUIRED "webkitgtk-3.0")
-pkg_check_modules(GTK+ REQUIRED "gtk+-3.0")
-pkg_check_modules(SQLHEAVY REQUIRED "sqlheavy-0.1")
-pkg_check_modules(SOUP REQUIRED "libsoup-2.4")
-pkg_check_modules(XML REQUIRED "libxml-2.0")
-pkg_check_modules(NOTIFY REQUIRED "libnotify")
-pkg_check_modules(UNITY REQUIRED "unity")
-pkg_check_modules(GRANITE REQUIRED "granite")
-pkg_check_modules(GEE REQUIRED "gee-1.0")
-pkg_check_modules(INDICATE REQUIRED "indicate-0.7")
-pkg_check_modules(DEPS REQUIRED ${FEEDLER_DEPS})
+pkg_check_modules(DEPS REQUIRED
+	webkitgtk-3.0
+	gtk+-3.0
+	sqlheavy-0.1
+	libsoup-2.4
+	libxml-2.0
+	libnotify
+	unity
+	granite
+	gee-1.0
+	indicate-0.7
+)
 
 add_definitions(${DEPS_CFLAGS})
-
 link_libraries(${DEPS_LIBRARIES})
-
 link_directories(${DEPS_LIBRARY_DIRS})
 
 find_package(Vala REQUIRED)
 include(ValaVersion)
 ensure_vala_version("0.14.2" MINIMUM)
-
 include(ValaPrecompile)
+
 vala_precompile(VALA_C
 	src/database.vala
 	src/dock.vala
@@ -130,7 +90,7 @@ vala_precompile(VALA_C
 PACKAGES
 	gtk+-3.0
     granite
-	libnotify
+	#libnotify
 	unity
 	libsoup-2.4
 	libxml-2.0
@@ -150,12 +110,7 @@ OPTIONS
 # Verbose GCC
 #add_definitions(${CFLAGS} -Wall -Winit-self -Wwrite-strings -Wunreachable-code -Wstrict-prototypes )
 add_executable(feedler ${VALA_C})
-
 install(TARGETS feedler RUNTIME DESTINATION bin)
 
-#
-# GSettings Schema
-#
-include(GSettings)
-add_schema("org.elementary.feedler.gschema.xml")
-
+add_subdirectory (src/service)
+add_subdirectory (data)
