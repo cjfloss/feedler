@@ -22,6 +22,7 @@ public class Feedler.Dock : GLib.Object
 		this.counter += i;
 		this.dock.count = counter;
 	    this.dock.count_visible = true;
+		this.dock.urgent = true;
 	}
 
 	public void step_unread (int i)

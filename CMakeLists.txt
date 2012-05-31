@@ -107,10 +107,8 @@ OPTIONS
     -g
 )
 
-# Verbose GCC
-#add_definitions(${CFLAGS} -Wall -Winit-self -Wwrite-strings -Wunreachable-code -Wstrict-prototypes )
+
 add_executable(feedler ${VALA_C})
 install(TARGETS feedler RUNTIME DESTINATION bin)
-
 add_subdirectory (src/service)
 add_subdirectory (data)

@@ -7,6 +7,7 @@
 
 namespace Feedler
 {
+	public Feedler.Dock DOCK;
     public Feedler.Indicator INDICATOR;
     public Feedler.State STATE;
     public Feedler.Settings SETTING;
@@ -74,6 +75,7 @@ public class Feedler.App : Granite.Application
 	public static int main (string[] args)
 	{
 		Feedler.APP = new Feedler.App ();
+		Feedler.DOCK = new Feedler.Dock ();
 		return APP.run (args);
 	}
 }
