@@ -144,14 +144,18 @@ public class Feedler.ViewList : Feedler.View
 		stderr.printf ("Feedler.ViewList.browse_page ()\n");
 		try
 		{
-			FeedStore? feed = this.selected_item ();
+			Gtk.TreeIter iter;
+			FeedStore? feed = this.selected_item (out iter);
 			GLib.Process.spawn_command_line_async ("xdg-open " + feed.source);
-			/*if (feed.unread)
+			if (feed.unread)
 			{
 				feed.unread = false;
 				this.store.set_value (iter, 0, feed);
 				this.item_marked (feed.id, feed.unread);
-			}*/
+			}
+			if (feed.source != this.cache)
+				this.item_selected (this.tree.model.get_path (iter).to_string ());
+			this.cache = feed.source;
 		}
 		catch (GLib.Error e)
 		{
@@ -162,10 +166,9 @@ public class Feedler.ViewList : Feedler.View
 	private void load_item ()
 	{
 		stderr.printf ("Feedler.ViewList.load_item ()\n");
-		FeedStore feed;
-		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
-		if (this.tree.get_selection ().get_selected (out model, out iter))
+		FeedStore feed = this.selected_item (out iter);
+		if (feed != null)
 		{
 			this.tree.model.get (iter, 0, out feed);
 			this.load_article (feed.text);
@@ -176,17 +179,16 @@ public class Feedler.ViewList : Feedler.View
 				this.item_marked (feed.id, feed.unread);
 			}
 			if (feed.source != this.cache)
-				this.item_selected (model.get_path (iter).to_string ());
+				this.item_selected (this.tree.model.get_path (iter).to_string ());
 			this.cache = feed.source;
 		}
 	}
 
 	private void mark_item ()
 	{
-		FeedStore feed;
-		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
-		if (this.tree.get_selection ().get_selected (out model, out iter))
+		FeedStore feed = this.selected_item (out iter);
+		if (feed != null)
 		{
 			this.tree.model.get (iter, 0, out feed);
 			feed.unread = !feed.unread;
@@ -195,11 +197,10 @@ public class Feedler.ViewList : Feedler.View
 		}
 	}
 
-	private FeedStore? selected_item ()
+	private FeedStore? selected_item (out Gtk.TreeIter iter)
 	{
 		FeedStore feed = null;
 		Gtk.TreeModel model;
-		Gtk.TreeIter iter;
 		if (this.tree.get_selection ().get_selected (out model, out iter))
 			this.tree.model.get (iter, 0, out feed);
 		return feed;
@@ -240,11 +241,12 @@ public class Feedler.ViewList : Feedler.View
 		if (this.tree.get_path_at_pos ((int) e.x, (int) e.y, out path, out column, out cell_x, out cell_y))
 		{
 			this.tree.get_selection ().select_path (path);
-			FeedStore feed = this.selected_item ();
 			if (e.button == 1)
 				this.load_item ();
 			else if (e.button == 3)
 			{
+				Gtk.TreeIter iter;
+				FeedStore feed = this.selected_item (out iter);
 				this.viewmenu.select_mark (feed.unread);
 				this.viewmenu.popup (null, null, null, e.button, e.time);
 			}
