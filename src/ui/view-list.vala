@@ -146,12 +146,12 @@ public class Feedler.ViewList : Feedler.View
 		{
 			FeedStore? feed = this.selected_item ();
 			GLib.Process.spawn_command_line_async ("xdg-open " + feed.source);
-			if (feed.unread)
+			/*if (feed.unread)
 			{
 				feed.unread = false;
 				this.store.set_value (iter, 0, feed);
 				this.item_marked (feed.id, feed.unread);
-			}
+			}*/
 		}
 		catch (GLib.Error e)
 		{
