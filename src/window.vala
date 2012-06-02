@@ -39,20 +39,11 @@ public class Feedler.Window : Gtk.Window
         }
 		this.db = new Feedler.Database ();
 		this.layout = new Feedler.CardLayout ();
-		this.destroy.connect (destroy_app);
+		this.delete_event.connect (destroy_app);
 		this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);	
 		this.ui_toolbar ();
         this.ui_layout ();
-//stderr.printf ("WindowState: %i\n\n", (int)Feedler.STATE.window_state);
-        if (Feedler.STATE.window_state == Feedler.WindowState.MAXIMIZED)
-			this.maximize ();
-        else if (Feedler.STATE.window_state == Feedler.WindowState.FULLSCREEN)
-		{
-			this.fullscreen ();
-			this.toolbar.fullscreen_mode.active = true;
-		}
-		else
-			this.set_default_size (Feedler.STATE.window_width, Feedler.STATE.window_height);
+        this.set_default_size (Feedler.STATE.window_width, Feedler.STATE.window_height);
 
 		if (this.db.is_created ())
 			this.ui_feeds ();
@@ -177,26 +168,22 @@ public class Feedler.Window : Gtk.Window
          info.destroy ();
     }
 	
-	private void destroy_app ()
+	private bool destroy_app ()
 	{
-		Feedler.STATE.sidebar_width = this.pane.position;
-// Not working now:
-		//if ((this.get_window ().get_state () & Gdk.WindowState.MAXIMIZED) != 0)
-		//if (get_window ().get_state () == Gdk.WindowState.MAXIMIZED)
-		//	Feedler.STATE.window_state = Feedler.WindowState.MAXIMIZED;
-		//else if (get_window ().get_state () == Gdk.WindowState.FULLSCREEN)
-		//else if ((this.get_window ().get_state () & Gdk.WindowState.FULLSCREEN) != 0)
-		//	Feedler.STATE.window_state = Feedler.WindowState.FULLSCREEN;
-		//else
+		if (Feedler.STATE.hide_close)
 		{
-			Feedler.STATE.window_state = Feedler.WindowState.NORMAL;
+			this.hide ();
+			return true;
+		}
+		else
+		{
 			int width, height;
 			get_size (out width, out height);
 			Feedler.STATE.window_width = width;
 			Feedler.STATE.window_height = height;
+			Feedler.STATE.sidebar_width = this.pane.position;
+			return false;//Gtk.main_quit ();
 		}
-//stderr.printf ("WindowState: %i\n\n", (int)Feedler.STATE.window_state);
-		Gtk.main_quit ();
 	}
 	
 	protected void catch_activated (int index)

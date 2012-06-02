@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 07:14+0200\n"
+"POT-Creation-Date: 2012-06-02 12:49+0200\n"
 "PO-Revision-Date: 2012-05-30 14:03+0000\n"
 "Last-Translator: Ebubekir KARUL <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
@@ -39,15 +39,15 @@ msgstr ""
 msgid "Add new subscription URL"
 msgstr ""
 
-#: ../src/window.vala:658
+#: ../src/window.vala:676
 msgid "Are you sure you want to delete?"
 msgstr "Silmek istediğinizden emin misiniz ?"
 
-#: ../src/window.vala:636
+#: ../src/window.vala:653
 msgid "Are you sure you want to mark as read?"
 msgstr ""
 
-#: ../src/ui/preferences.vala:105
+#: ../src/ui/preferences.vala:108
 msgid "Behavior"
 msgstr ""
 
@@ -71,15 +71,15 @@ msgstr "Sil"
 msgid "Display"
 msgstr "Görünüm"
 
-#: ../src/ui/preferences.vala:86
+#: ../src/ui/preferences.vala:89
 msgid "Download now all favicons"
 msgstr "Tüm site simgelerini indir"
 
-#: ../src/window.vala:540 ../src/window.vala:556
+#: ../src/window.vala:548 ../src/window.vala:564
 msgid "Downloading favicons"
 msgstr ""
 
-#: ../src/ui/preferences.vala:83
+#: ../src/ui/preferences.vala:85
 msgid "Enable automatic updates"
 msgstr "Otomatik güncellemeleri aç"
 
@@ -99,11 +99,15 @@ msgstr "Eklentileri aktifleştir"
 msgid "Enable scripts"
 msgstr "Betiklere izin ver"
 
+#: ../src/ui/preferences.vala:86
+msgid "Enable updates on start"
+msgstr ""
+
 #: ../src/ui/toolbar.vala:61
 msgid "Export"
 msgstr "Dışa Aktar"
 
-#: ../src/ui/preferences.vala:85
+#: ../src/ui/preferences.vala:88
 msgid "Favicons"
 msgstr "Site Simgeleri"
 
@@ -136,17 +140,17 @@ msgstr ""
 msgid "Import"
 msgstr "İçe Aktar"
 
-#: ../src/window.vala:300
+#: ../src/window.vala:306
 #, c-format
 msgid "Imported %i channels in %i folders."
 msgstr ""
 
-#: ../src/window.vala:284
+#: ../src/window.vala:290
 #, c-format
 msgid "Importing %s"
 msgstr "İçe aktarılıyor %s"
 
-#: ../src/window.vala:594
+#: ../src/window.vala:602
 msgid "Importing subscriptions"
 msgstr ""
 
@@ -180,7 +184,7 @@ msgstr "Yeni"
 msgid "Open in browser"
 msgstr "Tarayıcıda aç"
 
-#: ../src/ui/preferences.vala:99 ../src/ui/toolbar.vala:62
+#: ../src/ui/preferences.vala:102 ../src/ui/toolbar.vala:62
 msgid "Preferences"
 msgstr "Tercihler"
 
@@ -212,11 +216,11 @@ msgstr "Kenar Çubuğu Görünür"
 msgid "Subscription"
 msgstr "Abonelik"
 
-#: ../src/ui/preferences.vala:82
+#: ../src/ui/preferences.vala:84
 msgid "Subscriptions"
 msgstr "Abonelikler"
 
-#: ../src/ui/preferences.vala:84
+#: ../src/ui/preferences.vala:87
 msgid "Time interval between updates"
 msgstr ""
 
@@ -238,24 +242,24 @@ msgid "Unread"
 msgstr "Okunmamış"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
-#: ../src/ui/preferences.vala:106
+#: ../src/ui/preferences.vala:109
 msgid "Update"
 msgstr "Güncelle"
 
-#: ../src/window.vala:307 ../src/window.vala:516
+#: ../src/window.vala:313 ../src/window.vala:524
 #, c-format
 msgid "Updating %s"
 msgstr "Güncelleniyor %s"
 
-#: ../src/window.vala:494 ../src/window.vala:522
+#: ../src/window.vala:502 ../src/window.vala:530
 msgid "Updating subscriptions"
 msgstr ""
 
-#: ../src/window.vala:342
+#: ../src/window.vala:348
 msgid "new feed"
 msgstr ""
 
-#: ../src/window.vala:342
+#: ../src/window.vala:348
 msgid "new feeds"
 msgstr ""
 

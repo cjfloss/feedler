@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-	<enum id="feedler-window-states">
-		<value nick="Normal" value="0" />
-		<value nick="Maximized" value="1" />
-		<value nick="Fullscreen" value="2" />
-	</enum>
 	<schema path="/org/elementary/feedler/state/" id="org.elementary.feedler.state" gettext-domain="feedler">
+		<key name="hide-close" type="b">
+			<default>false</default>
+			<summary>Hiding or closing window</summary>
+			<description>Hiding window instead of closing</description>
+		</key>
 		<key name="sidebar-width" type="i">
 			<default>180</default>
 			<summary>Sidebar Width</summary>
@@ -15,11 +15,6 @@
 			<default>520</default>
 			<summary>Window Height</summary>
 			<description>The saved height of the window.</description>
-		</key>
-		<key name="window-state" enum="feedler-window-states">
-			<default>"Normal"</default>
-			<summary>Window State</summary>
-			<description>The saved state of the window.</description>
 		</key>
 		<key name="window-width" type="i">
 			<default>820</default>

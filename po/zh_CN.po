@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-30 07:14+0200\n"
+"POT-Creation-Date: 2012-06-02 12:49+0200\n"
 "PO-Revision-Date: 2012-06-02 02:59+0000\n"
 "Last-Translator: Wang Dianjin <Unknown>\n"
 "Language-Team: Chinese (Simplified) <zh_CN@li.org>\n"
@@ -39,15 +39,15 @@ msgstr "手动添加 URL 订阅。"
 msgid "Add new subscription URL"
 msgstr "添加新的订阅 URL"
 
-#: ../src/window.vala:658
+#: ../src/window.vala:676
 msgid "Are you sure you want to delete?"
 msgstr "您确定要删除吗？"
 
-#: ../src/window.vala:636
+#: ../src/window.vala:653
 msgid "Are you sure you want to mark as read?"
 msgstr "您确定要标记为已读吗？"
 
-#: ../src/ui/preferences.vala:105
+#: ../src/ui/preferences.vala:108
 msgid "Behavior"
 msgstr "行为"
 
@@ -71,15 +71,15 @@ msgstr "删除"
 msgid "Display"
 msgstr "显示"
 
-#: ../src/ui/preferences.vala:86
+#: ../src/ui/preferences.vala:89
 msgid "Download now all favicons"
 msgstr "现在下载所有的网站图标"
 
-#: ../src/window.vala:540 ../src/window.vala:556
+#: ../src/window.vala:548 ../src/window.vala:564
 msgid "Downloading favicons"
 msgstr "正在下载网站图标"
 
-#: ../src/ui/preferences.vala:83
+#: ../src/ui/preferences.vala:85
 msgid "Enable automatic updates"
 msgstr "启用自动更新"
 
@@ -99,11 +99,15 @@ msgstr "启用插件"
 msgid "Enable scripts"
 msgstr "启用脚本"
 
+#: ../src/ui/preferences.vala:86
+msgid "Enable updates on start"
+msgstr ""
+
 #: ../src/ui/toolbar.vala:61
 msgid "Export"
 msgstr "导出"
 
-#: ../src/ui/preferences.vala:85
+#: ../src/ui/preferences.vala:88
 msgid "Favicons"
 msgstr "网站图标"
 
@@ -136,17 +140,17 @@ msgstr "前往上一个已读条目"
 msgid "Import"
 msgstr "导入"
 
-#: ../src/window.vala:300
+#: ../src/window.vala:306
 #, c-format
 msgid "Imported %i channels in %i folders."
 msgstr "在 %2$i 文件夹中已导入 %1$i 个频道。"
 
-#: ../src/window.vala:284
+#: ../src/window.vala:290
 #, c-format
 msgid "Importing %s"
 msgstr "正在导入 %s"
 
-#: ../src/window.vala:594
+#: ../src/window.vala:602
 msgid "Importing subscriptions"
 msgstr "正在导入订阅"
 
@@ -180,7 +184,7 @@ msgstr "新建"
 msgid "Open in browser"
 msgstr "在浏览器中打开"
 
-#: ../src/ui/preferences.vala:99 ../src/ui/toolbar.vala:62
+#: ../src/ui/preferences.vala:102 ../src/ui/toolbar.vala:62
 msgid "Preferences"
 msgstr "首选项"
 
@@ -212,11 +216,11 @@ msgstr "侧边栏可见"
 msgid "Subscription"
 msgstr "订阅"
 
-#: ../src/ui/preferences.vala:82
+#: ../src/ui/preferences.vala:84
 msgid "Subscriptions"
 msgstr "订阅"
 
-#: ../src/ui/preferences.vala:84
+#: ../src/ui/preferences.vala:87
 msgid "Time interval between updates"
 msgstr "更新时间间隔"
 
@@ -238,24 +242,24 @@ msgid "Unread"
 msgstr "未读"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
-#: ../src/ui/preferences.vala:106
+#: ../src/ui/preferences.vala:109
 msgid "Update"
 msgstr "更新"
 
-#: ../src/window.vala:307 ../src/window.vala:516
+#: ../src/window.vala:313 ../src/window.vala:524
 #, c-format
 msgid "Updating %s"
 msgstr "正在更新 %s"
 
-#: ../src/window.vala:494 ../src/window.vala:522
+#: ../src/window.vala:502 ../src/window.vala:530
 msgid "Updating subscriptions"
 msgstr "正在更新订阅"
 
-#: ../src/window.vala:342
+#: ../src/window.vala:348
 msgid "new feed"
 msgstr "新订阅"
 
-#: ../src/window.vala:342
+#: ../src/window.vala:348
 msgid "new feeds"
 msgstr "新订阅"
 

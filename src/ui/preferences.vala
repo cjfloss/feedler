@@ -54,16 +54,20 @@ public class Behavior : PreferenceTab
 		var enable_java = new Gtk.CheckButton.with_label (_("Enable java"));
 		var enable_plugin = new Gtk.CheckButton.with_label (_("Enable plugins"));
 		var shrink_image = new Gtk.CheckButton.with_label (_("Shrink image to fit"));
+		var hide_close = new Gtk.Switch ();
 		Feedler.SETTING.schema.bind ("enable-image", enable_image, "active", SettingsBindFlags.DEFAULT);
 		Feedler.SETTING.schema.bind ("enable-script", enable_script, "active", SettingsBindFlags.DEFAULT);
 		Feedler.SETTING.schema.bind ("enable-java", enable_java, "active", SettingsBindFlags.DEFAULT);
 		Feedler.SETTING.schema.bind ("enable-plugin", enable_plugin, "active", SettingsBindFlags.DEFAULT);
 		Feedler.SETTING.schema.bind ("shrink-image", shrink_image, "active", SettingsBindFlags.DEFAULT);
+		Feedler.STATE.schema.bind ("hide-close", hide_close, "active", SettingsBindFlags.DEFAULT);
 		
 		this.add_title (_("Content"));
 		this.add_widgets (enable_plugin, enable_image);
 		this.add_widgets (enable_script, shrink_image);
 		this.add_widgets (enable_java, null);
+		this.add_title (_("Window"));
+		this.add_content (hide_close, _("Hiding window instead of closing"));
 	}
 }
 
