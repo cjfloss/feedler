@@ -77,12 +77,12 @@ public class Feedler.Service : Object
 		try
 		{
 			ThreadFunc<void*> thread_func = () =>
-			{ 
-				//Thread.usleep (settings.update_time * 1000000);
+			{
+				if (!settings.start_update)
+					Thread.usleep (settings.update_time * 60 * 1000000);
 				while (settings.auto_update)
 				{
-					//this.update_all (settings.uri);
-					this.notification ("Autoupdate is not configured :(");
+					this.update_all (settings.uri);
 
 					if (settings.auto_update)
 						Thread.usleep (settings.update_time * 60 * 1000000);

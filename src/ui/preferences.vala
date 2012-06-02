@@ -73,14 +73,17 @@ public class Update : PreferenceTab
 	construct
 	{
 		var auto_update = new Gtk.Switch ();
+		var start_update = new Gtk.Switch ();
 		var update_time = new Gtk.SpinButton.with_range (5, 60, 5);
 		Feedler.SERVICE.schema.bind ("auto-update", auto_update, "active", SettingsBindFlags.DEFAULT);
+		Feedler.SERVICE.schema.bind ("start-update", start_update, "active", SettingsBindFlags.DEFAULT);
 		Feedler.SERVICE.schema.bind ("update-time", update_time, "value", SettingsBindFlags.DEFAULT);
 
         this.fav = new Gtk.Button ();
 		this.fav.set_image (new Gtk.Image.from_icon_name ("go-bottom-symbolic", Gtk.IconSize.MENU));
 		this.add_title (_("Subscriptions"));
 		this.add_content (auto_update, _("Enable automatic updates"));
+		this.add_content (start_update, _("Enable updates on start"));
 		this.add_content (update_time, _("Time interval between updates"));
 		this.add_title (_("Favicons"));
 		this.add_content (fav, _("Download now all favicons"));

@@ -60,6 +60,11 @@
 			<summary>Automatic update</summary>
 			<description>Automatic update subscriptions</description>
 		</key>
+		<key name="start-update" type="b">
+			<default>false</default>
+			<summary>Update on start</summary>
+			<description>Automatic update subscriptions on app start</description>
+		</key>
 		<key name="update-time" type="i">
 			<default>30</default>
 			<summary>Update interval</summary>

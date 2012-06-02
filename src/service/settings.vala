@@ -8,6 +8,7 @@
 public class Feedler.Settings : Granite.Services.Settings
 {
 	public bool auto_update { get; set; }
+	public bool start_update { get; set; }
 	public int update_time { get; set; }
 	public string[] uri { get; set; }
 
