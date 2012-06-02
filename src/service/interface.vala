@@ -21,7 +21,6 @@ interface Feedler.Client : Object
     public abstract void update_all (string[] uris) throws IOError;
     public abstract void notification (string msg) throws IOError;
     public abstract string ping () throws IOError;
-    public abstract void stop () throws IOError;
 
     public signal void iconed (string uri, uint8[] data);
     public signal void imported (Serializer.Folder[] folders);

@@ -13,20 +13,16 @@ public class Feedler.Service : Object
 	public signal void updated (Serializer.Channel channel);
 	private Feedler.Settings settings;
 	private Backend backend;
-	private GLib.MainLoop loop;
 	private unowned Thread<void*> thread;
 
 	public Service.with_backend (BACKENDS back)
 	{
 		stderr.printf ("Feedler.Service.construct (%s)\n", back.to_string ());
 		Notify.init ("org.example.Feedler");
-		/*Bus.own_name (BusType.SESSION, "org.example.Feedler",
-					  BusNameOwnerFlags.NONE, on_bus_aquired,
-					  () => {}, () => stderr.printf ("Cannot aquire name.\n"));*/
 		this.settings = new Feedler.Settings ();
 		this.backend = GLib.Object.new (back.to_type ()) as Backend;
 		this.backend.service = this;
-		this.loop = new GLib.MainLoop ();
+		this.run ();
 	}
 	
 	public Service ()
@@ -74,14 +70,23 @@ public class Feedler.Service : Object
 		this.backend.import (uri);
 	}
 	
-	public void start ()
+	public void run ()
 	{
-		stderr.printf ("Feedler.Service.start ()\n");
+		this.notification ("Try to run autoupdate!");
+		stderr.printf ("Feedler.Service.run ()\n");
 		try
 		{
 			ThreadFunc<void*> thread_func = () =>
 			{ 
-				this.run ();
+				//Thread.usleep (settings.update_time * 1000000);
+				while (settings.auto_update)
+				{
+					//this.update_all (settings.uri);
+					this.notification ("Autoupdate is not configured :(");
+
+					if (settings.auto_update)
+						Thread.usleep (settings.update_time * 60 * 1000000);
+				}
 				return null;
 			};
 			this.thread = Thread.create<void*> (thread_func, false);
@@ -90,28 +95,6 @@ public class Feedler.Service : Object
 		{
 			stderr.printf ("Cannot run threads.\n");
 		}
-		loop.run ();
-	}
-	
-	public void run ()
-	{
-		Thread.usleep (10000000);
-		while (settings.auto_update)
-		{
-			//this.update_all (settings.uri);
-
-			if (settings.auto_update)
-				Thread.usleep (settings.update_time * 1000000);
-		}
-		//loop.quit ();
-	}
-
-	public void stop ()
-	{
-		//autoupdate = false;
-		//this.thread.exit (null);
-		stderr.printf ("Feedler.Service.stop ()\n");
-		loop.quit ();
 	}
 
 	public string ping ()
@@ -151,6 +134,4 @@ void main ()
 				  BusNameOwnerFlags.NONE, on_bus_aquired,
 				  () => {}, () => stderr.printf ("Cannot aquire name.\n"));
 	new MainLoop ().run ();
-	//Feedler.Service service = new Feedler.Service ();
-	//service.start ();
 }

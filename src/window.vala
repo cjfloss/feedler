@@ -31,7 +31,7 @@ public class Feedler.Window : Gtk.Window
             client.iconed.connect (favicon_cb);
             client.imported.connect (imported_cb);            
             client.updated.connect (updated_cb);
-            //this.dialog (client.ping (), Gtk.MessageType.INFO);
+			stderr.printf ("%s\n", client.ping ());
         }
         catch (GLib.Error e)
         {
@@ -396,7 +396,7 @@ public class Feedler.Window : Gtk.Window
 		stderr.printf ("Feedler.App.change_mode ()\n");
 		this.layout.set_current_page (this.toolbar.mode.selected);
 		this.view = (Feedler.View)layout.get_nth_page (this.toolbar.mode.selected);
-        if (this.view.to_type () == 2)
+        if (this.view.type () == Feedler.Views.WEB)
             this.toolbar.column.set_sensitive (false);
         else
             this.toolbar.column.set_sensitive (true);
@@ -405,7 +405,7 @@ public class Feedler.Window : Gtk.Window
 
     protected void change_column ()
 	{
-        if (this.view.to_type () == 1)
+        if (this.view.type () == Feedler.Views.LIST)
             this.view.change ();
 	}
 	

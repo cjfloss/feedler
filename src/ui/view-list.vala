@@ -32,7 +32,6 @@ public class FeedStore : GLib.Object
 
 public class Feedler.ViewList : Feedler.View
 {
-	private string cache;
 	/* List with feeds and searching */
 	internal Gtk.TreeView tree;
 	private Gtk.ListStore store;
@@ -40,7 +39,7 @@ public class Feedler.ViewList : Feedler.View
 	private Feedler.MenuView viewmenu;
 	private Gtk.TreeModelFilter filter;
 	private string filter_text;
-	
+	private string cache;
 	/* Browse description of current feed */
 	private WebKit.WebView browser;
 	private Gtk.ScrolledWindow scroll_list;
@@ -129,9 +128,9 @@ public class Feedler.ViewList : Feedler.View
             this.pane.set_orientation (Gtk.Orientation.VERTICAL);
     }
 
-    public override int to_type ()
+    public override Feedler.Views type ()
     {
-        return 1;
+        return Feedler.Views.LIST;
     }
 	
 	private void load_article (string content)

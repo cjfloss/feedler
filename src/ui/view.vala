@@ -4,6 +4,12 @@
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
+
+public enum Feedler.Views
+{
+	ABSTRACT = 0, LIST = 1, WEB = 2;
+}
+
 public abstract class Feedler.View : Gtk.VBox
 {
 	public signal void item_marked (int id, bool state);
@@ -23,11 +29,6 @@ public abstract class Feedler.View : Gtk.VBox
 		settings.enable_java_applet = Feedler.SETTING.enable_java;
 	}
 
-	/*construct
-	{
-		this.show_all ();
-	}*/
-		
 	public abstract void clear ();
 	
 	public abstract void add_feed (Model.Item item, string time_format);
@@ -40,5 +41,5 @@ public abstract class Feedler.View : Gtk.VBox
 
 	public abstract void change ();
 
-    public abstract int to_type ();
+    public abstract Feedler.Views type ();
 }
