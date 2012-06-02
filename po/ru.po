@@ -11,81 +11,147 @@ msgstr ""
 "PO-Revision-Date: 2012-05-30 18:11+0000\n"
 "Last-Translator: Vovk Vladimir <vladimir.vovk.at@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
-"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-05-31 05:13+0000\n"
-"X-Generator: Launchpad (build 15322)\n"
+"X-Launchpad-Export-Date: 2012-06-02 05:56+0000\n"
+"X-Generator: Launchpad (build 15342)\n"
+"Language: ru\n"
 
-#: ../src/ui/view-cell.vala:53
+#: ../src/indicator.vala:24 ../src/ui/menu.vala:11
+#: ../src/ui/preferences.vala:106
+msgid "Update"
+msgstr "Обновить"
+
+#: ../src/indicator.vala:29
+msgid "Unread"
+msgstr "Не прочитано"
+
+#: ../src/window.vala:284
 #, c-format
-msgid "%s, by %s"
+msgid "Importing %s"
+msgstr "Импортируется %s"
+
+#: ../src/window.vala:300
+#, c-format
+msgid "Imported %i channels in %i folders."
 msgstr ""
 
-#: ../src/ui/toolbar.vala:63
-msgid "About"
-msgstr "О программе"
-
-#: ../src/ui/cardlayout.vala:25
-msgid "Add a subscriptions from OPML file."
+#: ../src/window.vala:307 ../src/window.vala:516
+#, c-format
+msgid "Updating %s"
 msgstr ""
 
-#: ../src/ui/cardlayout.vala:24
-msgid "Add manually subscriptions from URL."
+#: ../src/window.vala:342
+msgid "new feeds"
 msgstr ""
 
-#: ../src/ui/statusbar.vala:47
-msgid "Add new subscription URL"
-msgstr "Добавить новый URL подписки"
+#: ../src/window.vala:342
+msgid "new feed"
+msgstr "новая лента новостей"
 
-#: ../src/window.vala:658
-msgid "Are you sure you want to delete?"
-msgstr ""
-
-#: ../src/window.vala:636
-msgid "Are you sure you want to mark as read?"
-msgstr ""
-
-#: ../src/ui/preferences.vala:105
-msgid "Behavior"
-msgstr ""
-
-#: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:36
-msgid "Cancel"
-msgstr "Отменить"
-
-#: ../src/ui/preferences.vala:63
-msgid "Content"
-msgstr ""
-
-#: ../src/ui/cardlayout.vala:24
-msgid "Create"
-msgstr "Создать"
-
-#: ../src/ui/menu.vala:13
-msgid "Delete"
-msgstr "Удалить"
-
-#: ../src/ui/menu.vala:37
-msgid "Display"
-msgstr ""
-
-#: ../src/ui/preferences.vala:86
-msgid "Download now all favicons"
+#: ../src/window.vala:494 ../src/window.vala:522
+msgid "Updating subscriptions"
 msgstr ""
 
 #: ../src/window.vala:540 ../src/window.vala:556
 msgid "Downloading favicons"
 msgstr ""
 
-#: ../src/ui/preferences.vala:83
-msgid "Enable automatic updates"
+#: ../src/window.vala:594
+msgid "Importing subscriptions"
 msgstr ""
+
+#: ../src/window.vala:636
+msgid "Are you sure you want to mark as read?"
+msgstr ""
+
+#: ../src/window.vala:658
+msgid "Are you sure you want to delete?"
+msgstr ""
+
+#: ../src/ui/cardlayout.vala:23
+msgid "Get Some Feeds"
+msgstr ""
+
+#: ../src/ui/cardlayout.vala:23
+msgid "Feedler can't seem to find your feeds."
+msgstr ""
+
+#: ../src/ui/cardlayout.vala:24
+msgid "Create"
+msgstr "Создать"
+
+#: ../src/ui/cardlayout.vala:24
+msgid "Add manually subscriptions from URL."
+msgstr ""
+
+#: ../src/ui/cardlayout.vala:25 ../src/ui/toolbar.vala:60
+msgid "Import"
+msgstr "Импорт"
+
+#: ../src/ui/cardlayout.vala:25
+msgid "Add a subscriptions from OPML file."
+msgstr ""
+
+#: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
+#: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
+#, c-format
+msgid "Name"
+msgstr "Имя"
+
+#: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
+msgid "Save"
+msgstr "Сохранить"
+
+#: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:36
+msgid "Cancel"
+msgstr "Отменить"
+
+#: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
+msgid "Mark as read"
+msgstr "Отметить как прочитанное"
+
+#: ../src/ui/menu.vala:13
+msgid "Delete"
+msgstr "Удалить"
+
+#: ../src/ui/menu.vala:14
+msgid "Properties"
+msgstr "Параметры"
+
+#: ../src/ui/menu.vala:15
+msgid "New"
+msgstr ""
+
+#: ../src/ui/menu.vala:16
+msgid "Subscription"
+msgstr "Подписка"
+
+#: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
+#, c-format
+msgid "Folder"
+msgstr "Папка"
+
+#: ../src/ui/menu.vala:37
+msgid "Display"
+msgstr ""
+
+#: ../src/ui/menu.vala:38
+msgid "Open in browser"
+msgstr "Открыть в браузере"
+
+#: ../src/ui/menu.vala:40
+msgid "Mark as unread"
+msgstr "Пометить как непрочитанное"
 
 #: ../src/ui/preferences.vala:52
 msgid "Enable images"
 msgstr "Показывать изображения"
+
+#: ../src/ui/preferences.vala:53
+msgid "Enable scripts"
+msgstr ""
 
 #: ../src/ui/preferences.vala:54
 msgid "Enable java"
@@ -95,174 +161,108 @@ msgstr ""
 msgid "Enable plugins"
 msgstr ""
 
-#: ../src/ui/preferences.vala:53
-msgid "Enable scripts"
-msgstr ""
-
-#: ../src/ui/toolbar.vala:61
-msgid "Export"
-msgstr "Экспорт"
-
-#: ../src/ui/preferences.vala:85
-msgid "Favicons"
-msgstr "Значки веб-сайтов"
-
-#: ../src/ui/cardlayout.vala:23
-msgid "Feedler can't seem to find your feeds."
-msgstr ""
-
-#: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
-#, c-format
-msgid "Folder"
-msgstr "Папка"
-
-#: ../src/ui/toolbar.vala:59
-msgid "Fullscreen"
-msgstr "На весь экран"
-
-#: ../src/ui/cardlayout.vala:23
-msgid "Get Some Feeds"
-msgstr ""
-
-#: ../src/ui/toolbar.vala:100
-msgid "Go to the next readed item"
-msgstr ""
-
-#: ../src/ui/toolbar.vala:99
-msgid "Go to the previous readed item"
-msgstr ""
-
-#: ../src/ui/cardlayout.vala:25 ../src/ui/toolbar.vala:60
-msgid "Import"
-msgstr "Импорт"
-
-#: ../src/window.vala:300
-#, c-format
-msgid "Imported %i channels in %i folders."
-msgstr ""
-
-#: ../src/window.vala:284
-#, c-format
-msgid "Importing %s"
-msgstr "Импортируется %s"
-
-#: ../src/window.vala:594
-msgid "Importing subscriptions"
-msgstr ""
-
-#: ../src/ui/subscription.vala:40
-msgid "Load favicon"
-msgstr "Загрузить значки веб-сайтов"
-
-#: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
-msgid "Mark as read"
-msgstr "Отметить как прочитанное"
-
-#: ../src/ui/menu.vala:40
-msgid "Mark as unread"
-msgstr "Пометить как непрочитанное"
-
-#: ../src/ui/toolbar.vala:102
-msgid "Menu"
-msgstr "Меню"
-
-#: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
-#: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
-#, c-format
-msgid "Name"
-msgstr "Имя"
-
-#: ../src/ui/menu.vala:15
-msgid "New"
-msgstr ""
-
-#: ../src/ui/menu.vala:38
-msgid "Open in browser"
-msgstr "Открыть в браузере"
-
-#: ../src/ui/preferences.vala:99 ../src/ui/toolbar.vala:62
-msgid "Preferences"
-msgstr "Настройки"
-
-#: ../src/ui/menu.vala:14
-msgid "Properties"
-msgstr "Параметры"
-
-#: ../src/ui/toolbar.vala:101
-msgid "Refresh all subscriptions"
-msgstr ""
-
-#: ../src/ui/statusbar.vala:50
-msgid "Remove selected subscription"
-msgstr "Удалить выбранные подписки"
-
-#: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
-msgid "Save"
-msgstr "Сохранить"
-
 #: ../src/ui/preferences.vala:56
 msgid "Shrink image to fit"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:58
-msgid "Sidebar Visible"
-msgstr "Боковая панель видима"
-
-#: ../src/ui/menu.vala:16
-msgid "Subscription"
-msgstr "Подписка"
+#: ../src/ui/preferences.vala:63
+msgid "Content"
+msgstr ""
 
 #: ../src/ui/preferences.vala:82
 msgid "Subscriptions"
 msgstr "Подписки"
 
+#: ../src/ui/preferences.vala:83
+msgid "Enable automatic updates"
+msgstr ""
+
 #: ../src/ui/preferences.vala:84
 msgid "Time interval between updates"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:54
-msgid "Type to Search..."
-msgstr "Введите для поиска ..."
+#: ../src/ui/preferences.vala:85
+msgid "Favicons"
+msgstr "Значки веб-сайтов"
 
-#: ../src/ui/subscription.vala:30
-msgid "URI"
+#: ../src/ui/preferences.vala:86
+msgid "Download now all favicons"
 msgstr ""
 
-#: ../src/ui/subscription.vala:56
-#, c-format
-msgid "URI Address"
-msgstr "URI Адрес"
+#: ../src/ui/preferences.vala:99 ../src/ui/toolbar.vala:62
+msgid "Preferences"
+msgstr "Настройки"
 
-#: ../src/indicator.vala:29
-msgid "Unread"
-msgstr "Не прочитано"
-
-#: ../src/indicator.vala:24 ../src/ui/menu.vala:11
-#: ../src/ui/preferences.vala:106
-msgid "Update"
-msgstr "Обновить"
-
-#: ../src/window.vala:307 ../src/window.vala:516
-#, c-format
-msgid "Updating %s"
+#: ../src/ui/preferences.vala:105
+msgid "Behavior"
 msgstr ""
 
-#: ../src/window.vala:494 ../src/window.vala:522
-msgid "Updating subscriptions"
-msgstr ""
+#: ../src/ui/statusbar.vala:47
+msgid "Add new subscription URL"
+msgstr "Добавить новый URL подписки"
 
-#: ../src/window.vala:342
-msgid "new feed"
-msgstr "новая лента новостей"
+#: ../src/ui/statusbar.vala:50
+msgid "Remove selected subscription"
+msgstr "Удалить выбранные подписки"
 
-#: ../src/window.vala:342
-msgid "new feeds"
+#: ../src/ui/statusbar.vala:70
+msgid "unread feeds"
 msgstr ""
 
 #: ../src/ui/statusbar.vala:70
 msgid "unread feed"
 msgstr ""
 
-#: ../src/ui/statusbar.vala:70
-msgid "unread feeds"
+#: ../src/ui/subscription.vala:30
+msgid "URI"
+msgstr ""
+
+#: ../src/ui/subscription.vala:40
+msgid "Load favicon"
+msgstr "Загрузить значки веб-сайтов"
+
+#: ../src/ui/subscription.vala:56
+#, c-format
+msgid "URI Address"
+msgstr "URI Адрес"
+
+#: ../src/ui/toolbar.vala:54
+msgid "Type to Search..."
+msgstr "Введите для поиска ..."
+
+#: ../src/ui/toolbar.vala:58
+msgid "Sidebar Visible"
+msgstr "Боковая панель видима"
+
+#: ../src/ui/toolbar.vala:59
+msgid "Fullscreen"
+msgstr "На весь экран"
+
+#: ../src/ui/toolbar.vala:61
+msgid "Export"
+msgstr "Экспорт"
+
+#: ../src/ui/toolbar.vala:63
+msgid "About"
+msgstr "О программе"
+
+#: ../src/ui/toolbar.vala:99
+msgid "Go to the previous readed item"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:100
+msgid "Go to the next readed item"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:101
+msgid "Refresh all subscriptions"
+msgstr ""
+
+#: ../src/ui/toolbar.vala:102
+msgid "Menu"
+msgstr "Меню"
+
+#: ../src/ui/view-cell.vala:53
+#, c-format
+msgid "%s, by %s"
 msgstr ""
