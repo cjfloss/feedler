@@ -5,7 +5,7 @@
  * @see COPYING
  */
 
-public enum Feedler.WindowState { NORMAL=0, MAXIMIZED=1, FULLSCREEN=2; }
+public enum Feedler.WindowState { NORMAL = 0, MAXIMIZED = 1, FULLSCREEN = 2; }
 
 public class Feedler.State : Granite.Services.Settings
 {
