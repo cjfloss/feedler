@@ -157,6 +157,7 @@ public class Feedler.Database : GLib.Object
 			{
 				for (uint j = 0; j < this.channels.nth_data (i).items.length (); j++)
 					this.channels.nth_data (i).items.nth_data (j).state = state;
+				this.channels.nth_data (i).unread = 0;
 				return;
 			}
 	}
@@ -169,6 +170,7 @@ public class Feedler.Database : GLib.Object
 					if (this.channels.nth_data (i).items.nth_data (j).id == item)
 					{
 						this.channels.nth_data (i).items.nth_data (j).state = state;
+						this.channels.nth_data (i).unread--;
 						return;
 					}
 	}

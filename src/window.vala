@@ -111,6 +111,7 @@ public class Feedler.Window : Gtk.Window
         this.stat = new Feedler.Statusbar ();
         this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
         this.stat.delete_feed.button_press_event.connect (()=>{_remove (); return false;});
+        this.stat.next_feed.button_press_event.connect (()=>{_next_unread (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
 	}
 	
@@ -702,6 +703,20 @@ public class Feedler.Window : Gtk.Window
                 fol.set_model (f.id, f.name);
                 fol.show_all ();
 			}
+	}
+
+	private void _next_unread ()
+	{	
+		stderr.printf ("Feedler.App.next_unread ()\n");
+		foreach (Model.Channel ch in this.db.channels)
+		{
+			if (ch.unread > 0)
+			{
+				this.side.select_channel (ch.id);
+				this.load_channel ();
+				break;
+			}
+		}
 	}
 
     private void create_subs_cb (int id, int folder, string title, string url)
