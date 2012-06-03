@@ -15,7 +15,6 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu
 {
 	private Feedler.Contractor contract;
 	private HashTable<string,string>[] services;
-	private Gtk.FileChooserDialog filechooser;
 
 	public ContractorButton ()
 	{
@@ -46,7 +45,6 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu
 
 	private void activate_contract ()
 	{
-	    //Util.save_temp_selected_calendars ();
 	    Gtk.MenuItem menuitem = (Gtk.MenuItem) menu.get_active();
 	    string app_menu = menuitem.get_label();
 
@@ -66,23 +64,4 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu
 			}
 	    }
 	}
-
-	/*private void on_response (Gtk.Dialog source, int response_id)
-	{
-		if (response_id == Gtk.ResponseType.APPLY)
-		{
-			var destination = filechooser.get_filename ();
-			if (destination == null)
-		    	destination = filechooser.get_current_folder ();
-			try
-			{
-			    GLib.Process.spawn_command_line_async ("mv " + GLib.Environment.get_tmp_dir () + "/feedler.html " + destination);
-			}
-			catch (SpawnError e)
-			{
-			    warning (e.message);
-			}
-		}
-		filechooser.destroy ();
-	}*/
 }

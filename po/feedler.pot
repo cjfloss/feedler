@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-03 07:52+0200\n"
+"POT-Creation-Date: 2012-06-03 20:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,46 +25,46 @@ msgstr ""
 msgid "Unread"
 msgstr ""
 
-#: ../src/window.vala:279
+#: ../src/window.vala:283
 #, c-format
 msgid "Importing %s"
 msgstr ""
 
-#: ../src/window.vala:295
+#: ../src/window.vala:299
 #, c-format
 msgid "Imported %i channels in %i folders."
 msgstr ""
 
-#: ../src/window.vala:302 ../src/window.vala:513
+#: ../src/window.vala:306 ../src/window.vala:517
 #, c-format
 msgid "Updating %s"
 msgstr ""
 
-#: ../src/window.vala:337
+#: ../src/window.vala:341
 msgid "new feeds"
 msgstr ""
 
-#: ../src/window.vala:337
+#: ../src/window.vala:341
 msgid "new feed"
 msgstr ""
 
-#: ../src/window.vala:491 ../src/window.vala:519
+#: ../src/window.vala:495 ../src/window.vala:523
 msgid "Updating subscriptions"
 msgstr ""
 
-#: ../src/window.vala:537 ../src/window.vala:553
+#: ../src/window.vala:541 ../src/window.vala:557
 msgid "Downloading favicons"
 msgstr ""
 
-#: ../src/window.vala:591
+#: ../src/window.vala:595
 msgid "Importing subscriptions"
 msgstr ""
 
-#: ../src/window.vala:642 ../src/window.vala:665
+#: ../src/window.vala:646 ../src/window.vala:669
 msgid "Are you sure you want to mark as read?"
 msgstr ""
 
-#: ../src/window.vala:683
+#: ../src/window.vala:687
 msgid "Are you sure you want to delete?"
 msgstr ""
 
@@ -84,12 +84,16 @@ msgstr ""
 msgid "Add manually subscriptions from URL."
 msgstr ""
 
-#: ../src/ui/cardlayout.vala:25 ../src/ui/toolbar.vala:60
+#: ../src/ui/cardlayout.vala:25 ../src/ui/toolbar.vala:61
 msgid "Import"
 msgstr ""
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Add a subscriptions from OPML file."
+msgstr ""
+
+#: ../src/ui/contractor.vala:21
+msgid "Share channels or items"
 msgstr ""
 
 #: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
@@ -199,7 +203,7 @@ msgstr ""
 msgid "Download now all favicons"
 msgstr ""
 
-#: ../src/ui/preferences.vala:106 ../src/ui/toolbar.vala:62
+#: ../src/ui/preferences.vala:106 ../src/ui/toolbar.vala:63
 msgid "Preferences"
 msgstr ""
 
@@ -252,35 +256,35 @@ msgstr ""
 msgid "Type to Search..."
 msgstr ""
 
-#: ../src/ui/toolbar.vala:58
+#: ../src/ui/toolbar.vala:59
 msgid "Sidebar Visible"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:59
+#: ../src/ui/toolbar.vala:60
 msgid "Fullscreen"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:61
+#: ../src/ui/toolbar.vala:62
 msgid "Export"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:63
+#: ../src/ui/toolbar.vala:64
 msgid "About"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:99
+#: ../src/ui/toolbar.vala:101
 msgid "Go to the previous readed item"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:100
+#: ../src/ui/toolbar.vala:102
 msgid "Go to the next readed item"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:101
+#: ../src/ui/toolbar.vala:103
 msgid "Refresh all subscriptions"
 msgstr ""
 
-#: ../src/ui/toolbar.vala:102
+#: ../src/ui/toolbar.vala:104
 msgid "Menu"
 msgstr ""
 
