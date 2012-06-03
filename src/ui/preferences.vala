@@ -65,7 +65,7 @@ public class Behavior : PreferenceTab
 		this.add_title (_("Content"));
 		this.add_widgets (enable_plugin, enable_image);
 		this.add_widgets (enable_script, shrink_image);
-		this.add_widgets (enable_java, null);
+		this.add_widgets (enable_java, new Gtk.Label (null));
 		this.add_title (_("Window"));
 		this.add_content (hide_close, _("Hiding window instead of closing"));
 	}
@@ -78,7 +78,7 @@ public class Update : PreferenceTab
 	{
 		var auto_update = new Gtk.Switch ();
 		var start_update = new Gtk.Switch ();
-		var update_time = new Gtk.SpinButton.with_range (5, 60, 5);
+		var update_time = new Gtk.SpinButton.with_range (5, 90, 5);
 		Feedler.SERVICE.schema.bind ("auto-update", auto_update, "active", SettingsBindFlags.DEFAULT);
 		Feedler.SERVICE.schema.bind ("start-update", start_update, "active", SettingsBindFlags.DEFAULT);
 		Feedler.SERVICE.schema.bind ("update-time", update_time, "value", SettingsBindFlags.DEFAULT);
@@ -110,7 +110,7 @@ public class Feedler.Preferences : Gtk.Dialog
 		this.behavior = new Behavior ();
 		this.update = new Update ();
 		this.tabs.append_page (behavior, new Gtk.Label (_("Behavior")));
-		this.tabs.append_page (update, new Gtk.Label (_("Update")));
+		this.tabs.append_page (update, new Gtk.Label (_("Updates")));
 		
         this.content = this.get_content_area () as Gtk.Box;
         this.content.pack_start (tabs, false, true, 0);

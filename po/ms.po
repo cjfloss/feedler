@@ -18,140 +18,74 @@ msgstr ""
 "X-Launchpad-Export-Date: 2012-06-03 05:12+0000\n"
 "X-Generator: Launchpad (build 15342)\n"
 
-#: ../src/indicator.vala:24 ../src/ui/menu.vala:11
-#: ../src/ui/preferences.vala:109
-msgid "Update"
-msgstr "Kemaskini"
-
-#: ../src/indicator.vala:29
-msgid "Unread"
-msgstr "Belum Baca"
-
-#: ../src/window.vala:290
+#: ../src/ui/view-cell.vala:53
 #, c-format
-msgid "Importing %s"
-msgstr "Mengimport %s"
+msgid "%s, by %s"
+msgstr "%s, oleh %s"
 
-#: ../src/window.vala:306
-#, c-format
-msgid "Imported %i channels in %i folders."
-msgstr "Mengimport %i saluran dalam %i folder."
-
-#: ../src/window.vala:313 ../src/window.vala:524
-#, c-format
-msgid "Updating %s"
-msgstr "Mengemaskini %s"
-
-#: ../src/window.vala:348
-msgid "new feeds"
-msgstr "suapan baru"
-
-#: ../src/window.vala:348
-msgid "new feed"
-msgstr "suapan baru"
-
-#: ../src/window.vala:502 ../src/window.vala:530
-msgid "Updating subscriptions"
-msgstr "Mengemaskini langganan"
-
-#: ../src/window.vala:548 ../src/window.vala:564
-msgid "Downloading favicons"
-msgstr "Memuat turun favicon"
-
-#: ../src/window.vala:602
-msgid "Importing subscriptions"
-msgstr "Mengimport langganan"
-
-#: ../src/window.vala:653
-msgid "Are you sure you want to mark as read?"
-msgstr "Anda pasti hendak tanda sebagai dibaca?"
-
-#: ../src/window.vala:676
-msgid "Are you sure you want to delete?"
-msgstr "Anda pasti hendak padam?"
-
-#: ../src/ui/cardlayout.vala:23
-msgid "Get Some Feeds"
-msgstr "Dapatkan Beberapa Suapan"
-
-#: ../src/ui/cardlayout.vala:23
-msgid "Feedler can't seem to find your feeds."
-msgstr "Feedler tidak dapat cari suapan anda"
-
-#: ../src/ui/cardlayout.vala:24
-msgid "Create"
-msgstr "Cipta"
-
-#: ../src/ui/cardlayout.vala:24
-msgid "Add manually subscriptions from URL."
-msgstr "Tambah langganan secara manual dari URL."
-
-#: ../src/ui/cardlayout.vala:25 ../src/ui/toolbar.vala:60
-msgid "Import"
-msgstr "Import"
+#: ../src/ui/toolbar.vala:63
+msgid "About"
+msgstr "Perihal"
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Add a subscriptions from OPML file."
 msgstr "Tambah langganan dari fail OPML."
 
-#: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
-#: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
-#, c-format
-msgid "Name"
-msgstr "Nama"
+#: ../src/ui/cardlayout.vala:24
+msgid "Add manually subscriptions from URL."
+msgstr "Tambah langganan secara manual dari URL."
 
-#: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
-msgid "Save"
-msgstr "Simpan"
+#: ../src/ui/statusbar.vala:47
+msgid "Add new subscription URL"
+msgstr "Tambah URL langganan baru"
+
+#: ../src/window.vala:676
+msgid "Are you sure you want to delete?"
+msgstr "Anda pasti hendak padam?"
+
+#: ../src/window.vala:653
+msgid "Are you sure you want to mark as read?"
+msgstr "Anda pasti hendak tanda sebagai dibaca?"
+
+#: ../src/ui/preferences.vala:108
+msgid "Behavior"
+msgstr "Kelakuan"
 
 #: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:36
 msgid "Cancel"
 msgstr "Batal"
 
-#: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
-msgid "Mark as read"
-msgstr "Tanda sebagai dibaca"
+#: ../src/ui/preferences.vala:63
+msgid "Content"
+msgstr "Kandungan"
+
+#: ../src/ui/cardlayout.vala:24
+msgid "Create"
+msgstr "Cipta"
 
 #: ../src/ui/menu.vala:13
 msgid "Delete"
 msgstr "Padam"
 
-#: ../src/ui/menu.vala:14
-msgid "Properties"
-msgstr "Sifat"
-
-#: ../src/ui/menu.vala:15
-msgid "New"
-msgstr "Baru"
-
-#: ../src/ui/menu.vala:16
-msgid "Subscription"
-msgstr "Langganan"
-
-#: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
-#, c-format
-msgid "Folder"
-msgstr "Folder"
-
 #: ../src/ui/menu.vala:37
 msgid "Display"
 msgstr "Paparan"
 
-#: ../src/ui/menu.vala:38
-msgid "Open in browser"
-msgstr "Buka dalam pelayar"
+#: ../src/ui/preferences.vala:89
+msgid "Download now all favicons"
+msgstr "Muat turun sekarang semua favicon"
 
-#: ../src/ui/menu.vala:40
-msgid "Mark as unread"
-msgstr "Tanda sebagai belum baca"
+#: ../src/window.vala:548 ../src/window.vala:564
+msgid "Downloading favicons"
+msgstr "Memuat turun favicon"
+
+#: ../src/ui/preferences.vala:85
+msgid "Enable automatic updates"
+msgstr "Benarkan kemaskini automatik"
 
 #: ../src/ui/preferences.vala:52
 msgid "Enable images"
 msgstr "Benarkan imej"
-
-#: ../src/ui/preferences.vala:53
-msgid "Enable scripts"
-msgstr "Benarkan skrip"
 
 #: ../src/ui/preferences.vala:54
 msgid "Enable java"
@@ -161,112 +95,178 @@ msgstr "Benarkan java"
 msgid "Enable plugins"
 msgstr "Benarkan pemalam"
 
-#: ../src/ui/preferences.vala:56
-msgid "Shrink image to fit"
-msgstr "Kecil imej supaya muat"
-
-#: ../src/ui/preferences.vala:63
-msgid "Content"
-msgstr "Kandungan"
-
-#: ../src/ui/preferences.vala:84
-msgid "Subscriptions"
-msgstr "Langganan"
-
-#: ../src/ui/preferences.vala:85
-msgid "Enable automatic updates"
-msgstr "Benarkan kemaskini automatik"
+#: ../src/ui/preferences.vala:53
+msgid "Enable scripts"
+msgstr "Benarkan skrip"
 
 #: ../src/ui/preferences.vala:86
 msgid "Enable updates on start"
 msgstr ""
 
-#: ../src/ui/preferences.vala:87
-msgid "Time interval between updates"
-msgstr "Sela masa diantara kemaskini"
+#: ../src/ui/toolbar.vala:61
+msgid "Export"
+msgstr "Eksport"
 
 #: ../src/ui/preferences.vala:88
 msgid "Favicons"
 msgstr "Favicon"
 
-#: ../src/ui/preferences.vala:89
-msgid "Download now all favicons"
-msgstr "Muat turun sekarang semua favicon"
+#: ../src/ui/cardlayout.vala:23
+msgid "Feedler can't seem to find your feeds."
+msgstr "Feedler tidak dapat cari suapan anda"
+
+#: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
+#, c-format
+msgid "Folder"
+msgstr "Folder"
+
+#: ../src/ui/toolbar.vala:59
+msgid "Fullscreen"
+msgstr "Skrin Penuh"
+
+#: ../src/ui/cardlayout.vala:23
+msgid "Get Some Feeds"
+msgstr "Dapatkan Beberapa Suapan"
+
+#: ../src/ui/toolbar.vala:100
+msgid "Go to the next readed item"
+msgstr "Pergi ke item dibaca berikutnya"
+
+#: ../src/ui/toolbar.vala:99
+msgid "Go to the previous readed item"
+msgstr "Pergi ke item dibaca sebelum ini"
+
+#: ../src/ui/cardlayout.vala:25 ../src/ui/toolbar.vala:60
+msgid "Import"
+msgstr "Import"
+
+#: ../src/window.vala:306
+#, c-format
+msgid "Imported %i channels in %i folders."
+msgstr "Mengimport %i saluran dalam %i folder."
+
+#: ../src/window.vala:290
+#, c-format
+msgid "Importing %s"
+msgstr "Mengimport %s"
+
+#: ../src/window.vala:602
+msgid "Importing subscriptions"
+msgstr "Mengimport langganan"
+
+#: ../src/ui/subscription.vala:40
+msgid "Load favicon"
+msgstr "Muat favicon"
+
+#: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
+msgid "Mark as read"
+msgstr "Tanda sebagai dibaca"
+
+#: ../src/ui/menu.vala:40
+msgid "Mark as unread"
+msgstr "Tanda sebagai belum baca"
+
+#: ../src/ui/toolbar.vala:102
+msgid "Menu"
+msgstr "Menu"
+
+#: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
+#: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
+#, c-format
+msgid "Name"
+msgstr "Nama"
+
+#: ../src/ui/menu.vala:15
+msgid "New"
+msgstr "Baru"
+
+#: ../src/ui/menu.vala:38
+msgid "Open in browser"
+msgstr "Buka dalam pelayar"
 
 #: ../src/ui/preferences.vala:102 ../src/ui/toolbar.vala:62
 msgid "Preferences"
 msgstr "Keutamaan"
 
-#: ../src/ui/preferences.vala:108
-msgid "Behavior"
-msgstr "Kelakuan"
+#: ../src/ui/menu.vala:14
+msgid "Properties"
+msgstr "Sifat"
 
-#: ../src/ui/statusbar.vala:47
-msgid "Add new subscription URL"
-msgstr "Tambah URL langganan baru"
+#: ../src/ui/toolbar.vala:101
+msgid "Refresh all subscriptions"
+msgstr "Segar semula semua langganan"
 
 #: ../src/ui/statusbar.vala:50
 msgid "Remove selected subscription"
 msgstr "Buang langganan terpilih"
 
-#: ../src/ui/statusbar.vala:70
-msgid "unread feeds"
-msgstr "suapan belum dibaca"
+#: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
+msgid "Save"
+msgstr "Simpan"
 
-#: ../src/ui/statusbar.vala:70
-msgid "unread feed"
-msgstr "suapan belum dibaca"
+#: ../src/ui/preferences.vala:56
+msgid "Shrink image to fit"
+msgstr "Kecil imej supaya muat"
+
+#: ../src/ui/toolbar.vala:58
+msgid "Sidebar Visible"
+msgstr "Palang Sisi Tampak"
+
+#: ../src/ui/menu.vala:16
+msgid "Subscription"
+msgstr "Langganan"
+
+#: ../src/ui/preferences.vala:84
+msgid "Subscriptions"
+msgstr "Langganan"
+
+#: ../src/ui/preferences.vala:87
+msgid "Time interval between updates"
+msgstr "Sela masa diantara kemaskini"
+
+#: ../src/ui/toolbar.vala:54
+msgid "Type to Search..."
+msgstr "Taip untuk Gelintar..."
 
 #: ../src/ui/subscription.vala:30
 msgid "URI"
 msgstr "URI"
-
-#: ../src/ui/subscription.vala:40
-msgid "Load favicon"
-msgstr "Muat favicon"
 
 #: ../src/ui/subscription.vala:56
 #, c-format
 msgid "URI Address"
 msgstr "Alamat URI"
 
-#: ../src/ui/toolbar.vala:54
-msgid "Type to Search..."
-msgstr "Taip untuk Gelintar..."
+#: ../src/indicator.vala:29
+msgid "Unread"
+msgstr "Belum Baca"
 
-#: ../src/ui/toolbar.vala:58
-msgid "Sidebar Visible"
-msgstr "Palang Sisi Tampak"
+#: ../src/indicator.vala:24 ../src/ui/menu.vala:11
+#: ../src/ui/preferences.vala:109
+msgid "Update"
+msgstr "Kemaskini"
 
-#: ../src/ui/toolbar.vala:59
-msgid "Fullscreen"
-msgstr "Skrin Penuh"
-
-#: ../src/ui/toolbar.vala:61
-msgid "Export"
-msgstr "Eksport"
-
-#: ../src/ui/toolbar.vala:63
-msgid "About"
-msgstr "Perihal"
-
-#: ../src/ui/toolbar.vala:99
-msgid "Go to the previous readed item"
-msgstr "Pergi ke item dibaca sebelum ini"
-
-#: ../src/ui/toolbar.vala:100
-msgid "Go to the next readed item"
-msgstr "Pergi ke item dibaca berikutnya"
-
-#: ../src/ui/toolbar.vala:101
-msgid "Refresh all subscriptions"
-msgstr "Segar semula semua langganan"
-
-#: ../src/ui/toolbar.vala:102
-msgid "Menu"
-msgstr "Menu"
-
-#: ../src/ui/view-cell.vala:53
+#: ../src/window.vala:313 ../src/window.vala:524
 #, c-format
-msgid "%s, by %s"
-msgstr "%s, oleh %s"
+msgid "Updating %s"
+msgstr "Mengemaskini %s"
+
+#: ../src/window.vala:502 ../src/window.vala:530
+msgid "Updating subscriptions"
+msgstr "Mengemaskini langganan"
+
+#: ../src/window.vala:348
+msgid "new feed"
+msgstr "suapan baru"
+
+#: ../src/window.vala:348
+msgid "new feeds"
+msgstr "suapan baru"
+
+#: ../src/ui/statusbar.vala:70
+msgid "unread feed"
+msgstr "suapan belum dibaca"
+
+#: ../src/ui/statusbar.vala:70
+msgid "unread feeds"
+msgstr "suapan belum dibaca"
