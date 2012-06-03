@@ -112,6 +112,7 @@ public class Feedler.Window : Gtk.Window
         this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
         this.stat.delete_feed.button_press_event.connect (()=>{_remove (); return false;});
         this.stat.next_feed.button_press_event.connect (()=>{_next_unread (); return false;});
+        this.stat.mark_feed.button_press_event.connect (()=>{_mark_all (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
 	}
 	
@@ -642,7 +643,7 @@ public class Feedler.Window : Gtk.Window
         ChannelStore ch = this.selected_item ();
         if (ch != null)
             if (info.run () == Gtk.ResponseType.YES)
-			    if (ch.mode == 1)
+				if (ch.mode == 1)
                 {
 					Feedler.INDICATOR.step_unread (ch.unread * -1);
 					Feedler.DOCK.step_unread (ch.unread * -1);
@@ -654,6 +655,24 @@ public class Feedler.Window : Gtk.Window
 				    this.side.mark_folder (ch.id);
 				    this.db.mark_folder (ch.id);
 			    }
+		info.destroy ();
+    }
+
+	private void _mark_all ()
+    {
+        var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                          Gtk.MessageType.QUESTION, Gtk.ButtonsType.YES_NO, 
+                                          _("Are you sure you want to mark as read?"));
+		if (info.run () == Gtk.ResponseType.YES)
+		{
+			foreach (Model.Channel c in this.db.channels)
+			{
+				Feedler.INDICATOR.step_unread (c.unread * -1);
+				Feedler.DOCK.step_unread (c.unread * -1);
+			   	this.side.mark_channel (c.id);
+			}
+			this.db.mark_all ();
+		}
 		info.destroy ();
     }
 	

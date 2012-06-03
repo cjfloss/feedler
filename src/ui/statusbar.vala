@@ -41,6 +41,7 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
     internal Feedler.StatusButton add_feed;
     internal Feedler.StatusButton delete_feed;
     internal Feedler.StatusButton next_feed;
+    internal Feedler.StatusButton mark_feed;
 
     public Statusbar ()
     {
@@ -52,9 +53,13 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
 
 		this.next_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("go-jump-symbolic", Gtk.IconSize.MENU));
         this.next_feed.set_tooltip (_("Go to the channel with unread items"));
+		
+		this.mark_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("folder-documents-symbolic", Gtk.IconSize.MENU));
+        this.mark_feed.set_tooltip (_("Mark all items as read"));
 
         this.insert_widget (this.add_feed, true);
         this.insert_widget (this.delete_feed, true);
+        this.insert_widget (this.mark_feed, false);
         this.insert_widget (this.next_feed, false);
     }
 

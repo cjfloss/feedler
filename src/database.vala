@@ -150,6 +150,18 @@ public class Feedler.Database : GLib.Object
 		return null;
 	}
 
+	public void set_all ()
+	{
+		for (uint i = 0; i < this.channels.length (); i++)
+			if (this.channels.nth_data (i).unread > 0)
+			{
+				for (uint j = 0; j < this.channels.nth_data (i).items.length (); j++)
+					if (this.channels.nth_data (i).items.nth_data (j).state == Model.State.UNREAD)
+						this.channels.nth_data (i).items.nth_data (j).state = Model.State.READ;
+				this.channels.nth_data (i).unread = 0;
+			}
+	}
+
 	public void set_channel_state (int channel, Model.State state)
 	{
 		for (uint i = 0; i < this.channels.length (); i++)
@@ -341,6 +353,25 @@ public class Feedler.Database : GLib.Object
 			stderr.printf ("Cannot mark channel %i.", id);
 		}
     }
+
+	public void mark_all ()
+    {
+        try
+        {
+			transaction = db.begin_transaction ();
+			query = transaction.prepare ("UPDATE `items` SET `state`=:state WHERE `state`=:s;");
+			query.set_int (":state", (int)Model.State.READ);
+            query.set_int (":s", (int)Model.State.UNREAD);
+			query.execute_async ();
+			transaction.commit ();
+            this.set_all ();
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot mark all channels.");
+		}
+    }
+
 
     public void mark_item (int channel, int item, Model.State state = Model.State.READ)
     {
