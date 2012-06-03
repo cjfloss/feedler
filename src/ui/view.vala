@@ -41,5 +41,12 @@ public abstract class Feedler.View : Gtk.VBox
 
 	public abstract void change ();
 
+	public abstract void contract ();
+
     public abstract Feedler.Views type ();
+
+	protected string generate_style (string title_color, string time_color, string content_color, string link_color)
+	{
+		return """<!DOCTYPE HTML><style>.item{width:100%; float:left; margin-bottom:15px;} .title{color:%s; font-size:16px; font-weight:bold;} .time{color:%s;font-size:9px;} .content{color:%s;text-align:justify;} a,a:link,a:visited{color:%s"; text-decoration:none;} a:hover{text-decoration:underline;}</style>""".printf (title_color, time_color, content_color, link_color);
+	}
 }

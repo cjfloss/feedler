@@ -64,7 +64,8 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.update.clicked.connect (_update_all);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.column.clicked.connect (change_column);
-        this.toolbar.search.activate.connect (search_list); 
+        this.toolbar.search.activate.connect (search_list);
+		this.toolbar.sharemenu.clicked.connect (() => {this.view.contract ();}); 
         
         this.toolbar.import_feeds.activate.connect (_import);
         this.toolbar.export_feeds.activate.connect (_export);
@@ -128,8 +129,11 @@ public class Feedler.Window : Gtk.Window
             this.side.add_channel (c.id, c.title, c.folder, c.unread);
 			this.unread += c.unread;
 		}
-		Feedler.INDICATOR.add_unread (this.unread);
-		Feedler.DOCK.add_unread (this.unread);
+		if (unread > 0)
+		{
+			Feedler.INDICATOR.add_unread (this.unread);
+			Feedler.DOCK.add_unread (this.unread);
+		}
 		this.unread = 0;
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);

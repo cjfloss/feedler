@@ -57,6 +57,19 @@ public class Feedler.ViewWeb : Feedler.View
 		stderr.printf ("Feedler.ViewWeb.change ()");
     }
 
+	public override void contract ()
+	{
+		try
+		{
+			var path = GLib.Environment.get_tmp_dir () + "/feedler.html";
+			GLib.FileUtils.set_contents (path, content.str);
+		}
+		catch (GLib.Error e)
+		{
+			stderr.printf ("Cannot create temp file.\n");
+		}
+	}
+
     public override Feedler.Views type ()
     {
         return Feedler.Views.WEB;
@@ -70,9 +83,5 @@ public class Feedler.ViewWeb : Feedler.View
 		item.append ("<span class='content'>"+description+"</span></div><br/>");
 		
 		return item.str;
-	}
-	private string generate_style (string title_color, string time_color, string content_color, string link_color)
-	{
-		return "<style>	.item{width:100%; float:left; margin-bottom:15px;} .title{color:"+title_color+"; font-size:16px; font-weight:bold;} .time{color:"+time_color+";font-size:9px;} .content{color:"+content_color+";text-align:justify;} a,a:link,a:visited{color:"+link_color+"; text-decoration:none;} a:hover{text-decoration:underline;}</style>";
 	}
 }

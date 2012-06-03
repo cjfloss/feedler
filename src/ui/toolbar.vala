@@ -55,6 +55,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Gtk.ToggleButton column = new Gtk.ToggleButton ();
     
     internal Granite.Widgets.AppMenu appmenu;
+    internal Feedler.ContractorButton sharemenu;
     internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label (_("Sidebar Visible"));
     internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label (_("Fullscreen"));
     internal Gtk.MenuItem import_feeds = new Gtk.MenuItem.with_label (_("Import"));
@@ -77,6 +78,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (preferences);
         menu.append (about_program);
         this.appmenu = new Granite.Widgets.AppMenu (menu);
+        this.sharemenu = new Feedler.ContractorButton ();
         
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-details-symbolic", Gtk.IconSize.MENU));
@@ -109,7 +111,8 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.insert (column_item, 5);
         this.insert (progress_item, 6);
         this.insert (search_item, 7);
-        this.insert (appmenu, 8);
+        this.insert (sharemenu, 8);
+        this.insert (appmenu, 9);
 	}
 	
 	public void set_enable (bool state)
@@ -120,5 +123,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.column.set_sensitive (state);
 		this.export_feeds.set_sensitive (state);
 		this.sidebar_visible.set_sensitive (state);
+		this.sharemenu.set_sensitive (state);
 	}
 }
