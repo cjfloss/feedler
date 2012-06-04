@@ -40,6 +40,7 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
     public uint total_unread { get; private set; default = 0; }
     internal Feedler.StatusButton add_feed;
     internal Feedler.StatusButton delete_feed;
+    internal Feedler.StatusButton import_feed;
     internal Feedler.StatusButton next_feed;
     internal Feedler.StatusButton mark_feed;
 
@@ -51,6 +52,9 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
         this.delete_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("list-remove-symbolic", Gtk.IconSize.MENU));
         this.delete_feed.set_tooltip (_("Remove selected subscription"));
 
+		this.import_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("edit-undo-symbolic", Gtk.IconSize.MENU));
+        this.import_feed.set_tooltip (_("Import subscription from OPML"));
+
 		this.next_feed = new Feedler.StatusButton.from_image (new Gtk.Image.from_icon_name ("go-jump-symbolic", Gtk.IconSize.MENU));
         this.next_feed.set_tooltip (_("Go to the channel with unread items"));
 		
@@ -59,6 +63,7 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
 
         this.insert_widget (this.add_feed, true);
         this.insert_widget (this.delete_feed, true);
+        this.insert_widget (this.import_feed, true);
         this.insert_widget (this.mark_feed, false);
         this.insert_widget (this.next_feed, false);
     }

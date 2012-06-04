@@ -66,9 +66,9 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.column.clicked.connect (change_column);
         this.toolbar.search.activate.connect (search_list);
 		this.toolbar.sharemenu.clicked.connect (() => {this.view.contract ();}); 
-        
-        this.toolbar.import_feeds.activate.connect (_import);
-        this.toolbar.export_feeds.activate.connect (_export);
+        this.toolbar.sharemenu.export.activate.connect (_export);
+        //this.toolbar.import_feeds.activate.connect (_import);
+        //this.toolbar.export_feeds.activate.connect (_export);
         this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
         this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
@@ -112,6 +112,7 @@ public class Feedler.Window : Gtk.Window
         this.stat = new Feedler.Statusbar ();
         this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
         this.stat.delete_feed.button_press_event.connect (()=>{_remove (); return false;});
+        this.stat.import_feed.button_press_event.connect (()=>{_import (); return false;});
         this.stat.next_feed.button_press_event.connect (()=>{_next_unread (); return false;});
         this.stat.mark_feed.button_press_event.connect (()=>{_mark_all (); return false;});
         this.content.pack_end (this.stat, false, true, 0);

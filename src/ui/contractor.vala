@@ -13,6 +13,7 @@ public interface Feedler.Contractor : GLib.Object
 
 public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu
 {
+	internal Gtk.MenuItem export;
 	private Feedler.Contractor contract;
 	private HashTable<string,string>[] services;
 
@@ -32,9 +33,8 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu
 				item.activate.connect (activate_contract);
 				menu.append (item);
 			}
-		    //Gtk.MenuItem item = new Gtk.MenuItem.with_label(_("Export subscriptions"));
-		    //item.activate.connect (savecal);
-		    //menu.append (item);
+		    this.export = new Gtk.MenuItem.with_label(_("Export subscriptions"));
+		    menu.append (export);
 	    }
 		catch (IOError e)
 		{
@@ -45,8 +45,8 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu
 
 	private void activate_contract ()
 	{
-	    Gtk.MenuItem menuitem = (Gtk.MenuItem) menu.get_active();
-	    string app_menu = menuitem.get_label();
+	    Gtk.MenuItem menuitem = (Gtk.MenuItem) menu.get_active ();
+	    string app_menu = menuitem.get_label ();
 
 	    foreach (HashTable<string,string> service in services)
 		{

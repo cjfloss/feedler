@@ -58,8 +58,8 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Feedler.ContractorButton sharemenu;
     internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label (_("Sidebar Visible"));
     internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label (_("Fullscreen"));
-    internal Gtk.MenuItem import_feeds = new Gtk.MenuItem.with_label (_("Import"));
-    internal Gtk.MenuItem export_feeds = new Gtk.MenuItem.with_label (_("Export"));
+    //internal Gtk.MenuItem import_feeds = new Gtk.MenuItem.with_label (_("Import"));
+    //internal Gtk.MenuItem export_feeds = new Gtk.MenuItem.with_label (_("Export"));
     internal Gtk.MenuItem preferences = new Gtk.MenuItem.with_label (_("Preferences"));
     internal Gtk.MenuItem about_program = new Gtk.MenuItem.with_label (_("About"));
     
@@ -69,9 +69,9 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.get_style_context ().add_class ("primary-toolbar");
 		
         Gtk.Menu menu = new Gtk.Menu ();
-        menu.append (import_feeds);
-        menu.append (export_feeds);
-        menu.append (new Gtk.SeparatorMenuItem ());
+        //menu.append (import_feeds);
+        //menu.append (export_feeds);
+        //menu.append (new Gtk.SeparatorMenuItem ());
         menu.append (sidebar_visible);
         menu.append (fullscreen_mode);
         menu.append (new Gtk.SeparatorMenuItem ());
@@ -121,7 +121,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.search.set_sensitive (state);
         this.mode.set_sensitive (state);
         this.column.set_sensitive (state);
-		this.export_feeds.set_sensitive (state);
+		//this.export_feeds.set_sensitive (state);
 		this.sidebar_visible.set_sensitive (state);
 		this.sharemenu.set_sensitive (state);
 	}
