@@ -6,6 +6,11 @@
 			<summary>Hiding or closing window</summary>
 			<description>Hiding window instead of closing</description>
 		</key>
+		<key name="hide-start" type="b">
+			<default>false</default>
+			<summary>Hide window on start</summary>
+			<description>Hide window on start to the messaging menu</description>
+		</key>
 		<key name="sidebar-width" type="i">
 			<default>180</default>
 			<summary>Sidebar Width</summary>

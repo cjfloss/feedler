@@ -11,6 +11,7 @@ public class Feedler.State : Granite.Services.Settings
 	public int window_height { get; set; }
 	public int sidebar_width { get; set; }
 	public bool hide_close { get; set; }
+	public bool hide_start { get; set; }
 
 	public State ()
 	{
