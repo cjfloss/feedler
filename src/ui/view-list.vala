@@ -128,7 +128,7 @@ public class Feedler.ViewList : Feedler.View
             this.pane.set_orientation (Gtk.Orientation.VERTICAL);
     }
 
-	public override void contract ()
+	public override bool contract ()
 	{
 		try
 		{
@@ -142,12 +142,14 @@ public class Feedler.ViewList : Feedler.View
 				item.append ("<span class='time'>"+feed.date+", by "+feed.author+"</span><br/>");
 				item.append ("<span class='content'>"+feed.text+"</span></div><br/>");
 				GLib.FileUtils.set_contents (path, item.str);
+				return true;
 			}
 		}
 		catch (GLib.Error e)
 		{
 			stderr.printf ("Cannot create temp file.\n");
 		}
+		return false;
 	}
 
     public override Feedler.Views type ()

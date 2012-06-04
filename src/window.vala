@@ -65,7 +65,13 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.column.clicked.connect (change_column);
         this.toolbar.search.activate.connect (search_list);
-		this.toolbar.sharemenu.clicked.connect (() => {this.view.contract ();}); 
+		this.toolbar.sharemenu.clicked.connect (() =>
+		{
+			if (this.view.contract ())
+				this.toolbar.sharemenu.switch_state (true);
+			else
+				this.toolbar.sharemenu.switch_state (false);
+		}); 
         this.toolbar.sharemenu.export.activate.connect (_export);
         //this.toolbar.import_feeds.activate.connect (_import);
         //this.toolbar.export_feeds.activate.connect (_export);

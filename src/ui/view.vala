@@ -41,7 +41,7 @@ public abstract class Feedler.View : Gtk.VBox
 
 	public abstract void change ();
 
-	public abstract void contract ();
+	public abstract bool contract ();
 
     public abstract Feedler.Views type ();
 

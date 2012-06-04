@@ -57,17 +57,19 @@ public class Feedler.ViewWeb : Feedler.View
 		stderr.printf ("Feedler.ViewWeb.change ()");
     }
 
-	public override void contract ()
+	public override bool contract ()
 	{
 		try
 		{
 			var path = GLib.Environment.get_tmp_dir () + "/feedler.html";
 			GLib.FileUtils.set_contents (path, content.str);
+			return true;
 		}
 		catch (GLib.Error e)
 		{
 			stderr.printf ("Cannot create temp file.\n");
 		}
+		return false;
 	}
 
     public override Feedler.Views type ()
