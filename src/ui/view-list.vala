@@ -134,12 +134,15 @@ public class Feedler.ViewList : Feedler.View
 		{
 			Gtk.TreeIter iter;
 			FeedStore feed = this.selected_item (out iter);
-			var path = GLib.Environment.get_tmp_dir () + "/feedler.html";
-			GLib.StringBuilder item = new GLib.StringBuilder (generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
-			item.append ("<div class='item'><span class='title'>"+feed.subject+"</span><br/>");
-			item.append ("<span class='time'>"+feed.date+", by "+feed.author+"</span><br/>");
-			item.append ("<span class='content'>"+feed.text+"</span></div><br/>");
-			GLib.FileUtils.set_contents (path, item.str);
+			if (feed != null)
+			{
+				var path = GLib.Environment.get_tmp_dir () + "/feedler.html";
+				GLib.StringBuilder item = new GLib.StringBuilder (generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
+				item.append ("<div class='item'><span class='title'>"+feed.subject+"</span><br/>");
+				item.append ("<span class='time'>"+feed.date+", by "+feed.author+"</span><br/>");
+				item.append ("<span class='content'>"+feed.text+"</span></div><br/>");
+				GLib.FileUtils.set_contents (path, item.str);
+			}
 		}
 		catch (GLib.Error e)
 		{

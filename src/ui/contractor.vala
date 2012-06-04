@@ -45,23 +45,25 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu
 
 	private void activate_contract ()
 	{
-	    Gtk.MenuItem menuitem = (Gtk.MenuItem) menu.get_active ();
-	    string app_menu = menuitem.get_label ();
-
-	    foreach (HashTable<string,string> service in services)
+		if (GLib.FileUtils.test (GLib.Environment.get_tmp_dir () + "/feedler.html", GLib.FileTest.EXISTS))
 		{
-			if (app_menu == service.lookup ("Description"))
+			Gtk.MenuItem menuitem = (Gtk.MenuItem) menu.get_active ();
+			string app_menu = menuitem.get_label ();
+			foreach (HashTable<string,string> service in services)
 			{
-			    try
+				if (app_menu == service.lookup ("Description"))
 				{
-					GLib.Process.spawn_command_line_async (service.lookup ("Exec"));
-			    }
-				catch (GLib.SpawnError e)
-				{
-					warning (e.message);
-			    }
-			    break;
+					try
+					{
+						GLib.Process.spawn_command_line_async (service.lookup ("Exec"));
+					}
+					catch (GLib.SpawnError e)
+					{
+						warning (e.message);
+					}
+					break;
+				}
 			}
-	    }
+		}
 	}
 }

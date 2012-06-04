@@ -514,7 +514,6 @@ public class Feedler.Database : GLib.Object
 
 	public string export_to_opml ()
 	{
-		//GLib.List<Xml.Node*> folder_node = new GLib.List<Xml.Node*> ();
 		Gee.Map<int, Xml.Node*> folder_node = new Gee.HashMap<int, Xml.Node*> ();
         Xml.Doc* doc = new Xml.Doc("1.0");
         Xml.Node* opml = doc->new_node (null, "opml", null);
@@ -535,7 +534,6 @@ public class Feedler.Database : GLib.Object
 			outline->new_prop ("title", folder.name);
 			outline->new_prop ("type", "folder");
 			
-			//folder_node.append (outline);
 			folder_node.set (folder.id, outline);
 			body->add_child (outline);
 		}
@@ -546,9 +544,8 @@ public class Feedler.Database : GLib.Object
 			outline->new_prop ("type", "rss");
 			outline->new_prop ("xmlUrl", channel.source);
 			outline->new_prop ("htmlUrl", channel.link);
-			if (channel.folder != -1)
+			if (channel.folder > 0)
 			{
-				//Xml.Node* folder = folder_node.nth_data (channel.folder);
 				Xml.Node* folder = folder_node.get (channel.folder);
 				folder->add_child (outline);
 			}
@@ -557,12 +554,8 @@ public class Feedler.Database : GLib.Object
 		}
         opml->add_child (body);
 
-        string xmlstr;
-        int n;
-        // This throws a compiler warning, see bug 547364
-        doc->dump_memory(out xmlstr, out n);
-        //delete xmldoc; // Don't delete the xmldoc yourself!
- 
+        string xmlstr; int n;
+        doc->dump_memory (out xmlstr, out n);
         return xmlstr;
 	}
 

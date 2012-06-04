@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-03 20:10+0200\n"
+"POT-Creation-Date: 2012-06-04 07:58+0200\n"
 "PO-Revision-Date: 2012-06-03 20:21+0000\n"
 "Last-Translator: Alfredo Hernández <Unknown>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -35,19 +35,19 @@ msgstr "Afegeix una subscripció des d'un fitxer OPML."
 msgid "Add manually subscriptions from URL."
 msgstr "Afegeix subscripcions manualment des d'un URL."
 
-#: ../src/ui/statusbar.vala:49
+#: ../src/ui/statusbar.vala:50
 msgid "Add new subscription URL"
 msgstr "Afegeix una adreça de subscripció nova"
 
-#: ../src/window.vala:687
+#: ../src/window.vala:688
 msgid "Are you sure you want to delete?"
 msgstr "Esteu segur que voleu eliminar?"
 
-#: ../src/window.vala:646 ../src/window.vala:669
+#: ../src/window.vala:647 ../src/window.vala:670
 msgid "Are you sure you want to mark as read?"
 msgstr "Esteu segur que voleu marcar com a llegit?"
 
-#: ../src/ui/preferences.vala:112
+#: ../src/ui/preferences.vala:115
 msgid "Behavior"
 msgstr "Comportament"
 
@@ -55,7 +55,7 @@ msgstr "Comportament"
 msgid "Cancel"
 msgstr "Canceŀla"
 
-#: ../src/ui/preferences.vala:65
+#: ../src/ui/preferences.vala:67
 msgid "Content"
 msgstr "Contingut"
 
@@ -71,15 +71,15 @@ msgstr "Suprimeix"
 msgid "Display"
 msgstr "Visualització"
 
-#: ../src/ui/preferences.vala:93
+#: ../src/ui/preferences.vala:96
 msgid "Download now all favicons"
 msgstr "Baixa ara totes les icones de web"
 
-#: ../src/window.vala:541 ../src/window.vala:557
+#: ../src/window.vala:542 ../src/window.vala:558
 msgid "Downloading favicons"
 msgstr "S'estan baixant les icones de web"
 
-#: ../src/ui/preferences.vala:89
+#: ../src/ui/preferences.vala:92
 msgid "Enable automatic updates"
 msgstr "Habilita les actualitzacions automàtiques"
 
@@ -99,15 +99,16 @@ msgstr "Habilita els connectors"
 msgid "Enable scripts"
 msgstr "Habilita els scripts"
 
-#: ../src/ui/preferences.vala:90
+#: ../src/ui/preferences.vala:93
 msgid "Enable updates on start"
 msgstr "Habilita les actualitzacions quan s'inicïi"
 
-#: ../src/ui/toolbar.vala:62
-msgid "Export"
-msgstr "Exporta"
+#: ../src/ui/contractor.vala:36
+#, fuzzy
+msgid "Export subscriptions"
+msgstr "S'estan important les subscripcions"
 
-#: ../src/ui/preferences.vala:92
+#: ../src/ui/preferences.vala:95
 msgid "Favicons"
 msgstr "Icones de web"
 
@@ -128,7 +129,7 @@ msgstr "Pantalla completa"
 msgid "Get Some Feeds"
 msgstr "Obteniu alguns canals web"
 
-#: ../src/ui/statusbar.vala:55
+#: ../src/ui/statusbar.vala:59
 msgid "Go to the channel with unread items"
 msgstr "Vés al canal amb elements sense llegir"
 
@@ -140,25 +141,34 @@ msgstr "Vés a l'element llegit següent"
 msgid "Go to the previous readed item"
 msgstr "Vés a l'element llegit anterior"
 
-#: ../src/ui/preferences.vala:70
+#: ../src/ui/preferences.vala:73
+msgid "Hide window on start to the messaging menu"
+msgstr ""
+
+#: ../src/ui/preferences.vala:72
 msgid "Hiding window instead of closing"
 msgstr "Amaga la finestra en comptes de tancar-la"
 
-#: ../src/ui/cardlayout.vala:25 ../src/ui/toolbar.vala:61
+#: ../src/ui/cardlayout.vala:25
 msgid "Import"
 msgstr "Importa"
 
-#: ../src/window.vala:299
+#: ../src/ui/statusbar.vala:56
+#, fuzzy
+msgid "Import subscription from OPML"
+msgstr "S'estan important les subscripcions"
+
+#: ../src/window.vala:300
 #, c-format
 msgid "Imported %i channels in %i folders."
 msgstr "S'han importat %i canals a %i carpetes."
 
-#: ../src/window.vala:283
+#: ../src/window.vala:284
 #, c-format
 msgid "Importing %s"
 msgstr "S'estan important %s"
 
-#: ../src/window.vala:595
+#: ../src/window.vala:596
 msgid "Importing subscriptions"
 msgstr "S'estan important les subscripcions"
 
@@ -166,7 +176,7 @@ msgstr "S'estan important les subscripcions"
 msgid "Load favicon"
 msgstr "Carrega la icona de web"
 
-#: ../src/ui/statusbar.vala:58
+#: ../src/ui/statusbar.vala:62
 msgid "Mark all items as read"
 msgstr "Marca tots els elements com a llegits"
 
@@ -196,7 +206,7 @@ msgstr "Nou"
 msgid "Open in browser"
 msgstr "Obre al navegador"
 
-#: ../src/ui/preferences.vala:106 ../src/ui/toolbar.vala:63
+#: ../src/ui/preferences.vala:109 ../src/ui/toolbar.vala:63
 msgid "Preferences"
 msgstr "Preferències"
 
@@ -208,7 +218,7 @@ msgstr "Propietats"
 msgid "Refresh all subscriptions"
 msgstr "Refresca totes les subscripcions"
 
-#: ../src/ui/statusbar.vala:52
+#: ../src/ui/statusbar.vala:53
 msgid "Remove selected subscription"
 msgstr "Esborra la subscripció seleccionada"
 
@@ -216,7 +226,7 @@ msgstr "Esborra la subscripció seleccionada"
 msgid "Save"
 msgstr "Desa"
 
-#: ../src/ui/contractor.vala:21
+#: ../src/ui/contractor.vala:22
 msgid "Share channels or items"
 msgstr "Comparteix canals o elements"
 
@@ -232,11 +242,11 @@ msgstr "Barra lateral visible"
 msgid "Subscription"
 msgstr "Subscripció"
 
-#: ../src/ui/preferences.vala:88
+#: ../src/ui/preferences.vala:91
 msgid "Subscriptions"
 msgstr "Subscripcions"
 
-#: ../src/ui/preferences.vala:91
+#: ../src/ui/preferences.vala:94
 msgid "Time interval between updates"
 msgstr "Interval de temps entre les actualitzacions"
 
@@ -261,35 +271,38 @@ msgstr "No llegits"
 msgid "Update"
 msgstr "Actualitza"
 
-#: ../src/ui/preferences.vala:113
+#: ../src/ui/preferences.vala:116
 msgid "Updates"
 msgstr "Actualitzacions"
 
-#: ../src/window.vala:306 ../src/window.vala:517
+#: ../src/window.vala:307 ../src/window.vala:518
 #, c-format
 msgid "Updating %s"
 msgstr "S'està actualitzant %s"
 
-#: ../src/window.vala:495 ../src/window.vala:523
+#: ../src/window.vala:496 ../src/window.vala:524
 msgid "Updating subscriptions"
 msgstr "S'estan actualitzant les subscripcions"
 
-#: ../src/ui/preferences.vala:69
+#: ../src/ui/preferences.vala:71
 msgid "Window"
 msgstr "Finestra"
 
-#: ../src/window.vala:341
+#: ../src/window.vala:342
 msgid "new feed"
 msgstr "canal web nou"
 
-#: ../src/window.vala:341
+#: ../src/window.vala:342
 msgid "new feeds"
 msgstr "canals web nous"
 
-#: ../src/ui/statusbar.vala:80
+#: ../src/ui/statusbar.vala:85
 msgid "unread feed"
 msgstr "canal web sense llegir"
 
-#: ../src/ui/statusbar.vala:80
+#: ../src/ui/statusbar.vala:85
 msgid "unread feeds"
 msgstr "canals web sense llegir"
+
+#~ msgid "Export"
+#~ msgstr "Exporta"
