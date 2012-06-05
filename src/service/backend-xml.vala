@@ -310,6 +310,7 @@ public class BackendXml : Backend
 		if (xml != null && this.refresh (xml, out channel))
 		{
 			channel.source = message.uri.to_string (false);
+			this.service.settings.uri += channel.source;
 			this.service.added (channel);
 		}
 	}

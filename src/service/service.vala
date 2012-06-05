@@ -12,7 +12,7 @@ public class Feedler.Service : Object
 	public signal void added (Serializer.Channel channel);
 	public signal void imported (Serializer.Folder[] folders);
 	public signal void updated (Serializer.Channel channel);
-	private Feedler.Settings settings;
+	internal Feedler.Settings settings;
 	private Backend backend;
 	private unowned Thread<void*> thread;
 
