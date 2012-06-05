@@ -326,7 +326,7 @@ public class Feedler.Window : Gtk.Window
         }
         this.db.commit ();
         this.toolbar.progress.pulse ("", false);
-        this.notification (_("Imported %i channels in %i folders.").printf (count, folders.length));
+        this.notification (_("Imported %i channels in %i folders.").printf (count, folders.length-1));
 	}
 	
 	protected void updated_cb (Serializer.Channel channel)

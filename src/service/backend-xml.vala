@@ -296,6 +296,9 @@ public class BackendXml : Backend
 		Serializer.Folder[]? folders = null;
 		if (this.subscribe (this.cache, out folders))
 		{
+			foreach (var f in folders)
+				foreach (var c in f.channels)
+					this.service.settings.add_uri (c.source);
 			this.service.imported (folders);
 		}
 		return null;
@@ -310,7 +313,7 @@ public class BackendXml : Backend
 		if (xml != null && this.refresh (xml, out channel))
 		{
 			channel.source = message.uri.to_string (false);
-			this.service.settings.uri += channel.source;
+			this.service.settings.add_uri (channel.source);
 			this.service.added (channel);
 		}
 	}

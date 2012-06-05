@@ -16,4 +16,12 @@ public class Feedler.Settings : Granite.Services.Settings
 	{
 		base ("org.elementary.feedler.service");
 	}
+
+	public void add_uri (string u)
+	{
+		//TODO set
+		string[] tmp = this.uri;
+		tmp += u;
+		this.uri = tmp;
+	}
 }
