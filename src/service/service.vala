@@ -9,6 +9,7 @@
 public class Feedler.Service : Object
 {
 	public signal void iconed (string uri, uint8[] data);
+	public signal void added (Serializer.Channel channel);
 	public signal void imported (Serializer.Folder[] folders);
 	public signal void updated (Serializer.Channel channel);
 	private Feedler.Settings settings;
@@ -68,6 +69,12 @@ public class Feedler.Service : Object
 	{
 		stderr.printf ("Feedler.Service.import (%s)\n", uri);
 		this.backend.import (uri);
+	}
+
+	public void add (string uri)
+	{
+		stderr.printf ("Feedler.Service.add (%s)\n", uri);
+		this.backend.add (uri);
 	}
 	
 	public void run ()

@@ -253,6 +253,13 @@ public class BackendXml : Backend
 		return false;
 	}
 
+	public override void add (string uri)
+	{
+		stderr.printf ("BackendXML.add (%s)\n", uri);
+		Soup.Message msg = new Soup.Message ("GET", uri);
+		session.queue_message (msg, this.add_func);
+	}
+
 	public override void import (string uri)
 	{
 		stderr.printf ("BackendXML.import (%s)\n", uri);
@@ -292,6 +299,19 @@ public class BackendXml : Backend
 			this.service.imported (folders);
 		}
 		return null;
+	}
+
+	private void add_func (Soup.Session session, Soup.Message message)
+	{
+		stderr.printf ("BackendXML.add_func %s\n", message.uri.to_string (false));
+		string xml = (string)message.response_body.flatten ().data;
+		Serializer.Channel? channel = null;
+		
+		if (xml != null && this.refresh (xml, out channel))
+		{
+			channel.source = message.uri.to_string (false);
+			this.service.added (channel);
+		}
 	}
 
 	private void update_func (Soup.Session session, Soup.Message message)

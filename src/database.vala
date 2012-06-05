@@ -272,6 +272,23 @@ public class Feedler.Database : GLib.Object
 		}
 	}
 
+	public void update_link (string source, string link)
+    {
+        try
+        {
+			transaction = db.begin_transaction ();
+			query = transaction.prepare ("UPDATE `channels` SET `link`=:link WHERE `source`=:source;");
+			query.set_string (":source", source);
+            query.set_string (":link", link);
+			query.execute_async ();
+			transaction.commit ();
+		}
+		catch (SQLHeavy.Error e)
+		{
+			stderr.printf ("Cannot update channel with source %s.", source);
+		}
+    }
+
     public void update_channel (int id, int folder, string title,  string url)
     {
         try

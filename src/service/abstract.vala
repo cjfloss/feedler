@@ -41,6 +41,7 @@ public abstract class Backend : GLib.Object
 {
     public abstract bool subscribe (string data, out Serializer.Folder[]? folders);
     public abstract bool refresh (string data, out Serializer.Channel? channel);
+    public abstract void add (string uri);
     public abstract void import (string uri);
     public abstract void update (string uri);
     public abstract BACKENDS to_type ();

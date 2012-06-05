@@ -5,25 +5,6 @@
  * @see COPYING
  */
 
-/*namespace Serializer.List
-{
-    public static Model.Folder[] folders_array (GLib.List<Model.Folder?> folders)
-    {
-        Model.Folder[] f = new Model.Folder[folders.length ()];
-        for (uint i = 0; i < folders.length (); i++)
-            f[i] = folders.nth_data (i);
-        return f;
-    }
-
-    public static Serializer.Channel[] channels_array (GLib.List<Model.Channel?> channels)
-    {
-        Serializer.Channel[] c = new Serializer.Channel[channels.length ()];
-        for (uint i = 0; i < channels.length (); i++)
-            c[i] = Channel.from_model (channels.nth_data (i), false);
-        return c;
-    }
-}*/
-
 public struct Serializer.Folder
 {
 	public string name;

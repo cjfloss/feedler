@@ -29,6 +29,7 @@ public class Feedler.Window : Gtk.Window
             client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
                                                         "/org/example/feedler");
             client.iconed.connect (favicon_cb);
+			client.added.connect (added_cb);
             client.imported.connect (imported_cb);            
             client.updated.connect (updated_cb);
 			stderr.printf ("%s\n", client.ping ());
@@ -279,6 +280,26 @@ public class Feedler.Window : Gtk.Window
             this.toolbar.forward.sensitive = false;
     }
 
+	protected void added_cb (Serializer.Channel channel)
+	{
+        stderr.printf ("add_cb\n");
+        Model.Channel ch = this.db.from_source (channel.source);
+		ch.link = channel.link;
+		this.db.begin ();
+		for (int i = channel.items.length-1; i >= 0; i--)
+		{
+			int id = this.db.insert_serialized_item (ch.id, channel.items[i]);
+            Model.Item it = {id, channel.items[i].title, channel.items[i].source, channel.items[i].author, channel.items[i].description, channel.items[i].time, Model.State.UNREAD, ch.id};
+            ch.items.append (it);
+		}
+        this.db.commit ();
+		string description = channel.items.length > 1 ? _("new feeds") : _("new feed");
+		this.notification ("%i %s".printf (channel.items.length, description));
+		this.stat.set_unread (channel.items.length);
+		Feedler.INDICATOR.add_unread (channel.items.length);
+		Feedler.DOCK.add_unread (channel.items.length);
+	}
+
     protected void imported_cb (Serializer.Folder[] folders)
 	{
         int count = 0;
@@ -310,7 +331,7 @@ public class Feedler.Window : Gtk.Window
 	
 	protected void updated_cb (Serializer.Channel channel)
 	{
-        //stderr.printf ("updated_cb\n");
+        stderr.printf ("updated_cb\n");
         Model.Channel ch = this.db.from_source (channel.source);
         this.toolbar.progress.pulse (_("Updating %s").printf (ch.title), true);
         GLib.List<Serializer.Item?> reverse = new GLib.List<Serializer.Item?> ();
@@ -753,14 +774,22 @@ public class Feedler.Window : Gtk.Window
 
     private void create_subs_cb (int id, int folder, string title, string url)
     {
-		if (!this.db.is_created ())
+		try
 		{
-        	this.db.create ();
-	        this.ui_welcome_to_workspace ();
-			this.show_all ();
+			if (!this.db.is_created ())
+			{
+		    	this.db.create ();
+			    this.ui_welcome_to_workspace ();
+				this.show_all ();
+			}
+		    int i = this.db.add_channel (title, url, folder);
+		    this.side.add_channel (i, title, folder);
+			this.client.add (url);
 		}
-        int i = this.db.add_channel (title, url, folder);
-        this.side.add_channel (i, title, folder);
+        catch (GLib.Error e)
+        {
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+        }
     }
 
     private void create_folder_cb (int id, string title)
