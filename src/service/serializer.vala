@@ -5,7 +5,7 @@
  * @see COPYING
  */
 
-namespace Serializer.List
+/*namespace Serializer.List
 {
     public static Model.Folder[] folders_array (GLib.List<Model.Folder?> folders)
     {
@@ -22,11 +22,10 @@ namespace Serializer.List
             c[i] = Channel.from_model (channels.nth_data (i), false);
         return c;
     }
-}
+}*/
 
 public struct Serializer.Folder
 {
-    //public int id;
 	public string name;
 	//public int parent;
     //public Serializer.Folder[]? folders;
@@ -34,7 +33,6 @@ public struct Serializer.Folder
 
     public Folder.from_model (Model.Folder model, GLib.List<Model.Channel?> models)
     {
-        //this.id = model.id;
         this.name = model.name;
         this.channels = new Serializer.Channel[models.length ()];
         int i = 0;
@@ -45,7 +43,6 @@ public struct Serializer.Folder
 
 public struct Serializer.Channel
 {
-    //public int id;
 	public string title;
 	public string link;
 	public string source;
@@ -54,9 +51,8 @@ public struct Serializer.Channel
 
     public Channel.from_model (Model.Channel model, bool full = true)
     {
-        //this.id = model.id;
         this.title = model.title;
-        this.link = model.link;
+        this.link = model.link ?? "";
         this.source = model.source ?? "";
         this.folder = model.folder;
         //this.items = null;
@@ -72,23 +68,18 @@ public struct Serializer.Channel
 
 public struct Serializer.Item
 {
-    //public int id;
 	public string title;
 	public string source;
 	public string author;
 	public string description;
 	public int time;
-    //public Model.State state;
-    //public int channel;
 
     public Item.from_model (Model.Item model)
     {
-        //this.id = model.id;
         this.title = model.title ?? "No title";
         this.source = model.source;
         this.author = model.author;
         this.description = model.description ?? "";
         this.time = model.time;
-        //this.state = model.state;
     }
 }

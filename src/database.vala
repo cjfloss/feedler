@@ -540,7 +540,7 @@ public class Feedler.Database : GLib.Object
         foreach (Model.Channel channel in this.channels)
         {
 			Xml.Node* outline = new Xml.Node (null, "outline");
-			outline->new_prop ("title", channel.title);
+			outline->new_prop ("text", channel.title);
 			outline->new_prop ("type", "rss");
 			outline->new_prop ("xmlUrl", channel.source);
 			outline->new_prop ("htmlUrl", channel.link);

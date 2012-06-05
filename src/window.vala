@@ -73,8 +73,6 @@ public class Feedler.Window : Gtk.Window
 				this.toolbar.sharemenu.switch_state (false);
 		}); 
         this.toolbar.sharemenu.export.activate.connect (_export);
-        //this.toolbar.import_feeds.activate.connect (_import);
-        //this.toolbar.export_feeds.activate.connect (_export);
         this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
         this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
@@ -288,10 +286,14 @@ public class Feedler.Window : Gtk.Window
         foreach (var f in folders)
         {
             this.toolbar.progress.pulse (_("Importing %s").printf (f.name), true);
-            int fid = this.db.insert_serialized_folder (f);
-            Model.Folder fo = {fid, f.name, 0};
-            this.side.add_folder (fo);
-            this.db.folders.append (fo);
+			int fid = 0;
+			if (f.name != "body")
+			{
+	            fid = this.db.insert_serialized_folder (f);
+            	Model.Folder fo = {fid, f.name, 0};
+            	this.side.add_folder (fo);
+            	this.db.folders.append (fo);
+			}
             count += f.channels.length;
             foreach (var c in f.channels)
             {
