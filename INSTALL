@@ -7,22 +7,17 @@ Dependencies
  - libsoup-2.4
  - libxml-2.0
  - libnotify
+ - libunity
  - gee-1.0
+ - indicate-0.7
 
 Testing
 ------------
-$ cd src/service # in feedler folder
-$ mkdir build
-$ cd build/
-$ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
-$ make
-$ ./feedler-service
-
 $ mkdir build # in feedler folder
 $ cd build/
 $ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
 $ make
-$ ./feedler
+$ ./feedler # service cannot work without install
 
 Installation
 ------------

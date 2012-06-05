@@ -72,7 +72,6 @@ internal class Subscriptions
 		c.source = node.get_prop ("xmlUrl");
 		c.link = node.get_prop ("htmlUrl");
 		c.folder = 0;
-stderr.printf ("RODZIC: %s\n", node.parent->name);
 		if (node.parent->name == "body")
 			this.append_channel ("body", c);
 		else
@@ -290,13 +289,6 @@ public class BackendXml : Backend
 		Serializer.Folder[]? folders = null;
 		if (this.subscribe (this.cache, out folders))
 		{
-stderr.printf ("WYPIERDALAC!\n");
-foreach (var f in folders)
-{
-	stderr.printf ("%s\n", f.name);
-foreach (var c in f.channels)
-	stderr.printf ("%s %s %s\n", c.title, c.link, c.source);
-}
 			this.service.imported (folders);
 		}
 		return null;
