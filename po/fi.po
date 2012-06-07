@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-04 07:58+0200\n"
-"PO-Revision-Date: 2012-06-03 10:11+0000\n"
+"PO-Revision-Date: 2012-06-06 16:33+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-06 05:10+0000\n"
+"X-Launchpad-Export-Date: 2012-06-07 04:59+0000\n"
 "X-Generator: Launchpad (build 15353)\n"
 "Language: fi\n"
 
@@ -99,7 +99,7 @@ msgstr ""
 
 #: ../src/ui/contractor.vala:36
 msgid "Export subscriptions"
-msgstr ""
+msgstr "Vie tilaukset"
 
 #: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
 #: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
@@ -186,7 +186,7 @@ msgstr "Piilota ikkuna sulkemisen sijaan"
 
 #: ../src/ui/preferences.vala:73
 msgid "Hide window on start to the messaging menu"
-msgstr ""
+msgstr "Piilota ikkuna viestivalikkoon sovelluksen käynnistäessä"
 
 #: ../src/ui/preferences.vala:91
 msgid "Subscriptions"
