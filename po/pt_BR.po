@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-04 07:58+0200\n"
-"PO-Revision-Date: 2012-06-04 18:01+0000\n"
+"PO-Revision-Date: 2012-06-07 16:42+0000\n"
 "Last-Translator: Leonardo Lemos <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-06 05:10+0000\n"
-"X-Generator: Launchpad (build 15353)\n"
+"X-Launchpad-Export-Date: 2012-06-08 05:08+0000\n"
+"X-Generator: Launchpad (build 15376)\n"
 "Language: pt_BR\n"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
@@ -95,7 +95,7 @@ msgstr "Adicionar assinaturas de um arquivo OPML"
 
 #: ../src/ui/contractor.vala:22
 msgid "Share channels or items"
-msgstr ""
+msgstr "Compartilhe canais ou itens"
 
 #: ../src/ui/contractor.vala:36
 msgid "Export subscriptions"
@@ -178,15 +178,15 @@ msgstr "Conteúdo"
 
 #: ../src/ui/preferences.vala:71
 msgid "Window"
-msgstr ""
+msgstr "Janela"
 
 #: ../src/ui/preferences.vala:72
 msgid "Hiding window instead of closing"
-msgstr ""
+msgstr "Esconder janela ao invés de fechar"
 
 #: ../src/ui/preferences.vala:73
 msgid "Hide window on start to the messaging menu"
-msgstr ""
+msgstr "Ocultar janela no início para o menu de mensagens"
 
 #: ../src/ui/preferences.vala:91
 msgid "Subscriptions"
@@ -198,7 +198,7 @@ msgstr "Habilitar atualizações automáticas"
 
 #: ../src/ui/preferences.vala:93
 msgid "Enable updates on start"
-msgstr ""
+msgstr "Habilitar atualizações no começo"
 
 #: ../src/ui/preferences.vala:94
 msgid "Time interval between updates"
@@ -222,7 +222,7 @@ msgstr "Funcionamento"
 
 #: ../src/ui/preferences.vala:116
 msgid "Updates"
-msgstr ""
+msgstr "Atualizações"
 
 #: ../src/ui/statusbar.vala:50
 msgid "Add new subscription URL"
@@ -234,15 +234,15 @@ msgstr "Remover assinatura selecionada"
 
 #: ../src/ui/statusbar.vala:56
 msgid "Import subscription from OPML"
-msgstr ""
+msgstr "Importar assinatura de OPML"
 
 #: ../src/ui/statusbar.vala:59
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "Ir para o canal com itens não lidos"
 
 #: ../src/ui/statusbar.vala:62
 msgid "Mark all items as read"
-msgstr ""
+msgstr "Marcar todos os itens como lidos"
 
 #: ../src/ui/statusbar.vala:85
 msgid "unread feeds"
