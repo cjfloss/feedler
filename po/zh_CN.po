@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-04 07:58+0200\n"
-"PO-Revision-Date: 2012-06-02 02:59+0000\n"
+"PO-Revision-Date: 2012-06-08 05:26+0000\n"
 "Last-Translator: Wang Dianjin <Unknown>\n"
 "Language-Team: Chinese (Simplified) <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-06 05:10+0000\n"
-"X-Generator: Launchpad (build 15353)\n"
+"X-Launchpad-Export-Date: 2012-06-09 06:01+0000\n"
+"X-Generator: Launchpad (build 15376)\n"
 "Language: \n"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
@@ -95,11 +95,11 @@ msgstr "从 OPML 文件添加订阅。"
 
 #: ../src/ui/contractor.vala:22
 msgid "Share channels or items"
-msgstr ""
+msgstr "分享频道或条目"
 
 #: ../src/ui/contractor.vala:36
 msgid "Export subscriptions"
-msgstr ""
+msgstr "导出订阅"
 
 #: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
 #: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
@@ -178,15 +178,15 @@ msgstr "内容"
 
 #: ../src/ui/preferences.vala:71
 msgid "Window"
-msgstr ""
+msgstr "窗口"
 
 #: ../src/ui/preferences.vala:72
 msgid "Hiding window instead of closing"
-msgstr ""
+msgstr "隐藏窗口而非关闭"
 
 #: ../src/ui/preferences.vala:73
 msgid "Hide window on start to the messaging menu"
-msgstr ""
+msgstr "启动时隐藏窗口至信息菜单"
 
 #: ../src/ui/preferences.vala:91
 msgid "Subscriptions"
@@ -198,7 +198,7 @@ msgstr "启用自动更新"
 
 #: ../src/ui/preferences.vala:93
 msgid "Enable updates on start"
-msgstr ""
+msgstr "开启启动更新"
 
 #: ../src/ui/preferences.vala:94
 msgid "Time interval between updates"
@@ -222,7 +222,7 @@ msgstr "行为"
 
 #: ../src/ui/preferences.vala:116
 msgid "Updates"
-msgstr ""
+msgstr "更新"
 
 #: ../src/ui/statusbar.vala:50
 msgid "Add new subscription URL"
@@ -234,15 +234,15 @@ msgstr "移除选中的订阅"
 
 #: ../src/ui/statusbar.vala:56
 msgid "Import subscription from OPML"
-msgstr ""
+msgstr "从 OPML 导入订阅"
 
 #: ../src/ui/statusbar.vala:59
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "转到未读条目频道"
 
 #: ../src/ui/statusbar.vala:62
 msgid "Mark all items as read"
-msgstr ""
+msgstr "标记所有条目为已读"
 
 #: ../src/ui/statusbar.vala:85
 msgid "unread feeds"
