@@ -19,7 +19,9 @@ public class Feedler.Settings : Granite.Services.Settings
 
 	public void add_uri (string u)
 	{
-		//TODO set
+		if (u in uri)
+			return;
+
 		string[] tmp = this.uri;
 		tmp += u;
 		this.uri = tmp;
