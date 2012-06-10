@@ -37,7 +37,6 @@ public class Feedler.StatusButton : Gtk.EventBox
 
 public class Feedler.Statusbar : Granite.Widgets.StatusBar
 {
-    public uint total_unread { get; private set; default = 0; }
     internal Feedler.StatusButton add_feed;
     internal Feedler.StatusButton delete_feed;
     internal Feedler.StatusButton import_feed;
@@ -72,28 +71,10 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
 	{
 		if (count > 0)
         {
-			string description = total_unread > 1 ? _("unread feeds") : _("unread feed");
+			string description = count > 1 ? _("unread feeds") : _("unread feed");
 	        this.set_text ("%u %s".printf (count, description));
         }
 		else
 			this.set_text ("");
 	}
-
-    public void set_unread (uint total_unread)
-    {
-        this.total_unread = total_unread;
-        this.update_label ();
-    }
-
-    private void update_label ()
-    {
-        if (this.total_unread == 0)
-        {
-            status_label.set_text ("");
-            return;
-        }
-
-        string description = total_unread > 1 ? _("unread feeds") : _("unread feed");
-        this.set_text ("%u %s".printf (total_unread, description));
-    }
 }

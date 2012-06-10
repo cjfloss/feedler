@@ -25,7 +25,6 @@ public class Feedler.Indicator : GLib.Object
 		this.update.show ();
 
 		this.unread = new Indicate.Indicator.with_server (server);
-		//this.unread.user_display.connect (del_unread);
 		this.unread.set_property ("sender", _("Unread"));
 		this.unread.set_property ("count", "0");
 	}

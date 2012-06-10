@@ -8,12 +8,10 @@
 public class Feedler.Dock : GLib.Object
 {
 	private Unity.LauncherEntry dock;
-	private int _counter;
 
 	construct
 	{
 		this.dock = Unity.LauncherEntry.get_for_desktop_id ("feedler.desktop");
-		this._counter = 0;
 	    this.dock.count_visible = false;
 	}
 

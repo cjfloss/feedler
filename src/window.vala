@@ -21,11 +21,9 @@ public class Feedler.Window : Gtk.Window
     private Feedler.Client client;
 	private Feedler.Manager manager;
     private int connections;
-    private int unread;
 	
 	construct
 	{
-		this.manager = new Feedler.Manager ();
         try
         {
             client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
@@ -123,6 +121,7 @@ public class Feedler.Window : Gtk.Window
         this.stat.next_feed.button_press_event.connect (()=>{_next_unread (); return false;});
         this.stat.mark_feed.button_press_event.connect (()=>{_mark_all (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
+		this.manager = new Feedler.Manager (stat);
 	}
 	
 	private void ui_feeds ()
@@ -292,9 +291,7 @@ public class Feedler.Window : Gtk.Window
         this.db.commit ();
 		string description = channel.items.length > 1 ? _("new feeds") : _("new feed");
 		this.notification ("%i %s".printf (channel.items.length, description));
-		//this.stat.set_unread (channel.items.length);
-		//Feedler.INDICATOR.add_unread (channel.items.length);
-		//Feedler.DOCK.add_unread (channel.items.length);
+		this.side.add_unread (ch.id, channel.items.length);
 		this.manager.unread (channel.items.length);
 	}
 
@@ -354,11 +351,11 @@ public class Feedler.Window : Gtk.Window
         }
         this.db.commit ();
         this.connections--;
-        //this.unread += (int)reverse.length ();
+stderr.printf ("SIZE: %u\n", reverse.length ());
 		if (reverse.length () > 0)
 		{
-			this.manager.count += reverse.length ();
-			this.side.add_unread (ch.id, (int)reverse.length ());			
+			this.manager.add ((int)reverse.length ());
+			this.side.add_unread (ch.id, (int)reverse.length ());
 			if (this.selection_tree () == ch.id)
 				this.load_channel ();
 		}
@@ -367,13 +364,9 @@ public class Feedler.Window : Gtk.Window
         if (connections == 0)
         {
             this.toolbar.progress.pulse ("", false);
-            string description = unread > 1 ? _("new feeds") : _("new feed");
-            this.notification ("%i %s".printf (unread, description));
-            //this.stat.set_unread (unread);
-			//Feedler.INDICATOR.add_unread (unread);
-			//Feedler.DOCK.add_unread (unread);
+            string description = this.manager.news > 1 ? _("new feeds") : _("new feed");
+            this.notification ("%i %s".printf ((int)this.manager.news, description));
 			this.manager.manage ();
-            //this.unread = 0;
         }
 	}
 
@@ -408,13 +401,9 @@ public class Feedler.Window : Gtk.Window
 			this.db.mark_item (ch.id, id, state ? Model.State.UNREAD : Model.State.READ);
 			this.side.dec_unread (ch.id, state ? 1 : -1);
 			this.manager.unread (state ? 1 : -1);
-			//Feedler.INDICATOR.step_unread (state ? 1 : -1);
-			//Feedler.DOCK.step_unread (state ? 1 : -1);
 		}
 		else
 		{
-			//Feedler.DOCK.step_unread (ch.unread * -1);
-			//Feedler.INDICATOR.step_unread (ch.unread * -1);
 			this.manager.unread (ch.unread * -1);
 			this.db.mark_channel (ch.id);
 			this.side.mark_channel (ch.id);
@@ -702,9 +691,9 @@ public class Feedler.Window : Gtk.Window
 		{
 			foreach (Model.Channel c in this.db.channels)
 			{
-				this.manager.count += (c.unread * -1);
 			   	this.side.mark_channel (c.id);
 			}
+			this.manager.count = 0;
 			this.manager.manage ();
 			this.db.mark_all ();
 		}
