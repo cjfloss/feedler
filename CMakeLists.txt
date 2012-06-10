@@ -69,6 +69,7 @@ vala_precompile(VALA_C
 	src/feedler.vala
 	src/indicator.vala
 	src/history.vala
+	src/manager.vala
 	src/settings.vala
 	src/window.vala
 	src/ui/cardlayout.vala

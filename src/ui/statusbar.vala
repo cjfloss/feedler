@@ -63,10 +63,21 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
 
         this.insert_widget (this.add_feed, true);
         this.insert_widget (this.delete_feed, true);
-        this.insert_widget (this.import_feed, true);
+        //this.insert_widget (this.import_feed, true);
         this.insert_widget (this.mark_feed, false);
         this.insert_widget (this.next_feed, false);
     }
+
+	public void counter (uint count)
+	{
+		if (count > 0)
+        {
+			string description = total_unread > 1 ? _("unread feeds") : _("unread feed");
+	        this.set_text ("%u %s".printf (count, description));
+        }
+		else
+			this.set_text ("");
+	}
 
     public void set_unread (uint total_unread)
     {

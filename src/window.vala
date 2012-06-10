@@ -19,11 +19,13 @@ public class Feedler.Window : Gtk.Window
 	private Gtk.ScrolledWindow scroll_side;
 	private Feedler.CardLayout layout;
     private Feedler.Client client;
+	private Feedler.Manager manager;
     private int connections;
     private int unread;
 	
 	construct
 	{
+		this.manager = new Feedler.Manager ();
         try
         {
             client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
@@ -133,14 +135,9 @@ public class Feedler.Window : Gtk.Window
         foreach (Model.Channel c in this.db.select_channels ())
 		{
             this.side.add_channel (c.id, c.title, c.folder, c.unread);
-			this.unread += c.unread;
+			this.manager.count += c.unread;
 		}
-		if (unread > 0)
-		{
-			Feedler.INDICATOR.add_unread (this.unread);
-			Feedler.DOCK.add_unread (this.unread);
-		}
-		this.unread = 0;
+		this.manager.manage ();
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);
 	}
@@ -295,9 +292,10 @@ public class Feedler.Window : Gtk.Window
         this.db.commit ();
 		string description = channel.items.length > 1 ? _("new feeds") : _("new feed");
 		this.notification ("%i %s".printf (channel.items.length, description));
-		this.stat.set_unread (channel.items.length);
-		Feedler.INDICATOR.add_unread (channel.items.length);
-		Feedler.DOCK.add_unread (channel.items.length);
+		//this.stat.set_unread (channel.items.length);
+		//Feedler.INDICATOR.add_unread (channel.items.length);
+		//Feedler.DOCK.add_unread (channel.items.length);
+		this.manager.unread (channel.items.length);
 	}
 
     protected void imported_cb (Serializer.Folder[] folders)
@@ -356,9 +354,10 @@ public class Feedler.Window : Gtk.Window
         }
         this.db.commit ();
         this.connections--;
-        this.unread += (int)reverse.length ();
-		if (unread > 0)
+        //this.unread += (int)reverse.length ();
+		if (reverse.length () > 0)
 		{
+			this.manager.count += reverse.length ();
 			this.side.add_unread (ch.id, (int)reverse.length ());			
 			if (this.selection_tree () == ch.id)
 				this.load_channel ();
@@ -370,10 +369,11 @@ public class Feedler.Window : Gtk.Window
             this.toolbar.progress.pulse ("", false);
             string description = unread > 1 ? _("new feeds") : _("new feed");
             this.notification ("%i %s".printf (unread, description));
-            this.stat.set_unread (unread);
-			Feedler.INDICATOR.add_unread (unread);
-			Feedler.DOCK.add_unread (unread);
-            this.unread = 0;
+            //this.stat.set_unread (unread);
+			//Feedler.INDICATOR.add_unread (unread);
+			//Feedler.DOCK.add_unread (unread);
+			this.manager.manage ();
+            //this.unread = 0;
         }
 	}
 
@@ -407,13 +407,15 @@ public class Feedler.Window : Gtk.Window
 		{
 			this.db.mark_item (ch.id, id, state ? Model.State.UNREAD : Model.State.READ);
 			this.side.dec_unread (ch.id, state ? 1 : -1);
-			Feedler.INDICATOR.step_unread (state ? 1 : -1);
-			Feedler.DOCK.step_unread (state ? 1 : -1);
+			this.manager.unread (state ? 1 : -1);
+			//Feedler.INDICATOR.step_unread (state ? 1 : -1);
+			//Feedler.DOCK.step_unread (state ? 1 : -1);
 		}
 		else
 		{
-			Feedler.DOCK.step_unread (ch.unread * -1);
-			Feedler.INDICATOR.step_unread (ch.unread * -1);
+			//Feedler.DOCK.step_unread (ch.unread * -1);
+			//Feedler.INDICATOR.step_unread (ch.unread * -1);
+			this.manager.unread (ch.unread * -1);
 			this.db.mark_channel (ch.id);
 			this.side.mark_channel (ch.id);
 		}        
@@ -679,8 +681,7 @@ public class Feedler.Window : Gtk.Window
             if (info.run () == Gtk.ResponseType.YES)
 				if (ch.mode == 1)
                 {
-					Feedler.INDICATOR.step_unread (ch.unread * -1);
-					Feedler.DOCK.step_unread (ch.unread * -1);
+					this.manager.unread (ch.unread * -1);
 				    this.side.mark_channel (ch.id);
 				    this.db.mark_channel (ch.id);
 			    }
@@ -701,10 +702,10 @@ public class Feedler.Window : Gtk.Window
 		{
 			foreach (Model.Channel c in this.db.channels)
 			{
-				Feedler.INDICATOR.step_unread (c.unread * -1);
-				Feedler.DOCK.step_unread (c.unread * -1);
+				this.manager.count += (c.unread * -1);
 			   	this.side.mark_channel (c.id);
 			}
+			this.manager.manage ();
 			this.db.mark_all ();
 		}
 		info.destroy ();

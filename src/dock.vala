@@ -8,28 +8,21 @@
 public class Feedler.Dock : GLib.Object
 {
 	private Unity.LauncherEntry dock;
-	private int counter;
+	private int _counter;
 
 	construct
 	{
 		this.dock = Unity.LauncherEntry.get_for_desktop_id ("feedler.desktop");
-		this.counter = 0;
+		this._counter = 0;
 	    this.dock.count_visible = false;
 	}
 
-	public void add_unread (int i)
+	public void counter (uint count)
 	{
-		this.counter += i;
-		this.dock.count = counter;
-	    this.dock.count_visible = true;
-		this.dock.urgent = true;
-	}
-
-	public void step_unread (int i)
-	{
-		this.counter += i;
-		this.dock.count = counter;
-		if (counter <= 0)
+		this.dock.count = count;
+		if (count > 0)
+			this.dock.count_visible = true;
+		else
 			this.dock.count_visible = false;
 	}
 }
