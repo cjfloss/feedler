@@ -9,6 +9,7 @@ public class Feedler.Window : Gtk.Window
 {
 	private Feedler.Database db;
 	internal Feedler.Toolbar toolbar;
+	private Feedler.Infobar infobar;
 	private Feedler.Sidebar side;
 	private Feedler.Statusbar stat;
 	private Feedler.MenuSide sidemenu;
@@ -57,8 +58,10 @@ public class Feedler.Window : Gtk.Window
 	
 	private void ui_toolbar ()
 	{
-		this.toolbar = new Feedler.Toolbar ();   
+		this.toolbar = new Feedler.Toolbar (); 
+		this.infobar = new Feedler.Infobar ();
         this.content.pack_start (toolbar, false, false, 0);
+        this.content.pack_start (infobar, false, false, 0);
         
         this.toolbar.back.clicked.connect (history_prev);
         this.toolbar.forward.clicked.connect (history_next);

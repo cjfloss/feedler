@@ -75,6 +75,7 @@ vala_precompile(VALA_C
 	src/ui/cardlayout.vala
 	src/ui/contractor.vala
 	src/ui/folder.vala
+	src/ui/infobar.vala
 	src/ui/menu.vala
 	src/ui/preferences.vala
 	src/ui/sidebar.vala
