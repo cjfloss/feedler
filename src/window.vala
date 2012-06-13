@@ -21,7 +21,7 @@ public class Feedler.Window : Gtk.Window
 	private Feedler.CardLayout layout;
     private Feedler.Client client;
 	private Feedler.Manager manager;
-    private int connections;
+    //private int connections;
 	
 	construct
 	{
@@ -353,8 +353,8 @@ public class Feedler.Window : Gtk.Window
             ch.items.append (it);
         }
         this.db.commit ();
-        this.connections--;
-stderr.printf ("SIZE: %u\n", reverse.length ());
+        this.manager.connections--;
+
 		if (reverse.length () > 0)
 		{
 			this.manager.add ((int)reverse.length ());
@@ -364,7 +364,7 @@ stderr.printf ("SIZE: %u\n", reverse.length ());
 		}
 		else
 			this.side.set_mode (ch.id, 1);
-        if (connections == 0)
+        if (manager.connections == 0)
         {
             this.toolbar.progress.pulse ("", false);
             string description = this.manager.news > 1 ? _("new feeds") : _("new feed");
@@ -375,7 +375,7 @@ stderr.printf ("SIZE: %u\n", reverse.length ());
 
     private void favicon_cb (string uri, uint8[] data)
 	{
-        this.connections--;
+        this.manager.connections--;
         Model.Channel c = this.db.from_source (uri);
 		try
 		{
@@ -392,7 +392,7 @@ stderr.printf ("SIZE: %u\n", reverse.length ());
 			stderr.printf ("Cannot get favicon for %s\n", uri);
             this.side.set_mode (c.id, 2);
 		}
-        if (connections == 0)
+        if (manager.connections == 0)
             this.toolbar.progress.pulse ("", false);
 	}
 
@@ -518,13 +518,13 @@ stderr.printf ("SIZE: %u\n", reverse.length ());
         {
             this.toolbar.progress.pulse (_("Updating subscriptions"), true);
             string[] uris = this.db.get_uris ();
-            this.connections = uris.length;
+            this.manager.connections = uris.length;
             this.client.update_all (uris);
         }
         catch (GLib.Error e)
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
-            this.connections = 0;
+            this.manager.connections = 0;
         }
 	}
 
@@ -539,21 +539,21 @@ stderr.printf ("SIZE: %u\n", reverse.length ());
                 {
 				    Model.Channel c = this.db.get_channel (ch.id);
                     this.toolbar.progress.pulse (_("Updating %s").printf (c.title), true);
-					this.connections++;
+					this.manager.connections++;
                     this.client.update (c.source);
 			    }
                 else
                 {
                     this.toolbar.progress.pulse (_("Updating subscriptions"), true);
                     string[] uris = this.db.get_folder_uris (ch.id);
-                    this.connections = uris.length;
+                    this.manager.connections = uris.length;
                     this.client.update_all (uris);
 			    }
             }
             catch (GLib.Error e)
             {
                 this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
-	            this.connections = 0;
+	            this.manager.connections = 0;
             }
         }
 	}
@@ -564,12 +564,13 @@ stderr.printf ("SIZE: %u\n", reverse.length ());
         {
             this.toolbar.progress.pulse (_("Downloading favicons"), true);
             string[] uris = this.db.get_uris ();
-            this.connections = uris.length;
+            this.manager.connections = uris.length;
             this.client.favicon_all (uris);
         }
         catch (GLib.Error e)
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+            this.manager.connections = 0;
         }
 	}
 
@@ -579,12 +580,13 @@ stderr.printf ("SIZE: %u\n", reverse.length ());
         {
             int id = this.selection_tree ();
             this.toolbar.progress.pulse (_("Downloading favicons"), true);
-            this.connections++;
+            this.manager.connections++;
             this.client.favicon (this.db.get_channel (id).source);
         }
         catch (GLib.Error e)
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+            this.manager.connections = 0;
         }
 	}
 

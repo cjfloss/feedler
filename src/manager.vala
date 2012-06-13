@@ -9,6 +9,7 @@ public class Feedler.Manager : GLib.Object
 {
 	public int count {get; set; default = 0;}
 	public int news {get; set; default = 0;}
+	public int connections {get; set; default = 0;}
 
 	private Feedler.Statusbar statusbar;
 	//private Feedler.Dock dockbar;
