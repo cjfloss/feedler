@@ -123,7 +123,7 @@ public class Feedler.Window : Gtk.Window
         this.stat.next_feed.button_press_event.connect (()=>{_next_unread (); return false;});
         this.stat.mark_feed.button_press_event.connect (()=>{_mark_all (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
-		this.manager = new Feedler.Manager (stat, toolbar);
+		this.manager = new Feedler.Manager (toolbar, stat);
 	}
 	
 	private void ui_feeds ()
@@ -321,8 +321,8 @@ public class Feedler.Window : Gtk.Window
             }
         }
         this.db.commit ();
-		this.manager.end ();
-        this.notification (_("Imported %i channels in %i folders.").printf (count, folders.length-1));
+		if (manager.end ())
+			this.notification (_("Imported %i channels in %i folders.").printf (count, folders.length-1));
 	}
 	
 	protected void updated_cb (Serializer.Channel channel)
@@ -363,8 +363,8 @@ public class Feedler.Window : Gtk.Window
 		}
 		else
 			this.side.set_mode (ch.id, 1);
-
-		this.manager.end ();
+		if (manager.end ())
+			this.notification ("%i %s".printf (manager.news, manager.news > 1 ? _("new feeds") : _("new feed")));
 	}
 
     private void favicon_cb (string uri, uint8[] data)
