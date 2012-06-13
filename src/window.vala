@@ -21,7 +21,6 @@ public class Feedler.Window : Gtk.Window
 	private Feedler.CardLayout layout;
     private Feedler.Client client;
 	private Feedler.Manager manager;
-    //private int connections;
 	
 	construct
 	{
@@ -51,7 +50,7 @@ public class Feedler.Window : Gtk.Window
 			this.ui_feeds ();
 		else
 			this.ui_welcome ();		
-			
+		
 		this.add (content);
 		this.history = new Feedler.History ();
 	}
@@ -62,7 +61,7 @@ public class Feedler.Window : Gtk.Window
 		this.infobar = new Feedler.Infobar ();
         this.content.pack_start (toolbar, false, false, 0);
         this.content.pack_start (infobar, false, false, 0);
-        
+		this.toolbar.mode.selected = 0;
         this.toolbar.back.clicked.connect (history_prev);
         this.toolbar.forward.clicked.connect (history_next);
         this.toolbar.update.clicked.connect (_update_all);
@@ -98,7 +97,6 @@ public class Feedler.Window : Gtk.Window
 
 	private void ui_workspace ()
 	{
-		this.toolbar.mode.selected = 0;
         this.pane.set_position (Feedler.STATE.sidebar_width);
         this.pane.add1 (scroll_side);
 		
@@ -124,13 +122,12 @@ public class Feedler.Window : Gtk.Window
         this.stat.next_feed.button_press_event.connect (()=>{_next_unread (); return false;});
         this.stat.mark_feed.button_press_event.connect (()=>{_mark_all (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
-		this.manager = new Feedler.Manager (stat);
+		this.manager = new Feedler.Manager (stat, toolbar);
 	}
 	
 	private void ui_feeds ()
 	{
-		this.ui_workspace (); 
-        
+		this.ui_workspace ();   
         foreach (Model.Folder f in this.db.select_folders ())
             this.side.add_folder (f);
 
@@ -139,7 +136,7 @@ public class Feedler.Window : Gtk.Window
             this.side.add_channel (c.id, c.title, c.folder, c.unread);
 			this.manager.count += c.unread;
 		}
-		this.manager.manage ();
+		this.manager.unread ();
 		this.side.expand_all ();
 		this.side.cursor_changed.connect (load_channel);
 	}
@@ -156,7 +153,8 @@ public class Feedler.Window : Gtk.Window
 	{
 		this.toolbar.set_enable (true);
         this.layout.reinit ();
-        this.ui_feeds ();
+        //this.ui_feeds ();
+		this.ui_workspace ();
 	}
 
     private void notification (string msg)
@@ -304,7 +302,7 @@ public class Feedler.Window : Gtk.Window
         this.db.begin ();
         foreach (var f in folders)
         {
-            this.toolbar.progress.pulse (_("Importing %s").printf (f.name), true);
+			this.manager.progress ();
 			int fid = 0;
 			if (f.name != "body")
 			{
@@ -323,21 +321,23 @@ public class Feedler.Window : Gtk.Window
             }
         }
         this.db.commit ();
-        this.toolbar.progress.pulse ("", false);
+		this.manager.end ();
         this.notification (_("Imported %i channels in %i folders.").printf (count, folders.length-1));
 	}
 	
 	protected void updated_cb (Serializer.Channel channel)
 	{
+		//TODO Thread
         stderr.printf ("updated_cb\n");
+		this.manager.progress ();
         Model.Channel ch = this.db.from_source (channel.source);
-        this.toolbar.progress.pulse (_("Updating %s").printf (ch.title), true);
         GLib.List<Serializer.Item?> reverse = new GLib.List<Serializer.Item?> ();
-        string last;
+		string last;
         if (ch.items.length () > 0)
             last = ch.items.last ().data.title;
         else
             last = "";
+		//string last = ch.items.last ().data.title ?? "";
         foreach (var i in channel.items)
         {
             if (last == i.title)
@@ -353,7 +353,6 @@ public class Feedler.Window : Gtk.Window
             ch.items.append (it);
         }
         this.db.commit ();
-        this.manager.connections--;
 
 		if (reverse.length () > 0)
 		{
@@ -364,18 +363,13 @@ public class Feedler.Window : Gtk.Window
 		}
 		else
 			this.side.set_mode (ch.id, 1);
-        if (manager.connections == 0)
-        {
-            this.toolbar.progress.pulse ("", false);
-            string description = this.manager.news > 1 ? _("new feeds") : _("new feed");
-            this.notification ("%i %s".printf ((int)this.manager.news, description));
-			this.manager.manage ();
-        }
+
+		this.manager.end ();
 	}
 
     private void favicon_cb (string uri, uint8[] data)
 	{
-        this.manager.connections--;
+        this.manager.progress ();
         Model.Channel c = this.db.from_source (uri);
 		try
 		{
@@ -392,8 +386,7 @@ public class Feedler.Window : Gtk.Window
 			stderr.printf ("Cannot get favicon for %s\n", uri);
             this.side.set_mode (c.id, 2);
 		}
-        if (manager.connections == 0)
-            this.toolbar.progress.pulse ("", false);
+        this.manager.end ();
 	}
 
 	private void mark_item (int id, bool state)
@@ -516,15 +509,14 @@ public class Feedler.Window : Gtk.Window
 	{
         try
         {
-            this.toolbar.progress.pulse (_("Updating subscriptions"), true);
             string[] uris = this.db.get_uris ();
-            this.manager.connections = uris.length;
+			this.manager.start (_("Updating subscriptions"), uris.length);
             this.client.update_all (uris);
         }
         catch (GLib.Error e)
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
-            this.manager.connections = 0;
+			this.manager.error ();
         }
 	}
 
@@ -538,22 +530,20 @@ public class Feedler.Window : Gtk.Window
                 if (ch.mode == 1)
                 {
 				    Model.Channel c = this.db.get_channel (ch.id);
-                    this.toolbar.progress.pulse (_("Updating %s").printf (c.title), true);
-					this.manager.connections++;
+					this.manager.start (_("Updating %s").printf (c.title));
                     this.client.update (c.source);
 			    }
                 else
                 {
-                    this.toolbar.progress.pulse (_("Updating subscriptions"), true);
                     string[] uris = this.db.get_folder_uris (ch.id);
-                    this.manager.connections = uris.length;
+					this.manager.start (_("Updating subscriptions"), uris.length);
                     this.client.update_all (uris);
 			    }
             }
             catch (GLib.Error e)
             {
                 this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
-	            this.manager.connections = 0;
+	            this.manager.error ();
             }
         }
 	}
@@ -562,15 +552,14 @@ public class Feedler.Window : Gtk.Window
 	{
         try
         {
-            this.toolbar.progress.pulse (_("Downloading favicons"), true);
             string[] uris = this.db.get_uris ();
-            this.manager.connections = uris.length;
+			this.manager.start (_("Downloading favicons"), uris.length);
             this.client.favicon_all (uris);
         }
         catch (GLib.Error e)
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
-            this.manager.connections = 0;
+            this.manager.error ();
         }
 	}
 
@@ -579,14 +568,13 @@ public class Feedler.Window : Gtk.Window
         try
         {
             int id = this.selection_tree ();
-            this.toolbar.progress.pulse (_("Downloading favicons"), true);
-            this.manager.connections++;
+   			this.manager.start (_("Downloading favicons"));
             this.client.favicon (this.db.get_channel (id).source);
         }
         catch (GLib.Error e)
         {
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
-            this.manager.connections = 0;
+            this.manager.error ();
         }
 	}
 
@@ -618,11 +606,12 @@ public class Feedler.Window : Gtk.Window
 	                this.ui_welcome_to_workspace ();
 			        this.show_all ();
 				}
-                this.toolbar.progress.pulse (_("Importing subscriptions"), true);
+				this.manager.start (_("Importing subscriptions"));
             }
             catch (GLib.Error e)
             {
                 this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+				this.manager.error ();
             }
         }
         file.destroy ();
@@ -699,7 +688,7 @@ public class Feedler.Window : Gtk.Window
 			   	this.side.mark_channel (c.id);
 			}
 			this.manager.count = 0;
-			this.manager.manage ();
+			this.manager.unread ();
 			this.db.mark_all ();
 		}
 		info.destroy ();

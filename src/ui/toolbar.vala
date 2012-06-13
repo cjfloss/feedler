@@ -13,7 +13,7 @@ public class Progress : Gtk.VBox
 	construct
 	{
 		this.bar = new Gtk.ProgressBar ();
-        this.bar.fraction = 0.3;
+        //this.bar.fraction = 0.3;
 		this.label = new Gtk.Label (null);
 		this.label.set_justify (Gtk.Justification.CENTER);
 		this.label.set_single_line_mode (true);
@@ -25,7 +25,7 @@ public class Progress : Gtk.VBox
        	this.hide ();
 	}
 
-    public void pulse (string text, bool show = true)
+    /*public void pulse (string text, bool show = true)
     {
         if (show)
         {
@@ -39,7 +39,27 @@ public class Progress : Gtk.VBox
 			this.set_no_show_all (!show);
         	this.hide ();
 		}
-    }   
+    }*/
+
+	public void show_bar (string text)
+	{
+		this.label.set_text (text);
+		this.set_no_show_all (false);
+		this.show_all ();
+	}
+
+	public void hide_bar ()
+	{
+        this.bar.fraction = 0.0;
+		this.set_no_show_all (true);
+        this.hide ();
+	}
+
+	public void proceed (double fraction)
+    {
+        this.bar.fraction = fraction;
+    }
+
 }
 
 public class Feedler.Toolbar : Gtk.Toolbar
@@ -58,8 +78,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Feedler.ContractorButton sharemenu;
     internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label (_("Sidebar Visible"));
     internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label (_("Fullscreen"));
-    //internal Gtk.MenuItem import_feeds = new Gtk.MenuItem.with_label (_("Import"));
-    //internal Gtk.MenuItem export_feeds = new Gtk.MenuItem.with_label (_("Export"));
     internal Gtk.MenuItem preferences = new Gtk.MenuItem.with_label (_("Preferences"));
     internal Gtk.MenuItem about_program = new Gtk.MenuItem.with_label (_("About"));
     
@@ -69,9 +87,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.get_style_context ().add_class ("primary-toolbar");
 		
         Gtk.Menu menu = new Gtk.Menu ();
-        //menu.append (import_feeds);
-        //menu.append (export_feeds);
-        //menu.append (new Gtk.SeparatorMenuItem ());
         menu.append (sidebar_visible);
         menu.append (fullscreen_mode);
         menu.append (new Gtk.SeparatorMenuItem ());
@@ -121,7 +136,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.search.set_sensitive (state);
         this.mode.set_sensitive (state);
         this.column.set_sensitive (state);
-		//this.export_feeds.set_sensitive (state);
 		this.sidebar_visible.set_sensitive (state);
 		this.sharemenu.set_sensitive (state);
 	}

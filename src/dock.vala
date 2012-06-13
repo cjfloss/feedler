@@ -13,6 +13,7 @@ public class Feedler.Dock : GLib.Object
 	{
 		this.dock = Unity.LauncherEntry.get_for_desktop_id ("feedler.desktop");
 	    this.dock.count_visible = false;
+		this.dock.progress_visible = false;
 	}
 
 	public void counter (uint count)
@@ -22,5 +23,14 @@ public class Feedler.Dock : GLib.Object
 			this.dock.count_visible = true;
 		else
 			this.dock.count_visible = false;
+	}
+
+	public void proceed (double fraction)
+	{
+		this.dock.progress = fraction;
+		if (fraction > 0.0 && fraction < 1.0)
+			this.dock.progress_visible = true;
+		else
+			this.dock.progress_visible = false;
 	}
 }
