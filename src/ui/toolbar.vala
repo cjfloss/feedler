@@ -13,7 +13,6 @@ public class Progress : Gtk.VBox
 	construct
 	{
 		this.bar = new Gtk.ProgressBar ();
-        //this.bar.fraction = 0.3;
 		this.label = new Gtk.Label (null);
 		this.label.set_justify (Gtk.Justification.CENTER);
 		this.label.set_single_line_mode (true);
@@ -24,22 +23,6 @@ public class Progress : Gtk.VBox
         this.set_no_show_all (true);
        	this.hide ();
 	}
-
-    /*public void pulse (string text, bool show = true)
-    {
-        if (show)
-        {
-            this.bar.pulse ();
-            this.label.set_text (text);
-            this.set_no_show_all (!show);
-		    this.show_all ();
-		}
-		else
-        {
-			this.set_no_show_all (!show);
-        	this.hide ();
-		}
-    }*/
 
 	public void show_bar (string text)
 	{
@@ -79,7 +62,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label (_("Sidebar Visible"));
     internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label (_("Fullscreen"));
     internal Gtk.MenuItem preferences = new Gtk.MenuItem.with_label (_("Preferences"));
-    internal Gtk.MenuItem about_program = new Gtk.MenuItem.with_label (_("About"));
     
 	construct
 	{
@@ -91,8 +73,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (fullscreen_mode);
         menu.append (new Gtk.SeparatorMenuItem ());
         menu.append (preferences);
-        menu.append (about_program);
-        this.appmenu = new Granite.Widgets.AppMenu (menu);
+        this.appmenu = Feedler.APP.create_appmenu (menu);
         this.sharemenu = new Feedler.ContractorButton ();
         
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));

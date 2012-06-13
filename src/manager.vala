@@ -12,13 +12,15 @@ public class Feedler.Manager : GLib.Object
 	private int connections;
 	private double fraction;
 
+	private Feedler.Dock dockbar;
+	private Feedler.Indicator indicator;
 	private Feedler.Statusbar statusbar;
 	private Feedler.Toolbar toolbar;
-	//private Feedler.Dock dockbar;
-	//private Feedler.Indicator indicator;
 
 	public Manager (Feedler.Statusbar? stat, Feedler.Toolbar? tool = null)
 	{
+		this.dockbar = new Feedler.Dock ();
+		this.indicator = new Feedler.Indicator ();
 		this.statusbar = stat;
 		this.toolbar = tool;
 	}
@@ -33,11 +35,9 @@ public class Feedler.Manager : GLib.Object
 	{
 		this.count += diff;
 		this.news = 0;
-		//this.dockbar.counter (count);
-		//this.indicator.counter (count);
+		this.dockbar.counter (count);
+		this.indicator.counter (count);
 		this.statusbar.counter (count);
-		Feedler.DOCK.counter (count);
-		Feedler.INDICATOR.counter (count);
 	}
 
 	public void start (string text, int conn = 1)
@@ -49,8 +49,8 @@ public class Feedler.Manager : GLib.Object
 
 	public void progress ()
 	{
-		Feedler.DOCK.proceed (fraction);
 		this.toolbar.progress.proceed (fraction);
+		this.dockbar.proceed (fraction);
 	}
 
 	public void end ()
@@ -70,6 +70,6 @@ public class Feedler.Manager : GLib.Object
 	{
 		this.connections = 0;
         this.toolbar.progress.hide_bar ();
-		Feedler.DOCK.proceed (1.0);
+		this.dockbar.proceed (1.0);
 	}
 }

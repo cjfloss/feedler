@@ -7,12 +7,10 @@
 
 namespace Feedler
 {
-	public Feedler.Dock DOCK;
-    public Feedler.Indicator INDICATOR;
-    public Feedler.State STATE;
-    public Feedler.Settings SETTING;
-    public Feedler.Service SERVICE;
-	public Feedler.App APP;
+    internal Feedler.State STATE;
+    internal Feedler.Settings SETTING;
+    internal Feedler.Service SERVICE;
+	internal Feedler.App APP;
 }
 
 public class Feedler.App : Granite.Application
@@ -60,24 +58,21 @@ public class Feedler.App : Granite.Application
 			window.present ();
 			return;
 		}
-		Feedler.INDICATOR = new Feedler.Indicator ();
 		Feedler.STATE = new Feedler.State ();
 		Feedler.SETTING = new Feedler.Settings ();
 		Feedler.SERVICE = new Feedler.Service ();
-		window = new Feedler.Window ();
-        window.title = "Feedler";
-		window.icon_name = "internet-feed-reader";
-		window.set_application (this);
+		this.window = new Feedler.Window ();
+        this.window.title = "Feedler";
+		this.window.icon_name = "internet-feed-reader";
+		this.window.set_application (this);
 		this.window.show_all ();
 		if (Feedler.STATE.hide_start)
 			this.window.hide ();
-		window.toolbar.about_program.activate.connect (() => {show_about (window);});
 	}
 	
 	public static int main (string[] args)
 	{
 		Feedler.APP = new Feedler.App ();
-		Feedler.DOCK = new Feedler.Dock ();
 		return APP.run (args);
 	}
 }

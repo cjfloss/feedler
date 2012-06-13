@@ -85,6 +85,7 @@ public class Feedler.Window : Gtk.Window
     {
         this.side = new Feedler.Sidebar ();
 		this.side.button_press_event.connect (context_menu);
+		this.side.cursor_changed.connect (load_channel);
 		this.scroll_side = new Gtk.ScrolledWindow (null, null);
 		this.scroll_side.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 		this.scroll_side.add (side);
@@ -129,6 +130,7 @@ public class Feedler.Window : Gtk.Window
 	{
 		this.ui_workspace ();   
         foreach (Model.Folder f in this.db.select_folders ())
+			//stderr.printf ("%i, %s (%i)\n", f.id, f.name, f.parent);
             this.side.add_folder (f);
 
         foreach (Model.Channel c in this.db.select_channels ())
@@ -138,7 +140,6 @@ public class Feedler.Window : Gtk.Window
 		}
 		this.manager.unread ();
 		this.side.expand_all ();
-		this.side.cursor_changed.connect (load_channel);
 	}
 	
 	private void ui_welcome ()
@@ -153,7 +154,6 @@ public class Feedler.Window : Gtk.Window
 	{
 		this.toolbar.set_enable (true);
         this.layout.reinit ();
-        //this.ui_feeds ();
 		this.ui_workspace ();
 	}
 
