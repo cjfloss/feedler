@@ -7,11 +7,11 @@
 
 public class Feedler.Window : Gtk.Window
 {
-	private Feedler.Database db;
+	internal Feedler.Database db;
 	internal Feedler.Toolbar toolbar;
-	private Feedler.Infobar infobar;
-	private Feedler.Sidebar side;
-	private Feedler.Statusbar stat;
+	internal Feedler.Infobar infobar;
+	internal Feedler.Sidebar side;
+	internal Feedler.Statusbar stat;
 	private Feedler.MenuSide sidemenu;
 	private Feedler.History history;
 	private weak Feedler.View view;
@@ -123,7 +123,7 @@ public class Feedler.Window : Gtk.Window
         this.stat.next_feed.button_press_event.connect (()=>{_next_unread (); return false;});
         this.stat.mark_feed.button_press_event.connect (()=>{_mark_all (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
-		this.manager = new Feedler.Manager (toolbar, stat);
+		this.manager = new Feedler.Manager (this);
 	}
 	
 	private void ui_feeds ()
@@ -133,15 +133,15 @@ public class Feedler.Window : Gtk.Window
 {
 //Model.Folder fo = {f.id, f.name, 0};
 //            	this.side.add_folder (fo);
-			stderr.printf ("%i, %s (%i)\n", f.id, f.name, f.parent);
-//            this.side.add_folder (f);
+//			stderr.printf ("%i, %s (%i)\n", f.id, f.name, f.parent);
+            this.side.add_folder (f);
 //break;
 }
         foreach (var c in this.db.select_channels ())
 		{
-            //this.side.add_channel (c.id, c.title, 0, c.unread);
+            this.side.add_channel (c.id, c.title, 0, c.unread);
 			this.manager.count += c.unread;
-stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
+//stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
 //break;
 		}
 		this.manager.unread ();
@@ -163,7 +163,7 @@ stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
 		this.ui_workspace ();
 	}
 
-    private void notification (string msg)
+    internal void notification (string msg)
     {
         try
         {
@@ -175,7 +175,7 @@ stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
         }
     }
 
-    private void dialog (string msg, Gtk.MessageType msg_type = Gtk.MessageType.INFO)
+    internal void dialog (string msg, Gtk.MessageType msg_type = Gtk.MessageType.INFO)
     {
          var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                            msg_type, Gtk.ButtonsType.OK, msg);
@@ -210,7 +210,7 @@ stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
 		}
 	}
 	
-	private int selection_tree ()
+	internal int selection_tree ()
 	{
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
@@ -283,7 +283,7 @@ stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
             this.toolbar.forward.sensitive = false;
     }
 
-	protected void added_cb (Serializer.Channel channel)
+	private void added_cb (Serializer.Channel channel)
 	{
         stderr.printf ("add_cb\n");
         Model.Channel ch = this.db.from_source (channel.source);
@@ -302,7 +302,7 @@ stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
 		this.manager.unread (channel.items.length);
 	}
 
-    protected void imported_cb (Serializer.Folder[] folders)
+    private void imported_cb (Serializer.Folder[] folders)
 	{
         int count = 0;
         this.db.begin ();
@@ -320,51 +320,21 @@ stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
             count += f.channels.length;
             foreach (var c in f.channels)
             {
-                int cid = this.db.insert_serialized_channel (fid, c);
+				int cid = this.db.insert_serialized_channel (fid, c);
                 this.side.add_channel (cid, c.title, fid);
                 Model.Channel ch = new Model.Channel.with_data (cid, c.title, c.link, c.source, fid);
                 this.db.channels.append (ch);
             }
+			Gtk.main_iteration ();
         }
         this.db.commit ();
 		if (manager.end ())
 			this.notification (_("Imported %i channels in %i folders.").printf (count, folders.length-1));
 	}
-	
+
 	private void updated_cb (Serializer.Channel channel)
 	{
-        stderr.printf ("updated_func\n");
-		this.manager.progress ();
-        Model.Channel ch = this.db.from_source (channel.source);
-        GLib.List<Serializer.Item?> reverse = new GLib.List<Serializer.Item?> ();
-		string last = ch.last_item_title ();
-        foreach (var i in channel.items)
-        {
-            if (last == i.title)
-                break;
-            reverse.append (i);
-        }
-        reverse.reverse ();
-        this.db.begin ();
-        foreach (var i in reverse)
-        {
-            int id = this.db.insert_serialized_item (ch.id, i);
-            Model.Item it = {id, i.title, i.source, i.author, i.description, i.time, Model.State.UNREAD, ch.id};
-            ch.items.append (it);
-        }
-        this.db.commit ();
-
-		if (reverse.length () > 0)
-		{
-			this.manager.add ((int)reverse.length ());
-			this.side.add_unread (ch.id, (int)reverse.length ());
-			if (this.selection_tree () == ch.id)
-				this.load_channel ();
-		}
-		else
-			this.side.set_mode (ch.id, 1);
-		if (manager.end ())
-			this.notification ("%i %s".printf (manager.news, manager.news > 1 ? _("new feeds") : _("new feed")));
+		this.manager.queue (channel);
 	}
 
     private void favicon_cb (string uri, uint8[] data)
@@ -430,7 +400,7 @@ stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
 		this.view.refilter (this.toolbar.search.get_text ());
 	}
 	
-	private void load_channel ()
+	internal void load_channel ()
 	{
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;

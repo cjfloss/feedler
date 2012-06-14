@@ -478,7 +478,7 @@ public class Feedler.Database : GLib.Object
 			query.set_string (":name", folder.name);
 			//query.set_int (":parent", folder.parent);
             query.set_int (":parent", 0);
-		    int id = (int)query.execute_insert ();
+		    int id = (int)(query.execute_insert ());
             return id;
 		}
 		catch (SQLHeavy.Error e)
@@ -497,7 +497,7 @@ public class Feedler.Database : GLib.Object
 			query.set_string (":source", channel.source);
 			query.set_string (":link", channel.link);
 			query.set_int (":folder", folder);
-            int id = (int)query.execute_insert ();
+            int id = (int)(query.execute_insert ());
             return id;
 		}
 		catch (SQLHeavy.Error e)
