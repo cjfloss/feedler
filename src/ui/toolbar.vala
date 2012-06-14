@@ -40,7 +40,7 @@ public class Progress : Gtk.VBox
 
 	public void proceed (double fraction)
     {
-        this.bar.fraction = fraction;
+        this.bar.set_fraction (fraction);
     }
 
 }

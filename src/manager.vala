@@ -11,6 +11,7 @@ public class Feedler.Manager : GLib.Object
 	internal int news;
 	private int connections;
 	private double fraction;
+	private double proceed;
 	private Feedler.Dock dockbar;
 	private Feedler.Indicator indicator;
 	private Feedler.Statusbar statusbar;
@@ -44,12 +45,14 @@ public class Feedler.Manager : GLib.Object
 		this.connections = conn;
 		this.fraction = 1.0 / (connections * 2.0);
 		this.news = 0;
+		this.proceed = 0.0;
 	}
 
 	public void progress ()
 	{
-		this.toolbar.progress.proceed (fraction);
-		this.dockbar.proceed (fraction);
+		this.proceed += fraction;
+		this.toolbar.progress.proceed (proceed);
+		this.dockbar.proceed (proceed);
 	}
 
 	public bool end (string? msg = null)

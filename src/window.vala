@@ -129,14 +129,20 @@ public class Feedler.Window : Gtk.Window
 	private void ui_feeds ()
 	{
 		this.ui_workspace ();   
-        foreach (Model.Folder f in this.db.select_folders ())
-			//stderr.printf ("%i, %s (%i)\n", f.id, f.name, f.parent);
-            this.side.add_folder (f);
-
-        foreach (Model.Channel c in this.db.select_channels ())
+        foreach (var f in this.db.select_folders ())
+{
+//Model.Folder fo = {f.id, f.name, 0};
+//            	this.side.add_folder (fo);
+			stderr.printf ("%i, %s (%i)\n", f.id, f.name, f.parent);
+//            this.side.add_folder (f);
+//break;
+}
+        foreach (var c in this.db.select_channels ())
 		{
-            this.side.add_channel (c.id, c.title, c.folder, c.unread);
+            //this.side.add_channel (c.id, c.title, 0, c.unread);
 			this.manager.count += c.unread;
+stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
+//break;
 		}
 		this.manager.unread ();
 		this.side.expand_all ();
@@ -325,19 +331,13 @@ public class Feedler.Window : Gtk.Window
 			this.notification (_("Imported %i channels in %i folders.").printf (count, folders.length-1));
 	}
 	
-	protected void updated_cb (Serializer.Channel channel)
+	private void updated_cb (Serializer.Channel channel)
 	{
-		//TODO Thread
-        stderr.printf ("updated_cb\n");
+        stderr.printf ("updated_func\n");
 		this.manager.progress ();
         Model.Channel ch = this.db.from_source (channel.source);
         GLib.List<Serializer.Item?> reverse = new GLib.List<Serializer.Item?> ();
-		string last;
-        if (ch.items.length () > 0)
-            last = ch.items.last ().data.title;
-        else
-            last = "";
-		//string last = ch.items.last ().data.title ?? "";
+		string last = ch.last_item_title ();
         foreach (var i in channel.items)
         {
             if (last == i.title)

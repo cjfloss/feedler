@@ -25,8 +25,8 @@ public class Feedler.Sidebar : Gtk.TreeView
 {
 	private Gtk.TreeStore store;
 	private Feedler.SidebarCell scell;
-    private Gee.HashMap<int, Gtk.TreeIter?> folders;
-    private Gee.HashMap<int, Gtk.TreeIter?> channels;
+    private Gee.AbstractMap<int, Gtk.TreeIter?> folders;
+    private Gee.AbstractMap<int, Gtk.TreeIter?> channels;
 	
 	construct
 	{
@@ -55,7 +55,7 @@ public class Feedler.Sidebar : Gtk.TreeView
     public void add_folder_ (int id, string name, int folder)
     {
         Gtk.TreeIter folder_iter;
-        if (folder > 0)
+		if (folder > 0)
             this.store.append (out folder_iter, this.folders.get (folder));
         else
             this.store.append (out folder_iter, null);

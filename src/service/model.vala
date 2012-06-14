@@ -38,6 +38,13 @@ public class Model.Channel
                 return item;
         return null;
     }
+
+	public string last_item_title ()
+	{
+        if (this.items.length () > 0)
+            return this.items.last ().data.title;
+        return "";
+	}
 }
 
 public struct Model.Item
