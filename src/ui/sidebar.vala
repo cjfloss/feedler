@@ -23,10 +23,11 @@ public class ChannelStore : GLib.Object
 
 public class Feedler.Sidebar : Gtk.TreeView
 {
-	private Gtk.TreeStore store;
+	internal Gtk.TreeStore store;
 	private Feedler.SidebarCell scell;
     private Gee.AbstractMap<int, Gtk.TreeIter?> folders;
     private Gee.AbstractMap<int, Gtk.TreeIter?> channels;
+	private Gtk.TreeIter iter;
 	
 	construct
 	{
@@ -45,6 +46,29 @@ public class Feedler.Sidebar : Gtk.TreeView
 		this.insert_column (column, -1); 
         this.folders = new Gee.HashMap<int, Gtk.TreeIter?> ();
 		this.channels = new Gee.HashMap<int, Gtk.TreeIter?> ();
+		//this.set_no_show_all (true);
+//this.add_folder_ (2, "KUTAS", 0);
+//Gtk.TreeIter folder_iter;
+//        this.store.append (out iter, null);
+//        this.store.set_value (iter, 0, new ChannelStore (1, "TEST", 0, 0));
+//        this.folders.set (1, iter);
+//this.add_folder_ (1, "TEST", 0);
+//this.add_channel (1, "AAA", 1, 0);
+//int folder = 0;
+//int id = 1;
+//string name = "AAA";
+//this.add_folder_ (2, name, 0);
+//Gtk.TreeIter folder_iter;
+		/*if (folder > 0)
+            this.store.append (out folder_iter, this.folders.get (folder));
+        else
+            this.store.append (out folder_iter, null);*/
+		/*this.store.append (out folder_iter, this.folders.get (folder));
+        this.store.set_value (folder_iter, 0, new ChannelStore (id, name, 0, 0));
+        this.folders.set (id, folder_iter);
+		this.store.append (out folder_iter, this.folders.get (1));
+        this.store.set_value (folder_iter, 0, new ChannelStore (2, name, 0, 0));
+        this.folders.set (2, folder_iter);*/
 	}
 
     public void add_folder (Model.Folder f)

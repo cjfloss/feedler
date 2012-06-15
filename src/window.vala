@@ -39,6 +39,7 @@ public class Feedler.Window : Gtk.Window
             this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
         }
 		this.db = new Feedler.Database ();
+		this.manager = new Feedler.Manager (this);
 		this.layout = new Feedler.CardLayout ();
 		this.delete_event.connect (destroy_app);
 		this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);	
@@ -47,6 +48,8 @@ public class Feedler.Window : Gtk.Window
         this.set_default_size (Feedler.STATE.window_width, Feedler.STATE.window_height);
 
 		if (this.db.is_created ())
+//stderr.printf ("ui\n");
+			//this.ui_workspace ();
 			this.ui_feeds ();
 		else
 			this.ui_welcome ();		
@@ -79,6 +82,7 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
         this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
+        this.toolbar.test.toggled.connect (ui_feeds);
 	}
     
     private void ui_layout ()
@@ -123,27 +127,25 @@ public class Feedler.Window : Gtk.Window
         this.stat.next_feed.button_press_event.connect (()=>{_next_unread (); return false;});
         this.stat.mark_feed.button_press_event.connect (()=>{_mark_all (); return false;});
         this.content.pack_end (this.stat, false, true, 0);
-		this.manager = new Feedler.Manager (this);
+		
 	}
 	
 	private void ui_feeds ()
 	{
-		this.ui_workspace ();   
+		this.ui_workspace ();
+		this.side.model = null;
         foreach (var f in this.db.select_folders ())
-{
-//Model.Folder fo = {f.id, f.name, 0};
-//            	this.side.add_folder (fo);
-//			stderr.printf ("%i, %s (%i)\n", f.id, f.name, f.parent);
+		{
+//stderr.printf ("%i, %s (%i)\n", f.id, f.name, f.parent);
             this.side.add_folder (f);
-//break;
-}
+		}
         foreach (var c in this.db.select_channels ())
 		{
-            this.side.add_channel (c.id, c.title, 0, c.unread);
-			this.manager.count += c.unread;
 //stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
-//break;
+            this.side.add_channel (c.id, c.title, c.folder, c.unread);
+			this.manager.count += c.unread;
 		}
+		this.side.model = side.store;
 		this.manager.unread ();
 		this.side.expand_all ();
 	}

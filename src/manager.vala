@@ -8,13 +8,13 @@
 public class Feedler.Manager : GLib.Object
 {
 	internal int count;
-	internal int news;
+	private int news;
 	private int connections;
 	private double fraction;
 	private double proceed;
 	private Feedler.Dock dockbar;
 	private Feedler.Indicator indicator;
-	internal Feedler.Window window;
+	private Feedler.Window window;
 	private Gee.LinkedList<Serializer.Channel?> q;
 
 	public Manager (Feedler.Window win)
@@ -91,13 +91,8 @@ public class Feedler.Manager : GLib.Object
 
 	private void* updated_func ()
 	{
-		//while ()
 		stderr.printf ("updated_func\n");
-		//while (!this.semafor);
-		//this.semafor = false;
-		Serializer.Channel channel = this.q.poll_head ();//first ();
-//		this.q.remove (channel);//pool_head ();
-		//this.semafor = true;
+		Serializer.Channel channel = this.q.poll_head ();
 		this.progress ();
         Model.Channel ch = this.window.db.from_source (channel.source);
         GLib.List<Serializer.Item?> reverse = new GLib.List<Serializer.Item?> ();
