@@ -404,6 +404,7 @@ public class Feedler.Window : Gtk.Window
 	
 	internal void load_channel ()
 	{
+		stderr.printf ("Feedler.load_channel ()\n");
 		Gtk.TreeModel model;
 		Gtk.TreeIter iter;
 		

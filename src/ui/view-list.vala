@@ -7,13 +7,13 @@
  
 public class FeedStore : GLib.Object
 {
-    public int id {set; get; }
-    public string subject { set; get; }
-    public string date { set; get; }
-    public string source { set; get; }
-    public string text { set; get; }
-    public string author { set; get; }
-    public bool unread { set; get; }
+    public int id { get; set; }
+    public string subject { get; set; }
+    public string date { get; set; }
+    public string source { get; set; }
+    public string text { get; set; }
+    public string author { get; set; }
+    public bool unread { get; set; }
 	
 	public FeedStore (Model.Item item, string time_format)
 	{
@@ -100,7 +100,7 @@ public class Feedler.ViewList : Feedler.View
 	{
 		Gtk.TreeIter feed_iter;
 		this.store.prepend (out feed_iter);
-        this.store.set (feed_iter, 0, new FeedStore (item, time_format), -1);
+        this.store.set_value (feed_iter, 0, new FeedStore (item, time_format));
 	}
 	
 	public override void load_feeds ()
@@ -248,12 +248,14 @@ public class Feedler.ViewList : Feedler.View
 		FeedStore feed;
 		var renderer = cell as Feedler.ViewCell;
 		model.get (iter, 0, out feed);
-		
-		renderer.subject = feed.subject;
-		renderer.date = feed.date;
-		renderer.author = feed.author;
-		renderer.channel = feed.source;
-		renderer.unread = feed.unread;
+		if (feed != null)
+		{
+			renderer.subject = feed.subject;
+			renderer.date = feed.date;
+			renderer.author = feed.author;
+			renderer.channel = feed.source;
+			renderer.unread = feed.unread;
+		}
 	}
 
 	private bool click_item (Gdk.EventButton e)
