@@ -48,8 +48,6 @@ public class Feedler.Window : Gtk.Window
         this.set_default_size (Feedler.STATE.window_width, Feedler.STATE.window_height);
 
 		if (this.db.is_created ())
-//stderr.printf ("ui\n");
-			//this.ui_workspace ();
 			this.ui_feeds ();
 		else
 			this.ui_welcome ();		
@@ -136,12 +134,10 @@ public class Feedler.Window : Gtk.Window
 		this.side.model = null;
         foreach (var f in this.db.select_folders ())
 		{
-//stderr.printf ("%i, %s (%i)\n", f.id, f.name, f.parent);
             this.side.add_folder (f);
 		}
         foreach (var c in this.db.select_channels ())
 		{
-//stderr.printf ("%i, %s (%i)\n", c.id, c.title, c.folder);
             this.side.add_channel (c.id, c.title, c.folder, c.unread);
 			this.manager.count += c.unread;
 		}
@@ -418,11 +414,13 @@ public class Feedler.Window : Gtk.Window
 				GLib.Time current_time = GLib.Time.local (time_t ());
 				foreach (Model.Item item in this.db.get_channel (channel.id).items)
 				{
+			//stderr.printf ("%i ? ", item.id);
 					GLib.Time feed_time = GLib.Time.local (item.time);
 				    if (feed_time.day_of_year + 6 < current_time.day_of_year)
 				        this.view.add_feed (item, feed_time.format ("%d %B %Y"));
 					else
 				        this.view.add_feed (item, feed_time.format ("%A %R"));
+			//stderr.printf (" ? %i\n", item.id);
 				}
 				this.view.load_feeds ();
 			}
@@ -662,6 +660,7 @@ public class Feedler.Window : Gtk.Window
 			}
 			this.manager.count = 0;
 			this.manager.unread ();
+			//this.load_channel ();
 			this.db.mark_all ();
 		}
 		info.destroy ();

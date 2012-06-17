@@ -27,7 +27,7 @@ public class Feedler.Sidebar : Gtk.TreeView
 	private Feedler.SidebarCell scell;
     private Gee.AbstractMap<int, Gtk.TreeIter?> folders;
     private Gee.AbstractMap<int, Gtk.TreeIter?> channels;
-	private Gtk.TreeIter iter;
+	//private Gtk.TreeIter iter;
 	
 	construct
 	{

@@ -99,6 +99,7 @@ public class Feedler.ViewList : Feedler.View
 	public override void add_feed (Model.Item item, string time_format)
 	{
 		Gtk.TreeIter feed_iter;
+stderr.printf (" %s ", time_format);
 		this.store.prepend (out feed_iter);
         this.store.set_value (feed_iter, 0, new FeedStore (item, time_format));
 	}
@@ -231,12 +232,11 @@ public class Feedler.ViewList : Feedler.View
 	
 	private bool search_filter (Gtk.TreeModel model, Gtk.TreeIter iter)
 	{
-		FeedStore feed;
-		model.get (iter, 0, out feed);
-
 		if (filter_text == "")
 			return true;
-			
+
+		FeedStore feed;
+		model.get (iter, 0, out feed);			
 		if (filter_text in feed.subject)
 			return true;
 		else
