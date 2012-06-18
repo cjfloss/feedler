@@ -414,13 +414,11 @@ public class Feedler.Window : Gtk.Window
 				GLib.Time current_time = GLib.Time.local (time_t ());
 				foreach (Model.Item item in this.db.get_channel (channel.id).items)
 				{
-			//stderr.printf ("%i ? ", item.id);
 					GLib.Time feed_time = GLib.Time.local (item.time);
 				    if (feed_time.day_of_year + 6 < current_time.day_of_year)
 				        this.view.add_feed (item, feed_time.format ("%d %B %Y"));
 					else
 				        this.view.add_feed (item, feed_time.format ("%A %R"));
-			//stderr.printf (" ? %i\n", item.id);
 				}
 				this.view.load_feeds ();
 			}
@@ -471,6 +469,7 @@ public class Feedler.Window : Gtk.Window
 		{
 			this.side.select_path (path);
 			this.sidemenu.popup (null, null, null, e.button, e.time);
+			this.load_channel ();
 			return true;
 		}
 		return false;

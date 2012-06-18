@@ -94,18 +94,19 @@ public class Feedler.ViewList : Feedler.View
 	public override void clear ()
 	{
 		this.store.clear ();
+		this.tree.model = null;
 	}
 	
 	public override void add_feed (Model.Item item, string time_format)
 	{
 		Gtk.TreeIter feed_iter;
-stderr.printf (" %s ", time_format);
 		this.store.prepend (out feed_iter);
-        this.store.set_value (feed_iter, 0, new FeedStore (item, time_format));
+        this.store.set (feed_iter, 0, new FeedStore (item, time_format));
 	}
 	
 	public override void load_feeds ()
 	{
+		this.tree.model = filter;
 	}
 	
 	public override void refilter (string text)
@@ -210,19 +211,21 @@ stderr.printf (" %s ", time_format);
 
 	private void mark_item ()
 	{
+		stderr.printf ("Feedler.ViewList.mark_item ()\n");
 		Gtk.TreeIter iter;
 		FeedStore feed = this.selected_item (out iter);
 		if (feed != null)
 		{
 			this.tree.model.get (iter, 0, out feed);
 			feed.unread = !feed.unread;
-			this.store.set (iter, 0, feed);
+			this.store.set_value (iter, 0, feed);
 			this.item_marked (feed.id, feed.unread);
 		}
 	}
 
 	private FeedStore? selected_item (out Gtk.TreeIter iter)
 	{
+		stderr.printf ("Feedler.ViewList.selected_item ()\n");
 		FeedStore feed = null;
 		Gtk.TreeModel model;
 		if (this.tree.get_selection ().get_selected (out model, out iter))
@@ -232,11 +235,15 @@ stderr.printf (" %s ", time_format);
 	
 	private bool search_filter (Gtk.TreeModel model, Gtk.TreeIter iter)
 	{
+		//stderr.printf ("Feedler.ViewList.search_filter ()\n");
 		if (filter_text == "")
 			return true;
 
-		FeedStore feed;
-		model.get (iter, 0, out feed);			
+		FeedStore feed = null;
+		model.get (iter, 0, out feed);
+		if (feed == null)
+			return false;
+			
 		if (filter_text in feed.subject)
 			return true;
 		else
@@ -245,17 +252,18 @@ stderr.printf (" %s ", time_format);
 	
 	private void render_cell (Gtk.CellLayout layout, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
 	{
+		//stderr.printf ("Feedler.ViewList.render_cell ()\n");
 		FeedStore feed;
-		var renderer = cell as Feedler.ViewCell;
 		model.get (iter, 0, out feed);
 		if (feed != null)
 		{
+var renderer = cell as Feedler.ViewCell;
 			renderer.subject = feed.subject;
 			renderer.date = feed.date;
 			renderer.author = feed.author;
 			renderer.channel = feed.source;
 			renderer.unread = feed.unread;
-		}
+		} else return;
 	}
 
 	private bool click_item (Gdk.EventButton e)
