@@ -35,7 +35,7 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
 
         var cancel = new Gtk.Button.with_label (_("Cancel"));
         cancel.valign = cancel.halign = Gtk.Align.END;
-        cancel.clicked.connect_after (() => { this.destroy (); });
+        cancel.clicked.connect_after (() => { saved (-1, -1, "", ""); this.destroy (); });
 
         this.favicon = new Gtk.Button.with_label (_("Load favicon"));
         this.favicon.valign = this.favicon.halign = Gtk.Align.START;

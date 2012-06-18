@@ -104,7 +104,7 @@ public class Feedler.Window : Gtk.Window
         this.pane.add1 (scroll_side);
 		
 		this.sidemenu = new Feedler.MenuSide ();
-		this.sidemenu.add_sub.activate.connect (_create_subs);
+		this.sidemenu.add_sub.activate.connect (() => {_create_subs ();});
 		this.sidemenu.add_fol.activate.connect (_create_folder);
 		this.sidemenu.upd.activate.connect (_update);
 		this.sidemenu.mark.activate.connect (_mark);
@@ -119,7 +119,8 @@ public class Feedler.Window : Gtk.Window
 		this.layout.web.item_marked.connect (mark_item);
 
         this.stat = new Feedler.Statusbar ();
-        this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
+        //this.stat.add_feed.button_press_event.connect (()=>{_create_subs (); return false;});
+		this.stat.add_feed.button_press_event.connect (_create_subs);
         this.stat.delete_feed.button_press_event.connect (()=>{_remove (); return false;});
         this.stat.import_feed.button_press_event.connect (()=>{_import (); return false;});
         this.stat.next_feed.button_press_event.connect (()=>{_next_unread (); return false;});
@@ -614,7 +615,7 @@ public class Feedler.Window : Gtk.Window
         fol.show_all ();
 	}
 
-    private void _create_subs ()
+	private bool _create_subs ()
     {
         Feedler.Subscription subs = new Feedler.Subscription ();
 		subs.set_transient_for (this);
@@ -622,6 +623,8 @@ public class Feedler.Window : Gtk.Window
 		foreach (Model.Folder folder in this.db.folders)
 		    subs.add_folder (folder.name);
         subs.show_all ();
+		this.stat.add_feed.button_press_event.disconnect (_create_subs);
+		return false;
 	}
 
     private void _mark ()
@@ -729,6 +732,9 @@ public class Feedler.Window : Gtk.Window
 
     private void create_subs_cb (int id, int folder, string title, string url)
     {
+		this.stat.add_feed.button_press_event.connect (_create_subs);
+		if (id == -1 && folder == -1)
+			return;
 		try
 		{
 			if (!this.db.is_created ())
