@@ -80,7 +80,6 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
         this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
-        this.toolbar.test.toggled.connect (ui_feeds);
 	}
     
     private void ui_layout ()

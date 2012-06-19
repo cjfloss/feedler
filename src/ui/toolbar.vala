@@ -61,7 +61,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Feedler.ContractorButton sharemenu;
     internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label (_("Sidebar Visible"));
     internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label (_("Fullscreen"));
-    internal Gtk.CheckMenuItem test = new Gtk.CheckMenuItem.with_label (_("TEST"));
     internal Gtk.MenuItem preferences = new Gtk.MenuItem.with_label (_("Preferences"));
     
 	construct
@@ -74,7 +73,6 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (fullscreen_mode);
         menu.append (new Gtk.SeparatorMenuItem ());
         menu.append (preferences);
-        menu.append (test);
         this.appmenu = Feedler.APP.create_appmenu (menu);
         this.sharemenu = new Feedler.ContractorButton ();
         

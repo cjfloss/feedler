@@ -30,18 +30,11 @@ public class PreferenceTab : Gtk.Grid
 	public void add_content (Gtk.Widget widget, string description)
 	{
 		var label = new Gtk.Label (description);
-		label.halign = Gtk.Align.START;
-		widget.halign = Gtk.Align.END;
-		this.attach (widget, 0, id, 1, 1);
-		this.attach (label, 1, id++, 1, 1);
-	}
-	
-	public void add_widgets (Gtk.Widget widget1, Gtk.Widget? widget2)
-	{
-		this.attach (widget1, 0, id, 1, 1);
-		if (widget2 == null)
-			return;
-		this.attach (widget2, 1, id++, 1, 1);
+		label.halign = Gtk.Align.END;
+		widget.halign = Gtk.Align.START;
+		widget.margin_right = 15;
+		this.attach (label, 0, id, 1, 1);
+		this.attach (widget, 1, id++, 1, 1);
 	}
 }
 
@@ -49,11 +42,11 @@ public class Behavior : PreferenceTab
 {
 	construct
 	{
-		var enable_image = new Gtk.CheckButton.with_label (_("Enable images"));
-		var enable_script = new Gtk.CheckButton.with_label (_("Enable scripts"));
-		var enable_java = new Gtk.CheckButton.with_label (_("Enable java"));
-		var enable_plugin = new Gtk.CheckButton.with_label (_("Enable plugins"));
-		var shrink_image = new Gtk.CheckButton.with_label (_("Shrink image to fit"));
+		var enable_image = new Gtk.CheckButton ();
+		var enable_script = new Gtk.CheckButton ();
+		var enable_java = new Gtk.CheckButton ();
+		var enable_plugin = new Gtk.CheckButton ();
+		var shrink_image = new Gtk.CheckButton ();
 		var hide_close = new Gtk.Switch ();
 		var hide_start = new Gtk.Switch ();
 		Feedler.SETTING.schema.bind ("enable-image", enable_image, "active", SettingsBindFlags.DEFAULT);
@@ -64,13 +57,15 @@ public class Behavior : PreferenceTab
 		Feedler.STATE.schema.bind ("hide-close", hide_close, "active", SettingsBindFlags.DEFAULT);
 		Feedler.STATE.schema.bind ("hide-start", hide_start, "active", SettingsBindFlags.DEFAULT);
 		
-		this.add_title (_("Content"));
-		this.add_widgets (enable_plugin, enable_image);
-		this.add_widgets (enable_script, shrink_image);
-		this.add_widgets (enable_java, new Gtk.Label (null));
-		this.add_title (_("Window"));
-		this.add_content (hide_close, _("Hiding window instead of closing"));
-		this.add_content (hide_start, _("Hide window on start to the messaging menu"));
+		this.add_title (_("Content:"));
+		this.add_content (enable_image, _("Enable images:"));
+		this.add_content (shrink_image, _("Shrink image to fit:"));
+		this.add_content (enable_plugin, _("Enable plugins:"));
+		this.add_content (enable_script, _("Enable JavaScripts:"));
+		this.add_content (enable_java, _("Enable Java:"));
+		this.add_title (_("Window:"));
+		this.add_content (hide_close, _("Hiding window instead of closing:"));
+		this.add_content (hide_start, _("Hide window on start to the messaging menu:"));
 	}
 }
 
@@ -88,12 +83,12 @@ public class Update : PreferenceTab
 
         this.fav = new Gtk.Button ();
 		this.fav.set_image (new Gtk.Image.from_icon_name ("go-bottom-symbolic", Gtk.IconSize.MENU));
-		this.add_title (_("Subscriptions"));
-		this.add_content (auto_update, _("Enable automatic updates"));
-		this.add_content (start_update, _("Enable updates on start"));
-		this.add_content (update_time, _("Time interval between updates"));
-		this.add_title (_("Favicons"));
-		this.add_content (fav, _("Download now all favicons"));
+		this.add_title (_("Subscriptions:"));
+		this.add_content (auto_update, _("Enable automatic updates:"));
+		this.add_content (start_update, _("Enable updates on start:"));
+		this.add_content (update_time, _("Time interval between updates:"));
+		this.add_title (_("Favicons:"));
+		this.add_content (fav, _("Download now all favicons:"));
 	}
 }
  
@@ -109,7 +104,7 @@ public class Feedler.Preferences : Gtk.Dialog
 		this.title = _("Preferences");
         this.border_width = 5;
 		this.set_resizable (false);
-		this.tabs = new Granite.Widgets.StaticNotebook ();
+		this.tabs = new Granite.Widgets.StaticNotebook (false);
 		this.behavior = new Behavior ();
 		this.update = new Update ();
 		this.tabs.append_page (behavior, new Gtk.Label (_("Behavior")));
