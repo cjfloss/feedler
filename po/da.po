@@ -8,85 +8,85 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-22 07:58+0200\n"
-"PO-Revision-Date: 2012-03-05 15:48+0000\n"
-"Last-Translator: Simon <Unknown>\n"
+"PO-Revision-Date: 2012-06-27 22:24+0000\n"
+"Last-Translator: Niclas Moeslund Overby <Unknown>\n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-23 05:19+0000\n"
-"X-Generator: Launchpad (build 15461)\n"
+"X-Launchpad-Export-Date: 2012-06-28 04:55+0000\n"
+"X-Generator: Launchpad (build 15505)\n"
 "Language: da\n"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
 msgid "Update"
-msgstr ""
+msgstr "Opdater"
 
 #: ../src/indicator.vala:28
 msgid "Unread"
-msgstr ""
+msgstr "Ulæst"
 
 #: ../src/manager.vala:126 ../src/window.vala:297
 msgid "new feeds"
-msgstr ""
+msgstr "nye feeds"
 
 #: ../src/manager.vala:126 ../src/window.vala:297
 msgid "new feed"
-msgstr ""
+msgstr "ny feed"
 
 #: ../src/window.vala:330
 #, c-format
 msgid "Imported %i channels in %i folders."
-msgstr ""
+msgstr "Importerede %i strømme i %i mapper."
 
 #: ../src/window.vala:483 ../src/window.vala:509
 msgid "Updating subscriptions"
-msgstr ""
+msgstr "Opdatering af abonnementer"
 
 #: ../src/window.vala:503
 #, c-format
 msgid "Updating %s"
-msgstr ""
+msgstr "Updaterer %s"
 
 #: ../src/window.vala:526 ../src/window.vala:541
 msgid "Downloading favicons"
-msgstr ""
+msgstr "Downloader favicons"
 
 #: ../src/window.vala:579
 msgid "Importing subscriptions"
-msgstr ""
+msgstr "Importerer abonnementer"
 
 #: ../src/window.vala:633 ../src/window.vala:655
 msgid "Are you sure you want to mark as read?"
-msgstr ""
+msgstr "Er du sikker på, at du vil markere som læst?"
 
 #: ../src/window.vala:674
 msgid "Are you sure you want to delete?"
-msgstr ""
+msgstr "Er du sikker på at ville slette?"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Get Some Feeds"
-msgstr ""
+msgstr "Få nogle feeds"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Feedler can't seem to find your feeds."
-msgstr ""
+msgstr "Feedler kan ikke finde dine feeds."
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Create"
-msgstr ""
+msgstr "Opret"
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Add manually subscriptions from URL."
-msgstr ""
+msgstr "Tilføj manuel abonnement fra URL."
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Add a subscriptions from OPML file."
-msgstr ""
+msgstr "Tilføj et abonnement fra en OPML fil."
 
 #: ../src/ui/contractor.vala:23
 msgid "Share channels or items"
@@ -94,13 +94,13 @@ msgstr ""
 
 #: ../src/ui/contractor.vala:38
 msgid "Export subscriptions"
-msgstr ""
+msgstr "Export abonnementer"
 
 #: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
 #: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
 #, c-format
 msgid "Name"
-msgstr ""
+msgstr "Navn"
 
 #: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
 msgid "Save"
@@ -145,47 +145,47 @@ msgstr ""
 
 #: ../src/ui/menu.vala:37
 msgid "Display"
-msgstr ""
+msgstr "Vis"
 
 #: ../src/ui/menu.vala:38
 msgid "Open in browser"
-msgstr ""
+msgstr "Åben i browser"
 
 #: ../src/ui/menu.vala:40
 msgid "Mark as unread"
-msgstr ""
+msgstr "Marker som ulæst"
 
 #: ../src/ui/preferences.vala:60
 msgid "Content:"
-msgstr ""
+msgstr "Indhold:"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
-msgstr ""
+msgstr "Aktiver billeder:"
 
 #: ../src/ui/preferences.vala:62
 msgid "Shrink image to fit:"
-msgstr ""
+msgstr "Tilpas billedstørrelse:"
 
 #: ../src/ui/preferences.vala:63
 msgid "Enable plugins:"
-msgstr ""
+msgstr "Aktiver plugins:"
 
 #: ../src/ui/preferences.vala:64
 msgid "Enable JavaScripts:"
-msgstr ""
+msgstr "Aktiver JavaScripts:"
 
 #: ../src/ui/preferences.vala:65
 msgid "Enable Java:"
-msgstr ""
+msgstr "Aktiver Java:"
 
 #: ../src/ui/preferences.vala:66
 msgid "Window:"
-msgstr ""
+msgstr "Vindue:"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
-msgstr ""
+msgstr "Skjul vindue i stedet for lukning:"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
@@ -193,23 +193,23 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Abonnementer:"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
-msgstr ""
+msgstr "Aktiver automatiske opdateringer:"
 
 #: ../src/ui/preferences.vala:88
 msgid "Enable updates on start:"
-msgstr ""
+msgstr "Aktiver opdateringer ved start:"
 
 #: ../src/ui/preferences.vala:89
 msgid "Time interval between updates:"
-msgstr ""
+msgstr "Tidsinterval mellem opdateringer:"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
-msgstr ""
+msgstr "Favicons:"
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
@@ -217,35 +217,35 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
-msgstr ""
+msgstr "Egenskaber"
 
 #: ../src/ui/preferences.vala:110
 msgid "Behavior"
-msgstr ""
+msgstr "Adfærd"
 
 #: ../src/ui/preferences.vala:111
 msgid "Updates"
-msgstr ""
+msgstr "Opdateringer"
 
 #: ../src/ui/statusbar.vala:49
 msgid "Add new subscription URL"
-msgstr ""
+msgstr "Tilføj ny abonnement URL"
 
 #: ../src/ui/statusbar.vala:52
 msgid "Remove selected subscription"
-msgstr ""
+msgstr "Fjern valgte abonnementer"
 
 #: ../src/ui/statusbar.vala:55
 msgid "Import subscription from OPML"
-msgstr ""
+msgstr "Importer abonnement fra OPML"
 
 #: ../src/ui/statusbar.vala:58
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "Gå til strømmen med ulæste elementer"
 
 #: ../src/ui/statusbar.vala:61
 msgid "Mark all items as read"
-msgstr ""
+msgstr "Maker alle elementer som læst"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feeds"
@@ -261,40 +261,40 @@ msgstr ""
 
 #: ../src/ui/subscription.vala:40
 msgid "Load favicon"
-msgstr ""
+msgstr "Load favicon"
 
 #: ../src/ui/subscription.vala:56
 #, c-format
 msgid "URI Address"
-msgstr ""
+msgstr "URI Addresse"
 
 #: ../src/ui/toolbar.vala:57
 msgid "Type to Search..."
-msgstr ""
+msgstr "Skriv for at søge..."
 
 #: ../src/ui/toolbar.vala:62
 msgid "Sidebar Visible"
-msgstr ""
+msgstr "Sidebar Synlig"
 
 #: ../src/ui/toolbar.vala:63
 msgid "Fullscreen"
-msgstr ""
+msgstr "Fuldskærm"
 
 #: ../src/ui/toolbar.vala:97
 msgid "Go to the previous readed item"
-msgstr ""
+msgstr "Gå til den forrige læste element"
 
 #: ../src/ui/toolbar.vala:98
 msgid "Go to the next readed item"
-msgstr ""
+msgstr "Gå til næste læste element"
 
 #: ../src/ui/toolbar.vala:99
 msgid "Refresh all subscriptions"
-msgstr ""
+msgstr "Opdater alle abonnementer"
 
 #: ../src/ui/toolbar.vala:100
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: ../src/ui/view-cell.vala:53
 #, c-format
