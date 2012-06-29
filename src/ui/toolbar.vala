@@ -77,8 +77,8 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.sharemenu = new Feedler.ContractorButton ();
         
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
-        this.mode.append (new Gtk.Image.from_icon_name ("view-list-details-symbolic", Gtk.IconSize.MENU));
-        this.column.set_image (new Gtk.Image.from_icon_name ("view-list-column-symbolic", Gtk.IconSize.MENU));
+        this.mode.append (new Gtk.Image.from_icon_name ("view-list-symbolic", Gtk.IconSize.MENU));
+        this.column.set_image (new Gtk.Image.from_icon_name ("view-column-symbolic", Gtk.IconSize.MENU));
         this.column.valign = Gtk.Align.CENTER;
 		this.align.add (progress);
         Gtk.ToolItem mode_item = new Gtk.ToolItem ();
