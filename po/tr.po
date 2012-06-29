@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-22 07:58+0200\n"
-"PO-Revision-Date: 2012-06-04 06:19+0000\n"
-"Last-Translator: Ebubekir KARUL <Unknown>\n"
+"PO-Revision-Date: 2012-06-28 19:45+0000\n"
+"Last-Translator: seaflames <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-23 05:19+0000\n"
-"X-Generator: Launchpad (build 15461)\n"
+"X-Launchpad-Export-Date: 2012-06-29 04:49+0000\n"
+"X-Generator: Launchpad (build 15505)\n"
 "Language: tr\n"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
@@ -66,11 +66,11 @@ msgstr "Silmek istediğinizden emin misiniz ?"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Get Some Feeds"
-msgstr ""
+msgstr "Biraz besleme edin"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Feedler can't seem to find your feeds."
-msgstr ""
+msgstr "Görüüşe göre Feedler beslemelerinizi bulamadı"
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Create"
@@ -116,7 +116,7 @@ msgstr ""
 
 #: ../src/ui/infobar.vala:24
 msgid "Undo"
-msgstr ""
+msgstr "Geri Al"
 
 #: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
 msgid "Mark as read"
@@ -157,7 +157,7 @@ msgstr "Okunmadı olarak işaretle"
 
 #: ../src/ui/preferences.vala:60
 msgid "Content:"
-msgstr ""
+msgstr "İçerik:"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
@@ -169,23 +169,23 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:63
 msgid "Enable plugins:"
-msgstr ""
+msgstr "Eklentileri aktifleştir:"
 
 #: ../src/ui/preferences.vala:64
 msgid "Enable JavaScripts:"
-msgstr ""
+msgstr "JavaScriptleri Etkinleştir"
 
 #: ../src/ui/preferences.vala:65
 msgid "Enable Java:"
-msgstr ""
+msgstr "Javayı Etkinleştir:"
 
 #: ../src/ui/preferences.vala:66
 msgid "Window:"
-msgstr ""
+msgstr "Pencere:"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
-msgstr ""
+msgstr "Kapatmak yerni pencereyi gizle:"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
@@ -193,19 +193,19 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Abonelikler:"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
-msgstr ""
+msgstr "Otomatik güncellemeleri aktifleştir"
 
 #: ../src/ui/preferences.vala:88
 msgid "Enable updates on start:"
-msgstr ""
+msgstr "Açılışta güncellemeyi aktifleştir:"
 
 #: ../src/ui/preferences.vala:89
 msgid "Time interval between updates:"
-msgstr ""
+msgstr "Güncellemeler arası zaman:"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
