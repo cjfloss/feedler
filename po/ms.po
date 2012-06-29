@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-22 07:58+0200\n"
+"POT-Creation-Date: 2012-06-29 08:01+0200\n"
 "PO-Revision-Date: 2012-06-02 03:47+0000\n"
 "Last-Translator: abuyop <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
@@ -71,6 +71,11 @@ msgstr ""
 msgid "Display"
 msgstr "Paparan"
 
+#: ../src/desktop-launcher.vala:13
+#, fuzzy
+msgid "Download and view feeds"
+msgstr "Memuat turun favicon"
+
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
 msgstr ""
@@ -109,6 +114,10 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
+msgstr ""
+
+#: ../src/desktop-launcher.vala:14
+msgid "Feedler News Reader"
 msgstr ""
 
 #: ../src/ui/cardlayout.vala:23

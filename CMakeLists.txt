@@ -64,6 +64,7 @@ ensure_vala_version("0.16.0" MINIMUM)
 include(ValaPrecompile)
 
 vala_precompile(VALA_C
+	src/desktop-launcher.vala
 	src/database.vala
 	src/dock.vala
 	src/feedler.vala

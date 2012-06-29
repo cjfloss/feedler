@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-22 07:58+0200\n"
+"POT-Creation-Date: 2012-06-29 08:01+0200\n"
 "PO-Revision-Date: 2012-06-22 08:21+0000\n"
 "Last-Translator: Daniel Kur <Daniel.M.Kur@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -71,6 +71,11 @@ msgstr "Porzuć"
 msgid "Display"
 msgstr "Wyświetl"
 
+#: ../src/desktop-launcher.vala:13
+#, fuzzy
+msgid "Download and view feeds"
+msgstr "Pobieranie ikon witryn"
+
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
 msgstr "Pobierz teraz wszystkie ikony witryn:"
@@ -110,6 +115,10 @@ msgstr "Eksport subskrypcji"
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
 msgstr "Ikony witryn:"
+
+#: ../src/desktop-launcher.vala:14
+msgid "Feedler News Reader"
+msgstr ""
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Feedler can't seem to find your feeds."

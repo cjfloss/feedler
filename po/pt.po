@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-22 07:58+0200\n"
+"POT-Creation-Date: 2012-06-29 08:01+0200\n"
 "PO-Revision-Date: 2012-06-11 23:52+0000\n"
 "Last-Translator: Sérgio Marques <Unknown>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -71,6 +71,11 @@ msgstr ""
 msgid "Display"
 msgstr "Mostrar"
 
+#: ../src/desktop-launcher.vala:13
+#, fuzzy
+msgid "Download and view feeds"
+msgstr "A transferir favicons"
+
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
 msgstr ""
@@ -109,6 +114,10 @@ msgstr "Exportar subscrições"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
+msgstr ""
+
+#: ../src/desktop-launcher.vala:14
+msgid "Feedler News Reader"
 msgstr ""
 
 #: ../src/ui/cardlayout.vala:23

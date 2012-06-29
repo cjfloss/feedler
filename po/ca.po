@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-22 07:58+0200\n"
+"POT-Creation-Date: 2012-06-29 08:01+0200\n"
 "PO-Revision-Date: 2012-06-25 22:14+0000\n"
 "Last-Translator: Alfredo Hernández <Unknown>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -71,6 +71,11 @@ msgstr "Ignora"
 msgid "Display"
 msgstr "Visualització"
 
+#: ../src/desktop-launcher.vala:13
+#, fuzzy
+msgid "Download and view feeds"
+msgstr "S'estan baixant les icones de web"
+
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
 msgstr "Baixa totes les icones de web ara:"
@@ -110,6 +115,10 @@ msgstr "Exporta les subscripcions"
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
 msgstr "Icones de web:"
+
+#: ../src/desktop-launcher.vala:14
+msgid "Feedler News Reader"
+msgstr ""
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Feedler can't seem to find your feeds."
