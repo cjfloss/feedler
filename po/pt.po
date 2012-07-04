@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-07-02 00:52+0000\n"
-"Last-Translator: Rezembrim de Paula <Unknown>\n"
+"PO-Revision-Date: 2012-07-03 12:00+0000\n"
+"Last-Translator: Sérgio Marques <Unknown>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-07-03 05:59+0000\n"
-"X-Generator: Launchpad (build 15531)\n"
+"X-Launchpad-Export-Date: 2012-07-04 04:49+0000\n"
+"X-Generator: Launchpad (build 15544)\n"
 "Language: pt\n"
 
 #: ../src/desktop-launcher.vala:13
 msgid "Download and view feeds"
-msgstr ""
+msgstr "Transferir e exibir fontes"
 
 #: ../src/desktop-launcher.vala:14
 msgid "Feedler News Reader"
-msgstr ""
+msgstr "Leitor de notícias Feedler"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
 msgid "Update"
@@ -169,39 +169,39 @@ msgstr "Conteúdo:"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
-msgstr ""
+msgstr "Ativar imagens"
 
 #: ../src/ui/preferences.vala:62
 msgid "Shrink image to fit:"
-msgstr ""
+msgstr "Reduzir imagem para caber:"
 
 #: ../src/ui/preferences.vala:63
 msgid "Enable plugins:"
-msgstr ""
+msgstr "Ativar suplementos"
 
 #: ../src/ui/preferences.vala:64
 msgid "Enable JavaScripts:"
-msgstr ""
+msgstr "Ativar JavaScripts:"
 
 #: ../src/ui/preferences.vala:65
 msgid "Enable Java:"
-msgstr ""
+msgstr "Ativar Java:"
 
 #: ../src/ui/preferences.vala:66
 msgid "Window:"
-msgstr ""
+msgstr "Janela:"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
-msgstr ""
+msgstr "Ocultar janela em vez de fechar:"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
-msgstr ""
+msgstr "Ocultar janela ao iniciar o menu de mensagens:"
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Subscrições:"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
@@ -213,15 +213,15 @@ msgstr "Habilitar atualizações ao iniciar"
 
 #: ../src/ui/preferences.vala:89
 msgid "Time interval between updates:"
-msgstr ""
+msgstr "Intervalo de tempo entre atualizações:"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
-msgstr ""
+msgstr "Ícones:"
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
-msgstr ""
+msgstr "Transferir todos os ícones:"
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
