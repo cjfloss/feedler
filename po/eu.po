@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-06-22 15:07+0000\n"
+"PO-Revision-Date: 2012-07-04 13:23+0000\n"
 "Last-Translator: Asier Iturralde Sarasola <Unknown>\n"
 "Language-Team: Basque <eu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-30 05:22+0000\n"
-"X-Generator: Launchpad (build 15520)\n"
+"X-Launchpad-Export-Date: 2012-07-05 05:02+0000\n"
+"X-Generator: Launchpad (build 15544)\n"
 "Language: eu\n"
 
 #: ../src/desktop-launcher.vala:13
 msgid "Download and view feeds"
-msgstr ""
+msgstr "Deskargatu eta ikusi jarioak"
 
 #: ../src/desktop-launcher.vala:14
 msgid "Feedler News Reader"
-msgstr ""
+msgstr "Feedler berri irakurgailua"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
 msgid "Update"
@@ -66,11 +66,11 @@ msgstr "Harpidetzak inportatzen"
 
 #: ../src/window.vala:633 ../src/window.vala:655
 msgid "Are you sure you want to mark as read?"
-msgstr "Ziur zaude irakurri gisa markatu nahi duzunaz?"
+msgstr "Ziur zaude irakurri gisa markatu nahi duzula?"
 
 #: ../src/window.vala:674
 msgid "Are you sure you want to delete?"
-msgstr "Ziur zaude hau ezabatu nahi duzunaz?"
+msgstr "Ziur zaude hau ezabatu nahi duzula?"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Get Some Feeds"
@@ -112,148 +112,148 @@ msgstr "Izena"
 
 #: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
 msgid "Save"
-msgstr ""
+msgstr "Gorde"
 
 #: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:36
 msgid "Cancel"
-msgstr ""
+msgstr "Utzi"
 
 #: ../src/ui/infobar.vala:21
 msgid "Dismiss"
-msgstr ""
+msgstr "Baztertu"
 
 #: ../src/ui/infobar.vala:24
 msgid "Undo"
-msgstr ""
+msgstr "Desegin"
 
 #: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
 msgid "Mark as read"
-msgstr ""
+msgstr "Markatu irakurrita gisa"
 
 #: ../src/ui/menu.vala:13
 msgid "Delete"
-msgstr ""
+msgstr "Ezabatu"
 
 #: ../src/ui/menu.vala:14
 msgid "Properties"
-msgstr ""
+msgstr "Propietateak"
 
 #: ../src/ui/menu.vala:15
 msgid "New"
-msgstr ""
+msgstr "Berria"
 
 #: ../src/ui/menu.vala:16
 msgid "Subscription"
-msgstr ""
+msgstr "Harpidetza"
 
 #: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
 #, c-format
 msgid "Folder"
-msgstr ""
+msgstr "Karpeta"
 
 #: ../src/ui/menu.vala:37
 msgid "Display"
-msgstr ""
+msgstr "Pantaila"
 
 #: ../src/ui/menu.vala:38
 msgid "Open in browser"
-msgstr ""
+msgstr "Ireki arakatzailean"
 
 #: ../src/ui/menu.vala:40
 msgid "Mark as unread"
-msgstr ""
+msgstr "Markatu irakurri gabeko gisa"
 
 #: ../src/ui/preferences.vala:60
 msgid "Content:"
-msgstr ""
+msgstr "Edukia:"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
-msgstr ""
+msgstr "Gaitu irudiak:"
 
 #: ../src/ui/preferences.vala:62
 msgid "Shrink image to fit:"
-msgstr ""
+msgstr "Txikiagotu irudiak doitzeko:"
 
 #: ../src/ui/preferences.vala:63
 msgid "Enable plugins:"
-msgstr ""
+msgstr "Gaitu pluginak:"
 
 #: ../src/ui/preferences.vala:64
 msgid "Enable JavaScripts:"
-msgstr ""
+msgstr "Gaitu JavaScript:"
 
 #: ../src/ui/preferences.vala:65
 msgid "Enable Java:"
-msgstr ""
+msgstr "Gaitu Java:"
 
 #: ../src/ui/preferences.vala:66
 msgid "Window:"
-msgstr ""
+msgstr "Leihoa:"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
-msgstr ""
+msgstr "Leihoa izkutatu itxi ordez:"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
-msgstr ""
+msgstr "Itxi leihoa abiatzean mezuen menura:"
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Harpidetzak:"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
-msgstr ""
+msgstr "Gaitu eguneraketa automatikoak:"
 
 #: ../src/ui/preferences.vala:88
 msgid "Enable updates on start:"
-msgstr ""
+msgstr "Gaitu eguneraketak abiatzean:"
 
 #: ../src/ui/preferences.vala:89
 msgid "Time interval between updates:"
-msgstr ""
+msgstr "Eguneraketen arteko bitartea:"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
-msgstr ""
+msgstr "Favicon-ak:"
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
-msgstr ""
+msgstr "Deskargatu orain favicon guztiak:"
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
-msgstr ""
+msgstr "Hobespenak"
 
 #: ../src/ui/preferences.vala:110
 msgid "Behavior"
-msgstr ""
+msgstr "Portaera"
 
 #: ../src/ui/preferences.vala:111
 msgid "Updates"
-msgstr ""
+msgstr "Eguneraketak"
 
 #: ../src/ui/statusbar.vala:49
 msgid "Add new subscription URL"
-msgstr ""
+msgstr "Gehitu harpidetza URL berria"
 
 #: ../src/ui/statusbar.vala:52
 msgid "Remove selected subscription"
-msgstr ""
+msgstr "Kendu hautatutako harpidetza"
 
 #: ../src/ui/statusbar.vala:55
 msgid "Import subscription from OPML"
-msgstr ""
+msgstr "Inportatu harpidetza OPML-tik"
 
 #: ../src/ui/statusbar.vala:58
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "Joan irakurri gabeko elementuak dituen kanalera"
 
 #: ../src/ui/statusbar.vala:61
 msgid "Mark all items as read"
-msgstr ""
+msgstr "Markatu elementu guztiak irakurrita gisa"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feeds"
@@ -265,46 +265,46 @@ msgstr "irakurri gabeko jarioa"
 
 #: ../src/ui/subscription.vala:30
 msgid "URI"
-msgstr ""
+msgstr "URI-a"
 
 #: ../src/ui/subscription.vala:40
 msgid "Load favicon"
-msgstr ""
+msgstr "Kargatu favicon-a"
 
 #: ../src/ui/subscription.vala:56
 #, c-format
 msgid "URI Address"
-msgstr ""
+msgstr "URI helbidea"
 
 #: ../src/ui/toolbar.vala:57
 msgid "Type to Search..."
-msgstr ""
+msgstr "Idatzi bilatzeko..."
 
 #: ../src/ui/toolbar.vala:62
 msgid "Sidebar Visible"
-msgstr ""
+msgstr "Albo-barra ikusgai"
 
 #: ../src/ui/toolbar.vala:63
 msgid "Fullscreen"
-msgstr ""
+msgstr "Pantaila osoa"
 
 #: ../src/ui/toolbar.vala:97
 msgid "Go to the previous readed item"
-msgstr ""
+msgstr "Joan irakurritako aurreko elementura"
 
 #: ../src/ui/toolbar.vala:98
 msgid "Go to the next readed item"
-msgstr ""
+msgstr "Joan irakurritako hurrengo elementura"
 
 #: ../src/ui/toolbar.vala:99
 msgid "Refresh all subscriptions"
-msgstr ""
+msgstr "Freskatu harpidetza guztiak"
 
 #: ../src/ui/toolbar.vala:100
 msgid "Menu"
-msgstr ""
+msgstr "Menua"
 
 #: ../src/ui/view-cell.vala:53
 #, c-format
 msgid "%s, by %s"
-msgstr ""
+msgstr "%s, egilea: %s"
