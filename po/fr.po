@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-06-19 20:35+0000\n"
-"Last-Translator: Benoît LAMY <Unknown>\n"
+"PO-Revision-Date: 2012-07-05 14:23+0000\n"
+"Last-Translator: jibjib <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-30 05:22+0000\n"
-"X-Generator: Launchpad (build 15520)\n"
+"X-Launchpad-Export-Date: 2012-07-06 05:13+0000\n"
+"X-Generator: Launchpad (build 15558)\n"
 "Language: fr\n"
 
 #: ../src/desktop-launcher.vala:13
 msgid "Download and view feeds"
-msgstr ""
+msgstr "Télécharger et lire les flux"
 
 #: ../src/desktop-launcher.vala:14
 msgid "Feedler News Reader"
-msgstr ""
+msgstr "Lecteur de flux Feedler"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
 msgid "Update"
@@ -45,7 +45,7 @@ msgstr "nouveau flux"
 #: ../src/window.vala:330
 #, c-format
 msgid "Imported %i channels in %i folders."
-msgstr ""
+msgstr "Chaîne %i importée dans le dossier %i"
 
 #: ../src/window.vala:483 ../src/window.vala:509
 msgid "Updating subscriptions"
@@ -54,7 +54,7 @@ msgstr "Mise à jour des abonnements"
 #: ../src/window.vala:503
 #, c-format
 msgid "Updating %s"
-msgstr ""
+msgstr "Mise à jour %s"
 
 #: ../src/window.vala:526 ../src/window.vala:541
 msgid "Downloading favicons"
@@ -74,7 +74,7 @@ msgstr "Êtes-vous sûr de vouloir le supprimer ?"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Get Some Feeds"
-msgstr ""
+msgstr "Obtenir des flux"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Feedler can't seem to find your feeds."
@@ -98,7 +98,7 @@ msgstr "Ajouter un abonnement à partir d'un fichier OPML."
 
 #: ../src/ui/contractor.vala:23
 msgid "Share channels or items"
-msgstr ""
+msgstr "Partager des chaînes ou des items"
 
 #: ../src/ui/contractor.vala:38
 msgid "Export subscriptions"
@@ -120,11 +120,11 @@ msgstr "Annuler"
 
 #: ../src/ui/infobar.vala:21
 msgid "Dismiss"
-msgstr ""
+msgstr "Passer"
 
 #: ../src/ui/infobar.vala:24
 msgid "Undo"
-msgstr ""
+msgstr "Annuler Action"
 
 #: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
 msgid "Mark as read"
@@ -153,7 +153,7 @@ msgstr "Dossier"
 
 #: ../src/ui/menu.vala:37
 msgid "Display"
-msgstr ""
+msgstr "Afficher"
 
 #: ../src/ui/menu.vala:38
 msgid "Open in browser"
@@ -165,35 +165,35 @@ msgstr "Marquer comme non-lu"
 
 #: ../src/ui/preferences.vala:60
 msgid "Content:"
-msgstr ""
+msgstr "Contenu :"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
-msgstr ""
+msgstr "Afficher les images"
 
 #: ../src/ui/preferences.vala:62
 msgid "Shrink image to fit:"
-msgstr ""
+msgstr "Redimensionner les images"
 
 #: ../src/ui/preferences.vala:63
 msgid "Enable plugins:"
-msgstr ""
+msgstr "Activer les extensions"
 
 #: ../src/ui/preferences.vala:64
 msgid "Enable JavaScripts:"
-msgstr ""
+msgstr "Activer JavaScripts"
 
 #: ../src/ui/preferences.vala:65
 msgid "Enable Java:"
-msgstr ""
+msgstr "Activer Java"
 
 #: ../src/ui/preferences.vala:66
 msgid "Window:"
-msgstr ""
+msgstr "Fenêtre"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
-msgstr ""
+msgstr "Cacher la fenêtre sans fermer"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
@@ -201,19 +201,19 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Abonnements"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
-msgstr ""
+msgstr "Activer les mises à jour automatiques"
 
 #: ../src/ui/preferences.vala:88
 msgid "Enable updates on start:"
-msgstr ""
+msgstr "Mises à jour au démarrage"
 
 #: ../src/ui/preferences.vala:89
 msgid "Time interval between updates:"
-msgstr ""
+msgstr "Délai entre chaque mise à jour"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
@@ -221,7 +221,7 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
-msgstr ""
+msgstr "Télécharger maintenant toutes les favicônes"
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
@@ -269,7 +269,7 @@ msgstr "URI"
 
 #: ../src/ui/subscription.vala:40
 msgid "Load favicon"
-msgstr ""
+msgstr "Charger la favicône"
 
 #: ../src/ui/subscription.vala:56
 #, c-format
@@ -298,7 +298,7 @@ msgstr "Aller à l'élément lu suivant"
 
 #: ../src/ui/toolbar.vala:99
 msgid "Refresh all subscriptions"
-msgstr ""
+msgstr "Rafraîchir tous les abonnements"
 
 #: ../src/ui/toolbar.vala:100
 msgid "Menu"
@@ -307,4 +307,4 @@ msgstr "Menu"
 #: ../src/ui/view-cell.vala:53
 #, c-format
 msgid "%s, by %s"
-msgstr ""
+msgstr "%s, par %s"
