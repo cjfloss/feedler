@@ -28,7 +28,7 @@ public class Feedler.App : Granite.Application
 		exec_name = "feedler";
 		app_years = "2011-2012";
 		application_id = "net.launchpad.Feedler";
-		app_icon = "internet-feed-reader";
+		app_icon = "internet-news-reader";
         app_launcher = "feedler.desktop";
 		main_url = "https://launchpad.net/feedler";
 		bug_url = "https://bugs.launchpad.net/feedler";
@@ -63,7 +63,7 @@ public class Feedler.App : Granite.Application
 		Feedler.SERVICE = new Feedler.Service ();
 		this.window = new Feedler.Window ();
         this.window.title = "Feedler";
-		this.window.icon_name = "internet-feed-reader";
+		this.window.icon_name = "internet-news-reader";
 		this.window.set_application (this);
 		this.window.show_all ();
 		if (Feedler.STATE.hide_start)

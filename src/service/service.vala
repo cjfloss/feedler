@@ -113,7 +113,7 @@ public class Feedler.Service : Object
 	{
 		try
 		{
-			Notify.Notification notify = new Notify.Notification ("Feedler News Reader", msg, "internet-feed-reader");
+			Notify.Notification notify = new Notify.Notification ("Feedler News Reader", msg, "internet-news-reader");
 			notify.show ();
 		}
 		catch (GLib.Error e)

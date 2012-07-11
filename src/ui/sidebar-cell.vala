@@ -121,13 +121,13 @@ public class Feedler.SidebarCell : Gtk.CellRenderer
                 try
                 {
                     Gtk.IconTheme icons = Gtk.IconTheme.get_default ();
-                    Gdk.Pixbuf pix = icons.load_icon ("internet-feed-reader", 16, 0);
+                    Gdk.Pixbuf pix = icons.load_icon ("internet-news-reader", 16, 0);
                     Gdk.cairo_set_source_pixbuf (cr, pix, area.x - 8, height_centered - 1);
         			cr.paint ();
                 }
                 catch (GLib.Error e)
                 {
-                    stderr.printf ("ERROR: %s - No such file found for: internet-feed-reader\n", e.message);
+                    stderr.printf ("ERROR: %s - No such file found for: internet-news-reader\n", e.message);
                 }
             }
         }
