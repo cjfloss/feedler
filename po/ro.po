@@ -8,115 +8,115 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2011-12-30 09:37+0000\n"
-"Last-Translator: rodislav <rodearo@yahoo.com>\n"
+"PO-Revision-Date: 2012-07-16 16:51+0000\n"
+"Last-Translator: Andy C. Candet <Unknown>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-30 05:22+0000\n"
-"X-Generator: Launchpad (build 15520)\n"
+"X-Launchpad-Export-Date: 2012-07-17 05:09+0000\n"
+"X-Generator: Launchpad (build 15627)\n"
 "Language: ro\n"
 
 #: ../src/desktop-launcher.vala:13
 msgid "Download and view feeds"
-msgstr ""
+msgstr "Descărcați și vizualizați fluxuri"
 
 #: ../src/desktop-launcher.vala:14
 msgid "Feedler News Reader"
-msgstr ""
+msgstr "Cititorul de știri Feedler"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
 msgid "Update"
-msgstr ""
+msgstr "Actualizare"
 
 #: ../src/indicator.vala:28
 msgid "Unread"
-msgstr ""
+msgstr "Necitite"
 
 #: ../src/manager.vala:126 ../src/window.vala:297
 msgid "new feeds"
-msgstr ""
+msgstr "fluxuri noi"
 
 #: ../src/manager.vala:126 ../src/window.vala:297
 msgid "new feed"
-msgstr ""
+msgstr "flux nou"
 
 #: ../src/window.vala:330
 #, c-format
 msgid "Imported %i channels in %i folders."
-msgstr ""
+msgstr "s-au importat %i canale în %i dosare"
 
 #: ../src/window.vala:483 ../src/window.vala:509
 msgid "Updating subscriptions"
-msgstr ""
+msgstr "Se actualizează abonamentele"
 
 #: ../src/window.vala:503
 #, c-format
 msgid "Updating %s"
-msgstr ""
+msgstr "Se actualizează %s"
 
 #: ../src/window.vala:526 ../src/window.vala:541
 msgid "Downloading favicons"
-msgstr ""
+msgstr "Se descarcă faviconurile"
 
 #: ../src/window.vala:579
 msgid "Importing subscriptions"
-msgstr ""
+msgstr "Se importă abonamentele"
 
 #: ../src/window.vala:633 ../src/window.vala:655
 msgid "Are you sure you want to mark as read?"
-msgstr ""
+msgstr "Sigur doriți să marcați ca citit?"
 
 #: ../src/window.vala:674
 msgid "Are you sure you want to delete?"
-msgstr ""
+msgstr "Sigur doriți să ștergeți?"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Get Some Feeds"
-msgstr ""
+msgstr "Faceți rost de niște abonamente"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Feedler can't seem to find your feeds."
-msgstr ""
+msgstr "Feedler nu v-a putut găsi abonamentele."
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Create"
-msgstr ""
+msgstr "Creare"
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Add manually subscriptions from URL."
-msgstr ""
+msgstr "Adăugați manual abonamentele dintr-un URL."
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Import"
-msgstr ""
+msgstr "Importare"
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Add a subscriptions from OPML file."
-msgstr ""
+msgstr "Adăugați abonamente dintr-un fișier OPML."
 
 #: ../src/ui/contractor.vala:23
 msgid "Share channels or items"
-msgstr ""
+msgstr "Partajați canale sau articole"
 
 #: ../src/ui/contractor.vala:38
 msgid "Export subscriptions"
-msgstr ""
+msgstr "Exportă abonamentele"
 
 #: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
 #: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
 #, c-format
 msgid "Name"
-msgstr ""
+msgstr "Nume"
 
 #: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
 msgid "Save"
-msgstr ""
+msgstr "Salvare"
 
 #: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:36
 msgid "Cancel"
-msgstr ""
+msgstr "Anulare"
 
 #: ../src/ui/infobar.vala:21
 msgid "Dismiss"
@@ -124,185 +124,185 @@ msgstr ""
 
 #: ../src/ui/infobar.vala:24
 msgid "Undo"
-msgstr ""
+msgstr "Restabilire"
 
 #: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
 msgid "Mark as read"
-msgstr ""
+msgstr "Marchează ca citit"
 
 #: ../src/ui/menu.vala:13
 msgid "Delete"
-msgstr ""
+msgstr "Şterge"
 
 #: ../src/ui/menu.vala:14
 msgid "Properties"
-msgstr ""
+msgstr "Proprietăţi"
 
 #: ../src/ui/menu.vala:15
 msgid "New"
-msgstr ""
+msgstr "Nou"
 
 #: ../src/ui/menu.vala:16
 msgid "Subscription"
-msgstr ""
+msgstr "Abonament"
 
 #: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
 #, c-format
 msgid "Folder"
-msgstr ""
+msgstr "Dosar"
 
 #: ../src/ui/menu.vala:37
 msgid "Display"
-msgstr ""
+msgstr "Afișează"
 
 #: ../src/ui/menu.vala:38
 msgid "Open in browser"
-msgstr ""
+msgstr "Deschide în navigator"
 
 #: ../src/ui/menu.vala:40
 msgid "Mark as unread"
-msgstr ""
+msgstr "Marchează ca necitit"
 
 #: ../src/ui/preferences.vala:60
 msgid "Content:"
-msgstr ""
+msgstr "Conținut:"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
-msgstr ""
+msgstr "Activează imagini:"
 
 #: ../src/ui/preferences.vala:62
 msgid "Shrink image to fit:"
-msgstr ""
+msgstr "Potrivește imaginea:"
 
 #: ../src/ui/preferences.vala:63
 msgid "Enable plugins:"
-msgstr ""
+msgstr "Activează module:"
 
 #: ../src/ui/preferences.vala:64
 msgid "Enable JavaScripts:"
-msgstr ""
+msgstr "Activează JavaScript:"
 
 #: ../src/ui/preferences.vala:65
 msgid "Enable Java:"
-msgstr ""
+msgstr "Activează Java"
 
 #: ../src/ui/preferences.vala:66
 msgid "Window:"
-msgstr ""
+msgstr "Fereastra:"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
-msgstr ""
+msgstr "Ascunderea ferestrei în loc de închidere"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
-msgstr ""
+msgstr "Ascunderea ferestrei în meniul de mesaje la pornire:"
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Abonamente:"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
-msgstr ""
+msgstr "Activează actualizările automate:"
 
 #: ../src/ui/preferences.vala:88
 msgid "Enable updates on start:"
-msgstr ""
+msgstr "Activează actualizările la pornire:"
 
 #: ../src/ui/preferences.vala:89
 msgid "Time interval between updates:"
-msgstr ""
+msgstr "Interval de timp între actualizări:"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
-msgstr ""
+msgstr "Faviconuri:"
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
-msgstr ""
+msgstr "Descarcă toate faviconurile acum:"
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
-msgstr ""
+msgstr "Preferințe"
 
 #: ../src/ui/preferences.vala:110
 msgid "Behavior"
-msgstr ""
+msgstr "Comportament"
 
 #: ../src/ui/preferences.vala:111
 msgid "Updates"
-msgstr ""
+msgstr "Actualizări"
 
 #: ../src/ui/statusbar.vala:49
 msgid "Add new subscription URL"
-msgstr ""
+msgstr "Adaugă URL-ul unui abonament nou"
 
 #: ../src/ui/statusbar.vala:52
 msgid "Remove selected subscription"
-msgstr ""
+msgstr "Șterge abonamentul selectat"
 
 #: ../src/ui/statusbar.vala:55
 msgid "Import subscription from OPML"
-msgstr ""
+msgstr "Importează abonamentele dintr-un fișier OPML"
 
 #: ../src/ui/statusbar.vala:58
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "Du-te la canalul cu articole necitite"
 
 #: ../src/ui/statusbar.vala:61
 msgid "Mark all items as read"
-msgstr ""
+msgstr "Marchează toate articolele ca citite"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feeds"
-msgstr ""
+msgstr "fluxuri necitite"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feed"
-msgstr ""
+msgstr "flux necitit"
 
 #: ../src/ui/subscription.vala:30
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: ../src/ui/subscription.vala:40
 msgid "Load favicon"
-msgstr ""
+msgstr "Încarcă favicon"
 
 #: ../src/ui/subscription.vala:56
 #, c-format
 msgid "URI Address"
-msgstr ""
+msgstr "Adresă URI"
 
 #: ../src/ui/toolbar.vala:57
 msgid "Type to Search..."
-msgstr ""
+msgstr "Scrie pentru a căuta..."
 
 #: ../src/ui/toolbar.vala:62
 msgid "Sidebar Visible"
-msgstr ""
+msgstr "Bară laterală vizibilă"
 
 #: ../src/ui/toolbar.vala:63
 msgid "Fullscreen"
-msgstr ""
+msgstr "Ecran complet"
 
 #: ../src/ui/toolbar.vala:97
 msgid "Go to the previous readed item"
-msgstr ""
+msgstr "Du-te la ultimul articol citit"
 
 #: ../src/ui/toolbar.vala:98
 msgid "Go to the next readed item"
-msgstr ""
+msgstr "Du-te la următorul articol citit"
 
 #: ../src/ui/toolbar.vala:99
 msgid "Refresh all subscriptions"
-msgstr ""
+msgstr "Actualizează toate abonamentele"
 
 #: ../src/ui/toolbar.vala:100
 msgid "Menu"
-msgstr ""
+msgstr "Meniu"
 
 #: ../src/ui/view-cell.vala:53
 #, c-format
