@@ -596,7 +596,9 @@ public class Feedler.Window : Gtk.Window
 		{
 			try
 			{
-				GLib.FileUtils.set_contents (file.get_filename (), this.db.export_to_opml ());
+                uint8[] data = this.db.export_to_opml ().data;
+                string s;
+                file.get_file ().replace_contents (data, null, false, 0, out s);
 			}
 			catch (GLib.Error e)
 			{

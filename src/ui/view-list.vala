@@ -143,7 +143,11 @@ public class Feedler.ViewList : Feedler.View
 				item.append ("<div class='item'><span class='title'>"+feed.subject+"</span><br/>");
 				item.append ("<span class='time'>"+feed.date+", by "+feed.author+"</span><br/>");
 				item.append ("<span class='content'>"+feed.text+"</span></div><br/>");
-				GLib.FileUtils.set_contents (path, item.str);
+                
+                GLib.File file = GLib.File.new_for_path (path);
+                uint8[] data = item.data;
+                string s;
+                file.replace_contents (data, null, false, 0, out s);
 				return true;
 			}
 		}
