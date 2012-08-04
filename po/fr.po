@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-07-23 11:07+0000\n"
-"Last-Translator: Damien Horn <horn.damien@riseup.net>\n"
+"PO-Revision-Date: 2012-08-04 04:30+0000\n"
+"Last-Translator: jibjib <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-07-24 05:08+0000\n"
-"X-Generator: Launchpad (build 15668)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:25+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 "Language: fr\n"
 
 #: ../src/desktop-launcher.vala:13
@@ -217,7 +217,7 @@ msgstr "Délai entre chaque mise à jour"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
-msgstr ""
+msgstr "Favicônes"
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
@@ -249,7 +249,7 @@ msgstr "Importer les abonnements d'un fichier OPML"
 
 #: ../src/ui/statusbar.vala:58
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "Afficher les items non lus"
 
 #: ../src/ui/statusbar.vala:61
 msgid "Mark all items as read"

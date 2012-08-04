@@ -8,19 +8,19 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-05-07 19:20+0000\n"
-"Last-Translator: Anas Mohamed <anasm7m@gmail.com>\n"
+"PO-Revision-Date: 2012-08-04 04:26+0000\n"
+"Last-Translator: CooL MaN 83 <the.dragon.s.lord@gmail.com>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-30 05:22+0000\n"
-"X-Generator: Launchpad (build 15520)\n"
+"X-Launchpad-Export-Date: 2012-08-04 05:25+0000\n"
+"X-Generator: Launchpad (build 15742)\n"
 "Language: ar\n"
 
 #: ../src/desktop-launcher.vala:13
 msgid "Download and view feeds"
-msgstr ""
+msgstr "نزّل واعرض التلقيمات"
 
 #: ../src/desktop-launcher.vala:14
 msgid "Feedler News Reader"
@@ -28,11 +28,11 @@ msgstr ""
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
 msgid "Update"
-msgstr ""
+msgstr "تحديث"
 
 #: ../src/indicator.vala:28
 msgid "Unread"
-msgstr ""
+msgstr "غير المقروءة"
 
 #: ../src/manager.vala:126 ../src/window.vala:297
 msgid "new feeds"
@@ -82,7 +82,7 @@ msgstr ""
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Create"
-msgstr ""
+msgstr "إنشاء"
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Add manually subscriptions from URL."
@@ -90,7 +90,7 @@ msgstr ""
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Import"
-msgstr ""
+msgstr "إستيراد"
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Add a subscriptions from OPML file."
@@ -108,64 +108,64 @@ msgstr ""
 #: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
 #, c-format
 msgid "Name"
-msgstr ""
+msgstr "الإسم"
 
 #: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
 msgid "Save"
-msgstr ""
+msgstr "حفـظ"
 
 #: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:36
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: ../src/ui/infobar.vala:21
 msgid "Dismiss"
-msgstr ""
+msgstr "إستبعاد"
 
 #: ../src/ui/infobar.vala:24
 msgid "Undo"
-msgstr ""
+msgstr "تراجُع"
 
 #: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
 msgid "Mark as read"
-msgstr ""
+msgstr "حدد كمقروء"
 
 #: ../src/ui/menu.vala:13
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: ../src/ui/menu.vala:14
 msgid "Properties"
-msgstr ""
+msgstr "الخصائص"
 
 #: ../src/ui/menu.vala:15
 msgid "New"
-msgstr ""
+msgstr "جديد"
 
 #: ../src/ui/menu.vala:16
 msgid "Subscription"
-msgstr ""
+msgstr "الإشتراك"
 
 #: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
 #, c-format
 msgid "Folder"
-msgstr ""
+msgstr "المجلّد"
 
 #: ../src/ui/menu.vala:37
 msgid "Display"
-msgstr ""
+msgstr "عرض"
 
 #: ../src/ui/menu.vala:38
 msgid "Open in browser"
-msgstr ""
+msgstr "فتح في المتصفح"
 
 #: ../src/ui/menu.vala:40
 msgid "Mark as unread"
-msgstr ""
+msgstr "سجٌله كغير مقروء"
 
 #: ../src/ui/preferences.vala:60
 msgid "Content:"
-msgstr ""
+msgstr "المحتوى:"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
@@ -185,11 +185,11 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:65
 msgid "Enable Java:"
-msgstr ""
+msgstr "تفعيل الجافا"
 
 #: ../src/ui/preferences.vala:66
 msgid "Window:"
-msgstr ""
+msgstr "نافذة"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
@@ -201,7 +201,7 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "الإشتراكات"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
@@ -225,15 +225,15 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
-msgstr ""
+msgstr "الخيارات"
 
 #: ../src/ui/preferences.vala:110
 msgid "Behavior"
-msgstr ""
+msgstr "السّلوك"
 
 #: ../src/ui/preferences.vala:111
 msgid "Updates"
-msgstr ""
+msgstr "التحديثات"
 
 #: ../src/ui/statusbar.vala:49
 msgid "Add new subscription URL"
@@ -265,7 +265,7 @@ msgstr ""
 
 #: ../src/ui/subscription.vala:30
 msgid "URI"
-msgstr ""
+msgstr "العنوان"
 
 #: ../src/ui/subscription.vala:40
 msgid "Load favicon"
@@ -278,7 +278,7 @@ msgstr ""
 
 #: ../src/ui/toolbar.vala:57
 msgid "Type to Search..."
-msgstr ""
+msgstr "أدخل للقيام بالبحت"
 
 #: ../src/ui/toolbar.vala:62
 msgid "Sidebar Visible"
@@ -286,7 +286,7 @@ msgstr ""
 
 #: ../src/ui/toolbar.vala:63
 msgid "Fullscreen"
-msgstr ""
+msgstr "عرض على كامل الشاشة"
 
 #: ../src/ui/toolbar.vala:97
 msgid "Go to the previous readed item"
@@ -302,7 +302,7 @@ msgstr ""
 
 #: ../src/ui/toolbar.vala:100
 msgid "Menu"
-msgstr ""
+msgstr "القائمة"
 
 #: ../src/ui/view-cell.vala:53
 #, c-format
