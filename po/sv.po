@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-08-03 08:17+0000\n"
-"Last-Translator: Marcus Lundgren <lp@gaoth.org>\n"
+"PO-Revision-Date: 2012-08-07 07:57+0000\n"
+"Last-Translator: Zahirovic Mensur <Unknown>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-04 05:25+0000\n"
-"X-Generator: Launchpad (build 15742)\n"
+"X-Launchpad-Export-Date: 2012-08-08 04:49+0000\n"
+"X-Generator: Launchpad (build 15757)\n"
 "Language: sv\n"
 
 #: ../src/desktop-launcher.vala:13
@@ -112,44 +112,44 @@ msgstr "Namn"
 
 #: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
 msgid "Save"
-msgstr ""
+msgstr "Spara"
 
 #: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:36
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: ../src/ui/infobar.vala:21
 msgid "Dismiss"
-msgstr ""
+msgstr "Avbryt"
 
 #: ../src/ui/infobar.vala:24
 msgid "Undo"
-msgstr ""
+msgstr "Ångra"
 
 #: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
 msgid "Mark as read"
-msgstr ""
+msgstr "Markera som läst"
 
 #: ../src/ui/menu.vala:13
 msgid "Delete"
-msgstr ""
+msgstr "Ta bort"
 
 #: ../src/ui/menu.vala:14
 msgid "Properties"
-msgstr ""
+msgstr "Egenskaper"
 
 #: ../src/ui/menu.vala:15
 msgid "New"
-msgstr ""
+msgstr "Nytt"
 
 #: ../src/ui/menu.vala:16
 msgid "Subscription"
-msgstr ""
+msgstr "Prenumeration"
 
 #: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
 #, c-format
 msgid "Folder"
-msgstr ""
+msgstr "Mapp"
 
 #: ../src/ui/menu.vala:37
 msgid "Display"
@@ -157,43 +157,43 @@ msgstr ""
 
 #: ../src/ui/menu.vala:38
 msgid "Open in browser"
-msgstr ""
+msgstr "Öppna i webbläsaren"
 
 #: ../src/ui/menu.vala:40
 msgid "Mark as unread"
-msgstr ""
+msgstr "Markera som oläst"
 
 #: ../src/ui/preferences.vala:60
 msgid "Content:"
-msgstr ""
+msgstr "Innehåll:"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
-msgstr ""
+msgstr "Aktivera bilder:"
 
 #: ../src/ui/preferences.vala:62
 msgid "Shrink image to fit:"
-msgstr ""
+msgstr "Minsta bilden för att passa:"
 
 #: ../src/ui/preferences.vala:63
 msgid "Enable plugins:"
-msgstr ""
+msgstr "Aktivera plugins:"
 
 #: ../src/ui/preferences.vala:64
 msgid "Enable JavaScripts:"
-msgstr ""
+msgstr "Aktivera Javascript:"
 
 #: ../src/ui/preferences.vala:65
 msgid "Enable Java:"
-msgstr ""
+msgstr "Aktivera Java:"
 
 #: ../src/ui/preferences.vala:66
 msgid "Window:"
-msgstr ""
+msgstr "Fönster:"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
-msgstr ""
+msgstr "Gömma fönster istället för att stänga:"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
@@ -201,39 +201,39 @@ msgstr ""
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Prenumerationer :"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
-msgstr ""
+msgstr "Aktivera automatiska uppdateringar:"
 
 #: ../src/ui/preferences.vala:88
 msgid "Enable updates on start:"
-msgstr ""
+msgstr "Aktivera uppdateringar vid uppstart:"
 
 #: ../src/ui/preferences.vala:89
 msgid "Time interval between updates:"
-msgstr ""
+msgstr "Tidsintervall mellan uppdateringar:"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
-msgstr ""
+msgstr "Favikoner:"
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
-msgstr ""
+msgstr "Ladda ner nu alla favikoner:"
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
-msgstr ""
+msgstr "Inställningar"
 
 #: ../src/ui/preferences.vala:110
 msgid "Behavior"
-msgstr ""
+msgstr "Beteende"
 
 #: ../src/ui/preferences.vala:111
 msgid "Updates"
-msgstr ""
+msgstr "Uppdateringar"
 
 #: ../src/ui/statusbar.vala:49
 msgid "Add new subscription URL"
@@ -265,28 +265,28 @@ msgstr ""
 
 #: ../src/ui/subscription.vala:30
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: ../src/ui/subscription.vala:40
 msgid "Load favicon"
-msgstr ""
+msgstr "Ladda favikon"
 
 #: ../src/ui/subscription.vala:56
 #, c-format
 msgid "URI Address"
-msgstr ""
+msgstr "URI Adress"
 
 #: ../src/ui/toolbar.vala:57
 msgid "Type to Search..."
-msgstr ""
+msgstr "Skriv för att söka..."
 
 #: ../src/ui/toolbar.vala:62
 msgid "Sidebar Visible"
-msgstr ""
+msgstr "Sidopanelen synlig"
 
 #: ../src/ui/toolbar.vala:63
 msgid "Fullscreen"
-msgstr ""
+msgstr "Fullskärm"
 
 #: ../src/ui/toolbar.vala:97
 msgid "Go to the previous readed item"
