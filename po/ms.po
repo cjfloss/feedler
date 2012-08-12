@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-06-02 03:47+0000\n"
+"PO-Revision-Date: 2012-08-12 03:46+0000\n"
 "Last-Translator: abuyop <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-30 05:22+0000\n"
-"X-Generator: Launchpad (build 15520)\n"
+"X-Launchpad-Export-Date: 2012-08-12 04:52+0000\n"
+"X-Generator: Launchpad (build 15780)\n"
 "Language: ms\n"
 
 #: ../src/desktop-launcher.vala:13
 msgid "Download and view feeds"
-msgstr ""
+msgstr "Muat turun dan lihat suapan"
 
 #: ../src/desktop-launcher.vala:14
 msgid "Feedler News Reader"
-msgstr ""
+msgstr "Pembaca Berita Feedler"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
 msgid "Update"
@@ -98,11 +98,11 @@ msgstr "Tambah langganan dari fail OPML."
 
 #: ../src/ui/contractor.vala:23
 msgid "Share channels or items"
-msgstr ""
+msgstr "Kongsi saluran atau item"
 
 #: ../src/ui/contractor.vala:38
 msgid "Export subscriptions"
-msgstr ""
+msgstr "Eksport langganan"
 
 #: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
 #: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
@@ -120,11 +120,11 @@ msgstr "Batal"
 
 #: ../src/ui/infobar.vala:21
 msgid "Dismiss"
-msgstr ""
+msgstr "Buang"
 
 #: ../src/ui/infobar.vala:24
 msgid "Undo"
-msgstr ""
+msgstr "Buat Asal"
 
 #: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
 msgid "Mark as read"
@@ -165,63 +165,63 @@ msgstr "Tanda sebagai belum baca"
 
 #: ../src/ui/preferences.vala:60
 msgid "Content:"
-msgstr ""
+msgstr "Kandungan:"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
-msgstr ""
+msgstr "Benarkan imej:"
 
 #: ../src/ui/preferences.vala:62
 msgid "Shrink image to fit:"
-msgstr ""
+msgstr "Kecilkan imej untuk disuai muat:"
 
 #: ../src/ui/preferences.vala:63
 msgid "Enable plugins:"
-msgstr ""
+msgstr "Benarkan pemalam:"
 
 #: ../src/ui/preferences.vala:64
 msgid "Enable JavaScripts:"
-msgstr ""
+msgstr "Benarkan Skrip Java:"
 
 #: ../src/ui/preferences.vala:65
 msgid "Enable Java:"
-msgstr ""
+msgstr "Benarkan Java:"
 
 #: ../src/ui/preferences.vala:66
 msgid "Window:"
-msgstr ""
+msgstr "Tetingkap:"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
-msgstr ""
+msgstr "Sembunyikan tetingkap selain dari menutup:"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
-msgstr ""
+msgstr "Sembunyikan tetingkap pada permulaan menu pemesejan:"
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Langganan:"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
-msgstr ""
+msgstr "Benarkan kemaskini automatik:"
 
 #: ../src/ui/preferences.vala:88
 msgid "Enable updates on start:"
-msgstr ""
+msgstr "Benarkan kemaskini semasa permulaan:"
 
 #: ../src/ui/preferences.vala:89
 msgid "Time interval between updates:"
-msgstr ""
+msgstr "Sela masa antara kemaskini:"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
-msgstr ""
+msgstr "Favicon:"
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
-msgstr ""
+msgstr "Muat turun semua favicon:"
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
@@ -233,7 +233,7 @@ msgstr "Kelakuan"
 
 #: ../src/ui/preferences.vala:111
 msgid "Updates"
-msgstr ""
+msgstr "Kemaskini"
 
 #: ../src/ui/statusbar.vala:49
 msgid "Add new subscription URL"
@@ -245,15 +245,15 @@ msgstr "Buang langganan terpilih"
 
 #: ../src/ui/statusbar.vala:55
 msgid "Import subscription from OPML"
-msgstr ""
+msgstr "Import langganan dari OPML"
 
 #: ../src/ui/statusbar.vala:58
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "Pergi ke saluran dengan item belum dibaca"
 
 #: ../src/ui/statusbar.vala:61
 msgid "Mark all items as read"
-msgstr ""
+msgstr "Tanda semua item sebagai dibaca"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feeds"
