@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-08-25 00:30+0000\n"
-"Last-Translator: Benjamin Donald-Wilson <benny@thesii.org>\n"
+"PO-Revision-Date: 2012-09-05 03:58+0000\n"
+"Last-Translator: David Wales <daviewales@gmail.com>\n"
 "Language-Team: English (Australia) <en_AU@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-08-28 07:36+0000\n"
-"X-Generator: Launchpad (build 15864)\n"
+"X-Launchpad-Export-Date: 2012-09-05 04:59+0000\n"
+"X-Generator: Launchpad (build 15901)\n"
 "Language: \n"
 
 #: ../src/desktop-launcher.vala:13
@@ -201,27 +201,27 @@ msgstr "Hide window on start to the messaging menu:"
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Subscriptions:"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
-msgstr ""
+msgstr "Enable automatic updates:"
 
 #: ../src/ui/preferences.vala:88
 msgid "Enable updates on start:"
-msgstr ""
+msgstr "Enable updates on start:"
 
 #: ../src/ui/preferences.vala:89
 msgid "Time interval between updates:"
-msgstr ""
+msgstr "Time interval between updates:"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
-msgstr ""
+msgstr "Favicons:"
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
-msgstr ""
+msgstr "Download now all favicons:"
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
@@ -229,11 +229,11 @@ msgstr "Preferences"
 
 #: ../src/ui/preferences.vala:110
 msgid "Behavior"
-msgstr ""
+msgstr "Behaviour"
 
 #: ../src/ui/preferences.vala:111
 msgid "Updates"
-msgstr ""
+msgstr "Updates"
 
 #: ../src/ui/statusbar.vala:49
 msgid "Add new subscription URL"
@@ -245,31 +245,31 @@ msgstr "Remove selected subscription"
 
 #: ../src/ui/statusbar.vala:55
 msgid "Import subscription from OPML"
-msgstr ""
+msgstr "Import subscription from OPML"
 
 #: ../src/ui/statusbar.vala:58
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "Go to the channel with unread items"
 
 #: ../src/ui/statusbar.vala:61
 msgid "Mark all items as read"
-msgstr ""
+msgstr "Mark all items as read"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feeds"
-msgstr ""
+msgstr "unread feeds"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feed"
-msgstr ""
+msgstr "unread feed"
 
 #: ../src/ui/subscription.vala:30
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: ../src/ui/subscription.vala:40
 msgid "Load favicon"
-msgstr ""
+msgstr "Load favicon"
 
 #: ../src/ui/subscription.vala:56
 #, c-format
@@ -290,15 +290,15 @@ msgstr "Fullscreen"
 
 #: ../src/ui/toolbar.vala:97
 msgid "Go to the previous readed item"
-msgstr ""
+msgstr "Go to the previously read item"
 
 #: ../src/ui/toolbar.vala:98
 msgid "Go to the next readed item"
-msgstr ""
+msgstr "Go to the next read item"
 
 #: ../src/ui/toolbar.vala:99
 msgid "Refresh all subscriptions"
-msgstr ""
+msgstr "Refresh all subscriptions"
 
 #: ../src/ui/toolbar.vala:100
 msgid "Menu"
@@ -307,4 +307,4 @@ msgstr "Menu"
 #: ../src/ui/view-cell.vala:53
 #, c-format
 msgid "%s, by %s"
-msgstr ""
+msgstr "%s, by %s"
