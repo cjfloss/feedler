@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-06-28 19:45+0000\n"
-"Last-Translator: seaflames <Unknown>\n"
+"PO-Revision-Date: 2012-09-20 13:09+0000\n"
+"Last-Translator: Ferhat TUNÇTAN <ferhattnctn66@gmail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-06-30 05:22+0000\n"
-"X-Generator: Launchpad (build 15520)\n"
+"X-Launchpad-Export-Date: 2012-09-21 04:53+0000\n"
+"X-Generator: Launchpad (build 15985)\n"
 "Language: tr\n"
 
 #: ../src/desktop-launcher.vala:13
 msgid "Download and view feeds"
-msgstr ""
+msgstr "Haber kaynaklarını indir ve görüntüle"
 
 #: ../src/desktop-launcher.vala:14
 msgid "Feedler News Reader"
-msgstr ""
+msgstr "Feedler Haber Okuyucu"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
 msgid "Update"
@@ -98,7 +98,7 @@ msgstr "OPML dosyasından abonelikleri ekle"
 
 #: ../src/ui/contractor.vala:23
 msgid "Share channels or items"
-msgstr ""
+msgstr "Kanalları veya öğeleri paylaş"
 
 #: ../src/ui/contractor.vala:38
 msgid "Export subscriptions"
@@ -169,11 +169,11 @@ msgstr "İçerik:"
 
 #: ../src/ui/preferences.vala:61
 msgid "Enable images:"
-msgstr ""
+msgstr "Resimleri Aktive et :"
 
 #: ../src/ui/preferences.vala:62
 msgid "Shrink image to fit:"
-msgstr ""
+msgstr "Resimleri boyutlandır:"
 
 #: ../src/ui/preferences.vala:63
 msgid "Enable plugins:"
@@ -217,11 +217,11 @@ msgstr "Güncellemeler arası zaman:"
 
 #: ../src/ui/preferences.vala:90
 msgid "Favicons:"
-msgstr ""
+msgstr "Web site simgeleri:"
 
 #: ../src/ui/preferences.vala:91
 msgid "Download now all favicons:"
-msgstr ""
+msgstr "Tüm web site simgelerini şimdi indir:"
 
 #: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
 msgid "Preferences"
