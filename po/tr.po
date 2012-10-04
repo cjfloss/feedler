@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-09-20 13:09+0000\n"
+"PO-Revision-Date: 2012-10-04 01:52+0000\n"
 "Last-Translator: Ferhat TUNÇTAN <ferhattnctn66@gmail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-09-21 04:53+0000\n"
-"X-Generator: Launchpad (build 15985)\n"
+"X-Launchpad-Export-Date: 2012-10-04 05:44+0000\n"
+"X-Generator: Launchpad (build 16061)\n"
 "Language: tr\n"
 
 #: ../src/desktop-launcher.vala:13
@@ -45,7 +45,7 @@ msgstr "yeni abonelik"
 #: ../src/window.vala:330
 #, c-format
 msgid "Imported %i channels in %i folders."
-msgstr ""
+msgstr "%i klasörü içinden %i kanalları içeriye alındı."
 
 #: ../src/window.vala:483 ../src/window.vala:509
 msgid "Updating subscriptions"
@@ -120,7 +120,7 @@ msgstr "İptal et"
 
 #: ../src/ui/infobar.vala:21
 msgid "Dismiss"
-msgstr ""
+msgstr "Bırak"
 
 #: ../src/ui/infobar.vala:24
 msgid "Undo"
@@ -197,7 +197,7 @@ msgstr "Kapatmak yerni pencereyi gizle:"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
-msgstr ""
+msgstr "Başlangıçta pencereyi mesajlaşma menüsüne sakla:"
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
@@ -229,7 +229,7 @@ msgstr "Tercihler"
 
 #: ../src/ui/preferences.vala:110
 msgid "Behavior"
-msgstr ""
+msgstr "Davranış"
 
 #: ../src/ui/preferences.vala:111
 msgid "Updates"
@@ -249,7 +249,7 @@ msgstr "OPML'den abonelik aktar"
 
 #: ../src/ui/statusbar.vala:58
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "Okunmamış öğeli kanala git"
 
 #: ../src/ui/statusbar.vala:61
 msgid "Mark all items as read"
