@@ -1,25 +1,25 @@
-Dependencies
-------------------------
- - libgtk-3.0-dev
- - libwebkitgtk-3.0-dev
- - libgranite
- - sqlheavy-0.1
- - libsoup-2.4
- - libxml-2.0
- - libnotify
- - libunity
- - gee-1.0
- - indicate-0.7
+--------------------------------------------------------------------------------
+DEPENDENCIES
+--------------------------------------------------------------------------------
+libgtk-3.0-dev
+libwebkitgtk-3.0-dev
+libgranite
+sqlheavy-0.1
+libsoup-2.4
+libxml-2.0
+libnotify
+libunity
+gee-1.0
+indicate-0.7
 
-Testing && Installation
-------------------------
-Application cannot work without installation, because it needs schema and service.
-For testing you should open terminal, go to feedler's folder and after that:
- $ mkdir build
- $ cd build/
- $ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
- $ make
- $ sudo make install
- $ ./feedler # or just run from launcher
+--------------------------------------------------------------------------------
+BUILDING
+--------------------------------------------------------------------------------
+bzr branch lp:feedler
+cd feedler
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+make
+sudo make install
 
-Have a nice day with Feedler;)
