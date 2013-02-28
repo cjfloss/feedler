@@ -62,7 +62,12 @@ public class Feedler.ViewWeb : Feedler.View
 		try
 		{
 			var path = GLib.Environment.get_tmp_dir () + "/feedler.html";
-			GLib.FileUtils.set_contents (path, content.str);
+                
+            GLib.File file = GLib.File.new_for_path (path);
+            uint8[] data = content.data;
+            string s;
+            file.replace_contents (data, null, false, 0, out s);
+            
 			return true;
 		}
 		catch (GLib.Error e)
