@@ -7,16 +7,17 @@
 
 internal class Subscriptions
 {
-	internal Gee.HashMap<Model.Folder?, unowned GLib.List<Model.Channel?>> folders;
+	internal GLib.List<Model.Folder> folders;
 
 	internal bool parse (Xml.Doc data)
-	{ 
+	{
 		unowned Xml.Node root = data.get_root_element ();
 		if (root.name == "opml")
 		{
-			this.folders = new Gee.HashMap<Model.Folder?, unowned GLib.List<Model.Channel?>> ();
-			Model.Folder f = {0, "body", 0}; //for feeds not in folders
-			this.folders.set (f, new GLib.List<Model.Channel?> ());
+			this.folders = new GLib.List<Model.Folder> ();
+			Model.Folder f = new Model.Folder.with_data (0, _("Subscriptions")); //for feeds not in folders
+			f.channels = new GLib.List<Model.Channel> ();
+			this.folders.append (f);
 			unowned Xml.Node head_body = root.children;
 			while (head_body != null)
 			{
@@ -27,6 +28,9 @@ internal class Subscriptions
 				}
 				head_body = head_body.next;
 			}
+			if (folders.first ().data.channels.length () == 0)
+				this.folders.remove (this.folders.first ().data);
+					
 			return true;
 		}
 		return false;
@@ -57,11 +61,10 @@ internal class Subscriptions
 
 	private void opml_folder (Xml.Node node)
 	{
-		Model.Folder f = Model.Folder ();
+		Model.Folder f = new Model.Folder ();
 		f.name = node.get_prop ("text");
-		f.parent = 0;
-		//TODO if (node.parent->name != "body")
-		this.folders.set (f, new GLib.List<Model.Channel?> ());
+		f.channels = new GLib.List<Model.Channel> ();
+		this.folders.append (f);
 		opml (node);
 	}
 
@@ -71,18 +74,10 @@ internal class Subscriptions
 		c.title = node.get_prop ("text");
 		c.source = node.get_prop ("xmlUrl");
 		c.link = node.get_prop ("htmlUrl");
-		c.folder = 0;
 		if (node.parent->name == "body")
-			this.append_channel ("body", c);
+			this.folders.first ().data.channels.append (c);
 		else
-			this.append_channel (node.parent->get_prop ("text"), c);
-	}
-
-	private void append_channel (string name, Model.Channel channel)
-	{
-		foreach (var f in this.folders.entries)
-			if (f.key.name == name)
-				f.value.append (channel);
+			this.folders.last ().data.channels.append (c);
 	}
 }
 
@@ -127,7 +122,7 @@ internal class Feeds
 
 	private void rss_item (Xml.Node* iitem)
 	{
-		Model.Item item = Model.Item ();
+		Model.Item item = new Model.Item ();
 		for (Xml.Node* iter = iitem->children; iter != null; iter = iter->next)
 		{
 			if (iter->type != Xml.ElementType.ELEMENT_NODE)
@@ -144,9 +139,10 @@ internal class Feeds
 			else if (iter->name == "pubDate")
 				item.time = (int)string_to_time_t (iter->get_content ());
 		}
-		item.state = Model.State.UNREAD;
+		item.read = false;
+		item.starred = false;
 		if (item.author == null)
-			item.author = "Anonymous"; //TODO gettext
+			item.author = _("Anonymous");
 		if (item.time == 0)
 			item.time = (int)time_t ();
 		this.channel.items.append (item);
@@ -172,7 +168,7 @@ internal class Feeds
 
 	private void atom_item (Xml.Node* iitem)
 	{
-		Model.Item item = Model.Item ();
+		Model.Item item = new Model.Item ();
 		for (Xml.Node* iter = iitem->children; iter != null; iter = iter->next)
 		{
 			if (iter->type != Xml.ElementType.ELEMENT_NODE)
@@ -189,7 +185,8 @@ internal class Feeds
 			else if (iter->name == "updated" || iter->name == "published")
 				item.time = (int)string_to_time_t (iter->get_content ());
 		}
-		item.state = Model.State.UNREAD;
+		item.read = false;
+		item.starred = false;
 		if (item.time == 0)
 			item.time = (int)time_t ();
 		this.channel.items.append (item);
@@ -205,7 +202,7 @@ internal class Feeds
 			if (iter->name == "name")
 				return iter->get_content ();
 		}
-		return "Anonymous";//TODO gettext
+		return _("Anonymous");
 	}
 	
 	private time_t string_to_time_t (string date)
@@ -227,9 +224,9 @@ public class BackendXml : Backend
 			if (subs.parse (doc))
 			{
 				int i = 0;
-				folders = new Serializer.Folder[subs.folders.size];
-				foreach (var f in subs.folders.entries)
-					folders[i++] = Serializer.Folder.from_model (f.key, f.value);
+				folders = new Serializer.Folder[subs.folders.length ()];
+				foreach (var f in subs.folders)
+					folders[i++] = Serializer.Folder.from_model (f);
 				return true;
 			}
 		}
@@ -270,7 +267,7 @@ public class BackendXml : Backend
 		}
 		catch (GLib.ThreadError e)
 		{
-			stderr.printf ("Cannot run threads.\n");
+			stderr.printf ("Cannot run import threads.\n");
 		}
 	}
 
@@ -327,11 +324,12 @@ public class BackendXml : Backend
 		if (xml != null && this.refresh (xml, out channel))
 		{
 			channel.source = message.uri.to_string (false);
-			this.service.updated (channel);
-		}
+			//this.service.updated (channel);
+		} else channel = Serializer.Channel.no_data ();
+		this.service.updated (channel);
 	}
 
-	private bool is_valid (Xml.Doc doc)
+	private bool is_valid (Xml.Doc? doc)
 	{
 		if (doc == null)
 		{

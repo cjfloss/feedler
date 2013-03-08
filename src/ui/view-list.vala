@@ -13,7 +13,8 @@ public class FeedStore : GLib.Object
     public string source { get; set; }
     public string text { get; set; }
     public string author { get; set; }
-    public bool unread { get; set; }
+	public bool read { get; set; }
+	public bool starred { get; set; }
 	
 	public FeedStore (Model.Item item, string time_format)
 	{
@@ -23,10 +24,8 @@ public class FeedStore : GLib.Object
 		this.source = item.source;
 		this.text = item.description;
 		this.author = item.author;
-		if (item.state == Model.State.UNREAD)
-			this.unread = true;
-		else
-			this.unread = false;
+		this.read = item.read;
+		this.starred = item.starred;
 	}
 }
 
@@ -44,7 +43,7 @@ public class Feedler.ViewList : Feedler.View
 	private WebKit.WebView browser;
 	private Gtk.ScrolledWindow scroll_list;
 	private Gtk.ScrolledWindow scroll_web;
-	private Gtk.Paned pane;
+	internal Granite.Widgets.ThinPaned pane;
 
 	construct
 	{
@@ -68,8 +67,11 @@ public class Feedler.ViewList : Feedler.View
 		this.viewmenu = new Feedler.MenuView ();
 		this.viewmenu.disp.activate.connect (load_item);
 		this.viewmenu.open.activate.connect (browse_page);
-		this.viewmenu.read.activate.connect (mark_item);
-		this.viewmenu.unre.activate.connect (mark_item);
+		this.viewmenu.copy.activate.connect (copy_url);
+		this.viewmenu.read.activate.connect (read_item);
+		this.viewmenu.unre.activate.connect (read_item);
+		this.viewmenu.star.activate.connect (star_item);
+		this.viewmenu.unst.activate.connect (star_item);
 		this.viewmenu.show_all ();
 		
 		this.scroll_list = new Gtk.ScrolledWindow (null, null);
@@ -83,11 +85,12 @@ public class Feedler.ViewList : Feedler.View
 		this.scroll_web.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 		this.scroll_web.add (browser);
 		
-		this.pane = new Gtk.Paned (Gtk.Orientation.VERTICAL);
-		this.pane.set_position (240);
+		this.pane = new Granite.Widgets.ThinPaned ();
+		this.pane.set_orientation (Gtk.Orientation.VERTICAL);
+		this.pane.set_position (225);
 		
-		this.pane.add1 (scroll_list);
-		this.pane.add2 (scroll_web);
+		this.pane.pack1 (scroll_list, true, false);
+		this.pane.pack2 (scroll_web, true, false);
 		this.add (pane);
 	}
 	
@@ -95,6 +98,7 @@ public class Feedler.ViewList : Feedler.View
 	{
 		this.store.clear ();
 		this.tree.model = null;
+		this.load_article ("");
 	}
 	
 	public override void add_feed (Model.Item item, string time_format)
@@ -121,14 +125,6 @@ public class Feedler.ViewList : Feedler.View
 		this.tree.get_selection ().select_path (path);
 		this.load_item ();
 	}
-
-    public override void change ()
-    {
-        if (this.pane.get_orientation () == Gtk.Orientation.VERTICAL)
-            this.pane.set_orientation (Gtk.Orientation.HORIZONTAL);
-        else
-            this.pane.set_orientation (Gtk.Orientation.VERTICAL);
-    }
 
 	public override bool contract ()
 	{
@@ -157,11 +153,6 @@ public class Feedler.ViewList : Feedler.View
 		}
 		return false;
 	}
-
-    public override Feedler.Views type ()
-    {
-        return Feedler.Views.LIST;
-    }
 	
 	private void load_article (string content)
 	{
@@ -176,15 +167,31 @@ public class Feedler.ViewList : Feedler.View
 			Gtk.TreeIter iter;
 			FeedStore? feed = this.selected_item (out iter);
 			GLib.Process.spawn_command_line_async ("xdg-open " + feed.source);
-			if (feed.unread)
+			if (!feed.read)
 			{
-				feed.unread = false;
+				feed.read = true;
 				this.store.set_value (iter, 0, feed);
-				this.item_marked (feed.id, feed.unread);
+				this.item_marked (feed.id, Model.State.READ);
 			}
 			if (feed.source != this.cache)
 				this.item_selected (this.tree.model.get_path (iter).to_string ());
 			this.cache = feed.source;
+		}
+		catch (GLib.Error e)
+		{
+			stderr.printf ("ERROR: %s\n", e.message);
+		}
+	}
+
+	private void copy_url () 
+	{
+		stderr.printf ("Feedler.ViewList.copy_url ()\n");
+		try
+		{
+			Gtk.TreeIter iter;
+			FeedStore? feed = this.selected_item (out iter);
+			Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (this.get_display (), Gdk.SELECTION_CLIPBOARD);
+			clipboard.set_text (feed.source, -1);
 		}
 		catch (GLib.Error e)
 		{
@@ -199,31 +206,46 @@ public class Feedler.ViewList : Feedler.View
 		FeedStore feed = this.selected_item (out iter);
 		if (feed != null)
 		{
+			stderr.printf ("feed not null\n");
 			this.tree.model.get (iter, 0, out feed);
 			this.load_article (feed.text);
-			if (feed.unread)
+			if (!feed.read)
 			{
-				feed.unread = false;
+				feed.read = true;
 				this.store.set_value (iter, 0, feed);
-				this.item_marked (feed.id, feed.unread);
+				this.item_marked (feed.id, Model.State.READ);
 			}
-			if (feed.source != this.cache)
+			/*if (feed.source != this.cache)
 				this.item_selected (this.tree.model.get_path (iter).to_string ());
-			this.cache = feed.source;
+			this.cache = feed.source;*/
 		}
 	}
 
-	private void mark_item ()
+	private void read_item ()
 	{
-		stderr.printf ("Feedler.ViewList.mark_item ()\n");
+		stderr.printf ("Feedler.ViewList.read_item ()\n");
 		Gtk.TreeIter iter;
 		FeedStore feed = this.selected_item (out iter);
 		if (feed != null)
 		{
 			this.tree.model.get (iter, 0, out feed);
-			feed.unread = !feed.unread;
+			feed.read = !feed.read;
 			this.store.set_value (iter, 0, feed);
-			this.item_marked (feed.id, feed.unread);
+			this.item_marked (feed.id, feed.read ? Model.State.READ : Model.State.UNREAD);
+		}
+	}
+
+	private void star_item ()
+	{
+		stderr.printf ("Feedler.ViewList.star_item ()\n");
+		Gtk.TreeIter iter;
+		FeedStore feed = this.selected_item (out iter);
+		if (feed != null)
+		{
+			this.tree.model.get (iter, 0, out feed);
+			feed.starred = !feed.starred;
+			this.store.set_value (iter, 0, feed);
+			this.item_marked (feed.id, feed.starred ? Model.State.STARRED : Model.State.UNSTARRED);
 		}
 	}
 
@@ -261,12 +283,12 @@ public class Feedler.ViewList : Feedler.View
 		model.get (iter, 0, out feed);
 		if (feed != null)
 		{
-var renderer = cell as Feedler.ViewCell;
+			var renderer = cell as Feedler.ViewCell;
 			renderer.subject = feed.subject;
 			renderer.date = feed.date;
 			renderer.author = feed.author;
 			renderer.channel = feed.source;
-			renderer.unread = feed.unread;
+			renderer.unread = !feed.read;
 		} else return;
 	}
 
@@ -284,7 +306,7 @@ var renderer = cell as Feedler.ViewCell;
 			{
 				Gtk.TreeIter iter;
 				FeedStore feed = this.selected_item (out iter);
-				this.viewmenu.select_mark (feed.unread);
+				this.viewmenu.select_mark (feed.read, feed.starred);
 				this.viewmenu.popup (null, null, null, e.button, e.time);
 			}
 			return true;

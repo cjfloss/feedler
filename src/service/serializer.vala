@@ -8,16 +8,14 @@
 public struct Serializer.Folder
 {
 	public string name;
-	//public int parent;
-    //public Serializer.Folder[]? folders;
     public Serializer.Channel[]? channels;
 
-    public Folder.from_model (Model.Folder model, GLib.List<Model.Channel?> models)
+    public Folder.from_model (Model.Folder model)
     {
         this.name = model.name;
-        this.channels = new Serializer.Channel[models.length ()];
+        this.channels = new Serializer.Channel[model.channels.length ()];
         int i = 0;
-        foreach (var c in models)
+        foreach (var c in model.channels)
             this.channels[i++] = Serializer.Channel.from_model (c, false);
     }
 }
@@ -27,7 +25,6 @@ public struct Serializer.Channel
 	public string title;
 	public string link;
 	public string source;
-    public int folder;
     public Serializer.Item[]? items;
 
     public Channel.from_model (Model.Channel model, bool full = true)
@@ -35,7 +32,6 @@ public struct Serializer.Channel
         this.title = model.title;
         this.link = model.link ?? "";
         this.source = model.source ?? "";
-        this.folder = model.folder;
         //this.items = null;
         if (full)
         {
@@ -45,6 +41,13 @@ public struct Serializer.Channel
                 this.items[i++] = Serializer.Item.from_model (item);
         }
     }
+
+	public Channel.no_data ()
+	{
+		this.title = "";
+        this.link = "";
+        this.source = "";
+	}
 }
 
 public struct Serializer.Item
