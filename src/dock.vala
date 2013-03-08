@@ -14,6 +14,7 @@ public class Feedler.Dock : GLib.Object
 		this.dock = Unity.LauncherEntry.get_for_desktop_id ("feedler.desktop");
 	    this.dock.count_visible = false;
 		this.dock.progress_visible = false;
+		//this.dock.urgent = true;
 	}
 
 	public void counter (uint count)

@@ -55,10 +55,9 @@ public class Feedler.Toolbar : Gtk.Toolbar
     internal Progress progress = new Progress ();
     internal Granite.Widgets.ModeButton mode = new Granite.Widgets.ModeButton ();
     internal Granite.Widgets.SearchBar search = new Granite.Widgets.SearchBar (_("Type to Search..."));
-    internal Gtk.ToggleButton column = new Gtk.ToggleButton ();
     
     internal Granite.Widgets.AppMenu appmenu;
-    internal Feedler.ContractorButton sharemenu;
+    //internal Feedler.ContractorButton sharemenu;
     internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label (_("Sidebar Visible"));
     internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label (_("Fullscreen"));
     internal Gtk.MenuItem preferences = new Gtk.MenuItem.with_label (_("Preferences"));
@@ -74,18 +73,15 @@ public class Feedler.Toolbar : Gtk.Toolbar
         menu.append (new Gtk.SeparatorMenuItem ());
         menu.append (preferences);
         this.appmenu = Feedler.APP.create_appmenu (menu);
-        this.sharemenu = new Feedler.ContractorButton ();
+        //this.sharemenu = new Feedler.ContractorButton ();
         
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-symbolic", Gtk.IconSize.MENU));
-        this.column.set_image (new Gtk.Image.from_icon_name ("view-column-symbolic", Gtk.IconSize.MENU));
-        this.column.valign = Gtk.Align.CENTER;
+		this.mode.append (new Gtk.Image.from_icon_name ("view-column-symbolic", Gtk.IconSize.MENU));
 		this.align.add (progress);
         Gtk.ToolItem mode_item = new Gtk.ToolItem ();
 		mode_item.margin = 5;
         mode_item.add (mode);
-        Gtk.ToolItem column_item = new Gtk.ToolItem ();
-        column_item.add (column);
         Gtk.ToolItem search_item = new Gtk.ToolItem ();
         search_item.add (search);
 		Gtk.ToolItem progress_item = new Gtk.ToolItem ();
@@ -99,16 +95,15 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.update.tooltip_text = _("Refresh all subscriptions");
         this.appmenu.tooltip_text = _("Menu");
         
-        this.insert (back, 0);
-        this.insert (forward, 1);
-        this.insert (update, 2);
-        this.insert (new Gtk.SeparatorToolItem (), 3);
-        this.insert (mode_item, 4);
-        this.insert (column_item, 5);
-        this.insert (progress_item, 6);
-        this.insert (search_item, 7);
-        this.insert (sharemenu, 8);
-        this.insert (appmenu, 9);
+		//this.add (back);
+		//this.add (forward);
+		this.add (update);
+        this.add (new Gtk.SeparatorToolItem ());
+		this.add (mode_item);
+        this.add (progress_item);
+		this.add (search_item);
+		//this.add (sharemenu);
+		this.add (appmenu);
 	}
 	
 	public void set_enable (bool state)
@@ -116,8 +111,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		this.update.set_sensitive (state);
         this.search.set_sensitive (state);
         this.mode.set_sensitive (state);
-        this.column.set_sensitive (state);
 		this.sidebar_visible.set_sensitive (state);
-		this.sharemenu.set_sensitive (state);
+		//this.sharemenu.set_sensitive (state);
 	}
 }

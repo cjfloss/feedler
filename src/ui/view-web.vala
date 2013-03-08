@@ -39,7 +39,7 @@ public class Feedler.ViewWeb : Feedler.View
 	{
 		stderr.printf ("Feedler.ViewWeb.load_feeds ()\n");
 		this.browser.load_string (content.str, "text/html", "UTF-8", "");
-		this.item_marked (-1, true);
+		//this.item_marked (-1, true);
 	}
 	
 	public override void refilter (string text)
@@ -51,11 +51,6 @@ public class Feedler.ViewWeb : Feedler.View
 	{
 		stderr.printf ("Feedler.ViewWeb.select ()");
 	}
-
-    public override void change ()
-    {
-		stderr.printf ("Feedler.ViewWeb.change ()");
-    }
 
 	public override bool contract ()
 	{
@@ -76,11 +71,6 @@ public class Feedler.ViewWeb : Feedler.View
 		}
 		return false;
 	}
-
-    public override Feedler.Views type ()
-    {
-        return Feedler.Views.WEB;
-    }
 	
 	private string generate_item (string title, string time, string author, string description)
 	{

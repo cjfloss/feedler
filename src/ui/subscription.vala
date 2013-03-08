@@ -12,9 +12,11 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
     private Gtk.Box button_box;
     private int id;
 	private Gtk.ComboBoxText folder;
-    private Granite.Widgets.HintedEntry channel;
-	private Granite.Widgets.HintedEntry uri;
-	
+    /*private Granite.Widgets.HintedEntry channel;
+	private Granite.Widgets.HintedEntry uri;*/
+	private Gtk.Entry channel;
+	private Gtk.Entry uri;
+
 	public Subscription ()
 	{
         this.border_width = 10;

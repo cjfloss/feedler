@@ -9,7 +9,8 @@ public class Feedler.Folder : Granite.Widgets.LightWindow
 {
     public signal void saved (int id, string name);
     private int id;
-    private Granite.Widgets.HintedEntry folder;
+    //private Granite.Widgets.HintedEntry folder;
+	private Gtk.Entry folder;
 	
 	public Folder ()
 	{
