@@ -26,15 +26,14 @@ add_definitions(-include config.h)
 find_package (Gettext REQUIRED)
 
 add_custom_command (OUTPUT ${CMAKE_SOURCE_DIR}/po/feedler.pot
-        COMMAND xgettext -c --files-from ${CMAKE_SOURCE_DIR}/po/POTFILES.in --keyword=_ -o ${CMAKE_SOURCE_DIR}/po/feedler.pot --no-wrap --no-location
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        )
+	COMMAND xgettext -c --files-from ${CMAKE_SOURCE_DIR}/po/POTFILES.in --keyword=_ -o ${CMAKE_SOURCE_DIR}/po/feedler.pot --no-wrap --no-location
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 if (${GETTEXT_FOUND} STREQUAL "TRUE")
-        set (HAVE_GETTEXT true)
-        file (GLOB _translations ${CMAKE_SOURCE_DIR}/po/*.po)
-        GETTEXT_CREATE_TRANSLATIONS (${CMAKE_SOURCE_DIR}/po/${PROJECT_NAME}.pot
-                ALL ${_translations})
+	set (HAVE_GETTEXT true)
+	file (GLOB _translations ${CMAKE_SOURCE_DIR}/po/*.po)
+	GETTEXT_CREATE_TRANSLATIONS (${CMAKE_SOURCE_DIR}/po/${PROJECT_NAME}.pot
+		ALL ${_translations})
 endif (${GETTEXT_FOUND} STREQUAL "TRUE")
 
 #
@@ -50,7 +49,7 @@ pkg_check_modules(DEPS REQUIRED
 	libnotify
 	unity
 	granite
-	gee-1.0
+#	gee-1.0
 	indicate-0.7
 )
 
@@ -68,15 +67,16 @@ vala_precompile(VALA_C
 	src/database.vala
 	src/dock.vala
 	src/feedler.vala
+	src/icons.vala
 	src/indicator.vala
 	src/history.vala
 	src/manager.vala
 	src/settings.vala
 	src/window.vala
-	src/ui/cardlayout.vala
 	src/ui/contractor.vala
 	src/ui/folder.vala
 	src/ui/infobar.vala
+	src/ui/layout.vala
 	src/ui/menu.vala
 	src/ui/preferences.vala
 	src/ui/sidebar.vala
@@ -99,7 +99,7 @@ PACKAGES
 	libsoup-2.4
 	libxml-2.0
 	sqlheavy-0.1
-    gee-1.0
+#    gee-1.0
 	DbusmenuGtk3-0.4
 	Dbusmenu-0.4
 CUSTOM_VAPIS
@@ -109,6 +109,7 @@ CUSTOM_VAPIS
 OPTIONS
     --thread
     -g
+	--target-glib=2.32
 )
 
 
