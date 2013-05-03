@@ -112,6 +112,7 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.search.set_sensitive (state);
         this.mode.set_sensitive (state);
 		this.sidebar_visible.set_sensitive (state);
+		this.preferences.set_sensitive (state);
 		//this.sharemenu.set_sensitive (state);
 	}
 }

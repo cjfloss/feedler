@@ -8,6 +8,7 @@ pkg_check_modules(DEPS REQUIRED
 	libnotify
 	granite
 	gee-1.0
+	
 )
 
 #add_definitions(${DEPS_CFLAGS})
@@ -22,6 +23,7 @@ include(ValaPrecompile)
 vala_precompile(VALA_C
     abstract.vala
     backend-xml.vala
+	database.vala
     interface.vala
     model.vala
     serializer.vala
@@ -33,6 +35,7 @@ PACKAGES
 	libsoup-2.4
 	libxml-2.0
     gee-1.0
+	sqlheavy-0.1
 #CUSTOM_VAPIS
 #    ../../vapi/config.vapi
 OPTIONS

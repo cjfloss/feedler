@@ -26,7 +26,7 @@ public class Feedler.App : Granite.Application
 		build_version_info = Build.VERSION_INFO;
 		program_name = "Feedler";
 		exec_name = "feedler";
-		app_years = "2011-2012";
+		app_years = "2011-2013";
 		application_id = "net.launchpad.Feedler";
 		app_icon = "internet-news-reader";
         app_launcher = "feedler.desktop";
@@ -35,7 +35,6 @@ public class Feedler.App : Granite.Application
 		help_url = "https://answers.launchpad.net/feedler";
 		translate_url = "https://translations.launchpad.net/feedler";
 		about_authors = {"Daniel Kur <daniel.m.kur@gmail.com>"};
-		//about_license_type = Gtk.License.GPL_3_0;
 	}
 
 	public void switch_display ()

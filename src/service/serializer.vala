@@ -10,13 +10,13 @@ public struct Serializer.Folder
 	public string name;
     public Serializer.Channel[]? channels;
 
-    public Folder.from_model (Model.Folder model)
+    public Folder.from_model (Model.Folder model, bool full = false)
     {
         this.name = model.name;
         this.channels = new Serializer.Channel[model.channels.length ()];
         int i = 0;
         foreach (var c in model.channels)
-            this.channels[i++] = Serializer.Channel.from_model (c, false);
+            this.channels[i++] = Serializer.Channel.from_model (c, full);
     }
 }
 

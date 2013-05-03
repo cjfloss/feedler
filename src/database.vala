@@ -25,7 +25,7 @@ public class Feedler.Database : GLib.Object
     {
         try
 		{
-			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.WRITE);
+			this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE);
 		}
 		catch (SQLHeavy.Error e)
 		{

@@ -43,6 +43,11 @@ public class Feedler.Window : Gtk.Window
 		
 		this.add (content);
 		//this.history = new Feedler.History ();
+		this.try_connect ();
+	}
+	
+	internal void try_connect ()
+	{
 		try
         {
             client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
@@ -71,10 +76,15 @@ public class Feedler.Window : Gtk.Window
         		});
 			});
 			stderr.printf ("%s\n", client.ping ());
+			//TODO nie widzi w DBus, chyba nie am czegos aktualnego..
+			//Serializer.Folder[] data = client.get_data ();			
+			//stderr.printf ("Rozmiar: %u\n", data.length);
+			this.infobar.info (new Feedler.ConnectedTask ());
         }
         catch (GLib.Error e)
         {
-            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+			stderr.printf (e.message);
+			this.infobar.warning (new Feedler.ReconnectTask (this.try_connect));
         }
 	}
     

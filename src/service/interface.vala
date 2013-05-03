@@ -22,6 +22,7 @@ interface Feedler.Client : Object
     public abstract void update_all (string[] uris) throws IOError;
     public abstract void notification (string msg) throws IOError;
     public abstract string ping () throws IOError;
+	public abstract Serializer.Folder[] get_data () throws GLib.IOError;
 
     public signal void iconed (string uri, uint8[] data);
 	public signal void added (Serializer.Channel channel);

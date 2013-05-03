@@ -9,9 +9,54 @@ public abstract class Feedler.Task
 {
 	internal int counter;
 	internal string message;
+	internal string label;
 
 	public abstract void dismiss ();
 	public abstract void undo ();
+}
+
+public class Feedler.ConnectedTask : Feedler.Task
+{
+	public ConnectedTask ()
+	{
+		this.counter = 3;
+		this.message = _("You are connected to the service ;-)");
+		this.label = _("Close");
+	}
+
+	public override void dismiss ()
+	{
+		// NOTHING
+	}
+
+	public override void undo ()
+	{
+		// NOTHING
+	}
+}
+
+public class Feedler.ReconnectTask : Feedler.Task
+{
+	public delegate void DelegateType ();
+	public DelegateType function;
+
+	public ReconnectTask (DelegateType try_connect)
+	{
+		this.function = try_connect;
+		this.counter = 3;
+		this.message = _("Cannot connect to service ;-(");
+		this.label = _("Connect");
+	}
+
+	public override void dismiss ()
+	{
+		this.function ();
+	}
+
+	public override void undo ()
+	{
+		this.function ();
+	}
 }
 
 public class Feedler.RenameTask : Feedler.Task
@@ -29,6 +74,7 @@ public class Feedler.RenameTask : Feedler.Task
 		this.counter = 5;
 		this.name = old_name;
 		this.message = _("Undo rename %s").printf (name);
+		this.label = _("Undo");
 	}
 
 	public override void dismiss ()
@@ -55,6 +101,7 @@ public class Feedler.RemoveTask : Feedler.Task
 		this.item = item;
 		this.counter = 5;
 		this.message = _("Undo delete %s").printf (item.name);
+		this.label = _("Undo");
 	}
 
 	public override void dismiss ()
@@ -83,6 +130,7 @@ public class Feedler.MarkAllTask : Feedler.Task
 		this.manager = manager;
 		this.counter = 5;
 		this.message = _("Undo mark all items as read");
+		this.label = _("Undo");
 	}
 
 	public override void dismiss ()
@@ -113,7 +161,7 @@ public class Feedler.Infobar : Gtk.InfoBar
 	private Feedler.Task task;
 	private Gtk.Label label;
 	private Gtk.Label time;
-	private Gtk.Button undo;
+	private Gtk.Button button;
 	
 	public Infobar ()
 	{
@@ -128,8 +176,8 @@ public class Feedler.Infobar : Gtk.InfoBar
 		this.time.halign = Gtk.Align.END;
 		this.time.set_sensitive (false);
 
-		this.undo = new Gtk.Button.with_label (("   ") + _("Undo") + ("   "));
-		this.undo.clicked.connect (undone);
+		this.button = new Gtk.Button.with_label (_("Undo"));
+		this.button.clicked.connect (undone);
 		
 		var expander = new Gtk.Label ("");
 		expander.hexpand = true;
@@ -137,7 +185,7 @@ public class Feedler.Infobar : Gtk.InfoBar
 		((Gtk.Box)get_content_area ()).add (label);
 		((Gtk.Box)get_content_area ()).add (expander);
 		((Gtk.Box)get_content_area ()).add (time);
-		((Gtk.Box)get_content_area ()).add (undo);
+		((Gtk.Box)get_content_area ()).add (button);
 		
 		this.no_show_all = true;
 		this.hide ();
@@ -145,8 +193,33 @@ public class Feedler.Infobar : Gtk.InfoBar
 
 	public void question (Feedler.Task task)
 	{
+		this.set_message_type (Gtk.MessageType.QUESTION);
 		this.task = task;
 		this.label.set_markup (task.message);
+		this.button.label = task.label;
+		this.prepare ();
+	}
+	
+	public void warning (Feedler.Task task)
+	{
+		this.set_message_type (Gtk.MessageType.WARNING);
+		this.task = task;
+		this.label.set_markup (task.message);
+		this.button.label = task.label;
+		this.prepare ();
+	}
+	
+	public void info (Feedler.Task task)
+	{
+		this.set_message_type (Gtk.MessageType.INFO);
+		this.task = task;
+		this.label.set_markup (task.message);
+		this.button.label = task.label;
+		this.prepare ();
+	}
+	
+	private void prepare ()
+	{
 		this.time.set_markup (_("<small>Dismiss after %i seconds.</small>").printf (this.task.counter));
 		this.no_show_all = false;
 		this.show_all ();
@@ -164,7 +237,6 @@ public class Feedler.Infobar : Gtk.InfoBar
 				this.time.set_markup (_("<small>Dismiss after %i seconds.</small>").printf (--this.task.counter));
 				return true;
 			}
-
 		});
 	}
 
