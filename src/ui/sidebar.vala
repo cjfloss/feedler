@@ -55,10 +55,11 @@ public class Feedler.Sidebar : Granite.Widgets.SourceList
 
 	public Sidebar ()
 	{
-		this.init ();
+		if (!Feedler.SETTING.hide_header)
+			this.init ();
 	}
 
-	public void init ()
+	private void init ()
 	{
 		this.all = new Feedler.SidebarItem (_("All items"), Feedler.Icons.ALL);
 		this.root.add (all);

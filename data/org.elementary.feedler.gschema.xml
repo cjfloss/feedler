@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
 	<schema path="/org/elementary/feedler/state/" id="org.elementary.feedler.state" gettext-domain="feedler">
-		<key name="hide-close" type="b">
-			<default>false</default>
-			<summary>Hiding or closing window</summary>
-			<description>Hiding window instead of closing</description>
-		</key>
-		<key name="hide-start" type="b">
-			<default>false</default>
-			<summary>Hide window on start</summary>
-			<description>Hide window on start to the messaging menu</description>
+		<key name="view-mode" type="y">
+			<default>1</default>
+			<summary>Index of which view type to use</summary>
+			<description>Index of which view type to use</description>
 		</key>
 		<key name="sidebar-width" type="i">
 			<default>180</default>
@@ -52,6 +47,36 @@
 			<default>true</default>
 			<summary>Shrink image</summary>
 			<description>Shrink images in web pages</description>
+		</key>
+		<key name="browser-id" type="i">
+			<default>1</default>
+			<summary>Open links in</summary>
+			<description>Id of web browser</description>
+		</key>
+		<key name="browser-name" type="s">
+			<default>'browser_name %s'</default>
+			<summary>Command for run browser</summary>
+			<description>Command for manual web browser run with specific page</description>
+		</key>
+		<key name="hide-close" type="b">
+			<default>false</default>
+			<summary>Hiding or closing window</summary>
+			<description>Hiding window instead of closing</description>
+		</key>
+		<key name="hide-start" type="b">
+			<default>false</default>
+			<summary>Hide window on start</summary>
+			<description>Hide window on start to the messaging menu</description>
+		</key>
+		<key name="hide-header" type="b">
+			<default>false</default>
+			<summary>Hide sidebar's headers</summary>
+			<description>Hide additional headers in sidebar</description>
+		</key>
+		<key name="limit-items" type="i">
+			<default>100</default>
+			<summary>Limit of items</summary>
+			<description>Number of headers stored in the subscription</description>
 		</key>
 	</schema>
 	<schema path="/org/elementary/feedler/service/" id="org.elementary.feedler.service" gettext-domain="feedler">

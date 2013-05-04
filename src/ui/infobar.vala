@@ -20,7 +20,7 @@ public class Feedler.ConnectedTask : Feedler.Task
 	public ConnectedTask ()
 	{
 		this.counter = 3;
-		this.message = _("You are connected to the service ;-)");
+		this.message = _("Welcome! You are connected to the service ;-)");
 		this.label = _("Close");
 	}
 

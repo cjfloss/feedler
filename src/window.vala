@@ -12,7 +12,7 @@ public class Feedler.Window : Gtk.Window
 	internal Feedler.Infobar infobar;
 	internal Feedler.Sidebar side;
 	internal Feedler.Statusbar stat;
-	private Feedler.History history;
+	//private Feedler.History history;
 	private weak Feedler.View view;
 	private Granite.Widgets.ThinPaned pane;
 	private Gtk.Box content;
@@ -97,6 +97,7 @@ public class Feedler.Window : Gtk.Window
         this.toolbar.forward.clicked.connect (history_next);*/
 		this.toolbar.update.clicked.connect (update_subscription);
         this.toolbar.mode.mode_changed.connect (change_mode);
+        this.toolbar.mode.selected = Feedler.STATE.view_mode;
         this.toolbar.search.activate.connect (item_search);
 		/*this.toolbar.sharemenu.clicked.connect (() =>
 		{
@@ -181,8 +182,9 @@ public class Feedler.Window : Gtk.Window
 
 	private void load_sidebar ()
 	{
-		this.side.root.clear ();
-		this.side.init ();
+		//TODO import nowych zrodel moze wymagac przeczyszczenia i reinicjalizacji
+		//this.side.root.clear ();
+		//this.side.init ();
 		int unread = 0;
 		foreach (Model.Folder f in this.db.data)
 		{
@@ -513,7 +515,7 @@ stderr.printf ("load_view\n");
 
 	private bool destroy_app ()
 	{
-		if (Feedler.STATE.hide_close)
+		if (Feedler.SETTING.hide_close)
 		{
 			this.hide ();
 			return true;
@@ -525,7 +527,8 @@ stderr.printf ("load_view\n");
 			Feedler.STATE.window_width = width;
 			Feedler.STATE.window_height = height;
 			Feedler.STATE.sidebar_width = this.pane.position;
-			return false;//Gtk.main_quit ();
+			Feedler.STATE.view_mode = (uint8)this.toolbar.mode.selected;
+			return false;
 		}
 	}
 

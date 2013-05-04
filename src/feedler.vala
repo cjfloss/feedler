@@ -65,7 +65,7 @@ public class Feedler.App : Granite.Application
 		this.window.icon_name = "internet-news-reader";
 		this.window.set_application (this);
 		this.window.show_all ();
-		if (Feedler.STATE.hide_start)
+		if (Feedler.SETTING.hide_start)
 			this.window.hide ();
 	}
 	
