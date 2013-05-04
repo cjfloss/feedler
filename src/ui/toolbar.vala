@@ -47,8 +47,6 @@ public class Progress : Gtk.VBox
 
 public class Feedler.Toolbar : Gtk.Toolbar
 {
-	internal Gtk.ToolButton back = new Gtk.ToolButton.from_stock (Gtk.Stock.GO_BACK);
-    internal Gtk.ToolButton forward = new Gtk.ToolButton.from_stock (Gtk.Stock.GO_FORWARD);
 	internal Gtk.ToolButton update = new Gtk.ToolButton.from_stock (Gtk.Stock.REFRESH);
 
     internal Gtk.Alignment align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
@@ -88,15 +86,9 @@ public class Feedler.Toolbar : Gtk.Toolbar
 		progress_item.set_expand (true);
 		progress_item.add (align);
 
-        this.back.set_sensitive (false);
-		this.forward.set_sensitive (false);
-        this.back.tooltip_text = _("Go to the previous readed item");
-        this.forward.tooltip_text = _("Go to the next readed item");
         this.update.tooltip_text = _("Refresh all subscriptions");
         this.appmenu.tooltip_text = _("Menu");
         
-		//this.add (back);
-		//this.add (forward);
 		this.add (update);
         this.add (new Gtk.SeparatorToolItem ());
 		this.add (mode_item);

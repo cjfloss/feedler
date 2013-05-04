@@ -27,7 +27,6 @@ public class Feedler.ViewWeb : Feedler.View
 	public override void clear ()
 	{
 		this.content.assign (generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
-		this.item_selected ("");
 	}
 	
 	public override void add_feed (Model.Item item, string time_format)
@@ -45,11 +44,6 @@ public class Feedler.ViewWeb : Feedler.View
 	public override void refilter (string text)
 	{
 		this.browser.search_text (text, true, true, true);
-	}
-	
-	public override void select (Gtk.TreePath path)
-	{
-		stderr.printf ("Feedler.ViewWeb.select ()");
 	}
 
 	public override bool contract ()

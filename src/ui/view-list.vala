@@ -38,7 +38,8 @@ public class Feedler.ViewList : Feedler.View
 	private Feedler.MenuView viewmenu;
 	private Gtk.TreeModelFilter filter;
 	private string filter_text;
-	private string cache;
+	private FeedStore selected;
+	private Gtk.TreeIter selected_iter;
 	/* Browse description of current feed */
 	private WebKit.WebView browser;
 	private Gtk.ScrolledWindow scroll_list;
@@ -118,27 +119,18 @@ public class Feedler.ViewList : Feedler.View
 		this.filter_text = text;
 		this.filter.refilter ();
 	}
-	
-	public override void select (Gtk.TreePath path)
-	{
-		stderr.printf ("Feedler.ViewList.select ()\n");
-		this.tree.get_selection ().select_path (path);
-		this.load_item ();
-	}
 
 	public override bool contract ()
 	{
 		try
 		{
-			Gtk.TreeIter iter;
-			FeedStore feed = this.selected_item (out iter);
-			if (feed != null)
+			if (this.selected != null)
 			{
 				var path = GLib.Environment.get_tmp_dir () + "/feedler.html";
 				GLib.StringBuilder item = new GLib.StringBuilder (generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
-				item.append ("<div class='item'><span class='title'>"+feed.subject+"</span><br/>");
-				item.append ("<span class='time'>"+feed.date+", by "+feed.author+"</span><br/>");
-				item.append ("<span class='content'>"+feed.text+"</span></div><br/>");
+				item.append ("<div class='item'><span class='title'>"+selected.subject+"</span><br/>");
+				item.append ("<span class='time'>"+selected.date+", by "+selected.author+"</span><br/>");
+				item.append ("<span class='content'>"+selected.text+"</span></div><br/>");
                 
                 GLib.File file = GLib.File.new_for_path (path);
                 uint8[] data = item.data;
@@ -146,6 +138,7 @@ public class Feedler.ViewList : Feedler.View
                 file.replace_contents (data, null, false, 0, out s);
 				return true;
 			}
+			// TODO else infobar message: Please select first one item oraz change view to get all items.
 		}
 		catch (GLib.Error e)
 		{
@@ -156,6 +149,7 @@ public class Feedler.ViewList : Feedler.View
 	
 	private void load_article (string content)
 	{
+		stderr.printf ("Feedler.ViewList.load_article ()\n");
 		this.browser.load_string (content, "text/html", "UTF-8", "");
 	}
 	
@@ -164,18 +158,13 @@ public class Feedler.ViewList : Feedler.View
 		stderr.printf ("Feedler.ViewList.browse_page ()\n");
 		try
 		{
-			Gtk.TreeIter iter;
-			FeedStore? feed = this.selected_item (out iter);
-			GLib.Process.spawn_command_line_async ("xdg-open " + feed.source);
-			if (!feed.read)
+			GLib.Process.spawn_command_line_async ("xdg-open " + selected.source);
+			if (!selected.read)
 			{
-				feed.read = true;
-				this.store.set_value (iter, 0, feed);
-				this.item_marked (feed.id, Model.State.READ);
+				selected.read = true;
+				this.store.set_value (selected_iter, 0, selected);
+				this.item_marked (selected.id, Model.State.READ);
 			}
-			if (feed.source != this.cache)
-				this.item_selected (this.tree.model.get_path (iter).to_string ());
-			this.cache = feed.source;
 		}
 		catch (GLib.Error e)
 		{
@@ -188,10 +177,8 @@ public class Feedler.ViewList : Feedler.View
 		stderr.printf ("Feedler.ViewList.copy_url ()\n");
 		try
 		{
-			Gtk.TreeIter iter;
-			FeedStore? feed = this.selected_item (out iter);
 			Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (this.get_display (), Gdk.SELECTION_CLIPBOARD);
-			clipboard.set_text (feed.source, -1);
+			clipboard.set_text (selected.source, -1);
 		}
 		catch (GLib.Error e)
 		{
@@ -202,50 +189,38 @@ public class Feedler.ViewList : Feedler.View
 	private void load_item ()
 	{
 		stderr.printf ("Feedler.ViewList.load_item ()\n");
-		Gtk.TreeIter iter;
-		FeedStore feed = this.selected_item (out iter);
-		if (feed != null)
+		if (selected != null)
 		{
-			stderr.printf ("feed not null\n");
-			this.tree.model.get (iter, 0, out feed);
-			this.load_article (feed.text);
-			if (!feed.read)
+			this.load_article (selected.text);
+			
+			if (!selected.read)
 			{
-				feed.read = true;
-				this.store.set_value (iter, 0, feed);
-				this.item_marked (feed.id, Model.State.READ);
+				this.selected.read = true;
+				this.store.set_value (selected_iter, 0, selected);
+				this.item_marked (selected.id, Model.State.READ);
 			}
-			/*if (feed.source != this.cache)
-				this.item_selected (this.tree.model.get_path (iter).to_string ());
-			this.cache = feed.source;*/
 		}
 	}
 
 	private void read_item ()
 	{
 		stderr.printf ("Feedler.ViewList.read_item ()\n");
-		Gtk.TreeIter iter;
-		FeedStore feed = this.selected_item (out iter);
-		if (feed != null)
+		if (selected != null)
 		{
-			this.tree.model.get (iter, 0, out feed);
-			feed.read = !feed.read;
-			this.store.set_value (iter, 0, feed);
-			this.item_marked (feed.id, feed.read ? Model.State.READ : Model.State.UNREAD);
+			this.selected.read = !selected.read;
+			this.store.set_value (selected_iter, 0, selected);
+			this.item_marked (selected.id, selected.read ? Model.State.READ : Model.State.UNREAD);
 		}
 	}
 
 	private void star_item ()
 	{
 		stderr.printf ("Feedler.ViewList.star_item ()\n");
-		Gtk.TreeIter iter;
-		FeedStore feed = this.selected_item (out iter);
-		if (feed != null)
+		if (selected != null)
 		{
-			this.tree.model.get (iter, 0, out feed);
-			feed.starred = !feed.starred;
-			this.store.set_value (iter, 0, feed);
-			this.item_marked (feed.id, feed.starred ? Model.State.STARRED : Model.State.UNSTARRED);
+			this.selected.starred = !selected.starred;
+			this.store.set_value (selected_iter, 0, selected);
+			this.item_marked (selected.id, selected.starred ? Model.State.STARRED : Model.State.UNSTARRED);
 		}
 	}
 
@@ -300,14 +275,15 @@ public class Feedler.ViewList : Feedler.View
 		if (this.tree.get_path_at_pos ((int) e.x, (int) e.y, out path, out column, out cell_x, out cell_y))
 		{
 			this.tree.get_selection ().select_path (path);
-			if (e.button == 1)
-				this.load_item ();
-			else if (e.button == 3)
-			{
-				Gtk.TreeIter iter;
-				FeedStore feed = this.selected_item (out iter);
-				this.viewmenu.select_mark (feed.read, feed.starred);
+			this.selected = this.selected_item (out this.selected_iter);
+			if (e.button == 3)
+			{				
+				this.viewmenu.select_mark (selected.read, selected.starred);
 				this.viewmenu.popup (null, null, null, e.button, e.time);
+			}
+			else if (e.button == 1)
+			{
+				this.load_item ();
 			}
 			return true;
 		}

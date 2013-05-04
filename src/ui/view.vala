@@ -8,7 +8,6 @@
 public abstract class Feedler.View : Gtk.VBox
 {
 	public signal void item_marked (int id, Model.State state);
-	public signal void item_selected (string item_path);
 	
 	public static WebKit.WebSettings settings;
 	
@@ -31,8 +30,6 @@ public abstract class Feedler.View : Gtk.VBox
 	public abstract void load_feeds ();
 	
 	public abstract void refilter (string text);
-	
-	public abstract void select (Gtk.TreePath path);
 
 	public abstract bool contract ();
 

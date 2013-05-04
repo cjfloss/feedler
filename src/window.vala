@@ -12,7 +12,6 @@ public class Feedler.Window : Gtk.Window
 	internal Feedler.Infobar infobar;
 	internal Feedler.Sidebar side;
 	internal Feedler.Statusbar stat;
-	//private Feedler.History history;
 	private weak Feedler.View view;
 	private Granite.Widgets.ThinPaned pane;
 	private Gtk.Box content;
@@ -42,7 +41,6 @@ public class Feedler.Window : Gtk.Window
 			this.ui_welcome ();		
 		
 		this.add (content);
-		//this.history = new Feedler.History ();
 		this.try_connect ();
 	}
 	
@@ -77,9 +75,9 @@ public class Feedler.Window : Gtk.Window
 			});
 			stderr.printf ("%s\n", client.ping ());
 			//TODO nie widzi w DBus, chyba nie am czegos aktualnego..
-			//Serializer.Folder[] data = client.get_data ();			
-			//stderr.printf ("Rozmiar: %u\n", data.length);
-			this.infobar.info (new Feedler.ConnectedTask ());
+			//Serializer.Folder[] data = client.get_data ();
+			
+			//this.infobar.info (new Feedler.ConnectedTask ());
         }
         catch (GLib.Error e)
         {
@@ -93,8 +91,6 @@ public class Feedler.Window : Gtk.Window
 		this.toolbar = new Feedler.Toolbar ();
 		this.toolbar.mode.selected = 0;
 		this.content.pack_start (toolbar, false, false, 0);	
-        /*this.toolbar.back.clicked.connect (history_prev);
-        this.toolbar.forward.clicked.connect (history_next);*/
 		this.toolbar.update.clicked.connect (update_subscription);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.mode.selected = Feedler.STATE.view_mode;
@@ -128,7 +124,6 @@ public class Feedler.Window : Gtk.Window
 		this.pane.pack1 (side, true, false);
         this.layout.init_views ();
 		this.view = (Feedler.View)layout.get_nth_page (1);
-		//this.layout.list.item_selected.connect (history_add);
 		this.layout.list.item_marked.connect (item_mark);
 		//this.layout.web.item_marked.connect (item_mark);
 
@@ -306,8 +301,6 @@ public class Feedler.Window : Gtk.Window
 
 	private void all_mark ()
     {
-		if (this.side.selected != null)
-			this.channel_selected (this.side.selected);
 		this.manager.unread (this.manager.count*(-1));
 		this.side.unread.badge = null;
 		foreach (var f in this.side.root.children)
@@ -317,17 +310,23 @@ public class Feedler.Window : Gtk.Window
 				foreach (var c in expandable.children)
 					c.badge = null;
 		}
+		this.db.mark_all ();
+		if (this.side.selected != null)
+			this.channel_selected (this.side.selected);
     }
 
 	private void item_mark (int id, Model.State state)
     {
-stderr.printf ("item_mark\n");
+		stderr.printf ("item_mark\n");
 		var ch = this.side.selected;
 		unowned Model.Channel c = this.db.get_channel (ch.name);
 		unowned Model.Item it;
+		bool nakurwiacz = true;
 		if (c != null)
 		{
 			it = c.get_item (id);
+			//TODO tutaj zrob cos zeby ta dziwka nie wywolywala channel selected
+			nakurwiacz = false;
 		}
 		else
 		{
@@ -338,6 +337,7 @@ stderr.printf ("item_mark\n");
 		{
 			bool star = (state == Model.State.STARRED) ? true : false;
 			it.starred = star;
+			this.channel_selected (this.side.selected);
 			this.db.star_item (id, star);
 			return;
 		}
@@ -356,8 +356,9 @@ stderr.printf ("item_mark\n");
 		c.unread += diff;
 		bool read = (state == Model.State.READ) ? true : false;
 		it.read = read;
-		this.channel_selected (this.side.selected);
 		this.db.mark_item (id, read);
+		if (nakurwiacz)
+			this.channel_selected (this.side.selected);
     }
 
 	private void item_search ()
@@ -395,7 +396,7 @@ stderr.printf ("item_mark\n");
 
 	private void load_view (GLib.List<Model.Item?> items)
 	{
-stderr.printf ("load_view\n");
+		stderr.printf ("load_view\n");
 		if (items.length () < 1)
 		{
 			this.layout.display (Feedler.Views.ALERT);
@@ -530,41 +531,6 @@ stderr.printf ("load_view\n");
 			return false;
 		}
 	}
-
-	/*private void load_channel ()
-	{
-		stderr.printf ("Feedler.load_channel ()\n");
-		Gtk.TreeModel model;
-		Gtk.TreeIter iter;
-		
-		if (this.side.get_selection ().get_selected (out model, out iter))
-		{
-			ChannelStore channel;
-			model.get (iter, 0, out channel);
-            if (channel.mode > 0)
-			{
-				this.view.clear ();
-				GLib.Time current_time = GLib.Time.local (time_t ());
-				foreach (Model.Item item in this.db.get_channel (channel.id).items)
-				{
-					GLib.Time feed_time = GLib.Time.local (item.time);
-				    if (feed_time.day_of_year + 6 < current_time.day_of_year)
-				        this.view.add_feed (item, feed_time.format ("%d %B %Y"));
-					else
-				        this.view.add_feed (item, feed_time.format ("%A %R"));
-				}
-				this.view.load_feeds ();
-			}
-			else
-			{
-				Gtk.TreePath? path = model.get_path (iter);
-				if (this.side.is_row_expanded (path))
-					this.side.collapse_row (path);
-				else
-					this.side.expand_row (path, false);
-			}
-		}
-	}*/
 }
 /*public class Feedler.Window : Gtk.Window
 {

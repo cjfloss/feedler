@@ -91,7 +91,7 @@ public class Feedler.Layout : Gtk.Notebook
 
 	public void display (Feedler.Views view)
 	{
-stderr.printf ("display: %i\n", (int)view);
+//stderr.printf ("display: %i\n", (int)view);
 		switch (view)
 		{
 			case Feedler.Views.COLUMN:
