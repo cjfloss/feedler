@@ -308,7 +308,6 @@ public class Feedler.Window : Gtk.Window
     {
 		if (this.side.selected != null)
 			this.channel_selected (this.side.selected);
-		this.infobar.question (new Feedler.MarkAllTask (this.db, this.side, this.manager));
 		this.manager.unread (this.manager.count*(-1));
 		this.side.unread.badge = null;
 		foreach (var f in this.side.root.children)

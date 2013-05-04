@@ -117,45 +117,6 @@ public class Feedler.RemoveTask : Feedler.Task
 	}
 }
 
-public class Feedler.MarkAllTask : Feedler.Task
-{
-	private unowned Feedler.Database db;
-	private unowned Feedler.Sidebar side;
-	private unowned Feedler.Manager manager;
-
-	public MarkAllTask (Feedler.Database db, Feedler.Sidebar side, Feedler.Manager manager)
-	{
-		this.db = db;
-		this.side = side;
-		this.manager = manager;
-		this.counter = 5;
-		this.message = _("Undo mark all items as read");
-		this.label = _("Undo");
-	}
-
-	public override void dismiss ()
-	{
-		this.db.mark_all ();
-	}
-
-	public override void undo ()
-	{
-		int unread = 0;
-		foreach (var f in this.side.root.children)
-		{
-			var expandable = f as Granite.Widgets.SourceList.ExpandableItem;
-            if (expandable != null)
-				foreach (var c in expandable.children)
-				{
-					var m = this.db.get_channel (c.name);
-					c.badge = (m.unread > 0) ? m.unread.to_string () : null;
-					unread += m.unread;
-				}
-		}
-		this.manager.unread (unread);
-	}
-}
-
 public class Feedler.Infobar : Gtk.InfoBar
 {
 	private Feedler.Task task;
