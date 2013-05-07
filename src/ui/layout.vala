@@ -67,8 +67,8 @@ public class Feedler.Layout : Gtk.Notebook
     public void init_welcome ()
     {
         this.welcome = new Granite.Widgets.Welcome (_("Get Some Feeds"), _("Feedler can't seem to find your feeds."));
-		//this.welcome.append ("document-new", _("Create"), _("Add manually subscriptions from URL."));
-		this.welcome.append ("document-import", _("Import"), _("Add a subscriptions from OPML file."));
+		this.welcome.append ("document-new", _("Create"), _("Add subscriptions from URL."));
+		this.welcome.append ("document-import", _("Import"), _("Add subscriptions from OPML file."));
         this.append_page (welcome, null);
     }
 
@@ -91,7 +91,6 @@ public class Feedler.Layout : Gtk.Notebook
 
 	public void display (Feedler.Views view)
 	{
-//stderr.printf ("display: %i\n", (int)view);
 		switch (view)
 		{
 			case Feedler.Views.COLUMN:

@@ -161,9 +161,9 @@ public class Feedler.Window : Gtk.Window
 		{
 			switch (i)
 			{
-				//case 0: this.add_subscription (); break;
-				//case 1: this.import_subscription (); break;
-				case 0: this.import_subscription (); break;
+				case 0: this.add_subscription (); break;
+				case 1: this.import_subscription (); break;
+				//case 0: this.import_subscription (); break;
 			}
 		});
 	}
@@ -177,9 +177,9 @@ public class Feedler.Window : Gtk.Window
 
 	private void load_sidebar ()
 	{
-		//TODO import nowych zrodel moze wymagac przeczyszczenia i reinicjalizacji
-		//this.side.root.clear ();
-		//this.side.init ();
+		stderr.printf ("load_sidebar ()\n");
+		this.side.root.clear ();
+		this.side.init ();
 		int unread = 0;
 		foreach (Model.Folder f in this.db.data)
 		{
@@ -441,23 +441,60 @@ public class Feedler.Window : Gtk.Window
     {
         Feedler.Subscription subs = new Feedler.Subscription ();
 		subs.set_transient_for (this);
-        //subs.saved.connect (create_subs_cb);
+        subs.saved.connect (create_subs_cb);
 		foreach (Model.Folder folder in this.db.data)
 		    subs.add_folder (folder.id, folder.name);
         subs.show_all ();
 		//this.stat.add_feed.button_press_event.disconnect (_create_subs);
 	}
 	
-	private void edit_subscription ()
+	private void create_subs_cb (int id, int folder, string title, string url)
     {
-        Feedler.Subscription subs = new Feedler.Subscription ();
-		subs.set_transient_for (this);
-        //subs.saved.connect (create_subs_cb);
-		foreach (Model.Folder folder in this.db.data)
-		    subs.add_folder (folder.id, folder.name);
-        subs.show_all ();
-		//this.stat.add_feed.button_press_event.disconnect (_create_subs);
-	}
+		//this.stat.add_feed.button_press_event.connect (_create_subs);
+		//if (id == -1 || folder == -1)
+		//	return;
+		try
+		{
+			if (!this.db.is_created ())
+			{
+		    	this.db.create ();
+		    	this.db.begin ();
+		    	Serializer.Folder f = Serializer.Folder (); f.name = _("Subscriptions");
+		    	this.db.insert_folder (f);
+				this.db.commit ();
+			    this.ui_welcome_to_workspace ();
+				this.show_all ();
+				folder = 1;
+				var _folder = new Granite.Widgets.SourceList.ExpandableItem (f.name);
+				this.side.root.add (_folder);
+			    Model.Folder ff = new Model.Folder.with_data (folder, f.name);
+				this.db.data.append (ff);
+			    //http://rss.feedsportal.com/c/32739/f/530495/index.rss
+			}
+
+			Serializer.Channel sch = Serializer.Channel.no_data ();
+			sch.title = title; sch.source = url;
+		    unowned Model.Channel ch = this.db.insert_channel (folder, sch);
+		    if (folder > 0)
+		    {
+				foreach (var child in this.side.root.children)
+					if (child.name == ch.folder.name)
+					{
+						var expandable_item = child as Granite.Widgets.SourceList.ExpandableItem;
+						expandable_item.add (create_channel (ch));
+						break;
+					}
+			}
+			//else
+			//    this.side.root.add (create_channel (ch));
+			this.client.add (url);
+			stderr.printf ("Bede nakurwiac!");
+		}
+        catch (GLib.Error e)
+        {
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+        }
+    }
 
 	private void import_subscription ()
 	{

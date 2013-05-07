@@ -101,7 +101,7 @@ public class Feedler.Manager : GLib.Object
 				this.window.db.begin ();
 				foreach (var i in reverse)
 				{
-				    int id = this.window.db.insert_serialized_item (ch.id, i);
+				    int id = this.window.db.insert_item (ch.id, i);
 				    Model.Item it = new Model.Item.with_data (id, i.title, i.source, i.author, i.description, i.time, ch);
 				    ch.items.append ((owned)it);
 				}

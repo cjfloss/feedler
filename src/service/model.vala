@@ -36,8 +36,8 @@ public class Model.Channel
 	public int unread;
     public GLib.List<Model.Item> items;
 
-    public Channel.with_data (int id, string title, string link, string source, Model.Folder folder)
-    {
+    public Channel.with_data (int id, string title, string link, string source, Model.Folder? folder)
+    {//if (folder == null) then channels go to root
         this.id = id;
         this.title = title;
         this.link = link;

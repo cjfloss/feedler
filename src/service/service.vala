@@ -22,7 +22,7 @@ public class Feedler.Service : Object
 		stderr.printf ("Feedler.Service.construct (%s)\n", back.to_string ());
 		Notify.init ("org.example.Feedler");
 		this.settings = new Feedler.Settings ();
-		this.db = new Feedler.Db ();
+		//this.db = new Feedler.Db ();
 		unowned GLib.List<Model.Folder> tmp = this.db.select_data ();
 		this.backend = GLib.Object.new (back.to_type ()) as Backend;
 		this.backend.service = this;

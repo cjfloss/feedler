@@ -32,7 +32,11 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
         var save = new Gtk.Button.from_stock (Gtk.Stock.SAVE);
         save.set_size_request (85, -1);
         save.valign = save.halign = Gtk.Align.END;
-        save.clicked.connect_after (() => { saved (this.id, this.folder.get_active () + 1, this.channel.get_text (), this.uri.get_text ()); this.destroy (); });
+        save.clicked.connect_after (() =>
+        {
+	        saved (this.id, this.folder.get_active () + 1, this.channel.get_text (), this.uri.get_text ());
+    	    this.destroy ();
+        });
 
         this.favicon = new Gtk.Button.with_label (_("Load favicon"));
         this.favicon.valign = this.favicon.halign = Gtk.Align.START;
@@ -70,6 +74,7 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
     public void add_folder (int folder_id, string folder_name)
     {
 		this.folder.append (folder_id.to_string (), folder_name);
+		this.folder.set_active (0);
 	}
 
     public void set_model (int id, string title, string uri, int folder)

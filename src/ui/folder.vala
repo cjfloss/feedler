@@ -23,7 +23,7 @@ public class Feedler.Folder : Granite.Widgets.LightWindow
         this.id = 0;
 		this.folder = new Gtk.Entry ();
 
-        var save = new Gtk.Button.with_label (_("Save"));
+        var save = new Gtk.Button.from_stock (Gtk.Stock.SAVE);
         save.set_size_request (85, -1);
         save.valign = save.halign = Gtk.Align.END;
         save.clicked.connect_after (() => { saved (this.id, this.folder.get_text ()); this.destroy (); });

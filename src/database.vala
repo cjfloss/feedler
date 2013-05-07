@@ -368,6 +368,14 @@ public class Feedler.Database : GLib.Object
                	return f;
 		return null;
 	}
+	
+	public unowned Model.Folder? get_folder_from_id (int id)
+	{
+		foreach (unowned Model.Folder f in this.data)
+           	if (id == f.id)
+               	return f;
+		return null;
+	}
 
 	public unowned Model.Channel? get_channel (string title)
 	{
@@ -557,13 +565,18 @@ public class Feedler.Database : GLib.Object
 	}
 
 	public void insert_folder (Serializer.Folder folder)
+	//public void insert_folder (string name)
 	{
 		try
         {
+        	//transaction = db.begin_transaction ();
             query = transaction.prepare ("INSERT INTO folders (name) VALUES (:name);");
 			query.set_string (":name", folder.name);
-			//query.execute_async ();
-			query.execute ();
+			query.execute_async ();
+			//int id = (int)query.execute_insert ();
+			//transaction.commit ();
+			//Model.Folder f = new Model.Folder.with_data (id, name);
+			//this.data.append (f);
 		}
 		catch (SQLHeavy.Error e)
 		{
@@ -571,22 +584,27 @@ public class Feedler.Database : GLib.Object
 		}
 	}
 
-	public void insert_channel (int folder, Serializer.Channel channel)
-	{
+	public unowned Model.Channel insert_channel (int folder, Serializer.Channel schannel)
+	{//mialobyc bez tranzakcji, poniewaz jest obslugiwana z poziomu managera w celu dodawania pozycji wsadowo!
         try
         {
+			transaction = db.begin_transaction ();
             query = transaction.prepare ("INSERT INTO channels (title, source, link, folder) VALUES (:title, :source, :link, :folder);");
-			query.set_string (":title", channel.title);
-			query.set_string (":source", channel.source);
-			query.set_string (":link", channel.link);
+			query.set_string (":title", schannel.title);
+			query.set_string (":source", schannel.source);
+			query.set_string (":link", schannel.link);
 			query.set_int (":folder", folder);
-			//query.execute_async ();
-			query.execute ();
+			int id = (int)query.execute_insert ();
+			transaction.commit ();
+			unowned Model.Folder f = this.get_folder_from_id (folder);
+			Model.Channel c = new Model.Channel.with_data (id, schannel.title, schannel.link, schannel.source, f);
+			f.channels.append (c);
 		}
 		catch (SQLHeavy.Error e)
 		{
-			stderr.printf ("Cannot insert channel %s.\n", channel.title);
+			stderr.printf ("Cannot insert channel %s.\n", schannel.title);
 		}
+		return this.get_channel (schannel.title);
 	}
     
     /*public int insert_serialized_folder (Serializer.Folder folder)
@@ -624,7 +642,7 @@ public class Feedler.Database : GLib.Object
 		}
 	}*/
 
-    public int insert_serialized_item (int channel, Serializer.Item item)
+    public int insert_item (int channel, Serializer.Item item)
 	{
         try
         {
