@@ -488,7 +488,7 @@ public class Feedler.Window : Gtk.Window
 			//else
 			//    this.side.root.add (create_channel (ch));
 			this.client.add (url);
-			stderr.printf ("Bede nakurwiac!");
+			//stderr.printf ("Bede nakurwiac!");
 		}
         catch (GLib.Error e)
         {

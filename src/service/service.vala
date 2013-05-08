@@ -13,7 +13,7 @@ public class Feedler.Service : Object
 	public signal void imported (Serializer.Folder[] folders);
 	public signal void updated (Serializer.Channel channel);
 	internal Feedler.Settings settings;
-	internal Feedler.Db db;
+	//internal Feedler.Db db;
 	private Backend backend;
 	private unowned Thread<void*> thread;
 
@@ -23,7 +23,7 @@ public class Feedler.Service : Object
 		Notify.init ("org.example.Feedler");
 		this.settings = new Feedler.Settings ();
 		//this.db = new Feedler.Db ();
-		unowned GLib.List<Model.Folder> tmp = this.db.select_data ();
+		//unowned GLib.List<Model.Folder> tmp = this.db.select_data ();
 		this.backend = GLib.Object.new (back.to_type ()) as Backend;
 		this.backend.service = this;
 		this.run ();
@@ -126,12 +126,14 @@ public class Feedler.Service : Object
 
 	public Serializer.Folder[] get_data ()
 	{
-		Serializer.Folder[] data = new Serializer.Folder[this.db.data.length ()];
+		/*Serializer.Folder[] data = new Serializer.Folder[this.db.data.length ()];
 		int i = 0;
 		foreach (unowned Model.Folder f in this.db.data)
 		{
 			data[i++] = new Serializer.Folder.from_model (f, true);
 		}
+		return data;*/
+		Serializer.Folder[] data = new Serializer.Folder[2];
 		return data;
 	}
 }

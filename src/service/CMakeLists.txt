@@ -23,8 +23,8 @@ include(ValaPrecompile)
 vala_precompile(VALA_C
     abstract.vala
     backend-xml.vala
-	database.vala
-    interface.vala
+#	database.vala
+#   interface.vala
     model.vala
     serializer.vala
     service.vala
