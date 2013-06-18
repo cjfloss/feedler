@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-08-07 07:57+0000\n"
-"Last-Translator: Zahirovic Mensur <Unknown>\n"
+"PO-Revision-Date: 2013-06-17 10:02+0000\n"
+"Last-Translator: Joachim Johansson <joachim.j@gmail.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-05-09 05:35+0000\n"
-"X-Generator: Launchpad (build 16598)\n"
+"X-Launchpad-Export-Date: 2013-06-18 06:21+0000\n"
+"X-Generator: Launchpad (build 16673)\n"
 "Language: sv\n"
 
 #: ../src/desktop-launcher.vala:13
@@ -45,7 +45,7 @@ msgstr "nytt flöde"
 #: ../src/window.vala:330
 #, c-format
 msgid "Imported %i channels in %i folders."
-msgstr ""
+msgstr "Importerade %i kanaler i %i mappar."
 
 #: ../src/window.vala:483 ../src/window.vala:509
 msgid "Updating subscriptions"
@@ -74,7 +74,7 @@ msgstr "Är du säker på att du vill ta bort?"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Get Some Feeds"
-msgstr ""
+msgstr "Lägg till prenumerationer"
 
 #: ../src/ui/cardlayout.vala:23
 msgid "Feedler can't seem to find your feeds."
@@ -86,7 +86,7 @@ msgstr "Skapa"
 
 #: ../src/ui/cardlayout.vala:24
 msgid "Add manually subscriptions from URL."
-msgstr "Lägg till prenumeration manuellt från URL."
+msgstr "Lägg till prenumerationer manuellt från en länk."
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Import"
@@ -94,11 +94,11 @@ msgstr "Importera"
 
 #: ../src/ui/cardlayout.vala:25
 msgid "Add a subscriptions from OPML file."
-msgstr "Lägg till prenumeration från en OPML-fil."
+msgstr "Lägg till prenumerationer från en OPML-fil."
 
 #: ../src/ui/contractor.vala:23
 msgid "Share channels or items"
-msgstr ""
+msgstr "Dela kanaler eller artiklar"
 
 #: ../src/ui/contractor.vala:38
 msgid "Export subscriptions"
@@ -153,7 +153,7 @@ msgstr "Mapp"
 
 #: ../src/ui/menu.vala:37
 msgid "Display"
-msgstr ""
+msgstr "Visa"
 
 #: ../src/ui/menu.vala:38
 msgid "Open in browser"
@@ -237,31 +237,31 @@ msgstr "Uppdateringar"
 
 #: ../src/ui/statusbar.vala:49
 msgid "Add new subscription URL"
-msgstr ""
+msgstr "Lägg till prenumerationslänk"
 
 #: ../src/ui/statusbar.vala:52
 msgid "Remove selected subscription"
-msgstr ""
+msgstr "Avsluta den markerade prenumerationen"
 
 #: ../src/ui/statusbar.vala:55
 msgid "Import subscription from OPML"
-msgstr ""
+msgstr "Importera prenumeration från OPML-fil"
 
 #: ../src/ui/statusbar.vala:58
 msgid "Go to the channel with unread items"
-msgstr ""
+msgstr "Visa kanal med olästa artiklar"
 
 #: ../src/ui/statusbar.vala:61
 msgid "Mark all items as read"
-msgstr ""
+msgstr "Markera alla artiklar som lästa"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feeds"
-msgstr ""
+msgstr "olästa prenumerationer"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feed"
-msgstr ""
+msgstr "oläst prenumeration"
 
 #: ../src/ui/subscription.vala:30
 msgid "URI"
@@ -290,21 +290,21 @@ msgstr "Fullskärm"
 
 #: ../src/ui/toolbar.vala:97
 msgid "Go to the previous readed item"
-msgstr ""
+msgstr "Visa föregående lästa artikel"
 
 #: ../src/ui/toolbar.vala:98
 msgid "Go to the next readed item"
-msgstr ""
+msgstr "Visa nästa läsa artikel"
 
 #: ../src/ui/toolbar.vala:99
 msgid "Refresh all subscriptions"
-msgstr ""
+msgstr "Uppdatera alla prenumerationer"
 
 #: ../src/ui/toolbar.vala:100
 msgid "Menu"
-msgstr ""
+msgstr "Meny"
 
 #: ../src/ui/view-cell.vala:53
 #, c-format
 msgid "%s, by %s"
-msgstr ""
+msgstr "%s, av %s"
