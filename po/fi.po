@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-09-09 20:33+0000\n"
+"PO-Revision-Date: 2013-08-13 19:29+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-05-09 05:35+0000\n"
-"X-Generator: Launchpad (build 16598)\n"
+"X-Launchpad-Export-Date: 2013-08-14 05:50+0000\n"
+"X-Generator: Launchpad (build 16723)\n"
 "Language: fi\n"
 
 #: ../src/desktop-launcher.vala:13
@@ -193,19 +193,19 @@ msgstr "Ikkuna:"
 
 #: ../src/ui/preferences.vala:67
 msgid "Hiding window instead of closing:"
-msgstr ""
+msgstr "Piilota ikkuna sulkemisen sijaan:"
 
 #: ../src/ui/preferences.vala:68
 msgid "Hide window on start to the messaging menu:"
-msgstr ""
+msgstr "Piilota ikkuna käynnistyessä viestivalikkoon:"
 
 #: ../src/ui/preferences.vala:86
 msgid "Subscriptions:"
-msgstr ""
+msgstr "Tilaukset:"
 
 #: ../src/ui/preferences.vala:87
 msgid "Enable automatic updates:"
-msgstr ""
+msgstr "Käytä automaattisia päivityksiä:"
 
 #: ../src/ui/preferences.vala:88
 msgid "Enable updates on start:"
@@ -233,7 +233,7 @@ msgstr "Toiminta"
 
 #: ../src/ui/preferences.vala:111
 msgid "Updates"
-msgstr ""
+msgstr "Päivitykset"
 
 #: ../src/ui/statusbar.vala:49
 msgid "Add new subscription URL"
@@ -245,7 +245,7 @@ msgstr "Poista valittu tilaus"
 
 #: ../src/ui/statusbar.vala:55
 msgid "Import subscription from OPML"
-msgstr ""
+msgstr "Tuo tilaus OPML:stä"
 
 #: ../src/ui/statusbar.vala:58
 msgid "Go to the channel with unread items"
@@ -253,7 +253,7 @@ msgstr ""
 
 #: ../src/ui/statusbar.vala:61
 msgid "Mark all items as read"
-msgstr ""
+msgstr "Merkitse kaikki kohteet luetuiksi"
 
 #: ../src/ui/statusbar.vala:74
 msgid "unread feeds"
