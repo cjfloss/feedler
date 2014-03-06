@@ -8,19 +8,19 @@ msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-29 08:01+0200\n"
-"PO-Revision-Date: 2012-07-05 13:47+0000\n"
-"Last-Translator: Ghenrik <Unknown>\n"
+"PO-Revision-Date: 2014-03-05 19:03+0000\n"
+"Last-Translator: Phillip Sz <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-05-09 05:35+0000\n"
-"X-Generator: Launchpad (build 16598)\n"
+"X-Launchpad-Export-Date: 2014-03-06 05:58+0000\n"
+"X-Generator: Launchpad (build 16948)\n"
 "Language: de\n"
 
 #: ../src/desktop-launcher.vala:13
 msgid "Download and view feeds"
-msgstr "Feeds herunterladen und anzeigen"
+msgstr "Herunterladen und Anzeigen von Feeds"
 
 #: ../src/desktop-launcher.vala:14
 msgid "Feedler News Reader"
@@ -28,7 +28,7 @@ msgstr "Feedler – Nachrichten lesen"
 
 #: ../src/indicator.vala:24 ../src/ui/menu.vala:11
 msgid "Update"
-msgstr "Aktualisieren"
+msgstr "Aktualisierung"
 
 #: ../src/indicator.vala:28
 msgid "Unread"
