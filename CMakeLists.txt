@@ -114,6 +114,8 @@ OPTIONS
 
 
 add_executable(feedler ${VALA_C})
+target_link_libraries(feedler m)
+
 install(TARGETS feedler RUNTIME DESTINATION bin)
 add_subdirectory (src/service)
 add_subdirectory (data)
