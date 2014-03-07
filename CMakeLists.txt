@@ -49,7 +49,6 @@ pkg_check_modules(DEPS REQUIRED
 	libnotify
 	unity
 	granite
-#	gee-1.0
 	indicate-0.7
 )
 
@@ -99,7 +98,6 @@ PACKAGES
 	libsoup-2.4
 	libxml-2.0
 	sqlheavy-0.1
-#    gee-1.0
 	DbusmenuGtk3-0.4
 	Dbusmenu-0.4
 CUSTOM_VAPIS

@@ -7,8 +7,6 @@ pkg_check_modules(DEPS REQUIRED
 	libxml-2.0
 	libnotify
 	granite
-	gee-1.0
-	
 )
 
 #add_definitions(${DEPS_CFLAGS})
@@ -34,7 +32,6 @@ PACKAGES
 	libnotify
 	libsoup-2.4
 	libxml-2.0
-    gee-1.0
 	sqlheavy-0.1
 #CUSTOM_VAPIS
 #    ../../vapi/config.vapi
@@ -54,4 +51,3 @@ install(TARGETS feedler-service RUNTIME DESTINATION bin)
 #
 #include(GSettings)
 #add_schema("org.elementary.feedler.gschema.xml")
-
