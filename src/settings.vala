@@ -14,7 +14,7 @@ public class Feedler.State : Granite.Services.Settings
 
 	public State ()
 	{
-		base ("org.elementary.feedler.state");
+		base ("org.pantheon.feedler.state");
 	}
 }
 
@@ -34,7 +34,7 @@ public class Feedler.Settings : Granite.Services.Settings
 
     public Settings ()
     {
-		base ("org.elementary.feedler.settings");
+		base ("org.pantheon.feedler.settings");
     }
 }
 
@@ -47,6 +47,6 @@ public class Feedler.Service : Granite.Services.Settings
 
 	public Service ()
 	{
-		base ("org.elementary.feedler.service");
+		base ("org.pantheon.feedler.service");
 	}
 }

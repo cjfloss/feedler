@@ -5,7 +5,7 @@
  * @see COPYING
  */
 
-[DBus (name = "org.elementary.contractor")]
+[DBus (name = "org.pantheon.contractor")]
 public interface Feedler.Contractor : GLib.Object
 {
 	public abstract GLib.HashTable<string,string>[] GetServicesByLocation (string strlocation, string? file_mime="text/xml") throws IOError;
@@ -24,7 +24,7 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu
 		this.items = new GLib.List<Gtk.MenuItem> ();
 	    try
 		{
-			contract = Bus.get_proxy_sync (BusType.SESSION, "org.elementary.contractor",
+			contract = Bus.get_proxy_sync (BusType.SESSION, "org.pantheon.contractor",
 															"/org/elementary/contractor");
 
 			services = contract.GetServicesByLocation (GLib.Environment.get_tmp_dir () + "/feedler.html");

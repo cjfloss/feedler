@@ -50,4 +50,4 @@ install(TARGETS feedler-service RUNTIME DESTINATION bin)
 # GSettings Schema
 #
 #include(GSettings)
-#add_schema("org.elementary.feedler.gschema.xml")
+#add_schema("org.pantheon.feedler.gschema.xml")

@@ -14,4 +14,4 @@ install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/icons DESTINATION share/feedler)
 
 # GSchema
 include(GSettings)
-add_schema("org.elementary.feedler.gschema.xml")
+add_schema("org.pantheon.feedler.gschema.xml")
