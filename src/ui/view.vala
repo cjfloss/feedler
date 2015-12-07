@@ -35,6 +35,6 @@ public abstract class Feedler.View : Gtk.VBox
 
 	protected string generate_style (string title_color, string time_color, string content_color, string link_color)
 	{
-		return """<!DOCTYPE HTML><style>.item{width:100%; float:left; margin-bottom:15px;} .title{color:%s; font-size:16px; font-weight:bold; font-family:"Raleway", "Open Sans", "Ubuntu", sans-serif;} .time{color:%s;font-size:10px;} .content{color:%s;text-align:justify;font-family: "Open Sans", "Ubuntu", sans-serif;font-size:12px;} a,a:link,a:visited{color:%s; text-decoration:none;} a:hover{text-decoration:underline;}</style>""".printf (title_color, time_color, content_color, link_color);
+		return """<!DOCTYPE HTML><style>.title{color:%s;} .time{color:%s;} .content{color:%s;} a,a:link,a:visited{color:%s;}</style>""".printf (title_color, time_color, content_color, link_color);
 	}
 }

@@ -90,7 +90,7 @@ public class Feedler.Database : GLib.Object
     public string[]? get_folder_uris (int id)
 	{
         string[] uri = new string[0];
-        /*foreach (var c in this.channels)
+        /*foreach (var c in this.data.channels)
             if (c.folder == id)
                 uri += c.source;*/
         return uri;
@@ -98,7 +98,7 @@ public class Feedler.Database : GLib.Object
 
     public unowned Model.Item? get_item (int channel, int id)
 	{
-		/*foreach (unowned Model.Channel ch in this.channels)
+		/*foreach (unowned Model.Channel ch in this.data.channels)
 			if (ch.id == channel)
 				foreach (unowned Model.Item it in ch.items)
 		            if (id == it.id)
@@ -137,7 +137,7 @@ public class Feedler.Database : GLib.Object
             query.set_int (":id", id);
 			query.execute_async ();
 			transaction.commit ();
-            Model.Folder c = this.get_folder (id);
+            Model.Folder c = this.get_folder_from_id (id);
             c.name = title;
 		}
 		catch (SQLHeavy.Error e)
@@ -180,8 +180,8 @@ public class Feedler.Database : GLib.Object
 			query.set_int (":folder", folder);
             int id = (int)query.execute_insert ();
             this.transaction.commit ();
-            Model.Channel c = new Model.Channel.with_data (id, title, "", url, folder);
-            this.channels.append (c);
+            Model.Channel c = new Model.Channel.with_data (id, title, "", url, get_folder_from_id (folder));
+            //this.data.channels.append (c);
             return id;
 		}
 		catch (SQLHeavy.Error e)
@@ -456,7 +456,7 @@ public class Feedler.Database : GLib.Object
 			query = transaction.prepare ("UPDATE items SET read=:state WHERE read=:s;");
 			query.set_int (":state", 1);
             query.set_int (":s", 0);
-			query.execute_async ();
+			query.execute_async.begin ();
 			transaction.commit ();
 			foreach (Model.Folder f in this.data)
 				foreach (Model.Channel c in f.channels)
@@ -480,7 +480,7 @@ public class Feedler.Database : GLib.Object
 			query.set_int (":read", 1);
             query.set_int (":id", c.id);
 			query.set_int (":unread", 0);
-			query.execute_async ();
+			query.execute_async.begin ();
 			transaction.commit ();
 			foreach (Model.Item i in c.items)
 				if (!i.read)
@@ -500,7 +500,7 @@ public class Feedler.Database : GLib.Object
 			query = transaction.prepare ("UPDATE items SET read=:state WHERE id=:id;");
 			query.set_int (":state", (int)mark);
             query.set_int (":id", item);
-			query.execute_async ();
+			query.execute_async.begin ();
 			transaction.commit ();
 		}
 		catch (SQLHeavy.Error e)
@@ -517,7 +517,7 @@ public class Feedler.Database : GLib.Object
 			query = transaction.prepare ("UPDATE items SET starred=:state WHERE id=:id;");
 			query.set_int (":state", (int)star);
             query.set_int (":id", item);
-			query.execute_async ();
+			query.execute_async.begin ();
 			transaction.commit ();
 		}
 		catch (SQLHeavy.Error e)
@@ -534,7 +534,7 @@ public class Feedler.Database : GLib.Object
 			query = transaction.prepare ("UPDATE channels SET title=:new WHERE title=:old;");
 			query.set_string (":old", old_name);
 			query.set_string (":new", new_name);
-			query.execute_async ();
+			query.execute_async.begin ();
 			transaction.commit ();
 		}
 		catch (SQLHeavy.Error e)
@@ -551,10 +551,10 @@ public class Feedler.Database : GLib.Object
 			transaction = db.begin_transaction ();
 			query = transaction.prepare ("DELETE FROM channels WHERE title=:name;");
 			query.set_string (":name", name);
-			query.execute_async ();
+			query.execute_async.begin ();
 			query = transaction.prepare ("DELETE FROM items WHERE channel = :id;");
 			query.set_int (":id", c.id);
-			query.execute_async ();
+			query.execute_async.begin ();
 			transaction.commit ();
 			c.folder.channels.remove (c);
 		}

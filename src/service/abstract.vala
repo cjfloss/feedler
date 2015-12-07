@@ -52,7 +52,7 @@ public abstract class Backend : GLib.Object
 
     static construct
     {
-        session = new Soup.SessionAsync ();
+        session = new Soup.Session ();
 		//session.timeout = 5;
     }
 }

@@ -1,6 +1,5 @@
 # Desktop
-configure_file(feedler.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/feedler.desktop)
-install (FILES ${CMAKE_CURRENT_BINARY_DIR}/feedler.desktop DESTINATION share/applications)
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/feedler.desktop DESTINATION share/applications)
 
 # Service
 configure_file(feedler.service.cmake ${CMAKE_CURRENT_BINARY_DIR}/feedler.service)

@@ -13,7 +13,7 @@ public class Feedler.Window : Gtk.Window
 	internal Feedler.Sidebar side;
 	internal Feedler.Statusbar stat;
 	private weak Feedler.View view;
-	private Granite.Widgets.ThinPaned pane;
+	private Gtk.Paned pane;
 	private Gtk.Box content;
 	private Feedler.Layout layout;
     private Feedler.Client client;
@@ -58,7 +58,7 @@ public class Feedler.Window : Gtk.Window
 				this.manager.import.begin (f, (o, r) =>
 				{
 					if (this.manager.end ())
-						this.notification (_("Imported %i channels in %i folders.").printf (this.manager.news, this.manager.folders.length ()));
+						this.notification ("%i %s".printf (this.manager.news, ngettext (_("new feed"), _("new feeds"), this.manager.news)));
 					this.load_sidebar ();
 					this.manager.news = 0;
         		});
@@ -68,7 +68,8 @@ public class Feedler.Window : Gtk.Window
 				this.manager.update.begin (c, (o, r) =>
 				{
 					if (this.manager.end ())
-						this.notification ("%i %s".printf (this.manager.news, (this.manager.news > 1) ? _("new feeds") : _("new feed")));
+					    this.notification ("%i %s".printf (this.manager.news, ngettext (_("new feed"), _("new feeds"), this.manager.news)));
+						//this.notification ("%i %s".printf (this.manager.news, (this.manager.news > 1) ? _("new feeds") : _("new feed")));
 					//this.load_sidebar ();
 					//var result = this.manager.update.end (r);
         		});
@@ -89,8 +90,9 @@ public class Feedler.Window : Gtk.Window
     private void ui_layout ()
     {
 		this.toolbar = new Feedler.Toolbar ();
-		this.toolbar.mode.selected = 0;
-		this.content.pack_start (toolbar, false, false, 0);	
+		this.set_titlebar (toolbar);
+		//this.toolbar.mode.selected = Feedler.STATE.view_mode;
+		//this.content.pack_start (toolbar, false, false, 0);
 		this.toolbar.update.clicked.connect (update_subscription);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.mode.selected = Feedler.STATE.view_mode;
@@ -112,7 +114,7 @@ public class Feedler.Window : Gtk.Window
 
 		this.side = new Feedler.Sidebar ();
 		this.side.item_selected.connect (channel_selected);
-		this.pane = new Granite.Widgets.ThinPaned ();
+		this.pane = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
 		this.pane.expand = true;
         this.content.pack_start (pane, true);
 		this.pane.pack2 (layout, true, false);
@@ -203,7 +205,7 @@ public class Feedler.Window : Gtk.Window
 			channel = new Feedler.SidebarItem (c.title, new GLib.FileIcon (GLib.File.new_for_path (path)), c.unread, true);
 		else
 			channel = new Feedler.SidebarItem (c.title, Feedler.Icons.RSS, c.unread, true);
-		//channel.update.activate.connect ();
+		channel.update.activate.connect (update_channel);
 		channel.mark.activate.connect (channel_mark);
 		channel.rename.activate.connect (channel_rename);
 		channel.remove.activate.connect (channel_remove);
@@ -543,6 +545,25 @@ public class Feedler.Window : Gtk.Window
         {
             string[] uris = this.db.get_channels_uri ();
 			this.manager.begin (_("Updating subscriptions"), uris.length);
+            this.client.update_all (uris);
+			//this.client.update ("http://iloveubuntu.net/rss.xml");
+        }
+        catch (GLib.Error e)
+        {
+            this.dialog ("Cannot connect to service!", Gtk.MessageType.ERROR);
+			this.manager.error ();
+        }
+	}
+
+	private void update_channel ()
+	{
+		var title = this.side.selected;
+		string c = this.db.get_channel_uri (title.name);
+		string[] uris = new string[1];
+		uris[0] = c;
+        try
+        {
+			this.manager.begin (_("Updating channel"), uris.length);
             this.client.update_all (uris);
 			//this.client.update ("http://iloveubuntu.net/rss.xml");
         }

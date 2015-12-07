@@ -24,17 +24,26 @@ public class Feedler.App : Granite.Application
 		build_release_name = Build.RELEASE_NAME;
 		build_version = Build.VERSION;
 		build_version_info = Build.VERSION_INFO;
+
 		program_name = "Feedler";
 		exec_name = "feedler";
-		app_years = "2011-2013";
-		application_id = "net.launchpad.Feedler";
+		app_copyright = "2011-2015";
+		app_years = "2011-2015";
 		app_icon = "internet-news-reader";
-        app_launcher = "feedler.desktop";
+        	app_launcher = "feedler.desktop";
+		application_id = "net.launchpad.Feedler";
+
 		main_url = "https://launchpad.net/feedler";
 		bug_url = "https://bugs.launchpad.net/feedler";
 		help_url = "https://answers.launchpad.net/feedler";
 		translate_url = "https://translations.launchpad.net/feedler";
+
 		about_authors = {"Daniel Kur <daniel.m.kur@gmail.com>"};
+		about_documenters = {null};
+		about_artists = {null};
+		about_comments = "<awesome>\n\t<name=\"Feedler\">\n\t<type=\"RSS Reader\">\n</awesome>";
+		about_translators = "Launchpad Translators";
+		about_license_type = Gtk.License.LGPL_2_1;
 	}
 
 	public void switch_display ()
@@ -42,7 +51,7 @@ public class Feedler.App : Granite.Application
 		if (window.is_active)
             this.window.hide ();
         else
-            this.window.present ();
+            this.window.present_with_time ((uint32)GLib.get_monotonic_time ());
 	}
 
 	public void update ()
@@ -50,16 +59,15 @@ public class Feedler.App : Granite.Application
 		//this.window._update_all ();
 	}
 
-	protected override void activate ()
-	{
-		if (window != null)
-		{
-			window.present ();
-			return;
+	protected override void activate () {
+		if (window != null) {
+			window.present_with_time ((uint32)GLib.get_monotonic_time ());
+            return;
 		}
 		Feedler.STATE = new Feedler.State ();
 		Feedler.SETTING = new Feedler.Settings ();
 		Feedler.SERVICE = new Feedler.Service ();
+
 		this.window = new Feedler.Window ();
         this.window.title = "Feedler";
 		this.window.icon_name = "internet-news-reader";

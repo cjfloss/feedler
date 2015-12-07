@@ -8,7 +8,7 @@
 public class Feedler.SidebarItem : Granite.Widgets.SourceList.Item
 {
 	private Gtk.Menu menu;
-	//internal Gtk.MenuItem update;
+	internal Gtk.MenuItem update;
 	internal Gtk.MenuItem mark;
 	internal Gtk.MenuItem rename;
 	internal Gtk.MenuItem remove;
@@ -23,16 +23,16 @@ public class Feedler.SidebarItem : Granite.Widgets.SourceList.Item
 		if (menu)
 		{
 			this.menu = new Gtk.Menu ();
-			//this.update = new Gtk.MenuItem.with_label (_("Update"));
+			this.update = new Gtk.MenuItem.with_label (_("Update"));
 			this.mark = new Gtk.MenuItem.with_label (_("Mark as read"));
 			this.rename = new Gtk.MenuItem.with_label (_("Rename"));
 			this.remove = new Gtk.MenuItem.with_label (_("Remove"));
 			this.edit = new Gtk.MenuItem.with_label (_("Edit"));
-			//this.menu.append (update);
+			this.menu.append (update);
 			this.menu.append (mark);
 			this.menu.append (rename);
 			this.menu.append (remove);
-			this.menu.append (edit);		
+			this.menu.append (edit);
 			this.menu.show_all ();
 		}
 	}
@@ -55,7 +55,7 @@ public class Feedler.Sidebar : Granite.Widgets.SourceList
 
 	public Sidebar ()
 	{
-		//this.init ();
+		this.init ();
 	}
 
 	internal void init ()
@@ -73,5 +73,7 @@ public class Feedler.Sidebar : Granite.Widgets.SourceList
 		this.all.visible = show;
 		this.unread.visible = show;
 		this.star.visible = show;
+		this.get_style_context ().add_class ("source-list");
+		this.get_style_context ().add_class ("view");
 	}
 }

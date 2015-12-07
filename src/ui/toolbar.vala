@@ -45,15 +45,15 @@ public class Progress : Gtk.VBox
 
 }
 
-public class Feedler.Toolbar : Gtk.Toolbar
+public class Feedler.Toolbar : Gtk.HeaderBar
 {
 	internal Gtk.ToolButton update = new Gtk.ToolButton.from_stock (Gtk.Stock.REFRESH);
 
     internal Gtk.Alignment align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
-    internal Progress progress = new Progress ();
+    public Progress progress = new Progress ();
     internal Granite.Widgets.ModeButton mode = new Granite.Widgets.ModeButton ();
-    internal Granite.Widgets.SearchBar search = new Granite.Widgets.SearchBar (_("Type to Search..."));
-    
+    internal Gtk.SearchEntry search = new Gtk.SearchEntry ();
+
     internal Granite.Widgets.AppMenu appmenu;
     //internal Feedler.ContractorButton sharemenu;
     internal Gtk.CheckMenuItem sidebar_visible = new Gtk.CheckMenuItem.with_label (_("Sidebar Visible"));
@@ -64,7 +64,10 @@ public class Feedler.Toolbar : Gtk.Toolbar
 	{
 		this.sidebar_visible.active = true;
         this.get_style_context ().add_class ("primary-toolbar");
-		
+	this.get_style_context ().add_class ("header-bar");
+        this.set_show_close_button (true);
+
+
         Gtk.Menu menu = new Gtk.Menu ();
         menu.append (sidebar_visible);
         menu.append (fullscreen_mode);
@@ -76,26 +79,34 @@ public class Feedler.Toolbar : Gtk.Toolbar
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-symbolic", Gtk.IconSize.MENU));
 		this.mode.append (new Gtk.Image.from_icon_name ("view-column-symbolic", Gtk.IconSize.MENU));
-		this.align.add (progress);
         Gtk.ToolItem mode_item = new Gtk.ToolItem ();
 		mode_item.margin = 5;
         mode_item.add (mode);
         Gtk.ToolItem search_item = new Gtk.ToolItem ();
         search_item.add (search);
-		Gtk.ToolItem progress_item = new Gtk.ToolItem ();
-		progress_item.set_expand (true);
-		progress_item.add (align);
+		//Gtk.ToolItem progress_item = new Gtk.ToolItem ();
+		//progress_item.set_expand (true);
+		//progress_item.add (align);
+		this.set_custom_title (progress);
 
         this.update.tooltip_text = _("Refresh all subscriptions");
         this.appmenu.tooltip_text = _("Menu");
-        
-		this.add (update);
-        this.add (new Gtk.SeparatorToolItem ());
-		this.add (mode_item);
-        this.add (progress_item);
-		this.add (search_item);
+
+
+
+
+
+
 		//this.add (sharemenu);
-		this.add (appmenu);
+		this.pack_start (update);
+		this.pack_start (new Gtk.SeparatorToolItem ());
+		this.pack_start (mode_item);
+		//this.pack_start (progress_item);
+
+
+
+		this.pack_end (appmenu);
+		this.pack_end (search_item);
 	}
 	
 	public void set_enable (bool state)

@@ -44,7 +44,7 @@ public class Feedler.ViewList : Feedler.View
 	private WebKit.WebView browser;
 	private Gtk.ScrolledWindow scroll_list;
 	private Gtk.ScrolledWindow scroll_web;
-	internal Granite.Widgets.ThinPaned pane;
+	internal Gtk.Paned pane;
 
 	construct
 	{
@@ -85,9 +85,8 @@ public class Feedler.ViewList : Feedler.View
 		this.scroll_web = new Gtk.ScrolledWindow (null, null);
 		this.scroll_web.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 		this.scroll_web.add (browser);
-		
-		this.pane = new Granite.Widgets.ThinPaned ();
-		this.pane.set_orientation (Gtk.Orientation.VERTICAL);
+
+		this.pane = new Gtk.Paned (Gtk.Orientation.VERTICAL);
 		this.pane.set_position (225);
 		
 		this.pane.pack1 (scroll_list, true, false);
