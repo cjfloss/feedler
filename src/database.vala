@@ -448,6 +448,16 @@ public class Feedler.Database : GLib.Object
         return uri;
 	}
 
+	public string? get_channel_uri (string title)
+	{
+        uint i = 0;
+		foreach (Model.Folder f in this.data)
+			foreach (Model.Channel c in f.channels)
+				if (c.title == title)
+					return c.source;
+        return null;
+	}
+
 	public void mark_all ()
     {
         try
