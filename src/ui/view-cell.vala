@@ -20,8 +20,8 @@ public class Feedler.ViewCell : Gtk.CellRenderer
     {
         height = 36;
         width = 250;
-		x_offset = 0;
-		y_offset = 0;
+        x_offset = 0;
+        y_offset = 0;
     }
 
     public override void render (Cairo.Context cr, Gtk.Widget widget,
@@ -38,11 +38,11 @@ public class Feedler.ViewCell : Gtk.CellRenderer
         //Subject
         layout = widget.create_pango_layout (subject);
         if (unread)
-		{
-    	    Pango.FontDescription font_bold = widget.get_pango_context ().get_font_description ();
-	        font_bold.set_weight (Pango.Weight.BOLD);
-			layout.set_font_description (font_bold);
-		}
+        {
+            Pango.FontDescription font_bold = widget.get_pango_context ().get_font_description ();
+            font_bold.set_weight (Pango.Weight.BOLD);
+            layout.set_font_description (font_bold);
+        }
         layout.set_ellipsize (Pango.EllipsizeMode.END);
         layout.set_width (Pango.units_from_double (area.width - 5));
         cr.move_to (area.x, area.y + 1);

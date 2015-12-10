@@ -7,17 +7,17 @@
 
 public class Model.Folder
 {
-	public int id;
-	public string name;
-	public GLib.List<Model.Channel> channels;
+    public int id;
+    public string name;
+    public GLib.List<Model.Channel> channels;
 
-	public Folder.with_data (int id, string name)
+    public Folder.with_data (int id, string name)
     {
         this.id = id;
         this.name = name;
     }
 
-	public Model.Channel? channel (string title)
+    public Model.Channel? channel (string title)
     {
         foreach (Model.Channel c in this.channels)
             if (title == c.title)
@@ -29,11 +29,11 @@ public class Model.Folder
 public class Model.Channel
 {
     public int id;
-	public string title;
-	public string link;
-	public string source;
-	public unowned Model.Folder folder;
-	public int unread;
+    public string title;
+    public string link;
+    public string source;
+    public unowned Model.Folder folder;
+    public int unread;
     public GLib.List<Model.Item> items;
 
     public Channel.with_data (int id, string title, string link, string source, Model.Folder? folder)
@@ -45,7 +45,7 @@ public class Model.Channel
         this.folder = folder;
     }
 
-	public unowned Model.Item? item (string title)
+    public unowned Model.Item? item (string title)
     {
         foreach (unowned Model.Item i in this.items)
             if (title == i.title)
@@ -61,41 +61,41 @@ public class Model.Channel
         return null;
     }
 
-	public string last_item_title ()
-	{
+    public string last_item_title ()
+    {
         if (this.items.length () > 0)
             return this.items.last ().data.title;
         return "";
-	}
+    }
 }
 
 public class Model.Item
 {
     public int id;
-	public string title;
-	public string source;
-	public string author;
-	public string description;
-	public int time;
-	public bool read;
-	public bool starred;
-	public unowned Model.Channel channel;
+    public string title;
+    public string source;
+    public string author;
+    public string description;
+    public int time;
+    public bool read;
+    public bool starred;
+    public unowned Model.Channel channel;
 
-	public Item.with_data (int id, string title, string source, string author, string description, int time, Model.Channel channel)
+    public Item.with_data (int id, string title, string source, string author, string description, int time, Model.Channel channel)
     {
         this.id = id;
         this.title = title;
         this.source = source;
-		this.author = author;
-		this.description = description;
-		this.time = time;
-		this.read = false;
-		this.starred = false;
+        this.author = author;
+        this.description = description;
+        this.time = time;
+        this.read = false;
+        this.starred = false;
         this.channel = channel;
     }
 }
 
 public enum Model.State
 {
-	ALL = -1, READ = 0, UNREAD = 1, STARRED = 2, UNSTARRED = 3;
+    ALL = -1, READ = 0, UNREAD = 1, STARRED = 2, UNSTARRED = 3;
 }

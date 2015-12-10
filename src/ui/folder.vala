@@ -9,19 +9,19 @@ public class Feedler.Folder : Gtk.Dialog
 {
     public signal void saved_folder (int id, string name);
     private int id;
-	private Gtk.Entry folder;
+    private Gtk.Entry folder;
 
-	public Folder ()
-	{
-		this.title = _("Add new folder");
+    public Folder ()
+    {
+        this.title = _("Add new folder");
         this.window_position = Gtk.WindowPosition.CENTER;
         //this.type_hint = Gdk.WindowTypeHint.DIALOG;
-		this.set_modal (false);
-		this.destroy_with_parent = true;
+        this.set_modal (false);
+        this.destroy_with_parent = true;
         this.set_size_request (360, -1);
-		this.resizable = false;
+        this.resizable = false;
         this.id = 0;
-		this.folder = new Gtk.Entry ();
+        this.folder = new Gtk.Entry ();
 
         var save = new Gtk.Button.from_icon_name ("gtk-save", Gtk.IconSize.BUTTON);
         save.set_size_request (85, -1);
@@ -44,14 +44,14 @@ public class Feedler.Folder : Gtk.Dialog
         content.pack_end (button_box, false, false, 0);
         content.spacing = 10;
 
-		this.add (content);
-		this.show_all ();
+        this.add (content);
+        this.show_all ();
     }
     
     public void set_model (int id, string title)
     {
-		this.title = _("Edit folder %s").printf (title);
+        this.title = _("Edit folder %s").printf (title);
         this.id = id;
-		this.folder.set_text (title);
+        this.folder.set_text (title);
     }
 }

@@ -7,7 +7,7 @@
 
 public struct Serializer.Folder
 {
-	public string name;
+    public string name;
     public Serializer.Channel[]? channels;
 
     public Folder.from_model (Model.Folder model, bool full = false)
@@ -22,9 +22,9 @@ public struct Serializer.Folder
 
 public struct Serializer.Channel
 {
-	public string title;
-	public string link;
-	public string source;
+    public string title;
+    public string link;
+    public string source;
     public Serializer.Item[]? items;
 
     public Channel.from_model (Model.Channel model, bool full = true)
@@ -42,21 +42,21 @@ public struct Serializer.Channel
         }
     }
 
-	public Channel.no_data ()
-	{
-		this.title = "";
+    public Channel.no_data ()
+    {
+        this.title = "";
         this.link = "";
         this.source = "";
-	}
+    }
 }
 
 public struct Serializer.Item
 {
-	public string title;
-	public string source;
-	public string author;
-	public string description;
-	public int time;
+    public string title;
+    public string source;
+    public string author;
+    public string description;
+    public int time;
 
     public Item.from_model (Model.Item model)
     {

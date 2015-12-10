@@ -1,6 +1,6 @@
 /**
  * client.vala
- * 
+ *
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
@@ -37,7 +37,7 @@ void main ()
         {
             stdout.printf ("URI: %s\n", uri);
         });
-        demo.update ("http://elementaryos.org/journal/rss.xml");      
+        demo.update ("http://elementaryos.org/journal/rss.xml");
         demo.favicon ("http://elementaryos.org/journal/rss.xml");
         //demo.import ("/home/d3ny/Pobrane/google-reader-subscriptions.xml");
         //demo.import ("/home/d3ny/Pobrane/livemarks.opml");
@@ -47,14 +47,14 @@ void main ()
         GLib.Timeout.add_seconds (10, () =>
         {
             demo.stop();
-            stderr.printf ("Sending stop call.\n");
+            warning ("Sending stop call.");
             loop.quit ();
             return false;
         });
     }
     catch (GLib.IOError e)
     {
-        stderr.printf ("%s\n", e.message);
+        warning (e.message);
     }
     loop.run ();
 }

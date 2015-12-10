@@ -7,23 +7,23 @@
 
 public class Feedler.Settings : Granite.Services.Settings
 {
-	public bool auto_update { get; set; }
-	public bool start_update { get; set; }
-	public int update_time { get; set; }
-	public string[] uri { get; set; }
+    public bool auto_update { get; set; }
+    public bool start_update { get; set; }
+    public int update_time { get; set; }
+    public string[] uri { get; set; }
 
-	public Settings ()
-	{
-		base ("org.pantheon.feedler.service");
-	}
+    public Settings ()
+    {
+        base ("org.pantheon.feedler.service");
+    }
 
-	public void add_uri (string u)
-	{
-		if (u in uri)
-			return;
+    public void add_uri (string u)
+    {
+        if (u in uri)
+            return;
 
-		string[] tmp = this.uri;
-		tmp += u;
-		this.uri = tmp;
-	}
+        string[] tmp = this.uri;
+        tmp += u;
+        this.uri = tmp;
+    }
 }

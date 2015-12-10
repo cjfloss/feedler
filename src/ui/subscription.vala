@@ -11,21 +11,21 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
     internal Gtk.Button favicon;
     private Gtk.Box button_box;
     private int id;
-	private Gtk.ComboBoxText folder;
-	private Gtk.Entry channel;
-	private Gtk.Entry uri;
+    private Gtk.ComboBoxText folder;
+    private Gtk.Entry channel;
+    private Gtk.Entry uri;
 
-	public Subscription ()
-	{
-		this.title = _("Add new subscription");
+    public Subscription ()
+    {
+        this.title = _("Add new subscription");
         this.window_position = Gtk.WindowPosition.CENTER;
         this.type_hint = Gdk.WindowTypeHint.DIALOG;
-		this.set_modal (false);
-		this.destroy_with_parent = true;
+        this.set_modal (false);
+        this.destroy_with_parent = true;
         this.set_size_request (360, -1);
-		this.resizable = false;
+        this.resizable = false;
         this.id = 0;
-		this.folder = new Gtk.ComboBoxText ();
+        this.folder = new Gtk.ComboBoxText ();
         this.channel = new Gtk.Entry ();
         this.uri = new Gtk.Entry ();
 
@@ -34,8 +34,8 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
         save.valign = save.halign = Gtk.Align.END;
         save.clicked.connect_after (() =>
         {
-	        saved (this.id, this.folder.get_active () + 1, this.channel.get_text (), this.uri.get_text ());
-    	    this.destroy ();
+            saved (this.id, this.folder.get_active () + 1, this.channel.get_text (), this.uri.get_text ());
+            this.destroy ();
         });
 
         this.favicon = new Gtk.Button.with_label (_("Load favicon"));
@@ -67,22 +67,22 @@ public class Feedler.Subscription : Granite.Widgets.LightWindow
         content.pack_start (uri, false, true, 0);
         content.pack_end (button_box, false, false, 0);
         
-		this.add (content);
-		this.show_all ();
+        this.add (content);
+        this.show_all ();
     }
     
     public void add_folder (int folder_id, string folder_name)
     {
-		this.folder.append (folder_id.to_string (), folder_name);
-		this.folder.set_active (0);
-	}
+        this.folder.append (folder_id.to_string (), folder_name);
+        this.folder.set_active (0);
+    }
 
     public void set_model (int id, string title, string uri, int folder)
     {
-		this.title = _("Edit subscription %s").printf (title);
+        this.title = _("Edit subscription %s").printf (title);
         this.id = id;
-		this.channel.set_text (title);
-		this.uri.set_text (uri);
+        this.channel.set_text (title);
+        this.uri.set_text (uri);
         this.folder.set_active_id (folder.to_string ());
         this.button_box.pack_start (favicon, false, false, 0);
     }

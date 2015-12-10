@@ -3,10 +3,10 @@
 #
 find_package(PkgConfig)
 pkg_check_modules(DEPS REQUIRED
-	libsoup-2.4
-	libxml-2.0
-	libnotify
-	granite
+    libsoup-2.4
+    libxml-2.0
+    libnotify
+    granite
 )
 
 #add_definitions(${DEPS_CFLAGS})
@@ -21,18 +21,18 @@ include(ValaPrecompile)
 vala_precompile(VALA_C
     abstract.vala
     backend-xml.vala
-#	database.vala
+#    database.vala
 #   interface.vala
     model.vala
     serializer.vala
     service.vala
-	settings.vala
+    settings.vala
 PACKAGES
     granite
-	libnotify
-	libsoup-2.4
-	libxml-2.0
-	sqlheavy-0.1
+    libnotify
+    libsoup-2.4
+    libxml-2.0
+    sqlheavy-0.1
 #CUSTOM_VAPIS
 #    ../../vapi/config.vapi
 OPTIONS
