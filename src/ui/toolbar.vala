@@ -14,6 +14,7 @@ public class Progress : Gtk.Box
     {
         this.set_orientation (Gtk.Orientation.VERTICAL);
         this.bar = new Gtk.ProgressBar ();
+        this.bar.width_request = 300;
         this.label = new Gtk.Label (null);
         this.label.set_justify (Gtk.Justification.CENTER);
         this.label.set_single_line_mode (true);
@@ -48,7 +49,7 @@ public class Progress : Gtk.Box
 
 public class Feedler.Toolbar : Gtk.HeaderBar
 {
-    internal Gtk.ToolButton update = new Gtk.ToolButton.from_stock (Gtk.Stock.REFRESH);
+    internal Gtk.Button update = new Gtk.Button.from_icon_name ("view-refresh-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
 
     internal Gtk.Alignment align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
     public Progress progress = new Progress ();
@@ -100,7 +101,7 @@ public class Feedler.Toolbar : Gtk.HeaderBar
 
         //this.add (sharemenu);
         this.pack_start (update);
-        this.pack_start (new Gtk.SeparatorToolItem ());
+        //this.pack_start (new Gtk.SeparatorToolItem ());
         this.pack_start (mode_item);
         //this.pack_start (progress_item);
 

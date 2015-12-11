@@ -582,7 +582,7 @@ public class Feedler.Database : GLib.Object
             //transaction = db.begin_transaction ();
             query = transaction.prepare ("INSERT INTO folders (name) VALUES (:name);");
             query.set_string (":name", folder.name);
-            query.execute_async ();
+            query.execute_async.begin ();
             //int id = (int)query.execute_insert ();
             //transaction.commit ();
             //Model.Folder f = new Model.Folder.with_data (id, name);

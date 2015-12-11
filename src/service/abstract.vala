@@ -1,19 +1,16 @@
 /**
  * abstract.vala
- * 
+ *
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
 
-public enum BACKENDS
-{
+public enum BACKENDS {
     XML,
     READER;
 
-    public GLib.Type to_type ()
-    {
-        switch (this)
-        {
+    public GLib.Type to_type () {
+        switch (this) {
             case XML:
                 return GLib.Type.from_name (typeof (BackendXml).name ());
             case READER:
@@ -22,11 +19,9 @@ public enum BACKENDS
                 assert_not_reached();
         }
     }
-    
-    public string to_string ()
-    {
-        switch (this)
-        {
+
+    public string to_string () {
+        switch (this) {
             case XML:
                 return "XML";
             case READER:
@@ -37,8 +32,7 @@ public enum BACKENDS
     }
 }
 
-public abstract class Backend : GLib.Object
-{
+public abstract class Backend : GLib.Object {
     public abstract bool subscribe (string data, out Serializer.Folder[]? folders);
     public abstract bool refresh (string data, out Serializer.Channel? channel);
     public abstract void add (string uri);
@@ -50,8 +44,7 @@ public abstract class Backend : GLib.Object
     internal unowned Feedler.Service service;
     internal static Soup.Session session;
 
-    static construct
-    {
+    static construct {
         session = new Soup.Session ();
         //session.timeout = 5;
     }

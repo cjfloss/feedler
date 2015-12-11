@@ -1,6 +1,6 @@
 /**
  * settings.vala
- * 
+ *
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
@@ -10,7 +10,7 @@ public class Feedler.State : Granite.Services.Settings
     public int window_width { get; set; }
     public int window_height { get; set; }
     public int sidebar_width { get; set; }
-    public uint8 view_mode { get; set; }
+    public int view_mode { get; set; }
 
     public State ()
     {

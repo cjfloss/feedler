@@ -1,6 +1,6 @@
 /**
  * preferences.vala
- * 
+ *
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
@@ -43,7 +43,7 @@ public class Behavior : PreferenceTab
     private Gtk.ComboBoxText browser_id;
     private Gtk.Entry browser_name;
     construct
-    {    
+    {
         var enable_image = new Gtk.CheckButton ();
         var enable_script = new Gtk.CheckButton ();
         var enable_java = new Gtk.CheckButton ();
@@ -64,8 +64,8 @@ public class Behavior : PreferenceTab
                 browser_name.set_sensitive (true);
             else
                 browser_name.set_sensitive (false);
-        });        
-        
+        });
+
         Feedler.SETTING.schema.bind ("enable-image", enable_image, "active", SettingsBindFlags.DEFAULT);
         Feedler.SETTING.schema.bind ("enable-script", enable_script, "active", SettingsBindFlags.DEFAULT);
         Feedler.SETTING.schema.bind ("enable-java", enable_java, "active", SettingsBindFlags.DEFAULT);
@@ -73,10 +73,10 @@ public class Behavior : PreferenceTab
         Feedler.SETTING.schema.bind ("shrink-image", shrink_image, "active", SettingsBindFlags.DEFAULT);
         Feedler.SETTING.schema.bind ("browser-id", browser_id, "active", SettingsBindFlags.DEFAULT);
         Feedler.SETTING.schema.bind ("browser-name", browser_name, "text", SettingsBindFlags.DEFAULT);
-        
+
         if (browser_id.active_id != "")
             browser_name.set_sensitive (false);
-        
+
         this.add_title (_("Content:"));
         this.add_content (enable_image, _("Enable images:"));
         this.add_content (shrink_image, _("Shrink image to fit:"));
@@ -101,11 +101,11 @@ public class UserInterface : PreferenceTab
         Feedler.SETTING.schema.bind ("hide-start", hide_start, "active", SettingsBindFlags.DEFAULT);
         Feedler.SETTING.schema.bind ("hide-header", hide_header, "active", SettingsBindFlags.DEFAULT);
         Feedler.SETTING.schema.bind ("limit-items", limit_items, "value", SettingsBindFlags.DEFAULT);
-        
+
         this.add_title (_("Window:"));
         this.add_content (hide_close, _("Hiding window instead of closing:"));
         this.add_content (hide_start, _("Hide on start to the messaging menu:"));
-        
+
         this.add_title (_("Application:"));
         this.add_content (hide_header, _("Hide additional headers in sidebar:"));
         this.add_content (limit_items, _("Maximum items stored in the channel:"));
@@ -134,32 +134,41 @@ public class Update : PreferenceTab
         this.add_content (fav, _("Download now all favicons:"));
     }
 }
- 
+
 public class Feedler.Preferences : Gtk.Dialog
 {
-    private Granite.Widgets.StaticNotebook tabs;
+    private Gtk.StackSwitcher stack_switcher;
+    private Gtk.Stack stack;
     private Gtk.Box content;
     internal Behavior behavior;
     internal UserInterface uinterface;
     internal Update update;
-    
+
     construct
     {
         this.title = _("Preferences");
-        this.border_width = 5;
+        this.border_width = 12;
         this.set_resizable (false);
-        this.tabs = new Granite.Widgets.StaticNotebook (false);
+        this.set_modal (true);
+        this.set_deletable (false);
         this.behavior = new Behavior ();
         this.uinterface = new UserInterface ();
         this.update = new Update ();
-        this.tabs.append_page (uinterface, new Gtk.Label (_("Interface")));
-        this.tabs.append_page (behavior, new Gtk.Label (_("Behavior")));
-        this.tabs.append_page (update, new Gtk.Label (_("Updates")));
-        
-        this.content = this.get_content_area () as Gtk.Box;
-        this.content.pack_start (tabs, false, true, 0);
 
-        this.add_button (Gtk.Stock.CLOSE, Gtk.ResponseType.CLOSE);
+        this.stack_switcher = new Gtk.StackSwitcher ();
+        this.stack = new Gtk.Stack ();
+        stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+        stack_switcher.set_stack (stack);
+        stack.add_titled (uinterface, "interface", _("Interface"));
+        stack.add_titled (behavior, "behavior", _("Behavior"));
+        stack.add_titled (update, "updates", _("Updates"));
+
+        this.content = this.get_content_area () as Gtk.Box;
+        this.content.set_orientation (Gtk.Orientation.VERTICAL);
+        this.content.pack_start (stack_switcher, false, true, 0);
+        this.content.pack_start (stack, true, true, 0);
+
+        this.add_button ("gtk-close", Gtk.ResponseType.CLOSE);
         this.show_all ();
     }
 }

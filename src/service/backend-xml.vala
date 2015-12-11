@@ -104,6 +104,7 @@ internal class Feeds
 
     private void rss (Xml.Node* channel)
     {
+        warning ("Feed is RSS");
         for (Xml.Node* iter = channel->children; iter != null; iter = iter->next)
         {
             if (iter->type != Xml.ElementType.ELEMENT_NODE)
@@ -150,6 +151,7 @@ internal class Feeds
 
     private void atom (Xml.Node* channel)
     {
+        warning ("Feed is atom");
         for (Xml.Node* iter = channel->children; iter != null; iter = iter->next)
         {
             if (iter->type != Xml.ElementType.ELEMENT_NODE)
