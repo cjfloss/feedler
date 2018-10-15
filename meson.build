@@ -1,9 +1,38 @@
 project('com.github.cjfloss.feedler', 'vala', 'c',
-  version : '0.2.0',
+  version : '0.1.0',
+  license : 'LGPL2+',
   default_options : ['warning_level=3'])
 
 add_global_arguments('-DGETTEXT_PACKAGE="' + meson.project_name() + '"',language : 'c')
 
+
+release_name = 'beta'
+
+prefix = get_option('prefix')
+datadir = join_paths(prefix, get_option('datadir'))
+pkg_datadir = join_paths(datadir, meson.project_name())
+if find_program('git', required : false).found()
+    GIT_BRANCH = run_command('git', 'rev-parse', '--abbrev-ref', 'HEAD')
+    GIT_COMMIT_HASH = run_command('git','log', '-1', '--format=%h')
+    git_branch = GIT_BRANCH.stdout().strip()
+    git_commit_hash = GIT_COMMIT_HASH.stdout().strip()
+    version_info = 'git-' + git_branch + '-' + git_commit_hash
+else
+    git_branch = 'no-git'
+    git_commit_hash = 'no-git'
+    version_info = release_name
+endif
+
+config = configuration_data()
+config.set('app_name', meson.project_name ())
+config.set('datadir', datadir)
+config.set('pkg_datadir', pkg_datadir)
+config.set('gettext_package', meson.project_name ())
+config.set('release_name', release_name)
+config.set('version', meson.project_version ())
+config.set('version_info', version_info)
+config.set('git_branch', git_branch)
+config.set('git_commit_hash', git_commit_hash)
 
 exe = executable (
     meson.project_name (),

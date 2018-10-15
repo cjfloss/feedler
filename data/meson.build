@@ -19,7 +19,7 @@ meson.add_install_script ('post_install.py')
 configure_file (
     input : meson.project_name () + '.service.in',
     output : meson.project_name () + '.service',
-    configuration : conf_data
+    configuration : config
 )
 install_data(
     meson.project_name () + '.service',
