@@ -13,14 +13,14 @@ public class Feedler.Manager : GLib.Object
     private double fraction;
     private double proceed;
     private Feedler.Dock dockbar;
-    private Feedler.Indicator indicator;
+   // private Feedler.Indicator indicator;
     private Feedler.Window window;
     internal GLib.List<Serializer.Folder?> folders;
 
     public Manager (Feedler.Window win)
     {
         this.dockbar = new Feedler.Dock ();
-        this.indicator = new Feedler.Indicator ();
+       // this.indicator = new Feedler.Indicator ();
         this.window = win;
     }
 
@@ -28,7 +28,7 @@ public class Feedler.Manager : GLib.Object
     {
         this.count += diff;
         this.dockbar.counter (count);
-        this.indicator.counter (count);
+       // this.indicator.counter (count);
         this.window.side.unread.badge = count.to_string ();
         this.window.stat.counter (count);
     }
