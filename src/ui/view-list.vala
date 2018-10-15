@@ -149,7 +149,7 @@ public class Feedler.ViewList : Feedler.View
     private void load_article (string content)
     {
         warning ("Feedler.ViewList.load_article ()");
-        this.browser.load_string (content, "text/html", "UTF-8", "");
+        this.browser.load_html (content, null);
     }
 
     private void browse_page ()

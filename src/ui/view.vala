@@ -9,18 +9,16 @@ public abstract class Feedler.View : Gtk.VBox
 {
     public signal void item_marked (int id, Model.State state);
     
-    public static WebKit.WebSettings settings;
+    public static WebKit.Settings settings;
     
     static construct
     {
-        settings = new WebKit.WebSettings ();
-        settings.auto_resize_window = false;
+        settings = new WebKit.Settings ();
         settings.default_font_size = 9;
         settings.auto_load_images = Feedler.SETTING.enable_image;
-        settings.auto_shrink_images = Feedler.SETTING.shrink_image;
         settings.enable_plugins = Feedler.SETTING.enable_plugin;
-        settings.enable_scripts = Feedler.SETTING.enable_script;
-        settings.enable_java_applet = Feedler.SETTING.enable_java;
+        settings.enable_javascript = Feedler.SETTING.enable_script;
+        settings.enable_java = Feedler.SETTING.enable_java;
     }
 
     public abstract void clear ();

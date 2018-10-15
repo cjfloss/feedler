@@ -37,13 +37,13 @@ public class Feedler.ViewWeb : Feedler.View
     public override void load_feeds ()
     {
         warning ("Feedler.ViewWeb.load_feeds ()");
-        this.browser.load_string (content.str, "text/html", "UTF-8", "");
+        this.browser.load_html (content.str, null);
         //this.item_marked (-1, true);
     }
 
     public override void refilter (string text)
     {
-        this.browser.search_text (text, true, true, true);
+        //this.browser.search_text (text, true, true, true);
     }
 
     public override bool contract ()
