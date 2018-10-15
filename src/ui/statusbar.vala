@@ -5,7 +5,7 @@
  * @see COPYING
  */
 
-public class Feedler.Statusbar : Granite.Widgets.StatusBar
+public class Feedler.Statusbar : Gtk.Statusbar
 {
     internal Feedler.StatusMenuButton add_feed;
     internal Feedler.StatusButton mark_feed;
@@ -16,9 +16,9 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
         this.add_feed = new Feedler.StatusMenuButton (new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.MENU), _("Add new.."));
         this.mark_feed = new Feedler.StatusButton (new Gtk.Image.from_gicon (Feedler.Icons.MARK, Gtk.IconSize.MENU), _("Mark all items as read"));
         this.next_feed = new Feedler.StatusButton (new Gtk.Image.from_icon_name ("go-next-symbolic", Gtk.IconSize.MENU), _("Go to the channel with unread items"));
-        this.insert_widget (add_feed, true);
-        this.insert_widget (mark_feed, true);
-        this.insert_widget (next_feed, false);
+        this.pack_start (add_feed);
+        this.pack_start (mark_feed);
+        this.pack_start (next_feed);
         this.get_style_context ().add_class ("action-bar");
     }
 
@@ -27,10 +27,10 @@ public class Feedler.Statusbar : Granite.Widgets.StatusBar
         if (count > 0)
         {
             string description = count > 1 ? _("unread feeds") : _("unread feed");
-            this.set_text ("%u %s".printf (count, description));
+            //this.set_text ("%u %s".printf (count, description));
         }
-        else
-            this.set_text ("");
+        //else
+            //this.set_text ("");
     }
 }
 
