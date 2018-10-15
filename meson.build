@@ -2,6 +2,8 @@ project('com.github.cjfloss.feedler', 'vala', 'c',
   version : '0.2.0',
   default_options : ['warning_level=3'])
 
+add_global_arguments('-DGETTEXT_PACKAGE="' + meson.project_name() + '"',language : 'c')
+
 
 exe = executable (
     meson.project_name (),
@@ -47,5 +49,7 @@ exe = executable (
         meson.get_compiler('c').find_library('m', required : false)
     ],
     install : true)
+
+subdir ('po')
 
 test('basic', exe)

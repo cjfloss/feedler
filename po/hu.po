@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-29 08:01+0200\n"
+"POT-Creation-Date: 2018-10-14 23:35-0400\n"
 "PO-Revision-Date: 2012-07-06 19:23+0000\n"
 "Last-Translator: Bence Lukács <Unknown>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -18,293 +18,442 @@ msgstr ""
 "X-Launchpad-Export-Date: 2014-03-15 07:10+0000\n"
 "X-Generator: Launchpad (build 16963)\n"
 
-#: ../src/ui/view-cell.vala:53
+#. Translatable launcher (.desktop) strings to be added to
+#. template (.pot) file. These strings MUST reflect any
+#. changes in these launcher keys in .desktop file.
+#: src/desktop-launcher.vala:13
+msgid "Download and view feeds"
+msgstr "Hírforrások letöltése és megjelenítése"
+
+#: src/desktop-launcher.vala:14
+msgid "Feedler News Reader"
+msgstr "Feedler hírolvasó"
+
+#: src/indicator.vala:24 src/ui/sidebar.vala:26
+msgid "Update"
+msgstr "Frissítés"
+
+#: src/indicator.vala:28
+msgid "Unread"
+msgstr "Olvasatlan"
+
+#: src/window.vala:62 src/window.vala:72
+msgid "new feed"
+msgstr "új hírforrás"
+
+#: src/window.vala:62 src/window.vala:72
+msgid "new feeds"
+msgstr "új hírforrás"
+
+#: src/window.vala:465
+#, fuzzy
+msgid "Subscriptions"
+msgstr "Feliratkozások:"
+
+#: src/window.vala:523
+msgid "Importing subscriptions"
+msgstr "Feliratkozások importálása"
+
+#: src/window.vala:548
+msgid "Updating subscriptions"
+msgstr "Feliratkozások frissítése"
+
+#: src/window.vala:567
+#, fuzzy
+msgid "Updating channel"
+msgstr "%s frissítése"
+
+#: src/ui/contractor.vala:23
+msgid "Share channels or items"
+msgstr "Csatornák vagy elemek megosztása"
+
+#: src/ui/contractor.vala:38
+msgid "Export subscriptions"
+msgstr "Feliratkozások exportálása"
+
+#: src/ui/folder.vala:16 src/ui/statusbar.vala:63
+msgid "Add new folder"
+msgstr ""
+
+#: src/ui/folder.vala:38 src/ui/subscription.vala:53
+msgid "Name"
+msgstr "Név"
+
+#: src/ui/folder.vala:53
+#, c-format
+msgid "Edit folder %s"
+msgstr ""
+
+#: src/ui/infobar.vala:23
+msgid "Welcome! You are connected to the service ;-)"
+msgstr ""
+
+#: src/ui/infobar.vala:24
+msgid "Close"
+msgstr ""
+
+#: src/ui/infobar.vala:47
+msgid "Cannot connect to service ;-("
+msgstr ""
+
+#: src/ui/infobar.vala:48
+msgid "Connect"
+msgstr ""
+
+#: src/ui/infobar.vala:76
+#, c-format
+msgid "Undo rename %s"
+msgstr ""
+
+#: src/ui/infobar.vala:77 src/ui/infobar.vala:104 src/ui/infobar.vala:140
+msgid "Undo"
+msgstr "Visszavonás"
+
+#: src/ui/infobar.vala:103
+#, c-format
+msgid "Undo delete %s"
+msgstr ""
+
+#: src/ui/infobar.vala:184 src/ui/infobar.vala:198
+#, c-format
+msgid "<small>Dismiss after %i seconds.</small>"
+msgstr ""
+
+#: src/ui/layout.vala:69
+msgid "Get Some Feeds"
+msgstr "Hírforrások felvétele"
+
+#: src/ui/layout.vala:69
+msgid "Feedler can't seem to find your feeds."
+msgstr "A Feedler nem találja a hírforrásait."
+
+#: src/ui/layout.vala:70
+msgid "Create"
+msgstr "Létrehozás"
+
+#: src/ui/layout.vala:70
+#, fuzzy
+msgid "Add subscriptions from URL."
+msgstr "Feliratkozások hozzáadása URL-ből."
+
+#: src/ui/layout.vala:71
+msgid "Import"
+msgstr "Importálás"
+
+#: src/ui/layout.vala:71
+#, fuzzy
+msgid "Add subscriptions from OPML file."
+msgstr "Feliratkozások hozzáadása OPML-fájlból."
+
+#: src/ui/layout.vala:77
+#, fuzzy
+msgid "No Feeds"
+msgstr "Hírforrások felvétele"
+
+#: src/ui/layout.vala:77
+#, fuzzy
+msgid "Can't seem to find any feeds."
+msgstr "A Feedler nem találja a hírforrásait."
+
+#: src/ui/menu.vala:11
+msgid "Display"
+msgstr "Megjelenítés"
+
+#: src/ui/menu.vala:12
+msgid "Open in browser"
+msgstr "Megnyitás böngészőben"
+
+#: src/ui/menu.vala:13
+msgid "Copy URL to clipboard"
+msgstr ""
+
+#: src/ui/menu.vala:14 src/ui/sidebar.vala:27
+msgid "Mark as read"
+msgstr "Megjelölés olvasottként"
+
+#: src/ui/menu.vala:15
+msgid "Mark as unread"
+msgstr "Megjelölés olvasatlanként"
+
+#: src/ui/menu.vala:16
+msgid "Add to starred"
+msgstr ""
+
+#: src/ui/menu.vala:17
+msgid "Remove from starred"
+msgstr ""
+
+#: src/ui/preferences.vala:53
+msgid "Automatic"
+msgstr ""
+
+#: src/ui/preferences.vala:54
+msgid "Mozilla Firefox"
+msgstr ""
+
+#: src/ui/preferences.vala:55
+msgid "Midori"
+msgstr ""
+
+#: src/ui/preferences.vala:56
+msgid "Chromium"
+msgstr ""
+
+#: src/ui/preferences.vala:57
+msgid "Google Chrome"
+msgstr ""
+
+#: src/ui/preferences.vala:58
+msgid "Opera"
+msgstr ""
+
+#: src/ui/preferences.vala:59
+msgid "Manual"
+msgstr ""
+
+#: src/ui/preferences.vala:80
+msgid "Content:"
+msgstr "Tartalom:"
+
+#: src/ui/preferences.vala:81
+msgid "Enable images:"
+msgstr "Képek engedélyezése:"
+
+#: src/ui/preferences.vala:82
+msgid "Shrink image to fit:"
+msgstr "Képek igazítása:"
+
+#: src/ui/preferences.vala:83
+msgid "Enable plugins:"
+msgstr "Bővítmények engedélyezése:"
+
+#: src/ui/preferences.vala:84
+msgid "Enable JavaScripts:"
+msgstr "JavaScriptek engedélyezése:"
+
+#: src/ui/preferences.vala:85
+msgid "Enable Java:"
+msgstr "Java engedélyezése:"
+
+#: src/ui/preferences.vala:86
+msgid "Browser:"
+msgstr ""
+
+#: src/ui/preferences.vala:87
+msgid "Open links in:"
+msgstr ""
+
+#: src/ui/preferences.vala:88
+msgid "Manual command:"
+msgstr ""
+
+#: src/ui/preferences.vala:105
+msgid "Window:"
+msgstr "Ablak:"
+
+#: src/ui/preferences.vala:106
+msgid "Hiding window instead of closing:"
+msgstr "Ablak elrejtése bezárás helyett:"
+
+#: src/ui/preferences.vala:107
+#, fuzzy
+msgid "Hide on start to the messaging menu:"
+msgstr "Ablak elrejtése indításnál az üzenetkezelő menübe:"
+
+#: src/ui/preferences.vala:109
+msgid "Application:"
+msgstr ""
+
+#: src/ui/preferences.vala:110
+msgid "Hide additional headers in sidebar:"
+msgstr ""
+
+#: src/ui/preferences.vala:111
+msgid "Maximum items stored in the channel:"
+msgstr ""
+
+#: src/ui/preferences.vala:129
+msgid "Subscriptions:"
+msgstr "Feliratkozások:"
+
+#: src/ui/preferences.vala:130
+msgid "Enable automatic updates:"
+msgstr "Automatikus frissítések engedélyezése:"
+
+#: src/ui/preferences.vala:131
+msgid "Enable updates on start:"
+msgstr "Frissítések engedélyezése indításnál:"
+
+#: src/ui/preferences.vala:132
+msgid "Time interval between updates:"
+msgstr "Frissítési időköz:"
+
+#: src/ui/preferences.vala:133
+msgid "Favicons:"
+msgstr "Weblapikonok:"
+
+#: src/ui/preferences.vala:134
+msgid "Download now all favicons:"
+msgstr "Minden weblapikon letöltése:"
+
+#: src/ui/preferences.vala:149 src/ui/toolbar.vala:63
+msgid "Preferences"
+msgstr "Beállítások"
+
+#: src/ui/preferences.vala:162
+msgid "Interface"
+msgstr ""
+
+#: src/ui/preferences.vala:163
+msgid "Behavior"
+msgstr "Viselkedés"
+
+#: src/ui/preferences.vala:164
+msgid "Updates"
+msgstr "Frissítések"
+
+#: src/ui/sidebar.vala:28
+msgid "Rename"
+msgstr ""
+
+#: src/ui/sidebar.vala:29
+msgid "Remove"
+msgstr ""
+
+#: src/ui/sidebar.vala:30
+msgid "Edit"
+msgstr ""
+
+#: src/ui/sidebar.vala:63
+msgid "All items"
+msgstr ""
+
+#: src/ui/sidebar.vala:66
+#, fuzzy
+msgid "Unread items"
+msgstr "Olvasatlan"
+
+#: src/ui/sidebar.vala:69
+msgid "Starred items"
+msgstr ""
+
+#: src/ui/statusbar.vala:16
+msgid "Add new.."
+msgstr ""
+
+#: src/ui/statusbar.vala:17
+msgid "Mark all items as read"
+msgstr "Összes elem megjelölése olvasottként"
+
+#: src/ui/statusbar.vala:18
+msgid "Go to the channel with unread items"
+msgstr "Ugrás az olvasatlan elemeket tartalmazó csatornára"
+
+#: src/ui/statusbar.vala:29
+msgid "unread feeds"
+msgstr "olvasatlan hírforrás"
+
+#: src/ui/statusbar.vala:29
+msgid "unread feed"
+msgstr "olvasatlan hírforrás"
+
+#: src/ui/statusbar.vala:64 src/ui/subscription.vala:21
+#, fuzzy
+msgid "Add new subscription"
+msgstr "Új URL-feliratkozás hozzáadása"
+
+#: src/ui/statusbar.vala:65
+#, fuzzy
+msgid "Import subscription from file"
+msgstr "Feliratkozás importálása OPML-ből"
+
+#: src/ui/subscription.vala:42
+msgid "Load favicon"
+msgstr "Weblapikon betöltése"
+
+#: src/ui/subscription.vala:50
+msgid "Folder"
+msgstr "Mappa"
+
+#: src/ui/subscription.vala:57
+msgid "URI Address"
+msgstr "URI cím"
+
+#: src/ui/subscription.vala:84
+#, fuzzy, c-format
+msgid "Edit subscription %s"
+msgstr "Feliratkozások exportálása"
+
+#. internal Feedler.ContractorButton sharemenu;
+#: src/ui/toolbar.vala:61
+msgid "Sidebar Visible"
+msgstr "Oldalsáv látható"
+
+#: src/ui/toolbar.vala:62
+msgid "Fullscreen"
+msgstr "Teljes képernyő"
+
+#. Gtk.ToolItem progress_item = new Gtk.ToolItem ();
+#. progress_item.set_expand (true);
+#. progress_item.add (align);
+#: src/ui/toolbar.vala:94
+msgid "Refresh all subscriptions"
+msgstr "Összes feliratkozás frissítése"
+
+#: src/ui/toolbar.vala:95
+msgid "Menu"
+msgstr "Menü"
+
+#. Description
+#: src/ui/view-cell.vala:53
 #, c-format
 msgid "%s, by %s"
 msgstr "%s, szerző: %s"
 
-#: ../src/ui/cardlayout.vala:25
-msgid "Add a subscriptions from OPML file."
-msgstr "Feliratkozások hozzáadása OPML-fájlból."
+#~ msgid "Are you sure you want to delete?"
+#~ msgstr "Biztos benne, hogy törölni szeretné?"
 
-#: ../src/ui/cardlayout.vala:24
-msgid "Add manually subscriptions from URL."
-msgstr "Feliratkozások hozzáadása URL-ből."
+#~ msgid "Are you sure you want to mark as read?"
+#~ msgstr "Biztos benne, hogy megjelöli olvasottként?"
 
-#: ../src/ui/statusbar.vala:49
-msgid "Add new subscription URL"
-msgstr "Új URL-feliratkozás hozzáadása"
+#~ msgid "Cancel"
+#~ msgstr "Mégse"
 
-#: ../src/window.vala:674
-msgid "Are you sure you want to delete?"
-msgstr "Biztos benne, hogy törölni szeretné?"
+#~ msgid "Delete"
+#~ msgstr "Törlés"
 
-#: ../src/window.vala:633 ../src/window.vala:655
-msgid "Are you sure you want to mark as read?"
-msgstr "Biztos benne, hogy megjelöli olvasottként?"
+#~ msgid "Dismiss"
+#~ msgstr "Elvetés"
 
-#: ../src/ui/preferences.vala:110
-msgid "Behavior"
-msgstr "Viselkedés"
+#~ msgid "Downloading favicons"
+#~ msgstr "Weblapikonok letöltése"
 
-#: ../src/ui/folder.vala:30 ../src/ui/subscription.vala:36
-msgid "Cancel"
-msgstr "Mégse"
+#~ msgid "Go to the next readed item"
+#~ msgstr "Ugrás a következő olvasott elemre"
 
-#: ../src/ui/preferences.vala:60
-msgid "Content:"
-msgstr "Tartalom:"
+#~ msgid "Go to the previous readed item"
+#~ msgstr "Ugrás az előző olvasott elemre"
 
-#: ../src/ui/cardlayout.vala:24
-msgid "Create"
-msgstr "Létrehozás"
+#~ msgid "Imported %i channels in %i folders."
+#~ msgstr "%i csatorna importálva %i mappába."
 
-#: ../src/ui/menu.vala:13
-msgid "Delete"
-msgstr "Törlés"
+#~ msgid "New"
+#~ msgstr "Új"
 
-#: ../src/ui/infobar.vala:21
-msgid "Dismiss"
-msgstr "Elvetés"
+#~ msgid "Properties"
+#~ msgstr "Beállítások"
 
-#: ../src/ui/menu.vala:37
-msgid "Display"
-msgstr "Megjelenítés"
+#~ msgid "Remove selected subscription"
+#~ msgstr "Kijelölt feliratkozás törlése"
 
-#: ../src/desktop-launcher.vala:13
-msgid "Download and view feeds"
-msgstr "Hírforrások letöltése és megjelenítése"
+#~ msgid "Save"
+#~ msgstr "Mentés"
 
-#: ../src/ui/preferences.vala:91
-msgid "Download now all favicons:"
-msgstr "Minden weblapikon letöltése:"
+#~ msgid "Subscription"
+#~ msgstr "Feliratkozás"
 
-#: ../src/window.vala:526 ../src/window.vala:541
-msgid "Downloading favicons"
-msgstr "Weblapikonok letöltése"
+#~ msgid "Type to Search..."
+#~ msgstr "Gépeljen a kereséshez..."
 
-#: ../src/ui/preferences.vala:65
-msgid "Enable Java:"
-msgstr "Java engedélyezése:"
-
-#: ../src/ui/preferences.vala:64
-msgid "Enable JavaScripts:"
-msgstr "JavaScriptek engedélyezése:"
-
-#: ../src/ui/preferences.vala:87
-msgid "Enable automatic updates:"
-msgstr "Automatikus frissítések engedélyezése:"
-
-#: ../src/ui/preferences.vala:61
-msgid "Enable images:"
-msgstr "Képek engedélyezése:"
-
-#: ../src/ui/preferences.vala:63
-msgid "Enable plugins:"
-msgstr "Bővítmények engedélyezése:"
-
-#: ../src/ui/preferences.vala:88
-msgid "Enable updates on start:"
-msgstr "Frissítések engedélyezése indításnál:"
-
-#: ../src/ui/contractor.vala:38
-msgid "Export subscriptions"
-msgstr "Feliratkozások exportálása"
-
-#: ../src/ui/preferences.vala:90
-msgid "Favicons:"
-msgstr "Weblapikonok:"
-
-#: ../src/desktop-launcher.vala:14
-msgid "Feedler News Reader"
-msgstr "Feedler hírolvasó"
-
-#: ../src/ui/cardlayout.vala:23
-msgid "Feedler can't seem to find your feeds."
-msgstr "A Feedler nem találja a hírforrásait."
-
-#: ../src/ui/menu.vala:17 ../src/ui/subscription.vala:49
-#, c-format
-msgid "Folder"
-msgstr "Mappa"
-
-#: ../src/ui/toolbar.vala:63
-msgid "Fullscreen"
-msgstr "Teljes képernyő"
-
-#: ../src/ui/cardlayout.vala:23
-msgid "Get Some Feeds"
-msgstr "Hírforrások felvétele"
-
-#: ../src/ui/statusbar.vala:58
-msgid "Go to the channel with unread items"
-msgstr "Ugrás az olvasatlan elemeket tartalmazó csatornára"
-
-#: ../src/ui/toolbar.vala:98
-msgid "Go to the next readed item"
-msgstr "Ugrás a következő olvasott elemre"
-
-#: ../src/ui/toolbar.vala:97
-msgid "Go to the previous readed item"
-msgstr "Ugrás az előző olvasott elemre"
-
-#: ../src/ui/preferences.vala:68
-msgid "Hide window on start to the messaging menu:"
-msgstr "Ablak elrejtése indításnál az üzenetkezelő menübe:"
-
-#: ../src/ui/preferences.vala:67
-msgid "Hiding window instead of closing:"
-msgstr "Ablak elrejtése bezárás helyett:"
-
-#: ../src/ui/cardlayout.vala:25
-msgid "Import"
-msgstr "Importálás"
-
-#: ../src/ui/statusbar.vala:55
-msgid "Import subscription from OPML"
-msgstr "Feliratkozás importálása OPML-ből"
-
-#: ../src/window.vala:330
-#, c-format
-msgid "Imported %i channels in %i folders."
-msgstr "%i csatorna importálva %i mappába."
-
-#: ../src/window.vala:579
-msgid "Importing subscriptions"
-msgstr "Feliratkozások importálása"
-
-#: ../src/ui/subscription.vala:40
-msgid "Load favicon"
-msgstr "Weblapikon betöltése"
-
-#: ../src/ui/statusbar.vala:61
-msgid "Mark all items as read"
-msgstr "Összes elem megjelölése olvasottként"
-
-#: ../src/ui/menu.vala:12 ../src/ui/menu.vala:39
-msgid "Mark as read"
-msgstr "Megjelölés olvasottként"
-
-#: ../src/ui/menu.vala:40
-msgid "Mark as unread"
-msgstr "Megjelölés olvasatlanként"
-
-#: ../src/ui/toolbar.vala:100
-msgid "Menu"
-msgstr "Menü"
-
-#: ../src/ui/folder.vala:24 ../src/ui/folder.vala:40
-#: ../src/ui/subscription.vala:29 ../src/ui/subscription.vala:52
-#, c-format
-msgid "Name"
-msgstr "Név"
-
-#: ../src/ui/menu.vala:15
-msgid "New"
-msgstr "Új"
-
-#: ../src/ui/menu.vala:38
-msgid "Open in browser"
-msgstr "Megnyitás böngészőben"
-
-#: ../src/ui/preferences.vala:104 ../src/ui/toolbar.vala:64
-msgid "Preferences"
-msgstr "Beállítások"
-
-#: ../src/ui/menu.vala:14
-msgid "Properties"
-msgstr "Beállítások"
-
-#: ../src/ui/toolbar.vala:99
-msgid "Refresh all subscriptions"
-msgstr "Összes feliratkozás frissítése"
-
-#: ../src/ui/statusbar.vala:52
-msgid "Remove selected subscription"
-msgstr "Kijelölt feliratkozás törlése"
-
-#: ../src/ui/folder.vala:26 ../src/ui/subscription.vala:32
-msgid "Save"
-msgstr "Mentés"
-
-#: ../src/ui/contractor.vala:23
-msgid "Share channels or items"
-msgstr "Csatornák vagy elemek megosztása"
-
-#: ../src/ui/preferences.vala:62
-msgid "Shrink image to fit:"
-msgstr "Képek igazítása:"
-
-#: ../src/ui/toolbar.vala:62
-msgid "Sidebar Visible"
-msgstr "Oldalsáv látható"
-
-#: ../src/ui/menu.vala:16
-msgid "Subscription"
-msgstr "Feliratkozás"
-
-#: ../src/ui/preferences.vala:86
-msgid "Subscriptions:"
-msgstr "Feliratkozások:"
-
-#: ../src/ui/preferences.vala:89
-msgid "Time interval between updates:"
-msgstr "Frissítési időköz:"
-
-#: ../src/ui/toolbar.vala:57
-msgid "Type to Search..."
-msgstr "Gépeljen a kereséshez..."
-
-#: ../src/ui/subscription.vala:30
-msgid "URI"
-msgstr "URI"
-
-#: ../src/ui/subscription.vala:56
-#, c-format
-msgid "URI Address"
-msgstr "URI cím"
-
-#: ../src/ui/infobar.vala:24
-msgid "Undo"
-msgstr "Visszavonás"
-
-#: ../src/indicator.vala:28
-msgid "Unread"
-msgstr "Olvasatlan"
-
-#: ../src/indicator.vala:24 ../src/ui/menu.vala:11
-msgid "Update"
-msgstr "Frissítés"
-
-#: ../src/ui/preferences.vala:111
-msgid "Updates"
-msgstr "Frissítések"
-
-#: ../src/window.vala:503
-#, c-format
-msgid "Updating %s"
-msgstr "%s frissítése"
-
-#: ../src/window.vala:483 ../src/window.vala:509
-msgid "Updating subscriptions"
-msgstr "Feliratkozások frissítése"
-
-#: ../src/ui/preferences.vala:66
-msgid "Window:"
-msgstr "Ablak:"
-
-#: ../src/manager.vala:126 ../src/window.vala:297
-msgid "new feed"
-msgstr "új hírforrás"
-
-#: ../src/manager.vala:126 ../src/window.vala:297
-msgid "new feeds"
-msgstr "új hírforrás"
-
-#: ../src/ui/statusbar.vala:74
-msgid "unread feed"
-msgstr "olvasatlan hírforrás"
-
-#: ../src/ui/statusbar.vala:74
-msgid "unread feeds"
-msgstr "olvasatlan hírforrás"
+#~ msgid "URI"
+#~ msgstr "URI"
