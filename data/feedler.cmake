@@ -1,1 +1,0 @@
-@CMAKE_INSTALL_PREFIX@/share/applications/feedler.desktop
