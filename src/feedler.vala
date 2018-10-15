@@ -19,12 +19,6 @@ public class Feedler.App : Granite.Application
 
     construct
     {
-        build_data_dir = Build.DATADIR;
-        build_pkg_data_dir = Build.PKGDATADIR;
-        build_release_name = Build.RELEASE_NAME;
-        build_version = Build.VERSION;
-        build_version_info = Build.VERSION_INFO;
-
         program_name = "Feedler";
         exec_name = "feedler";
         app_copyright = "2011-2015";
