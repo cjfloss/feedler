@@ -1,18 +1,16 @@
 /**
  * folder.vala
- * 
+ *
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
 
-public class Feedler.Folder : Gtk.Dialog
-{
+public class Feedler.Folder : Gtk.Dialog {
     public signal void saved_folder (int id, string name);
     private int id;
     private Gtk.Entry folder;
 
-    public Folder ()
-    {
+    public Folder () {
         this.title = _("Add new folder");
         this.window_position = Gtk.WindowPosition.CENTER;
         //this.type_hint = Gdk.WindowTypeHint.DIALOG;
@@ -27,7 +25,8 @@ public class Feedler.Folder : Gtk.Dialog
         save.set_size_request (85, -1);
         save.valign = save.halign = Gtk.Align.END;
         save.clicked.connect_after (() => {
-            saved_folder (this.id, this.folder.get_text ()); this.destroy ();
+            saved_folder (this.id, this.folder.get_text ());
+            this.destroy ();
         });
 
         var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -47,9 +46,8 @@ public class Feedler.Folder : Gtk.Dialog
         this.add (content);
         this.show_all ();
     }
-    
-    public void set_model (int id, string title)
-    {
+
+    public void set_model (int id, string title) {
         this.title = _("Edit folder %s").printf (title);
         this.id = id;
         this.folder.set_text (title);

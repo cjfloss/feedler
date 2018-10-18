@@ -5,30 +5,29 @@
  * @see COPYING
  */
 
-public class PreferenceTab : Gtk.Grid
-{
+public class PreferenceTab : Gtk.Grid {
     private int id;
 
-    construct
-    {
+    construct {
         this.id = 0;
         this.border_width = 5;
         this.row_spacing = 8;
         this.column_spacing = 12;
     }
 
-    public void add_title (string title)
-    {
+    public void add_title (string title) {
         var label = new Gtk.Label (null);
         label.set_markup ("<b>%s</b>".printf (title));
         label.set_halign (Gtk.Align.START);
-        if (id > 0)
+
+        if (id > 0) {
             label.margin_top = 15;
+        }
+
         this.attach (label, 0, id++, 2, 1);
     }
 
-    public void add_content (Gtk.Widget widget, string description)
-    {
+    public void add_content (Gtk.Widget widget, string description) {
         var label = new Gtk.Label (description);
         label.halign = Gtk.Align.END;
         widget.halign = Gtk.Align.START;
@@ -38,12 +37,10 @@ public class PreferenceTab : Gtk.Grid
     }
 }
 
-public class Behavior : PreferenceTab
-{
+public class Behavior : PreferenceTab {
     private Gtk.ComboBoxText browser_id;
     private Gtk.Entry browser_name;
-    construct
-    {
+    construct {
         var enable_image = new Gtk.CheckButton ();
         var enable_script = new Gtk.CheckButton ();
         var enable_java = new Gtk.CheckButton ();
@@ -62,8 +59,9 @@ public class Behavior : PreferenceTab
         {
             if (browser_id.active_id == "")
                 browser_name.set_sensitive (true);
-            else
+            else {
                 browser_name.set_sensitive (false);
+            }
         });
 
         Feedler.SETTING.schema.bind ("enable-image", enable_image, "active", SettingsBindFlags.DEFAULT);
@@ -74,8 +72,9 @@ public class Behavior : PreferenceTab
         Feedler.SETTING.schema.bind ("browser-id", browser_id, "active", SettingsBindFlags.DEFAULT);
         Feedler.SETTING.schema.bind ("browser-name", browser_name, "text", SettingsBindFlags.DEFAULT);
 
-        if (browser_id.active_id != "")
+        if (browser_id.active_id != "") {
             browser_name.set_sensitive (false);
+        }
 
         this.add_title (_("Content:"));
         this.add_content (enable_image, _("Enable images:"));
@@ -89,10 +88,8 @@ public class Behavior : PreferenceTab
     }
 }
 
-public class UserInterface : PreferenceTab
-{
-    construct
-    {
+public class UserInterface : PreferenceTab {
+    construct {
         var hide_close = new Gtk.Switch ();
         var hide_start = new Gtk.Switch ();
         var hide_header = new Gtk.Switch ();
@@ -112,11 +109,9 @@ public class UserInterface : PreferenceTab
     }
 }
 
-public class Update : PreferenceTab
-{
+public class Update : PreferenceTab {
     internal Gtk.Button fav;
-    construct
-    {
+    construct {
         var auto_update = new Gtk.Switch ();
         var start_update = new Gtk.Switch ();
         var update_time = new Gtk.SpinButton.with_range (5, 90, 5);
@@ -135,8 +130,7 @@ public class Update : PreferenceTab
     }
 }
 
-public class Feedler.Preferences : Gtk.Dialog
-{
+public class Feedler.Preferences : Gtk.Dialog {
     private Gtk.StackSwitcher stack_switcher;
     private Gtk.Stack stack;
     private Gtk.Box content;
@@ -144,8 +138,7 @@ public class Feedler.Preferences : Gtk.Dialog
     internal UserInterface uinterface;
     internal Update update;
 
-    construct
-    {
+    construct {
         this.title = _("Preferences");
         this.border_width = 12;
         this.set_resizable (false);

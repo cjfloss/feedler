@@ -5,8 +5,7 @@
  * @see COPYING
  */
 
-public class Feedler.Subscription : Gtk.Dialog
-{
+public class Feedler.Subscription : Gtk.Dialog {
     public signal void saved (int id, int folder, string name, string url);
     internal Gtk.Button favicon;
     private Gtk.Box button_box;
@@ -16,8 +15,7 @@ public class Feedler.Subscription : Gtk.Dialog
     private Gtk.Entry channel;
     private Gtk.Entry uri;
 
-    public Subscription ()
-    {
+    public Subscription () {
         this.title = _("Add new subscription");
         this.window_position = Gtk.WindowPosition.CENTER;
         this.set_modal (false);
@@ -33,8 +31,7 @@ public class Feedler.Subscription : Gtk.Dialog
         var save = new Gtk.Button.from_stock (Gtk.Stock.SAVE);
         save.set_size_request (85, -1);
         save.valign = save.halign = Gtk.Align.END;
-        save.clicked.connect_after (() =>
-        {
+        save.clicked.connect_after (() => {
             saved (this.id, this.folder.get_active () + 1, this.channel.get_text (), this.uri.get_text ());
             this.destroy ();
         });
@@ -73,14 +70,12 @@ public class Feedler.Subscription : Gtk.Dialog
         this.show_all ();
     }
 
-    public void add_folder (int folder_id, string folder_name)
-    {
+    public void add_folder (int folder_id, string folder_name) {
         this.folder.append (folder_id.to_string (), folder_name);
         this.folder.set_active (0);
     }
 
-    public void set_model (int id, string title, string uri, int folder)
-    {
+    public void set_model (int id, string title, string uri, int folder) {
         this.title = _("Edit subscription %s").printf (title);
         this.id = id;
         this.channel.set_text (title);

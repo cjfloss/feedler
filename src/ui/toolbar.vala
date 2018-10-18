@@ -5,13 +5,11 @@
  * @see COPYING
  */
 
-public class Progress : Gtk.Box
-{
+public class Progress : Gtk.Box {
     private Gtk.ProgressBar bar;
     private Gtk.Label label;
 
-    construct
-    {
+    construct {
         this.set_orientation (Gtk.Orientation.VERTICAL);
         this.bar = new Gtk.ProgressBar ();
         this.bar.width_request = 300;
@@ -23,32 +21,28 @@ public class Progress : Gtk.Box
         this.pack_start (label, false, false, 0);
         this.pack_end (bar, false, false, 0);
         this.set_no_show_all (true);
-           this.hide ();
+        this.hide ();
     }
 
-    public void show_bar (string text)
-    {
+    public void show_bar (string text) {
         this.label.set_text (text);
         this.set_no_show_all (false);
         this.show_all ();
     }
 
-    public void hide_bar ()
-    {
+    public void hide_bar () {
         this.bar.fraction = 0.0;
         this.set_no_show_all (true);
         this.hide ();
     }
 
-    public void proceed (double fraction)
-    {
+    public void proceed (double fraction) {
         this.bar.set_fraction (fraction);
     }
 
 }
 
-public class Feedler.Toolbar : Gtk.HeaderBar
-{
+public class Feedler.Toolbar : Gtk.HeaderBar {
     internal Gtk.Button update = new Gtk.Button.from_icon_name ("view-refresh-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
 
     internal Gtk.Alignment align = new Gtk.Alignment (0.5f, 0.0f, 0.2f, 0.0f);
@@ -62,11 +56,10 @@ public class Feedler.Toolbar : Gtk.HeaderBar
     internal Gtk.CheckMenuItem fullscreen_mode = new Gtk.CheckMenuItem.with_label (_("Fullscreen"));
     internal Gtk.MenuItem preferences = new Gtk.MenuItem.with_label (_("Preferences"));
 
-    construct
-    {
+    construct {
         this.sidebar_visible.active = true;
         this.get_style_context ().add_class ("primary-toolbar");
-    this.get_style_context ().add_class ("header-bar");
+        this.get_style_context ().add_class ("header-bar");
         this.set_show_close_button (true);
 
 
@@ -111,8 +104,7 @@ public class Feedler.Toolbar : Gtk.HeaderBar
         this.pack_end (search_item);
     }
 
-    public void set_enable (bool state)
-    {
+    public void set_enable (bool state) {
         this.update.set_sensitive (state);
         this.search.set_sensitive (state);
         this.mode.set_sensitive (state);

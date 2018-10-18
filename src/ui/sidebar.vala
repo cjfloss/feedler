@@ -5,8 +5,7 @@
  * @see COPYING
  */
 
-public class Feedler.SidebarItem : Granite.Widgets.SourceList.Item
-{
+public class Feedler.SidebarItem : Granite.Widgets.SourceList.Item {
     private Gtk.Menu menu;
     internal Gtk.MenuItem update;
     internal Gtk.MenuItem mark;
@@ -14,14 +13,13 @@ public class Feedler.SidebarItem : Granite.Widgets.SourceList.Item
     internal Gtk.MenuItem remove;
     internal Gtk.MenuItem edit;
 
-    public SidebarItem (string name, GLib.Icon icon, uint badge = 0, bool menu = false)
-    {
+    public SidebarItem (string name, GLib.Icon icon, uint badge = 0, bool menu = false) {
         base (name);
         this.editable = true;
         this.icon = icon;
         this.badge = (badge > 0) ? badge.to_string () : null;
-        if (menu)
-        {
+
+        if (menu) {
             this.menu = new Gtk.Menu ();
             this.update = new Gtk.MenuItem.with_label (_("Update"));
             this.mark = new Gtk.MenuItem.with_label (_("Mark as read"));
@@ -37,29 +35,29 @@ public class Feedler.SidebarItem : Granite.Widgets.SourceList.Item
         }
     }
 
-    public override Gtk.Menu? get_context_menu () {
+    public override Gtk.Menu ? get_context_menu () {
         if (menu != null) {
-            if (menu.get_attach_widget () != null)
+            if (menu.get_attach_widget () != null) {
                 menu.detach ();
+            }
+
             return menu;
         }
+
         return null;
     }
 }
 
-public class Feedler.Sidebar : Granite.Widgets.SourceList
-{
+public class Feedler.Sidebar : Granite.Widgets.SourceList {
     internal Feedler.SidebarItem all;
     internal Feedler.SidebarItem unread;
     internal Feedler.SidebarItem star;
 
-    public Sidebar ()
-    {
+    public Sidebar () {
         this.init ();
     }
 
-    internal void init ()
-    {
+    internal void init () {
         this.all = new Feedler.SidebarItem (_("All items"), Feedler.Icons.ALL);
         this.root.add (all);
 

@@ -12,8 +12,7 @@
  * 0< - number of new feeds.
  */
 [DBus (name = "org.example.Feedler")]
-interface Feedler.Client : Object
-{
+interface Feedler.Client : Object {
     public abstract void favicon (string uri) throws IOError, DBusError;
     public abstract void favicon_all (string[] uris) throws IOError, DBusError;
     public abstract void add (string uri) throws IOError, DBusError;

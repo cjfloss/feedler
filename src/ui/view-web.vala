@@ -5,14 +5,12 @@
  * @see COPYING
  */
 
-public class Feedler.ViewWeb : Feedler.View
-{
+public class Feedler.ViewWeb : Feedler.View {
     private WebKit.WebView browser;
     private Gtk.ScrolledWindow scroll_web;
     private GLib.StringBuilder content;
 
-    construct
-    {
+    construct {
         this.browser = new WebKit.WebView ();
         this.browser.settings = this.settings;
 
@@ -24,32 +22,26 @@ public class Feedler.ViewWeb : Feedler.View
         this.content = new GLib.StringBuilder ();
     }
 
-    public override void clear ()
-    {
+    public override void clear () {
         this.content.assign (generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
     }
 
-    public override void add_feed (Model.Item item, string time_format)
-    {
+    public override void add_feed (Model.Item item, string time_format) {
         this.content.prepend (generate_item (item.title, time_format, item.author, item.description));
     }
 
-    public override void load_feeds ()
-    {
+    public override void load_feeds () {
         warning ("Feedler.ViewWeb.load_feeds ()");
         this.browser.load_html (content.str, null);
         //this.item_marked (-1, true);
     }
 
-    public override void refilter (string text)
-    {
+    public override void refilter (string text) {
         //this.browser.search_text (text, true, true, true);
     }
 
-    public override bool contract ()
-    {
-        try
-        {
+    public override bool contract () {
+        try {
             var path = GLib.Environment.get_tmp_dir () + "/feedler.html";
 
             GLib.File file = GLib.File.new_for_path (path);
@@ -58,20 +50,18 @@ public class Feedler.ViewWeb : Feedler.View
             file.replace_contents (data, null, false, 0, out s);
 
             return true;
-        }
-        catch (GLib.Error e)
-        {
+        } catch (GLib.Error e) {
             warning ("Cannot create temp file.");
         }
+
         return false;
     }
 
-    private string generate_item (string title, string time, string author, string description)
-    {
+    private string generate_item (string title, string time, string author, string description) {
         GLib.StringBuilder item = new GLib.StringBuilder ();
-        item.append ("<div class='item'><span class='title'>"+title+"</span><br/>");
-        item.append ("<span class='time'>"+time+", by "+author+"</span><br/>");
-        item.append ("<span class='content'>"+description+"</span></div><br/>");
+        item.append ("<div class='item'><span class='title'>" + title + "</span><br/>");
+        item.append ("<span class='time'>" + time + ", by " + author + "</span><br/>");
+        item.append ("<span class='content'>" + description + "</span></div><br/>");
 
         return item.str;
     }

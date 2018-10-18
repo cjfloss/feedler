@@ -5,8 +5,7 @@
  * @see COPYING
  */
 
-public class FeedStore : GLib.Object
-{
+public class FeedStore : GLib.Object {
     public int id { get; set; }
     public string subject { get; set; }
     public string date { get; set; }
@@ -16,8 +15,7 @@ public class FeedStore : GLib.Object
     public bool read { get; set; }
     public bool starred { get; set; }
 
-    public FeedStore (Model.Item item, string time_format)
-    {
+    public FeedStore (Model.Item item, string time_format) {
         this.id = item.id;
         this.subject = item.title;
         this.date = time_format;
@@ -29,8 +27,7 @@ public class FeedStore : GLib.Object
     }
 }
 
-public class Feedler.ViewList : Feedler.View
-{
+public class Feedler.ViewList : Feedler.View {
     /* List with feeds and searching */
     internal Gtk.TreeView tree;
     private Gtk.ListStore store;
@@ -46,8 +43,7 @@ public class Feedler.ViewList : Feedler.View
     private Gtk.ScrolledWindow scroll_web;
     internal Gtk.Paned pane;
 
-    construct
-    {
+    construct {
         this.store = new Gtk.ListStore (1, typeof (FeedStore));
         this.cell = new Feedler.ViewCell ();
         this.filter = new Gtk.TreeModelFilter (store, null);
@@ -94,42 +90,35 @@ public class Feedler.ViewList : Feedler.View
         this.add (pane);
     }
 
-    public override void clear ()
-    {
+    public override void clear () {
         this.store.clear ();
         this.tree.model = null;
         this.load_article ("");
     }
 
-    public override void add_feed (Model.Item item, string time_format)
-    {
+    public override void add_feed (Model.Item item, string time_format) {
         Gtk.TreeIter feed_iter;
         this.store.prepend (out feed_iter);
         this.store.set (feed_iter, 0, new FeedStore (item, time_format));
     }
 
-    public override void load_feeds ()
-    {
+    public override void load_feeds () {
         this.tree.model = filter;
     }
 
-    public override void refilter (string text)
-    {
+    public override void refilter (string text) {
         this.filter_text = text;
         this.filter.refilter ();
     }
 
-    public override bool contract ()
-    {
-        try
-        {
-            if (this.selected != null)
-            {
+    public override bool contract () {
+        try {
+            if (this.selected != null) {
                 var path = GLib.Environment.get_tmp_dir () + "/feedler.html";
                 GLib.StringBuilder item = new GLib.StringBuilder (generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
-                item.append ("<div class='item'><span class='title'>"+selected.subject+"</span><br/>");
-                item.append ("<span class='time'>"+selected.date+", by "+selected.author+"</span><br/>");
-                item.append ("<span class='content'>"+selected.text+"</span></div><br/>");
+                item.append ("<div class='item'><span class='title'>" + selected.subject + "</span><br/>");
+                item.append ("<span class='time'>" + selected.date + ", by " + selected.author + "</span><br/>");
+                item.append ("<span class='content'>" + selected.text + "</span></div><br/>");
 
                 GLib.File file = GLib.File.new_for_path (path);
                 uint8[] data = item.data;
@@ -137,63 +126,54 @@ public class Feedler.ViewList : Feedler.View
                 file.replace_contents (data, null, false, 0, out s);
                 return true;
             }
+
             // TODO else infobar message: Please select first one item oraz change view to get all items.
-        }
-        catch (GLib.Error e)
-        {
+        } catch (GLib.Error e) {
             warning ("Cannot create temp file.");
         }
+
         return false;
     }
 
-    private void load_article (string content)
-    {
+    private void load_article (string content) {
         warning ("Feedler.ViewList.load_article ()");
         this.browser.load_html (content, null);
     }
 
-    private void browse_page ()
-    {
+    private void browse_page () {
         warning ("Feedler.ViewList.browse_page ()");
-        try
-        {
+
+        try {
             GLib.Process.spawn_command_line_async ("xdg-open " + selected.source);
-            if (!selected.read)
-            {
+
+            if (!selected.read) {
                 selected.read = true;
                 this.store.set_value (selected_iter, 0, selected);
                 this.item_marked (selected.id, Model.State.READ);
             }
-        }
-        catch (GLib.Error e)
-        {
+        } catch (GLib.Error e) {
             warning ("ERROR: " + e.message);
         }
     }
 
-    private void copy_url ()
-    {
+    private void copy_url () {
         warning ("Feedler.ViewList.copy_url ()");
-        try
-        {
+
+        try {
             Gtk.Clipboard clipboard = Gtk.Clipboard.get_for_display (this.get_display (), Gdk.SELECTION_CLIPBOARD);
             clipboard.set_text (selected.source, -1);
-        }
-        catch (GLib.Error e)
-        {
+        } catch (GLib.Error e) {
             warning ("ERROR: " + e.message);
         }
     }
 
-    private void load_item ()
-    {
+    private void load_item () {
         warning ("Feedler.ViewList.load_item ()");
-        if (selected != null)
-        {
+
+        if (selected != null) {
             this.load_article (selected.text);
 
-            if (!selected.read)
-            {
+            if (!selected.read) {
                 this.selected.read = true;
                 this.store.set_value (selected_iter, 0, selected);
                 this.item_marked (selected.id, Model.State.READ);
@@ -201,91 +181,94 @@ public class Feedler.ViewList : Feedler.View
         }
     }
 
-    private void read_item ()
-    {
+    private void read_item () {
         warning ("Feedler.ViewList.read_item ()");
-        if (selected != null)
-        {
+
+        if (selected != null) {
             this.selected.read = !selected.read;
             this.store.set_value (selected_iter, 0, selected);
             this.item_marked (selected.id, selected.read ? Model.State.READ : Model.State.UNREAD);
         }
     }
 
-    private void star_item ()
-    {
+    private void star_item () {
         warning ("Feedler.ViewList.star_item ()");
-        if (selected != null)
-        {
+
+        if (selected != null) {
             this.selected.starred = !selected.starred;
             this.store.set_value (selected_iter, 0, selected);
             this.item_marked (selected.id, selected.starred ? Model.State.STARRED : Model.State.UNSTARRED);
         }
     }
 
-    private FeedStore? selected_item (out Gtk.TreeIter iter)
-    {
+    private FeedStore ? selected_item (out Gtk.TreeIter iter) {
         warning ("Feedler.ViewList.selected_item ()");
         FeedStore feed = null;
         Gtk.TreeModel model;
-        if (this.tree.get_selection ().get_selected (out model, out iter))
+
+        if (this.tree.get_selection ().get_selected (out model, out iter)) {
             this.tree.model.get (iter, 0, out feed);
+        }
+
         return feed;
     }
 
-    private bool search_filter (Gtk.TreeModel model, Gtk.TreeIter iter)
-    {
+    private bool search_filter (Gtk.TreeModel model, Gtk.TreeIter iter) {
         //warning ("Feedler.ViewList.search_filter ()");
-        if (filter_text == "")
+        if (filter_text == "") {
             return true;
+        }
 
         FeedStore feed = null;
         model.get (iter, 0, out feed);
-        if (feed == null)
-            return false;
 
-        if (filter_text in feed.subject)
-            return true;
-        else
+        if (feed == null) {
             return false;
+        }
+
+        if (filter_text in feed.subject) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    private void render_cell (Gtk.CellLayout layout, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
-    {
+    private void render_cell (Gtk.CellLayout layout, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter) {
         //warning ("Feedler.ViewList.render_cell ()");
         FeedStore feed;
         model.get (iter, 0, out feed);
-        if (feed != null)
-        {
+
+        if (feed != null) {
             var renderer = cell as Feedler.ViewCell;
             renderer.subject = feed.subject;
             renderer.date = feed.date;
             renderer.author = feed.author;
             renderer.channel = feed.source;
             renderer.unread = !feed.read;
-        } else return;
+        } else {
+            return;
+        }
     }
 
-    private bool click_item (Gdk.EventButton e)
-    {
+    private bool click_item (Gdk.EventButton e) {
         Gtk.TreePath path;
         Gtk.TreeViewColumn column;
         int cell_x, cell_y;
-        if (this.tree.get_path_at_pos ((int) e.x, (int) e.y, out path, out column, out cell_x, out cell_y))
-        {
+
+        if (this.tree.get_path_at_pos ((int) e.x, (int) e.y, out path, out column, out cell_x, out cell_y)) {
             this.tree.get_selection ().select_path (path);
             this.selected = this.selected_item (out this.selected_iter);
-            if (e.button == 3)
-            {
+
+            if (e.button == 3) {
                 this.viewmenu.select_mark (selected.read, selected.starred);
                 this.viewmenu.popup (null, null, null, e.button, e.time);
-            }
-            else if (e.button == 1)
-            {
+            } else if (e.button == 1) {
                 this.load_item ();
             }
+
             return true;
         }
+
         return false;
     }
 }

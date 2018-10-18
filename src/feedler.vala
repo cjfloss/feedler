@@ -5,20 +5,17 @@
  * @see COPYING
  */
 
-namespace Feedler
-{
+namespace Feedler {
     internal Feedler.State STATE;
     internal Feedler.Settings SETTING;
     internal Feedler.Service SERVICE;
     internal Feedler.App APP;
 }
 
-public class Feedler.App : Granite.Application
-{
+public class Feedler.App : Granite.Application {
     private Feedler.Window window = null;
 
-    construct
-    {
+    construct {
         program_name = "Feedler";
         exec_name = "feedler";
         app_copyright = "2011-2015";
@@ -40,16 +37,15 @@ public class Feedler.App : Granite.Application
         about_license_type = Gtk.License.LGPL_2_1;
     }
 
-    public void switch_display ()
-    {
-        if (window.is_active)
+    public void switch_display () {
+        if (window.is_active) {
             this.window.hide ();
-        else
+        } else {
             this.window.present_with_time ((uint32)GLib.get_monotonic_time ());
+        }
     }
 
-    public void update ()
-    {
+    public void update () {
         //this.window._update_all ();
     }
 
@@ -58,6 +54,7 @@ public class Feedler.App : Granite.Application
             window.present_with_time ((uint32)GLib.get_monotonic_time ());
             return;
         }
+
         Feedler.STATE = new Feedler.State ();
         Feedler.SETTING = new Feedler.Settings ();
         Feedler.SERVICE = new Feedler.Service ();
@@ -67,12 +64,13 @@ public class Feedler.App : Granite.Application
         this.window.icon_name = "internet-news-reader";
         this.window.set_application (this);
         this.window.show_all ();
-        if (Feedler.SETTING.hide_start)
+
+        if (Feedler.SETTING.hide_start) {
             this.window.hide ();
+        }
     }
 
-    public static int main (string[] args)
-    {
+    public static int main (string[] args) {
         Feedler.APP = new Feedler.App ();
         return APP.run (args);
     }
