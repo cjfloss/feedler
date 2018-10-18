@@ -9,11 +9,13 @@ Build-Depends: meson,
                libgtk-3-dev (>= 3.12.0),
                libxml-dev,
                libsqlheavy-dev (>= 0.1.1-2)
-               libsoup-dev,
-               libglib-dev,
-               libwebkit2gtk-dev,
                libnotify-dev,
-               libunity-dev
+               libunity-dev,
+               desktop-file-utils,
+               libglib2.0-dev (>= 2.30.0),
+               libsoup2.4-dev (>= 2.26.0),
+               libwebkit2gtk-4.0-dev (>= 2.0.0),
+               libxml2 (>= 2.6.32)
 
 Standards-Version: 3.9.3
 Package: com.github.cjfloss.feedler
