@@ -25,6 +25,7 @@ endif
 
 config = configuration_data()
 config.set('app_name', meson.project_name ())
+config.set('prefix', prefix)
 config.set('datadir', datadir)
 config.set('pkg_datadir', pkg_datadir)
 config.set('gettext_package', meson.project_name ())
@@ -34,9 +35,30 @@ config.set('version_info', version_info)
 config.set('git_branch', git_branch)
 config.set('git_commit_hash', git_commit_hash)
 
-exe = executable (
+service = executable (
+    meson.project_name () + '-service',
+    'src/service/abstract.vala',
+    'src/service/backend-xml.vala',
+#   'src/service/database.vala',
+#   'src/service/interface.vala',
+    'src/service/model.vala',
+    'src/service/serializer.vala',
+    'src/service/service.vala',
+    'src/service/settings.vala',
+    dependencies : [
+        dependency('libnotify'),
+        dependency('granite', version :'>=0.3.0'),
+        dependency('sqlheavy-0.2'),
+        dependency('libsoup-2.4'),
+        dependency('libxml-2.0'),
+        meson.get_compiler('vala').find_library('posix'),
+        meson.get_compiler('c').find_library('m', required : false)
+    ],
+    install : true
+)
+
+main = executable (
     meson.project_name (),
-    'src/desktop-launcher.vala',
     'src/database.vala',
     'src/dock.vala',
     'src/feedler.vala',
@@ -75,8 +97,10 @@ exe = executable (
         meson.get_compiler('vala').find_library('posix'),
         meson.get_compiler('c').find_library('m', required : false)
     ],
-    install : true)
+    install : true
+)
 
 subdir ('po')
+subdir ('data')
 
-test('basic', exe)
+test('basic', main)

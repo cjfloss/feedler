@@ -14,7 +14,7 @@ public class Feedler.Settings : Granite.Services.Settings
 
     public Settings ()
     {
-        base ("org.pantheon.feedler.service");
+        base ("com.github.cjfloss.feedler.service");
     }
 
     public void add_uri (string u)

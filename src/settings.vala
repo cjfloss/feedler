@@ -4,7 +4,7 @@
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
-// TODO change all to: org.pantheon.feedler.*
+
 public class Feedler.State : Granite.Services.Settings
 {
     public int window_width { get; set; }
@@ -14,7 +14,7 @@ public class Feedler.State : Granite.Services.Settings
 
     public State ()
     {
-        base ("org.pantheon.feedler.state");
+        base ("com.github.cjfloss.feedler.state");
     }
 }
 
@@ -34,7 +34,7 @@ public class Feedler.Settings : Granite.Services.Settings
 
     public Settings ()
     {
-        base ("org.pantheon.feedler.settings");
+        base ("com.github.cjfloss.feedler.settings");
     }
 }
 
@@ -47,6 +47,6 @@ public class Feedler.Service : Granite.Services.Settings
 
     public Service ()
     {
-        base ("org.pantheon.feedler.service");
+        base ("com.github.cjfloss.feedler.service");
     }
 }

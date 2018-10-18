@@ -11,7 +11,7 @@ public class Feedler.Dock : GLib.Object
 
     construct
     {
-        this.dock = Unity.LauncherEntry.get_for_desktop_id ("feedler.desktop");
+        this.dock = Unity.LauncherEntry.get_for_desktop_id ("com.github.cjfloss.feedler.desktop");
         this.dock.count_visible = false;
         this.dock.progress_visible = false;
         //this.dock.urgent = true;

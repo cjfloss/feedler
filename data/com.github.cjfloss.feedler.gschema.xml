@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-	<schema path="/org/pantheon/feedler/state/" id="org.pantheon.feedler.state" gettext-domain="feedler">
+	<schema path="/com/github/cjfloss/feedler/state/" id="com.github.cjfloss.feedler.state" gettext-domain="com.github.cjfloss.feedler.state">
 		<key name="view-mode" type="i">
 			<default>1</default>
 			<summary>Index of which view type to use</summary>
 			<description>Index of which view type to use</description>
 		</key>
 		<key name="sidebar-width" type="i">
-			<default>180</default>
+			<default>200</default>
 			<summary>Sidebar Width</summary>
 			<description>The saved width of the sidebar.</description>
 		</key>
@@ -22,7 +22,7 @@
 			<description>The saved width of the window.</description>
 		</key>
 	</schema>
-	<schema path="/org/pantheon/feedler/settings/" id="org.pantheon.feedler.settings" gettext-domain="feedler">
+	<schema path="/com/github/cjfloss/feedler/settings/" id="com.github.cjfloss.feedler.settings" gettext-domain="com.github.cjfloss.feedler">
 		<key name="enable-image" type="b">
 			<default>true</default>
 			<summary>Enable image</summary>
@@ -79,7 +79,7 @@
 			<description>Number of headers stored in the subscription</description>
 		</key>
 	</schema>
-	<schema path="/org/pantheon/feedler/service/" id="org.pantheon.feedler.service" gettext-domain="feedler">
+	<schema path="/com/github/cjfloss/feedler/service/" id="com.github.cjfloss.feedler.service" gettext-domain="com.github.cjfloss.feedler">
 		<key name="auto-update" type="b">
 			<default>false</default>
 			<summary>Automatic update</summary>

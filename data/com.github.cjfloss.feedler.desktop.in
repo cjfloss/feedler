@@ -1,11 +1,10 @@
 [Desktop Entry]
-Version=0.2
 Type=Application
 Name=Feedler
 GenericName=Feedler News Reader
 Comment=Download and view feeds
-Categories=GTK;Network;News;
-Exec=feedler
+Categories=Network;News;Feed;
+Exec=com.github.cjfloss.feedler
 Icon=internet-news-reader
 Terminal=false
-X-GNOME-Gettext-Domain=feedler
+X-GNOME-Gettext-Domain=com.github.cjfloss.feedler
