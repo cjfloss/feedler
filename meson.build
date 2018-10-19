@@ -46,7 +46,7 @@ service = executable (
     dependencies : [
         dependency('libnotify'),
         dependency('granite', version :'>=0.3.0'),
-        dependency('sqlheavy-0.2'),
+        dependency('sqlite3'),
         dependency('libsoup-2.4'),
         dependency('libxml-2.0'),
         meson.get_compiler('vala').find_library('posix'),
@@ -58,6 +58,7 @@ service = executable (
 main = executable (
     meson.project_name (),
     'src/Database/Database.vala',
+
     'src/Dock.vala',
     'src/Feedler.vala',
     'src/Icons.vala',
@@ -89,7 +90,7 @@ main = executable (
         dependency('gtk+-3.0', version :'>=3.14'),
         dependency('webkit2gtk-4.0'),
         dependency('granite', version :'>=0.3.0'),
-        dependency('sqlheavy-0.2'),
+        dependency('sqlite3'),
         dependency('libsoup-2.4'),
         dependency('libxml-2.0'),
         dependency('libnotify'),
