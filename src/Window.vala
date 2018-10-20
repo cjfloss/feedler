@@ -501,8 +501,8 @@ public class Feedler.Window : Gtk.Window {
 
     private void import_subscription () {
         var file = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN,
-                                              Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
-                                              Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
+                                              "gtk-cancel", Gtk.ResponseType.CANCEL,
+                                              "gtk-open", Gtk.ResponseType.ACCEPT);
 
         Gtk.FileFilter filter_opml = new Gtk.FileFilter ();
         filter_opml.set_filter_name ("Subscriptions");

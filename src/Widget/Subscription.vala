@@ -28,7 +28,7 @@ public class Feedler.Subscription : Gtk.Dialog {
         this.channel = new Gtk.Entry ();
         this.uri = new Gtk.Entry ();
 
-        var save = new Gtk.Button.from_stock (Gtk.Stock.SAVE);
+        var save = new Gtk.Button.from_icon_name ("gtk-save");
         save.set_size_request (85, -1);
         save.valign = save.halign = Gtk.Align.END;
         save.clicked.connect_after (() => {
