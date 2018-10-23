@@ -4,6 +4,7 @@
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
+using Feedler;
 
 public class FeedStore : GLib.Object {
     public int id { get; set; }
@@ -15,7 +16,7 @@ public class FeedStore : GLib.Object {
     public bool read { get; set; }
     public bool starred { get; set; }
 
-    public FeedStore (Model.Item item, string time_format) {
+    public FeedStore (Objects.Item item, string time_format) {
         this.id = item.id;
         this.subject = item.title;
         this.date = time_format;
@@ -96,7 +97,7 @@ public class Feedler.ViewList : Feedler.View {
         this.load_article ("");
     }
 
-    public override void add_feed (Model.Item item, string time_format) {
+    public override void add_feed (Objects.Item item, string time_format) {
         Gtk.TreeIter feed_iter;
         this.store.prepend (out feed_iter);
         this.store.set (feed_iter, 0, new FeedStore (item, time_format));
@@ -149,7 +150,7 @@ public class Feedler.ViewList : Feedler.View {
             if (!selected.read) {
                 selected.read = true;
                 this.store.set_value (selected_iter, 0, selected);
-                this.item_marked (selected.id, Model.State.READ);
+                this.item_marked (selected.id, Objects.State.READ);
             }
         } catch (GLib.Error e) {
             warning ("ERROR: " + e.message);
@@ -176,7 +177,7 @@ public class Feedler.ViewList : Feedler.View {
             if (!selected.read) {
                 this.selected.read = true;
                 this.store.set_value (selected_iter, 0, selected);
-                this.item_marked (selected.id, Model.State.READ);
+                this.item_marked (selected.id, Objects.State.READ);
             }
         }
     }
@@ -187,7 +188,7 @@ public class Feedler.ViewList : Feedler.View {
         if (selected != null) {
             this.selected.read = !selected.read;
             this.store.set_value (selected_iter, 0, selected);
-            this.item_marked (selected.id, selected.read ? Model.State.READ : Model.State.UNREAD);
+            this.item_marked (selected.id, selected.read ? Objects.State.READ : Objects.State.UNREAD);
         }
     }
 
@@ -197,7 +198,7 @@ public class Feedler.ViewList : Feedler.View {
         if (selected != null) {
             this.selected.starred = !selected.starred;
             this.store.set_value (selected_iter, 0, selected);
-            this.item_marked (selected.id, selected.starred ? Model.State.STARRED : Model.State.UNSTARRED);
+            this.item_marked (selected.id, selected.starred ? Objects.State.STARRED : Objects.State.UNSTARRED);
         }
     }
 

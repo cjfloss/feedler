@@ -26,7 +26,7 @@ public class Feedler.ViewWeb : Feedler.View {
         this.content.assign (generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
     }
 
-    public override void add_feed (Model.Item item, string time_format) {
+    public override void add_feed (Objects.Item item, string time_format) {
         this.content.prepend (generate_item (item.title, time_format, item.author, item.description));
     }
 

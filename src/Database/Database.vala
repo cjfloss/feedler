@@ -10,12 +10,12 @@ public class Feedler.Database : GLib.Object {
     private SQLHeavy.Transaction transaction;
     private SQLHeavy.Query query;
     private string location;
-    internal GLib.List<Model.Folder> data;
-    internal GLib.List<unowned Model.Item> tmp;
+    internal GLib.List<Objects.Folder> data;
+    internal GLib.List<unowned Objects.Item> tmp;
 
     construct {
         this.location = GLib.Environment.get_user_data_dir () + "/feedler/feedler.db";
-        this.data = new GLib.List<Model.Folder> ();
+        this.data = new GLib.List<Objects.Folder> ();
         this.open ();
     }
 
@@ -78,10 +78,10 @@ public class Feedler.Database : GLib.Object {
         return uri;
     }
 
-    public unowned Model.Item ? get_item (int channel, int id) {
-        /*foreach (unowned Model.Channel ch in this.data.channels)
+    public unowned Objects.Item ? get_item (int channel, int id) {
+        /*foreach (unowned Objects.Channel ch in this.data.channels)
             if (ch.id == channel)
-                foreach (unowned Model.Item it in ch.items)
+                foreach (unowned Objects.Item it in ch.items)
                     if (id == it.id)
                         return it;*/
         return null;
@@ -97,7 +97,7 @@ public class Feedler.Database : GLib.Object {
             //query.set_int (":parent", folder.parent);
             int id = (int)query.execute_insert ();
             this.transaction.commit ();
-            Model.Folder f = new Model.Folder.with_data (id, title, 0);
+            Objects.Folder f = new Objects.Folder.with_data (id, title, 0);
             this.folders.append (f);
             return id;
         }
@@ -118,7 +118,7 @@ public class Feedler.Database : GLib.Object {
             query.set_int (":id", id);
             query.execute_async ();
             transaction.commit ();
-            Model.Folder c = this.get_folder_from_id (id);
+            Objects.Folder c = this.get_folder_from_id (id);
             c.name = title;
         }
         catch (SQLHeavy.Error e)
@@ -161,7 +161,7 @@ public class Feedler.Database : GLib.Object {
             query.set_int (":folder", folder);
             int id = (int)query.execute_insert ();
             this.transaction.commit ();
-            Model.Channel c = new Model.Channel.with_data (id, title, "", url, get_folder_from_id (folder));
+            Objects.Channel c = new Objects.Channel.with_data (id, title, "", url, get_folder_from_id (folder));
             //this.data.channels.append (c);
             return id;
         }
@@ -201,7 +201,7 @@ public class Feedler.Database : GLib.Object {
             query.set_int (":id", id);
             query.execute_async ();
             transaction.commit ();
-            Model.Channel c = this.get_channel (id);
+            Objects.Channel c = this.get_channel (id);
             c.folder = folder;
             c.title = title;
             c.source = url;
@@ -232,7 +232,7 @@ public class Feedler.Database : GLib.Object {
         }
     }
 
-    public void mark_folder (int id, Model.State state = Model.State.READ)
+    public void mark_folder (int id, Objects.State state = Objects.State.READ)
     {
         try
         {
@@ -253,7 +253,7 @@ public class Feedler.Database : GLib.Object {
         }
     }
 
-    public void mark_channel (int id, Model.State state = Model.State.READ)
+    public void mark_channel (int id, Objects.State state = Objects.State.READ)
     {
         try
         {
@@ -271,33 +271,33 @@ public class Feedler.Database : GLib.Object {
         }
     }*/
 
-    public unowned GLib.List < Model.Folder ? > select_data () {
+    public unowned GLib.List < Objects.Folder ? > select_data () {
         try {
             var query = new SQLHeavy.Query (db, "SELECT * FROM folders;");
 
             for (var results = query.execute (); !results.finished; results.next ()) {
-                Model.Folder fo = new Model.Folder ();
+                Objects.Folder fo = new Objects.Folder ();
                 fo.id = results.fetch_int (0);
                 fo.name = results.fetch_string (1);
-                fo.channels = new GLib.List < Model.Channel ? > ();
+                fo.channels = new GLib.List < Objects.Channel ? > ();
 
                 var que = new SQLHeavy.Query (db, "SELECT * FROM channels WHERE folder=:id;");
                 que.set_int (":id", fo.id);
 
                 for (var res = que.execute (); !res.finished; res.next ()) {
-                    Model.Channel ch = new Model.Channel ();
+                    Objects.Channel ch = new Objects.Channel ();
                     ch.id = res.fetch_int (0);
                     ch.title = res.fetch_string (1);
                     ch.source = res.fetch_string (2);
                     ch.link = res.fetch_string (3);
                     ch.folder = fo;
-                    ch.items = new GLib.List < Model.Item ? > ();
+                    ch.items = new GLib.List < Objects.Item ? > ();
 
                     var q = new SQLHeavy.Query (db, "SELECT * FROM items WHERE channel=:id;");
                     q.set_int (":id", ch.id);
 
                     for (var r = q.execute (); !r.finished; r.next ()) {
-                        Model.Item it = new Model.Item ();
+                        Objects.Item it = new Objects.Item ();
                         it.id = r.fetch_int (0);
                         it.title = r.fetch_string (1);
                         it.source = r.fetch_string (2);
@@ -341,8 +341,8 @@ public class Feedler.Database : GLib.Object {
         return -1;
     }
 
-    public unowned Model.Folder ? get_folder (string name) {
-        foreach (unowned Model.Folder f in this.data)
+    public unowned Objects.Folder ? get_folder (string name) {
+        foreach (unowned Objects.Folder f in this.data)
             if (name == f.name) {
                 return f;
             }
@@ -350,8 +350,8 @@ public class Feedler.Database : GLib.Object {
         return null;
     }
 
-    public unowned Model.Folder ? get_folder_from_id (int id) {
-        foreach (unowned Model.Folder f in this.data)
+    public unowned Objects.Folder ? get_folder_from_id (int id) {
+        foreach (unowned Objects.Folder f in this.data)
             if (id == f.id) {
                 return f;
             }
@@ -359,9 +359,9 @@ public class Feedler.Database : GLib.Object {
         return null;
     }
 
-    public unowned Model.Channel ? get_channel (string title) {
-        foreach (unowned Model.Folder f in this.data)
-            foreach (unowned Model.Channel c in f.channels)
+    public unowned Objects.Channel ? get_channel (string title) {
+        foreach (unowned Objects.Folder f in this.data)
+            foreach (unowned Objects.Channel c in f.channels)
                 if (title == c.title) {
                     return c;
                 }
@@ -369,9 +369,9 @@ public class Feedler.Database : GLib.Object {
         return null;
     }
 
-    public unowned Model.Channel ? get_channel_from_source (string source) {
-        foreach (unowned Model.Folder f in this.data)
-            foreach (unowned Model.Channel c in f.channels)
+    public unowned Objects.Channel ? get_channel_from_source (string source) {
+        foreach (unowned Objects.Folder f in this.data)
+            foreach (unowned Objects.Channel c in f.channels)
                 if (source == c.source) {
                     return c;
                 }
@@ -379,29 +379,29 @@ public class Feedler.Database : GLib.Object {
         return null;
     }
 
-    public unowned GLib.List<Model.Item> get_items (Model.State state = Model.State.ALL) {
-        this.tmp = new GLib.List < Model.Item ? > ();
-        GLib.CompareFunc < Model.Item ? > timecmp = (a, b) => {
+    public unowned GLib.List<Objects.Item> get_items (Objects.State state = Objects.State.ALL) {
+        this.tmp = new GLib.List < Objects.Item ? > ();
+        GLib.CompareFunc < Objects.Item ? > timecmp = (a, b) => {
             return (int)(a.time > b.time) - (int)(a.time < b.time);
         };
 
-        if (state == Model.State.ALL) {
-            foreach (Model.Folder f in this.data)
-                foreach (Model.Channel c in f.channels)
-                    foreach (Model.Item i in c.items) {
+        if (state == Objects.State.ALL) {
+            foreach (Objects.Folder f in this.data)
+                foreach (Objects.Channel c in f.channels)
+                    foreach (Objects.Item i in c.items) {
                         tmp.insert_sorted (i, timecmp);
                     }
-        } else if (state == Model.State.UNREAD) {
-            foreach (Model.Folder f in this.data)
-                foreach (Model.Channel c in f.channels)
-                    foreach (Model.Item i in c.items)
+        } else if (state == Objects.State.UNREAD) {
+            foreach (Objects.Folder f in this.data)
+                foreach (Objects.Channel c in f.channels)
+                    foreach (Objects.Item i in c.items)
                         if (!i.read) {
                             tmp.insert_sorted (i, timecmp);
                         }
-        } else if (state == Model.State.STARRED) {
-            foreach (Model.Folder f in this.data)
-                foreach (Model.Channel c in f.channels)
-                    foreach (Model.Item i in c.items)
+        } else if (state == Objects.State.STARRED) {
+            foreach (Objects.Folder f in this.data)
+                foreach (Objects.Channel c in f.channels)
+                    foreach (Objects.Item i in c.items)
                         if (i.starred) {
                             tmp.insert_sorted (i, timecmp);
                         }
@@ -410,8 +410,8 @@ public class Feedler.Database : GLib.Object {
         return tmp;
     }
 
-    public unowned Model.Item ? get_item_from_tmp (int id) {
-        foreach (unowned Model.Item i in this.tmp)
+    public unowned Objects.Item ? get_item_from_tmp (int id) {
+        foreach (unowned Objects.Item i in this.tmp)
             if (i.id == id) {
                 return i;
             }
@@ -422,14 +422,14 @@ public class Feedler.Database : GLib.Object {
     public string[] ? get_channels_uri () {
         uint i = 0;
 
-        foreach (Model.Folder f in this.data) {
+        foreach (Objects.Folder f in this.data) {
             i += f.channels.length ();
         }
 
         string[] uri = new string[i];
 
-        foreach (Model.Folder f in this.data)
-            foreach (Model.Channel c in f.channels) {
+        foreach (Objects.Folder f in this.data)
+            foreach (Objects.Channel c in f.channels) {
                 uri[--i] = c.source;
             }
 
@@ -439,8 +439,8 @@ public class Feedler.Database : GLib.Object {
     public string ? get_channel_uri (string title) {
         uint i = 0;
 
-        foreach (Model.Folder f in this.data)
-            foreach (Model.Channel c in f.channels)
+        foreach (Objects.Folder f in this.data)
+            foreach (Objects.Channel c in f.channels)
                 if (c.title == title) {
                     return c.source;
                 }
@@ -457,9 +457,9 @@ public class Feedler.Database : GLib.Object {
             query.execute_async.begin ();
             transaction.commit ();
 
-            foreach (Model.Folder f in this.data)
-                foreach (Model.Channel c in f.channels)
-                    foreach (Model.Item i in c.items)
+            foreach (Objects.Folder f in this.data)
+                foreach (Objects.Channel c in f.channels)
+                    foreach (Objects.Item i in c.items)
                         if (!i.read) {
                             i.read = true;
                         }
@@ -479,7 +479,7 @@ public class Feedler.Database : GLib.Object {
             query.execute_async.begin ();
             transaction.commit ();
 
-            foreach (Model.Item i in c.items)
+            foreach (Objects.Item i in c.items)
                 if (!i.read) {
                     i.read = true;
                 }
@@ -554,14 +554,14 @@ public class Feedler.Database : GLib.Object {
             query.execute_async.begin ();
             //int id = (int)query.execute_insert ();
             //transaction.commit ();
-            //Model.Folder f = new Model.Folder.with_data (id, name);
+            //Objects.Folder f = new Objects.Folder.with_data (id, name);
             //this.data.append (f);
         } catch (SQLHeavy.Error e) {
             warning ("Cannot insert folder " + folder.name + ".");
         }
     }
 
-    public unowned Model.Channel insert_channel (int folder, Serializer.Channel schannel) {
+    public unowned Objects.Channel insert_channel (int folder, Serializer.Channel schannel) {
         //mialobyc bez tranzakcji, poniewaz jest obslugiwana z poziomu managera w celu dodawania pozycji wsadowo!
         try {
             transaction = db.begin_transaction ();
@@ -572,8 +572,8 @@ public class Feedler.Database : GLib.Object {
             query.set_int (":folder", folder);
             int id = (int)query.execute_insert ();
             transaction.commit ();
-            unowned Model.Folder f = this.get_folder_from_id (folder);
-            Model.Channel c = new Model.Channel.with_data (id, schannel.title, schannel.link, schannel.source, f);
+            unowned Objects.Folder f = this.get_folder_from_id (folder);
+            Objects.Channel c = new Objects.Channel.with_data (id, schannel.title, schannel.link, schannel.source, f);
             f.channels.append (c);
         } catch (SQLHeavy.Error e) {
             warning ("Cannot insert channel " + schannel.title + ".");
@@ -651,7 +651,7 @@ public class Feedler.Database : GLib.Object {
         opml->add_child (head);
 
         Xml.Node* body = new Xml.Node (null, "body");
-        foreach (Model.Folder folder in this.folders)
+        foreach (Objects.Folder folder in this.folders)
         {
             Xml.Node* outline = new Xml.Node (null, "outline");
             outline->new_prop ("title", folder.name);
@@ -660,7 +660,7 @@ public class Feedler.Database : GLib.Object {
             folder_node.set (folder.id, outline);
             body->add_child (outline);
         }
-        foreach (Model.Channel channel in this.channels)
+        foreach (Objects.Channel channel in this.channels)
         {
             Xml.Node* outline = new Xml.Node (null, "outline");
             outline->new_prop ("text", channel.title);

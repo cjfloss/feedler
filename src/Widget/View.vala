@@ -6,7 +6,7 @@
  */
 
 public abstract class Feedler.View : Gtk.VBox {
-    public signal void item_marked (int id, Model.State state);
+    public signal void item_marked (int id, Objects.State state);
 
     public static WebKit.Settings settings;
 
@@ -21,7 +21,7 @@ public abstract class Feedler.View : Gtk.VBox {
 
     public abstract void clear ();
 
-    public abstract void add_feed (Model.Item item, string time_format);
+    public abstract void add_feed (Objects.Item item, string time_format);
 
     public abstract void load_feeds ();
 
