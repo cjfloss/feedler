@@ -60,8 +60,6 @@ namespace Feedler {
         ROLLBACK;
     """;
 
-
-
     private const string SELECT_MAX_ID = """
         SELECT MAX(id)
         FROM :table;

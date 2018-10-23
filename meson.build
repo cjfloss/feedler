@@ -77,7 +77,7 @@ service = executable (
 
 main = executable (
     meson.project_name (),
-    'src/Database/DBHelper.vala',
+    'src/Database/DB.vala',
     'src/Database/Queries.vala',
     'src/Database/Database.vala',
 

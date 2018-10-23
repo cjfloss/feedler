@@ -1,4 +1,4 @@
-namespace DBHelper {
+namespace DB {
     public Sqlite.Statement prepare (Sqlite.Database db, string query) {
         Sqlite.Statement stmt;
         db.prepare_v2 (query, query.length, out stmt);

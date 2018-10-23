@@ -44,11 +44,11 @@ namespace Feedler {
                 error ("Failed to open database: %d - %s", db.errcode (), db.errmsg ());
             }
 
-            var stmt = DBHelper.prepare (db, PRAGMA_VERSION_GET);
+            var stmt = DB.prepare (db, PRAGMA_VERSION_GET);
 
-	        if (stmt.step () != Sqlite.ROW) {
-		        error ("Failed to get db version: %d - %s", db.errcode (), db.errmsg ());
-	        }
+            if (stmt.step () != Sqlite.ROW) {
+                error ("Failed to get db version: %d - %s", db.errcode (), db.errmsg ());
+            }
 
             db_version = stmt.column_int (0);
             debug ("DATABASE_USER_VERSION: " + db_version.to_string ());
@@ -94,6 +94,10 @@ namespace Feedler {
             return (bool) db.exec (COMMIT_TRANSACTION);
         }
 
+        public bool roolback () {
+            return (bool) db.exec (ROLLBACK_TRANSACTION);
+        }
+
         public string[] ? get_folder_uris (int id) {
             string[] uri = new string[0];
             /*foreach (var c in this.data.channels)
@@ -112,8 +116,8 @@ namespace Feedler {
         }
 
         public int select_max (string table = "folders") {
-            var stmt = DBHelper.prepare (db, SELECT_MAX_ID);
-            DBHelper.set_string (stmt, ":table", table);
+            var stmt = DB.prepare (db, SELECT_MAX_ID);
+            DB.set_string (stmt, ":table", table);
 
             if (stmt.step () != Sqlite.DONE) {
                 critical ("Failed to select_max - %d: %s",this.db.errcode (), this.db.errmsg ());
@@ -132,43 +136,43 @@ namespace Feedler {
             Objects.Channel ch = null;
             Objects.Item it = null;
 
-            var stmt = DBHelper.prepare (db, SELECT_ALL_FOLDERS);
+            var stmt = DB.prepare (db, SELECT_ALL_FOLDERS);
 
             while (stmt.step () == Sqlite.ROW) {
-                print ("FOLDER\n");
                 fo = new Objects.Folder ();
-                fo.id = DBHelper.get_int (stmt,"id");
-                fo.name = DBHelper.get_string (stmt, "name");
+                fo.id = DB.get_int (stmt,"id");
+                fo.name = DB.get_string (stmt, "name");
                 fo.channels = new GLib.List <Objects.Channel?> ();
+                debug ("Folder: " + fo.name);
 
-                var stmt_c = DBHelper.prepare (db, SELECT_CHANNELS_FROM_FOLDER);
-                DBHelper.set_int (stmt_c, ":id", fo.id);
+                var stmt_c = DB.prepare (db, SELECT_CHANNELS_FROM_FOLDER);
+                DB.set_int (stmt_c, ":id", fo.id);
 
                 while (stmt_c.step () == Sqlite.ROW) {
-                    print ("CHANNEL\n");
                     ch = new Objects.Channel ();
-                    ch.id = DBHelper.get_int (stmt_c,"id");
-                    ch.title = DBHelper.get_string (stmt_c, "title");
-                    ch.source = DBHelper.get_string (stmt_c, "source");
-                    ch.link = DBHelper.get_string (stmt_c, "link");
+                    ch.id = DB.get_int (stmt_c,"id");
+                    ch.title = DB.get_string (stmt_c, "title");
+                    ch.source = DB.get_string (stmt_c, "source");
+                    ch.link = DB.get_string (stmt_c, "link");
                     ch.folder = fo;
                     ch.items = new GLib.List <Objects.Item?> ();
+                    debug ("Channel: " + ch.title);
 
-                    var stmt_i = DBHelper.prepare (db, SELECT_ITEMS_FROM_CHANNEL);
-                    DBHelper.set_int (stmt_i, ":id", ch.id);
+                    var stmt_i = DB.prepare (db, SELECT_ITEMS_FROM_CHANNEL);
+                    DB.set_int (stmt_i, ":id", ch.id);
 
                     while (stmt_i.step () == Sqlite.ROW) {
-                        print ("ITEM\n");
                         it = new Objects.Item ();
-                        it.id = DBHelper.get_int (stmt_i, "id");
-                        it.title = DBHelper.get_string (stmt_i, "title");
-                        it.source = DBHelper.get_string (stmt_i, "source");
-                        it.author = DBHelper.get_string (stmt_i, "author");
-                        it.description = DBHelper.get_string (stmt_i, "description");
-                        it.time = DBHelper.get_int (stmt_i, "time");
-                        it.read = (bool) DBHelper.get_int (stmt_i, "read");
-                        it.starred = (bool) DBHelper.get_int (stmt_i, "starred");
+                        it.id = DB.get_int (stmt_i, "id");
+                        it.title = DB.get_string (stmt_i, "title");
+                        it.source = DB.get_string (stmt_i, "source");
+                        it.author = DB.get_string (stmt_i, "author");
+                        it.description = DB.get_string (stmt_i, "description");
+                        it.time = DB.get_int (stmt_i, "time");
+                        it.read = (bool) DB.get_int (stmt_i, "read");
+                        it.starred = (bool) DB.get_int (stmt_i, "starred");
                         it.channel = ch;
+                        debug ("Item: " + it.title);
 
                         if (!it.read) {
                             ch.unread++;
@@ -313,9 +317,9 @@ namespace Feedler {
         public void mark_channel (string title) {
             var c = this.get_channel (title);
 
-            var stmt = DBHelper.prepare (db, MARK_CHANNEL_AS_READ);
-            DBHelper.set_int (stmt, ":read", 1);
-            DBHelper.set_int (stmt, ":channel_id", c.id);
+            var stmt = DB.prepare (db, MARK_CHANNEL_AS_READ);
+            DB.set_int (stmt, ":read", 1);
+            DB.set_int (stmt, ":channel_id", c.id);
 
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
@@ -331,9 +335,9 @@ namespace Feedler {
         }
 
         public void mark_item (int item, bool mark) {
-            var stmt = DBHelper.prepare (db, MARK_ITEM_AS_READ);
-            DBHelper.set_int (stmt, ":read", (int) mark);
-            DBHelper.set_int (stmt, ":id", item);
+            var stmt = DB.prepare (db, MARK_ITEM_AS_READ);
+            DB.set_int (stmt, ":read", (int) mark);
+            DB.set_int (stmt, ":id", item);
 
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
@@ -343,9 +347,9 @@ namespace Feedler {
         }
 
         public void star_item (int item, bool star) {
-            var stmt = DBHelper.prepare (db, MARK_ITEM_AS_STARRED);
-            DBHelper.set_int (stmt, ":starred", (int) star);
-            DBHelper.set_int (stmt, ":id", item);
+            var stmt = DB.prepare (db, MARK_ITEM_AS_STARRED);
+            DB.set_int (stmt, ":starred", (int) star);
+            DB.set_int (stmt, ":id", item);
 
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
@@ -355,9 +359,9 @@ namespace Feedler {
         }
 
         public void rename_channel (string old_name, string new_name) {
-            var stmt = DBHelper.prepare (db, RENAME_CHANNEL);
-            DBHelper.set_string (stmt, ":old_name", old_name);
-            DBHelper.set_string (stmt, ":new_name", new_name);
+            var stmt = DB.prepare (db, RENAME_CHANNEL);
+            DB.set_string (stmt, ":old_name", old_name);
+            DB.set_string (stmt, ":new_name", new_name);
 
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
@@ -368,11 +372,11 @@ namespace Feedler {
 
         public void remove_channel (string name) {
             var c = this.get_channel (name);
-            var stmt = DBHelper.prepare (db, DELETE_CHANNEL);
-            DBHelper.set_int (stmt, ":id", c.id);
+            var stmt = DB.prepare (db, DELETE_CHANNEL);
+            DB.set_int (stmt, ":id", c.id);
 
-            var stmt2 = DBHelper.prepare (db, DELETE_ITEMS_FROM_CHANNEL);
-            DBHelper.set_int (stmt, ":id", c.id);
+            var stmt2 = DB.prepare (db, DELETE_ITEMS_FROM_CHANNEL);
+            DB.set_int (stmt, ":id", c.id);
 
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
@@ -386,11 +390,11 @@ namespace Feedler {
         }
 
         public void insert_folder (Serializer.Folder folder) {
-            var stmt = DBHelper.prepare (db, INSERT_FOLDER);
-            DBHelper.set_string (stmt, ":name", folder.name);
+            var stmt = DB.prepare (db, INSERT_FOLDER);
+            DB.set_string (stmt, ":name", folder.name);
 
             if (stmt.step () != Sqlite.DONE) {
-                //TODO this.roolback ();
+                this.roolback ();
                 error ("Failed to insert folder - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
 
@@ -401,15 +405,15 @@ namespace Feedler {
         }
 
         public unowned Objects.Channel insert_channel (int folder, Serializer.Channel schannel) {
-            var stmt = DBHelper.prepare (db, INSERT_CHANNEL);
-            DBHelper.set_string (stmt, ":title", schannel.title);
-            DBHelper.set_string (stmt, ":source", schannel.source);
-            DBHelper.set_string (stmt, ":link", schannel.link);
-            DBHelper.set_int (stmt, ":folder", folder);
+            var stmt = DB.prepare (db, INSERT_CHANNEL);
+            DB.set_string (stmt, ":title", schannel.title);
+            DB.set_string (stmt, ":source", schannel.source);
+            DB.set_string (stmt, ":link", schannel.link);
+            DB.set_int (stmt, ":folder", folder);
 
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
-                //TODO this.roolback ();
+                this.roolback ();
                 error ("Failed to insert channel - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
             this.commit ();
@@ -424,15 +428,15 @@ namespace Feedler {
         }
 
         public int insert_item (int channel, Serializer.Item item) {
-            var stmt = DBHelper.prepare (db, INSERT_ITEM);
-            DBHelper.set_string (stmt, ":title", item.title);
-            DBHelper.set_string (stmt, ":source", item.source);
-            DBHelper.set_string (stmt, ":desc", item.description);
-            DBHelper.set_string (stmt, ":author", item.author);
-            DBHelper.set_int (stmt, ":time", item.time);
-            DBHelper.set_int (stmt, ":read", 0);
-            DBHelper.set_int (stmt, ":starred", 0);
-            DBHelper.set_int (stmt, ":channel", channel);
+            var stmt = DB.prepare (db, INSERT_ITEM);
+            DB.set_string (stmt, ":title", item.title);
+            DB.set_string (stmt, ":source", item.source);
+            DB.set_string (stmt, ":desc", item.description);
+            DB.set_string (stmt, ":author", item.author);
+            DB.set_int (stmt, ":time", item.time);
+            DB.set_int (stmt, ":read", 0);
+            DB.set_int (stmt, ":starred", 0);
+            DB.set_int (stmt, ":channel", channel);
 
             if (stmt.step () != Sqlite.DONE) {
                 error ("Failed to insert item - %d: %s",this.db.errcode (), this.db.errmsg ());
@@ -442,7 +446,7 @@ namespace Feedler {
 
         public string export_to_opml () {
             //Gee.Map<int, Xml.Node*> folder_node = new Gee.HashMap<int, Xml.Node*> ();
-            Xml.Doc* doc = new Xml.Doc("1.0");
+            Xml.Doc* doc = new Xml.Doc ("1.0");
             /*Xml.Node* opml = doc->new_node (null, "opml", null);
             opml->new_prop ("version", "1.0");
             doc->set_root_element (opml);
@@ -488,10 +492,10 @@ namespace Feedler {
         }
 
         private string created_time () {
-            string currentLocale = GLib.Intl.setlocale(GLib.LocaleCategory.TIME, null);
-            GLib.Intl.setlocale(GLib.LocaleCategory.TIME, "C");
+            string currentLocale = GLib.Intl.setlocale (GLib.LocaleCategory.TIME, null);
+            GLib.Intl.setlocale (GLib.LocaleCategory.TIME, "C");
             string date = GLib.Time.gm (time_t ()).format ("%a, %d %b %Y %H:%M:%S %z");
-            GLib.Intl.setlocale(GLib.LocaleCategory.TIME, currentLocale);
+            GLib.Intl.setlocale (GLib.LocaleCategory.TIME, currentLocale);
             return date;
         }
     }
