@@ -44,7 +44,7 @@ namespace Feedler {
                 error ("Failed to open database: %d - %s", db.errcode (), db.errmsg ());
             }
 
-            var stmt = DBHelper.prepare (db, "PRAGMA user_version;");
+            var stmt = DBHelper.prepare (db, PRAGMA_VERSION_GET);
 
 	        if (stmt.step () != Sqlite.ROW) {
 		        error ("Failed to get db version: %d - %s", db.errcode (), db.errmsg ());
@@ -77,21 +77,21 @@ namespace Feedler {
             debug ("Creating table items");
             this.commit ();
 
-            assert (db.exec ("PRAGMA user_version = 1;", null, out errmsg) == Sqlite.OK);
+            assert (db.exec (PRAGMA_VERSION_SET, null, out errmsg) == Sqlite.OK);
             debug ("user_version is 1");
 
-            assert ( db.exec ("PRAGMA synchronous = OFF;", null, out errmsg) == Sqlite.OK);
+            assert (db.exec (PRAGMA_DISABLE_SYNCHRONOUS, null, out errmsg) == Sqlite.OK);
             debug ("synchronous is OFF");
 
             return 1;//TODO error cases
         }
 
         public bool begin () {
-            return (bool) db.exec ("BEGIN TRANSACTION;");
+            return (bool) db.exec (BEGIN_TRANSACTION);
         }
 
         public bool commit () {
-            return (bool) db.exec ("COMMIT;");
+            return (bool) db.exec (COMMIT_TRANSACTION);
         }
 
         public string[] ? get_folder_uris (int id) {
@@ -112,7 +112,7 @@ namespace Feedler {
         }
 
         public int select_max (string table = "folders") {
-            var stmt = DBHelper.prepare (db, "SELECT MAX(id) FROM :table;");
+            var stmt = DBHelper.prepare (db, SELECT_MAX_ID);
             DBHelper.set_string (stmt, ":table", table);
 
             if (stmt.step () != Sqlite.DONE) {
@@ -132,7 +132,7 @@ namespace Feedler {
             Objects.Channel ch = null;
             Objects.Item it = null;
 
-            var stmt = DBHelper.prepare (db, "SELECT * FROM folders;");
+            var stmt = DBHelper.prepare (db, SELECT_ALL_FOLDERS);
 
             while (stmt.step () == Sqlite.ROW) {
                 print ("FOLDER\n");
@@ -141,7 +141,7 @@ namespace Feedler {
                 fo.name = DBHelper.get_string (stmt, "name");
                 fo.channels = new GLib.List <Objects.Channel?> ();
 
-                var stmt_c = DBHelper.prepare (db, "SELECT * FROM channels WHERE folder = :id;");
+                var stmt_c = DBHelper.prepare (db, SELECT_CHANNELS_FROM_FOLDER);
                 DBHelper.set_int (stmt_c, ":id", fo.id);
 
                 while (stmt_c.step () == Sqlite.ROW) {
@@ -154,7 +154,7 @@ namespace Feedler {
                     ch.folder = fo;
                     ch.items = new GLib.List <Objects.Item?> ();
 
-                    var stmt_i = DBHelper.prepare (db, "SELECT * FROM items WHERE channel = :id;");
+                    var stmt_i = DBHelper.prepare (db, SELECT_ITEMS_FROM_CHANNEL);
                     DBHelper.set_int (stmt_i, ":id", ch.id);
 
                     while (stmt_i.step () == Sqlite.ROW) {
@@ -204,7 +204,6 @@ namespace Feedler {
         public unowned Objects.Channel ? get_channel (string title) {
             foreach (unowned Objects.Folder f in this.data)
                 foreach (unowned Objects.Channel c in f.channels) {
-                    print (title + " -- " + c.title);
                     if (title == c.title) {
                         return c;
                     }
@@ -216,7 +215,6 @@ namespace Feedler {
         public unowned Objects.Channel ? get_channel_from_source (string source) {
             foreach (unowned Objects.Folder f in this.data)
                 foreach (unowned Objects.Channel c in f.channels) {
-                    print (source + " -- " + c.source);
                     if (source == c.source) {
                         return c;
                     }
@@ -283,8 +281,6 @@ namespace Feedler {
         }
 
         public string ? get_channel_uri (string title) {
-            uint i = 0;
-
             foreach (Objects.Folder f in this.data)
                 foreach (Objects.Channel c in f.channels)
                     if (c.title == title) {
@@ -298,7 +294,7 @@ namespace Feedler {
             //TODO try/catch
             //TODO separate sql from objects
             this.begin ();
-            this.db.exec ("UPDATE items SET read = 1 WHERE read = 0;", null, out errmsg);
+            this.db.exec (MARK_ALL_AS_READ, null, out errmsg);
             debug ("ERROR: " + errmsg);
             this.commit ();
 
@@ -317,13 +313,13 @@ namespace Feedler {
         public void mark_channel (string title) {
             var c = this.get_channel (title);
 
-            var stmt = DBHelper.prepare (db, "UPDATE items SET read = :read WHERE channel = :channel_id AND read = 0;");
+            var stmt = DBHelper.prepare (db, MARK_CHANNEL_AS_READ);
             DBHelper.set_int (stmt, ":read", 1);
             DBHelper.set_int (stmt, ":channel_id", c.id);
 
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
-                error ("Failed to rename channel - %d: %s",this.db.errcode (), this.db.errmsg ());
+                error ("Failed mark channel as read - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
             this.commit ();
 
@@ -335,31 +331,31 @@ namespace Feedler {
         }
 
         public void mark_item (int item, bool mark) {
-            var stmt = DBHelper.prepare (db, "UPDATE items SET read = :read WHERE id = :id;");
+            var stmt = DBHelper.prepare (db, MARK_ITEM_AS_READ);
             DBHelper.set_int (stmt, ":read", (int) mark);
             DBHelper.set_int (stmt, ":id", item);
 
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
-                error ("Failed to rename channel - %d: %s",this.db.errcode (), this.db.errmsg ());
+                error ("Failed mark item - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
             this.commit ();
         }
 
         public void star_item (int item, bool star) {
-            var stmt = DBHelper.prepare (db, "UPDATE items SET starred = :starred WHERE id = :id;");
+            var stmt = DBHelper.prepare (db, MARK_ITEM_AS_STARRED);
             DBHelper.set_int (stmt, ":starred", (int) star);
             DBHelper.set_int (stmt, ":id", item);
 
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
-                error ("Failed to rename channel - %d: %s",this.db.errcode (), this.db.errmsg ());
+                error ("Failed star item - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
             this.commit ();
         }
 
         public void rename_channel (string old_name, string new_name) {
-            var stmt = DBHelper.prepare (db, "UPDATE channels SET title = :new_name WHERE title = :old_name;");
+            var stmt = DBHelper.prepare (db, RENAME_CHANNEL);
             DBHelper.set_string (stmt, ":old_name", old_name);
             DBHelper.set_string (stmt, ":new_name", new_name);
 
@@ -372,10 +368,10 @@ namespace Feedler {
 
         public void remove_channel (string name) {
             var c = this.get_channel (name);
-            var stmt = DBHelper.prepare (db, "DELETE FROM channels WHERE title = :title;");
-            DBHelper.set_string (stmt, ":title", name);
+            var stmt = DBHelper.prepare (db, DELETE_CHANNEL);
+            DBHelper.set_int (stmt, ":id", c.id);
 
-            var stmt2 = DBHelper.prepare (db, "DELETE FROM items WHERE channel = :id;");
+            var stmt2 = DBHelper.prepare (db, DELETE_ITEMS_FROM_CHANNEL);
             DBHelper.set_int (stmt, ":id", c.id);
 
             this.begin ();
@@ -390,13 +386,12 @@ namespace Feedler {
         }
 
         public void insert_folder (Serializer.Folder folder) {
-            var stmt = DBHelper.prepare (db, "INSERT INTO folders (name) VALUES (:name);");
-
+            var stmt = DBHelper.prepare (db, INSERT_FOLDER);
             DBHelper.set_string (stmt, ":name", folder.name);
 
             if (stmt.step () != Sqlite.DONE) {
                 //TODO this.roolback ();
-                error ("Failed to insert item - %d: %s",this.db.errcode (), this.db.errmsg ());
+                error ("Failed to insert folder - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
 
             int id = (int) this.db.last_insert_rowid ();
@@ -406,8 +401,7 @@ namespace Feedler {
         }
 
         public unowned Objects.Channel insert_channel (int folder, Serializer.Channel schannel) {
-            var stmt = DBHelper.prepare (db, "INSERT INTO channels (title, source, link, folder) VALUES (:title, :source, :link, :folder);");
-
+            var stmt = DBHelper.prepare (db, INSERT_CHANNEL);
             DBHelper.set_string (stmt, ":title", schannel.title);
             DBHelper.set_string (stmt, ":source", schannel.source);
             DBHelper.set_string (stmt, ":link", schannel.link);
@@ -416,7 +410,7 @@ namespace Feedler {
             this.begin ();
             if (stmt.step () != Sqlite.DONE) {
                 //TODO this.roolback ();
-                error ("Failed to insert item - %d: %s",this.db.errcode (), this.db.errmsg ());
+                error ("Failed to insert channel - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
             this.commit ();
 
@@ -430,8 +424,7 @@ namespace Feedler {
         }
 
         public int insert_item (int channel, Serializer.Item item) {
-            var stmt = DBHelper.prepare (db, "INSERT INTO items (title, source, description, author, time, read, starred, channel) VALUES (:title, :source, :desc, :author, :time, :read, :starred, :channel);");
-
+            var stmt = DBHelper.prepare (db, INSERT_ITEM);
             DBHelper.set_string (stmt, ":title", item.title);
             DBHelper.set_string (stmt, ":source", item.source);
             DBHelper.set_string (stmt, ":desc", item.description);
@@ -502,8 +495,4 @@ namespace Feedler {
             return date;
         }
     }
-
-
-    /* SQLite FUNCTIONS*/
-
 }
