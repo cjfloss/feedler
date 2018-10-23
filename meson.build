@@ -35,6 +35,21 @@ config.set('version_info', version_info)
 config.set('git_branch', git_branch)
 config.set('git_commit_hash', git_commit_hash)
 
+build_config = configure_file(
+    input: 'src/Build.vala.in',
+    output: 'Build.vala',
+    configuration: config
+)
+
+vala_lint = find_program('io.elementary.vala-lint', required : false)
+if vala_lint.found()
+    test (
+        'Vala lint',
+        vala_lint,
+        args: ['-d', join_paths(meson.source_root(), 'src')]
+    )
+endif
+
 service = executable (
     meson.project_name () + '-service',
     'src/Service/Abstract.vala',
@@ -96,6 +111,7 @@ main = executable (
 
     'src/Service/Interface.vala',
     'src/Service/Serializer.vala',
+    build_config,
     dependencies : [
         dependency('glib-2.0', version :'>=2.29'),
         dependency('gtk+-3.0', version :'>=3.14'),

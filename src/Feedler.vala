@@ -16,25 +16,17 @@ public class Feedler.App : Granite.Application {
     private Feedler.Window window = null;
 
     construct {
-        program_name = "Feedler";
-        exec_name = "feedler";
-        app_copyright = "2011-2015";
-        app_years = "2011-2015";
-        app_icon = "internet-news-reader";
-        app_launcher = "feedler.desktop";
-        application_id = "net.launchpad.Feedler";
+        build_data_dir = Build.DATADIR;
+        build_pkg_data_dir = Build.PKG_DATADIR;
+        build_release_name = Build.RELEASE_NAME;
+        build_version = Build.VERSION;
+        build_version_info = Build.VERSION_INFO;
 
-        main_url = "https://launchpad.net/feedler";
-        bug_url = "https://bugs.launchpad.net/feedler";
-        help_url = "https://answers.launchpad.net/feedler";
-        translate_url = "https://translations.launchpad.net/feedler";
+        program_name = _(Build.APP_NAME);
+        exec_name = Build.APP_NAME;
 
-        about_authors = {"Daniel Kur <daniel.m.kur@gmail.com>"};
-        about_documenters = {null};
-        about_artists = {null};
-        about_comments = "<awesome>\n\t<name=\"Feedler\">\n\t<type=\"RSS Reader\">\n</awesome>";
-        about_translators = "Launchpad Translators";
-        about_license_type = Gtk.License.LGPL_2_1;
+        application_id = Build.APP_NAME;
+        app_launcher = Build.APP_NAME + ".desktop";
     }
 
     public void switch_display () {
@@ -54,6 +46,11 @@ public class Feedler.App : Granite.Application {
             window.present_with_time ((uint32)GLib.get_monotonic_time ());
             return;
         }
+
+        Granite.Services.Logger.initialize (Build.APP_NAME);
+        Granite.Services.Logger.DisplayLevel = DEBUG ?
+                Granite.Services.LogLevel.DEBUG :
+                Granite.Services.LogLevel.INFO;
 
         Feedler.STATE = new Feedler.State ();
         Feedler.SETTING = new Feedler.Settings ();
