@@ -58,7 +58,7 @@ public struct Serializer.Item {
     public int time;
 
     public Item.from_model (Objects.Item model) {
-        this.title = model.title ?? "No title";
+        this.title = model.title ?? _("No title");
         this.source = model.source;
         this.author = model.author;
         this.description = model.description ?? "";

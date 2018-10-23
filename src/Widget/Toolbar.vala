@@ -73,6 +73,8 @@ public class Feedler.Toolbar : Gtk.HeaderBar {
         this.mode.append (new Gtk.Image.from_icon_name ("view-column-symbolic", Gtk.IconSize.MENU));
         Gtk.ToolItem mode_item = new Gtk.ToolItem ();
         mode_item.add (mode);
+
+        search.set_placeholder_text (_("Type to Search"));
         Gtk.ToolItem search_item = new Gtk.ToolItem ();
         search_item.add (search);
         this.set_custom_title (progress);
