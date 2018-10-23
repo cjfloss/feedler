@@ -2,692 +2,508 @@
  * database.vala
  *
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
+ * @author Cleiton Floss <cleitonfloss@gmail.com>
  * @see COPYING
  */
 
-public class Feedler.Database : GLib.Object {
-    private SQLHeavy.Database db;
-    private SQLHeavy.Transaction transaction;
-    private SQLHeavy.Query query;
-    private string location;
-    internal GLib.List<Objects.Folder> data;
-    internal GLib.List<unowned Objects.Item> tmp;
+namespace Feedler {
+    public class Database : Object {
+        private Sqlite.Database db;
+        private string db_path;
+        private int db_version;
+        private string user_data_dir;
+        internal GLib.List<Objects.Folder> data;
+        internal GLib.List<unowned Objects.Item> tmp;
+        private string errmsg;
 
-    construct {
-        this.location = GLib.Environment.get_user_data_dir () + "/feedler/feedler.db";
-        this.data = new GLib.List<Objects.Folder> ();
-        this.open ();
-    }
+        construct {
+            user_data_dir = GLib.Environment.get_user_data_dir () + "/feedler";
 
-    public void open () {
-        try {
-            this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE);
-        } catch (SQLHeavy.Error e) {
-            this.db = null;
-            warning ("Cannot find database.\n");
-        }
-    }
+            GLib.DirUtils.create (user_data_dir, 0755);
+            GLib.DirUtils.create (user_data_dir + "/fav", 0755);
 
-    public bool is_created () {
-        if (this.db != null) {
-            return true;
+            this.data = new GLib.List<Objects.Folder> ();
+
+            this.db_path = user_data_dir + "/feedler.db";
+            this.open ();
         }
 
-        return false;
-    }
+        public void open () {
+            if (Sqlite.OK != Sqlite.Database.open_v2 (db_path, out db, Sqlite.OPEN_READWRITE)) {
+                this.db = null;
+                warning ("Failed to open database: %d - %s", db.errcode (), db.errmsg ());
+            }
+        }
 
-    public void create () {
-        try {
-            GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler", 0755);
-            GLib.DirUtils.create (GLib.Environment.get_user_data_dir () + "/feedler/fav", 0755);
-            this.db = new SQLHeavy.Database (location, SQLHeavy.FileMode.READ | SQLHeavy.FileMode.WRITE | SQLHeavy.FileMode.CREATE);
-            db.execute ("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT UNIQUE);");
-            db.execute ("CREATE TABLE channels (id INTEGER PRIMARY KEY, title TEXT UNIQUE, source TEXT, link TEXT, folder INT);");
-            db.execute ("CREATE TABLE items (id INTEGER PRIMARY KEY, title TEXT, source TEXT, author TEXT, description TEXT, time INT, read INT, starred INT, channel INT);");
-        } catch (SQLHeavy.Error e) {
-            this.db = null;
-            warning ("Cannot create new database in " + location + ".");
+        public bool is_created () {
+            return this.db == null ? false : true;
         }
-    }
 
-    public bool begin () {
-        try {
-            this.transaction = db.begin_transaction ();
-            return true;
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot begin transaction.");
-            return false;
-        }
-    }
+        public void create () {
+            if (Sqlite.OK != Sqlite.Database.open_v2 (db_path, out db, Sqlite.OPEN_READWRITE | Sqlite.OPEN_CREATE)) {
+                error ("Failed to open database: %d - %s", db.errcode (), db.errmsg ());
+            }
 
-    public bool commit () {
-        try {
-            this.transaction.commit ();
-            return true;
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot commit transaction.");
-            return false;
-        }
-    }
+            var stmt = DBHelper.prepare (db, "PRAGMA user_version;");
 
-    public string[] ? get_folder_uris (int id) {
-        string[] uri = new string[0];
-        /*foreach (var c in this.data.channels)
-            if (c.folder == id)
-                uri += c.source;*/
-        return uri;
-    }
+	        if (stmt.step () != Sqlite.ROW) {
+		        error ("Failed to get db version: %d - %s", db.errcode (), db.errmsg ());
+	        }
 
-    public unowned Objects.Item ? get_item (int channel, int id) {
-        /*foreach (unowned Objects.Channel ch in this.data.channels)
-            if (ch.id == channel)
-                foreach (unowned Objects.Item it in ch.items)
-                    if (id == it.id)
-                        return it;*/
-        return null;
-    }
+            db_version = stmt.column_int (0);
+            debug ("DATABASE_USER_VERSION: " + db_version.to_string ());
 
-    /*public int add_folder (string title)
-    {
-        try
-        {
-               this.transaction = db.begin_transaction ();
-            query = transaction.prepare ("INSERT INTO `folders` (`name`, `parent`) VALUES (:name, :parent);");
-            query.set_string (":name", title);
-            //query.set_int (":parent", folder.parent);
-            int id = (int)query.execute_insert ();
-            this.transaction.commit ();
-            Objects.Folder f = new Objects.Folder.with_data (id, title, 0);
-            this.folders.append (f);
-            return id;
+            switch (db_version) {
+                case 0:
+                    create_tables ();
+                    break;
+                case 1: //update database
+                    break;
+            }
         }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot insert folder " + title + ".");
-            return 0;
-        }
-    }
 
-    public void update_folder (int id, string title)
-    {
-        try
-        {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE `folders` SET `name`=:name WHERE `id`=:id;");
-            query.set_string (":name", title);
-            query.set_int (":id", id);
-            query.execute_async ();
-            transaction.commit ();
-            Objects.Folder c = this.get_folder_from_id (id);
-            c.name = title;
-        }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot update folder " + title + " with id " + id.to_string () + ".");
-        }
-    }
+        private int create_tables () {
+            assert (this.db != null);
+            debug ("create_tables");
 
-    public void remove_folder (int id)
-    {
-        try
-        {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("DELETE FROM `folders` WHERE `id` = :id;");
-            query.set_int (":id", id);
-            query.execute_async ();
-            query = transaction.prepare ("DELETE FROM `channels` WHERE `folder` = :id;");
-            query.set_int (":id", id);
-            query.execute_async ();
-            query = transaction.prepare ("DELETE FROM `items` WHERE `channel` IN (SELECT id FROM channels WHERE folder=:id);");
-            query.set_int (":id", id);
-            query.execute_async ();
-            transaction.commit ();
-            this.folders.remove (this.get_folder (id));
-        }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot remove channel.");
-        }
-    }
+            this.begin ();
+            assert (db.exec (CREATE_FOLDERS_TABLE, null, out errmsg) == Sqlite.OK);
+            debug ("Creating table folders");
 
-    public int add_channel (string title, string url, int folder)
-    {
-        try
-        {
-            this.transaction = db.begin_transaction ();
-            query = transaction.prepare ("INSERT INTO `channels` (`title`, `source`, `folder`) VALUES (:title, :source, :folder);");
-            query.set_string (":title", title);
-            query.set_string (":source", url);
-            query.set_int (":folder", folder);
-            int id = (int)query.execute_insert ();
-            this.transaction.commit ();
-            Objects.Channel c = new Objects.Channel.with_data (id, title, "", url, get_folder_from_id (folder));
-            //this.data.channels.append (c);
-            return id;
-        }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot insert channel " + title + ".");
-            return 0;
-        }
-    }
+            assert (db.exec (CREATE_CHANNELS_TABLE, null, out errmsg) == Sqlite.OK);
+            debug ("Creating table channels");
 
-    public void update_link (string source, string link)
-    {
-        try
-        {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE `channels` SET `link`=:link WHERE `source`=:source;");
-            query.set_string (":source", source);
-            query.set_string (":link", link);
-            query.execute_async ();
-            transaction.commit ();
-        }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot update channel with source " + source + ".");
-        }
-    }
+            assert (db.exec (CREATE_ITEMS_TABLE, null, out errmsg) == Sqlite.OK);
+            debug ("Creating table items");
+            this.commit ();
 
-    public void update_channel (int id, int folder, string title,  string url)
-    {
-        try
-        {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE `channels` SET `title`=:title, `source`=:url, `folder`=:folder WHERE `id`=:id;");
-            query.set_string (":title", title);
-            query.set_string (":url", url);
-            query.set_int (":folder", folder);
-            query.set_int (":id", id);
-            query.execute_async ();
-            transaction.commit ();
-            Objects.Channel c = this.get_channel (id);
-            c.folder = folder;
-            c.title = title;
-            c.source = url;
-        }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot update channel " + title + " with id " + id.to_string () + ".");
-        }
-    }
+            assert (db.exec ("PRAGMA user_version = 1;", null, out errmsg) == Sqlite.OK);
+            debug ("user_version is 1");
 
-    public void remove_channel (int id)
-    {
-        try
-        {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("DELETE FROM `channels` WHERE `id` = :id;");
-            query.set_int (":id", id);
-            query.execute_async ();
-            query = transaction.prepare ("DELETE FROM `items` WHERE `channel` = :id;");
-            query.set_int (":id", id);
-            query.execute_async ();
-            transaction.commit ();
-            this.channels.remove (this.get_channel (id));
-        }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot remove channel.");
-        }
-    }
+            assert ( db.exec ("PRAGMA synchronous = OFF;", null, out errmsg) == Sqlite.OK);
+            debug ("synchronous is OFF");
 
-    public void mark_folder (int id, Objects.State state = Objects.State.READ)
-    {
-        try
-        {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE `items` SET `state`=:state WHERE `channel` IN (SELECT id FROM channels WHERE folder=:id);");
-            query.set_int (":state", (int)state);
-            query.set_int (":id", id);
-            query.execute_async ();
-            transaction.commit ();
-            foreach (var i in this.channels)
-                if (i.folder == id)
-                    foreach (var j in i.items)
-                        j.state = state;
+            return 1;//TODO error cases
         }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot mark folder " + id.to_string () + ".");
+
+        public bool begin () {
+            return (bool) db.exec ("BEGIN TRANSACTION;");
         }
-    }
 
-    public void mark_channel (int id, Objects.State state = Objects.State.READ)
-    {
-        try
-        {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE `items` SET `state`=:state WHERE `channel`=:id;");
-            query.set_int (":state", (int)state);
-            query.set_int (":id", id);
-            query.execute_async ();
-            transaction.commit ();
-            this.set_channel_state (id, state);
+        public bool commit () {
+            return (bool) db.exec ("COMMIT;");
         }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot mark channel " + id.to_string () + ".");
+
+        public string[] ? get_folder_uris (int id) {
+            string[] uri = new string[0];
+            /*foreach (var c in this.data.channels)
+                if (c.folder == id)
+                    uri += c.source;*/
+            return uri;
         }
-    }*/
 
-    public unowned GLib.List < Objects.Folder ? > select_data () {
-        try {
-            var query = new SQLHeavy.Query (db, "SELECT * FROM folders;");
+        public unowned Objects.Item ? get_item (int channel, int id) {
+            /*foreach (unowned Objects.Channel ch in this.data.channels)
+                if (ch.id == channel)
+                    foreach (unowned Objects.Item it in ch.items)
+                        if (id == it.id)
+                            return it;*/
+            return null;
+        }
 
-            for (var results = query.execute (); !results.finished; results.next ()) {
-                Objects.Folder fo = new Objects.Folder ();
-                fo.id = results.fetch_int (0);
-                fo.name = results.fetch_string (1);
-                fo.channels = new GLib.List < Objects.Channel ? > ();
+        public int select_max (string table = "folders") {
+            var stmt = DBHelper.prepare (db, "SELECT MAX(id) FROM :table;");
+            DBHelper.set_string (stmt, ":table", table);
 
-                var que = new SQLHeavy.Query (db, "SELECT * FROM channels WHERE folder=:id;");
-                que.set_int (":id", fo.id);
+            if (stmt.step () != Sqlite.DONE) {
+                critical ("Failed to select_max - %d: %s",this.db.errcode (), this.db.errmsg ());
+                return -1;
+            }
 
-                for (var res = que.execute (); !res.finished; res.next ()) {
-                    Objects.Channel ch = new Objects.Channel ();
-                    ch.id = res.fetch_int (0);
-                    ch.title = res.fetch_string (1);
-                    ch.source = res.fetch_string (2);
-                    ch.link = res.fetch_string (3);
+            return stmt.column_int (0);
+        }
+
+
+
+
+        public unowned GLib.List <Objects.Folder?> select_data () {
+            assert (db != null);
+            Objects.Folder fo = null;
+            Objects.Channel ch = null;
+            Objects.Item it = null;
+
+            var stmt = DBHelper.prepare (db, "SELECT * FROM folders;");
+
+            while (stmt.step () == Sqlite.ROW) {
+                print ("FOLDER\n");
+                fo = new Objects.Folder ();
+                fo.id = DBHelper.get_int (stmt,"id");
+                fo.name = DBHelper.get_string (stmt, "name");
+                fo.channels = new GLib.List <Objects.Channel?> ();
+
+                var stmt_c = DBHelper.prepare (db, "SELECT * FROM channels WHERE folder = :id;");
+                DBHelper.set_int (stmt_c, ":id", fo.id);
+
+                while (stmt_c.step () == Sqlite.ROW) {
+                    print ("CHANNEL\n");
+                    ch = new Objects.Channel ();
+                    ch.id = DBHelper.get_int (stmt_c,"id");
+                    ch.title = DBHelper.get_string (stmt_c, "title");
+                    ch.source = DBHelper.get_string (stmt_c, "source");
+                    ch.link = DBHelper.get_string (stmt_c, "link");
                     ch.folder = fo;
-                    ch.items = new GLib.List < Objects.Item ? > ();
+                    ch.items = new GLib.List <Objects.Item?> ();
 
-                    var q = new SQLHeavy.Query (db, "SELECT * FROM items WHERE channel=:id;");
-                    q.set_int (":id", ch.id);
+                    var stmt_i = DBHelper.prepare (db, "SELECT * FROM items WHERE channel = :id;");
+                    DBHelper.set_int (stmt_i, ":id", ch.id);
 
-                    for (var r = q.execute (); !r.finished; r.next ()) {
-                        Objects.Item it = new Objects.Item ();
-                        it.id = r.fetch_int (0);
-                        it.title = r.fetch_string (1);
-                        it.source = r.fetch_string (2);
-                        it.author = r.fetch_string (3);
-                        it.description = r.fetch_string (4);
-                        it.time = r.fetch_int (5);
-                        it.read = (bool)r.fetch_int (6);
-                        it.starred = (bool)r.fetch_int (7);
+                    while (stmt_i.step () == Sqlite.ROW) {
+                        print ("ITEM\n");
+                        it = new Objects.Item ();
+                        it.id = DBHelper.get_int (stmt_i, "id");
+                        it.title = DBHelper.get_string (stmt_i, "title");
+                        it.source = DBHelper.get_string (stmt_i, "source");
+                        it.author = DBHelper.get_string (stmt_i, "author");
+                        it.description = DBHelper.get_string (stmt_i, "description");
+                        it.time = DBHelper.get_int (stmt_i, "time");
+                        it.read = (bool) DBHelper.get_int (stmt_i, "read");
+                        it.starred = (bool) DBHelper.get_int (stmt_i, "starred");
                         it.channel = ch;
 
                         if (!it.read) {
                             ch.unread++;
                         }
-
                         ch.items.append (it);
                     }
-
                     fo.channels.append (ch);
                 }
-
                 this.data.append (fo);
+                assert (this.data != null);
             }
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot select all data.");
+            return this.data;
         }
 
-        return data;
-    }
+        public unowned Objects.Folder ? get_folder (string name) {
+            foreach (unowned Objects.Folder f in this.data)
+                if (name == f.name) {
+                    return f;
+                }
 
-    public int select_max (string table = "folders") {
-        try {
-            var query = new SQLHeavy.Query (db, "SELECT MAX(id) FROM %s;".printf (table));
-
-            for (var results = query.execute (); !results.finished; results.next ()) {
-                return results.fetch_int (0);
-            }
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot select index.");
+            return null;
         }
 
-        return -1;
-    }
-
-    public unowned Objects.Folder ? get_folder (string name) {
-        foreach (unowned Objects.Folder f in this.data)
-            if (name == f.name) {
-                return f;
-            }
-
-        return null;
-    }
-
-    public unowned Objects.Folder ? get_folder_from_id (int id) {
-        foreach (unowned Objects.Folder f in this.data)
-            if (id == f.id) {
-                return f;
-            }
-
-        return null;
-    }
-
-    public unowned Objects.Channel ? get_channel (string title) {
-        foreach (unowned Objects.Folder f in this.data)
-            foreach (unowned Objects.Channel c in f.channels)
-                if (title == c.title) {
-                    return c;
+        public unowned Objects.Folder ? get_folder_from_id (int id) {
+            foreach (unowned Objects.Folder f in this.data)
+                if (id == f.id) {
+                    return f;
                 }
 
-        return null;
-    }
+            return null;
+        }
 
-    public unowned Objects.Channel ? get_channel_from_source (string source) {
-        foreach (unowned Objects.Folder f in this.data)
-            foreach (unowned Objects.Channel c in f.channels)
-                if (source == c.source) {
-                    return c;
-                }
-
-        return null;
-    }
-
-    public unowned GLib.List<Objects.Item> get_items (Objects.State state = Objects.State.ALL) {
-        this.tmp = new GLib.List < Objects.Item ? > ();
-        GLib.CompareFunc < Objects.Item ? > timecmp = (a, b) => {
-            return (int)(a.time > b.time) - (int)(a.time < b.time);
-        };
-
-        if (state == Objects.State.ALL) {
-            foreach (Objects.Folder f in this.data)
-                foreach (Objects.Channel c in f.channels)
-                    foreach (Objects.Item i in c.items) {
-                        tmp.insert_sorted (i, timecmp);
+        public unowned Objects.Channel ? get_channel (string title) {
+            foreach (unowned Objects.Folder f in this.data)
+                foreach (unowned Objects.Channel c in f.channels) {
+                    print (title + " -- " + c.title);
+                    if (title == c.title) {
+                        return c;
                     }
-        } else if (state == Objects.State.UNREAD) {
-            foreach (Objects.Folder f in this.data)
-                foreach (Objects.Channel c in f.channels)
-                    foreach (Objects.Item i in c.items)
-                        if (!i.read) {
-                            tmp.insert_sorted (i, timecmp);
-                        }
-        } else if (state == Objects.State.STARRED) {
-            foreach (Objects.Folder f in this.data)
-                foreach (Objects.Channel c in f.channels)
-                    foreach (Objects.Item i in c.items)
-                        if (i.starred) {
-                            tmp.insert_sorted (i, timecmp);
-                        }
-        }
-
-        return tmp;
-    }
-
-    public unowned Objects.Item ? get_item_from_tmp (int id) {
-        foreach (unowned Objects.Item i in this.tmp)
-            if (i.id == id) {
-                return i;
-            }
-
-        return null;
-    }
-
-    public string[] ? get_channels_uri () {
-        uint i = 0;
-
-        foreach (Objects.Folder f in this.data) {
-            i += f.channels.length ();
-        }
-
-        string[] uri = new string[i];
-
-        foreach (Objects.Folder f in this.data)
-            foreach (Objects.Channel c in f.channels) {
-                uri[--i] = c.source;
-            }
-
-        return uri;
-    }
-
-    public string ? get_channel_uri (string title) {
-        uint i = 0;
-
-        foreach (Objects.Folder f in this.data)
-            foreach (Objects.Channel c in f.channels)
-                if (c.title == title) {
-                    return c.source;
                 }
 
-        return null;
-    }
+            return null;
+        }
 
-    public void mark_all () {
-        try {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE items SET read=:state WHERE read=:s;");
-            query.set_int (":state", 1);
-            query.set_int (":s", 0);
-            query.execute_async.begin ();
-            transaction.commit ();
+        public unowned Objects.Channel ? get_channel_from_source (string source) {
+            foreach (unowned Objects.Folder f in this.data)
+                foreach (unowned Objects.Channel c in f.channels) {
+                    print (source + " -- " + c.source);
+                    if (source == c.source) {
+                        return c;
+                    }
+                }
+
+            return null;
+        }
+
+        public unowned GLib.List<Objects.Item> get_items (Objects.State state = Objects.State.ALL) {
+            this.tmp = new GLib.List < Objects.Item ? > ();
+            GLib.CompareFunc < Objects.Item ? > timecmp = (a, b) => {
+                return (int)(a.time > b.time) - (int)(a.time < b.time);
+            };
+
+            if (state == Objects.State.ALL) {
+                foreach (Objects.Folder f in this.data)
+                    foreach (Objects.Channel c in f.channels)
+                        foreach (Objects.Item i in c.items) {
+                            tmp.insert_sorted (i, timecmp);
+                        }
+            } else if (state == Objects.State.UNREAD) {
+                foreach (Objects.Folder f in this.data)
+                    foreach (Objects.Channel c in f.channels)
+                        foreach (Objects.Item i in c.items)
+                            if (!i.read) {
+                                tmp.insert_sorted (i, timecmp);
+                            }
+            } else if (state == Objects.State.STARRED) {
+                foreach (Objects.Folder f in this.data)
+                    foreach (Objects.Channel c in f.channels)
+                        foreach (Objects.Item i in c.items)
+                            if (i.starred) {
+                                tmp.insert_sorted (i, timecmp);
+                            }
+            }
+
+            return tmp;
+        }
+
+        public unowned Objects.Item ? get_item_from_tmp (int id) {
+            foreach (unowned Objects.Item i in this.tmp)
+                if (i.id == id) {
+                    return i;
+                }
+
+            return null;
+        }
+
+        public string[] ? get_channels_uri () {
+            uint i = 0;
+
+            foreach (Objects.Folder f in this.data) {
+                i += f.channels.length ();
+            }
+
+            string[] uri = new string[i];
+
+            foreach (Objects.Folder f in this.data)
+                foreach (Objects.Channel c in f.channels) {
+                    uri[--i] = c.source;
+                }
+
+            return uri;
+        }
+
+        public string ? get_channel_uri (string title) {
+            uint i = 0;
 
             foreach (Objects.Folder f in this.data)
                 foreach (Objects.Channel c in f.channels)
-                    foreach (Objects.Item i in c.items)
+                    if (c.title == title) {
+                        return c.source;
+                    }
+
+            return null;
+        }
+
+        public void mark_all () {
+            //TODO try/catch
+            //TODO separate sql from objects
+            this.begin ();
+            this.db.exec ("UPDATE items SET read = 1 WHERE read = 0;", null, out errmsg);
+            debug ("ERROR: " + errmsg);
+            this.commit ();
+
+            foreach (Objects.Folder f in this.data) {
+                foreach (Objects.Channel c in f.channels) {
+                    foreach (Objects.Item i in c.items) {
                         if (!i.read) {
                             i.read = true;
                         }
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot mark all channels.");
+                    }
+                }
+            }
+
         }
-    }
 
-    public void mark_channel (string title) {
-        try {
+        public void mark_channel (string title) {
             var c = this.get_channel (title);
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE items SET read=:read WHERE channel=:id AND read=:unread;");
-            query.set_int (":read", 1);
-            query.set_int (":id", c.id);
-            query.set_int (":unread", 0);
-            query.execute_async.begin ();
-            transaction.commit ();
 
-            foreach (Objects.Item i in c.items)
+            var stmt = DBHelper.prepare (db, "UPDATE items SET read = :read WHERE channel = :channel_id AND read = 0;");
+            DBHelper.set_int (stmt, ":read", 1);
+            DBHelper.set_int (stmt, ":channel_id", c.id);
+
+            this.begin ();
+            if (stmt.step () != Sqlite.DONE) {
+                error ("Failed to rename channel - %d: %s",this.db.errcode (), this.db.errmsg ());
+            }
+            this.commit ();
+
+            foreach (Objects.Item i in c.items) {
                 if (!i.read) {
                     i.read = true;
                 }
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot mark channel " + title + ".");
+            }
         }
-    }
 
-    public void mark_item (int item, bool mark) {
-        try {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE items SET read=:state WHERE id=:id;");
-            query.set_int (":state", (int)mark);
-            query.set_int (":id", item);
-            query.execute_async.begin ();
-            transaction.commit ();
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot mark item " + item.to_string () + ".");
+        public void mark_item (int item, bool mark) {
+            var stmt = DBHelper.prepare (db, "UPDATE items SET read = :read WHERE id = :id;");
+            DBHelper.set_int (stmt, ":read", (int) mark);
+            DBHelper.set_int (stmt, ":id", item);
+
+            this.begin ();
+            if (stmt.step () != Sqlite.DONE) {
+                error ("Failed to rename channel - %d: %s",this.db.errcode (), this.db.errmsg ());
+            }
+            this.commit ();
         }
-    }
 
-    public void star_item (int item, bool star) {
-        try {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE items SET starred=:state WHERE id=:id;");
-            query.set_int (":state", (int)star);
-            query.set_int (":id", item);
-            query.execute_async.begin ();
-            transaction.commit ();
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot mark item " + item.to_string () + ".");
+        public void star_item (int item, bool star) {
+            var stmt = DBHelper.prepare (db, "UPDATE items SET starred = :starred WHERE id = :id;");
+            DBHelper.set_int (stmt, ":starred", (int) star);
+            DBHelper.set_int (stmt, ":id", item);
+
+            this.begin ();
+            if (stmt.step () != Sqlite.DONE) {
+                error ("Failed to rename channel - %d: %s",this.db.errcode (), this.db.errmsg ());
+            }
+            this.commit ();
         }
-    }
 
-    public void rename_channel (string old_name, string new_name) {
-        try {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("UPDATE channels SET title=:new WHERE title=:old;");
-            query.set_string (":old", old_name);
-            query.set_string (":new", new_name);
-            query.execute_async.begin ();
-            transaction.commit ();
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot rename channel " + old_name + " to " + new_name + ".");
+        public void rename_channel (string old_name, string new_name) {
+            var stmt = DBHelper.prepare (db, "UPDATE channels SET title = :new_name WHERE title = :old_name;");
+            DBHelper.set_string (stmt, ":old_name", old_name);
+            DBHelper.set_string (stmt, ":new_name", new_name);
+
+            this.begin ();
+            if (stmt.step () != Sqlite.DONE) {
+                error ("Failed to rename channel - %d: %s",this.db.errcode (), this.db.errmsg ());
+            }
+            this.commit ();
         }
-    }
 
-    public void remove_channel (string name) {
-        try {
+        public void remove_channel (string name) {
             var c = this.get_channel (name);
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("DELETE FROM channels WHERE title=:name;");
-            query.set_string (":name", name);
-            query.execute_async.begin ();
-            query = transaction.prepare ("DELETE FROM items WHERE channel = :id;");
-            query.set_int (":id", c.id);
-            query.execute_async.begin ();
-            transaction.commit ();
+            var stmt = DBHelper.prepare (db, "DELETE FROM channels WHERE title = :title;");
+            DBHelper.set_string (stmt, ":title", name);
+
+            var stmt2 = DBHelper.prepare (db, "DELETE FROM items WHERE channel = :id;");
+            DBHelper.set_int (stmt, ":id", c.id);
+
+            this.begin ();
+            if (stmt.step () != Sqlite.DONE) {
+                error ("Failed to delete channel - %d: %s",this.db.errcode (), this.db.errmsg ());
+            }
+            if (stmt2.step () != Sqlite.DONE) {
+                error ("Failed to delete item - %d: %s",this.db.errcode (), this.db.errmsg ());
+            }
+            this.commit ();
             c.folder.channels.remove (c);
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot remove channel " + name  + ".");
         }
-    }
 
-    public void insert_folder (Serializer.Folder folder)
-    //public void insert_folder (string name)
-    {
-        try {
-            //transaction = db.begin_transaction ();
-            query = transaction.prepare ("INSERT INTO folders (name) VALUES (:name);");
-            query.set_string (":name", folder.name);
-            query.execute_async.begin ();
-            //int id = (int)query.execute_insert ();
-            //transaction.commit ();
-            //Objects.Folder f = new Objects.Folder.with_data (id, name);
-            //this.data.append (f);
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot insert folder " + folder.name + ".");
+        public void insert_folder (Serializer.Folder folder) {
+            var stmt = DBHelper.prepare (db, "INSERT INTO folders (name) VALUES (:name);");
+
+            DBHelper.set_string (stmt, ":name", folder.name);
+
+            if (stmt.step () != Sqlite.DONE) {
+                //TODO this.roolback ();
+                error ("Failed to insert item - %d: %s",this.db.errcode (), this.db.errmsg ());
+            }
+
+            int id = (int) this.db.last_insert_rowid ();
+
+            Objects.Folder ff = new Objects.Folder.with_data (id, folder.name);
+            this.data.append (ff);
         }
-    }
 
-    public unowned Objects.Channel insert_channel (int folder, Serializer.Channel schannel) {
-        //mialobyc bez tranzakcji, poniewaz jest obslugiwana z poziomu managera w celu dodawania pozycji wsadowo!
-        try {
-            transaction = db.begin_transaction ();
-            query = transaction.prepare ("INSERT INTO channels (title, source, link, folder) VALUES (:title, :source, :link, :folder);");
-            query.set_string (":title", schannel.title);
-            query.set_string (":source", schannel.source);
-            query.set_string (":link", schannel.link);
-            query.set_int (":folder", folder);
-            int id = (int)query.execute_insert ();
-            transaction.commit ();
+        public unowned Objects.Channel insert_channel (int folder, Serializer.Channel schannel) {
+            var stmt = DBHelper.prepare (db, "INSERT INTO channels (title, source, link, folder) VALUES (:title, :source, :link, :folder);");
+
+            DBHelper.set_string (stmt, ":title", schannel.title);
+            DBHelper.set_string (stmt, ":source", schannel.source);
+            DBHelper.set_string (stmt, ":link", schannel.link);
+            DBHelper.set_int (stmt, ":folder", folder);
+
+            this.begin ();
+            if (stmt.step () != Sqlite.DONE) {
+                //TODO this.roolback ();
+                error ("Failed to insert item - %d: %s",this.db.errcode (), this.db.errmsg ());
+            }
+            this.commit ();
+
+            int id = (int) this.db.last_insert_rowid ();
+
             unowned Objects.Folder f = this.get_folder_from_id (folder);
             Objects.Channel c = new Objects.Channel.with_data (id, schannel.title, schannel.link, schannel.source, f);
             f.channels.append (c);
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot insert channel " + schannel.title + ".");
+
+            return this.get_channel (schannel.title);
         }
 
-        return this.get_channel (schannel.title);
-    }
+        public int insert_item (int channel, Serializer.Item item) {
+            var stmt = DBHelper.prepare (db, "INSERT INTO items (title, source, description, author, time, read, starred, channel) VALUES (:title, :source, :desc, :author, :time, :read, :starred, :channel);");
 
-    /*public int insert_serialized_folder (Serializer.Folder folder)
-    {
-        try
-        {
-            query = transaction.prepare ("INSERT INTO folders (name) VALUES (:name);");
-            query.set_string (":name", folder.name);
-            int id = (int)(query.execute_insert ());
-            return id;
-        }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot insert folder " + folder.name  + ".");
-            return 0;
-        }
-    }
+            DBHelper.set_string (stmt, ":title", item.title);
+            DBHelper.set_string (stmt, ":source", item.source);
+            DBHelper.set_string (stmt, ":desc", item.description);
+            DBHelper.set_string (stmt, ":author", item.author);
+            DBHelper.set_int (stmt, ":time", item.time);
+            DBHelper.set_int (stmt, ":read", 0);
+            DBHelper.set_int (stmt, ":starred", 0);
+            DBHelper.set_int (stmt, ":channel", channel);
 
-    public int insert_serialized_channel (int folder, Serializer.Channel channel)
-    {
-        try
-        {
-            query = transaction.prepare ("INSERT INTO channels (title, source, link, folder) VALUES (:title, :source, :link, :folder);");
-            query.set_string (":title", channel.title);
-            query.set_string (":source", channel.source);
-            query.set_string (":link", channel.link);
-            query.set_int (":folder", folder);
-            int id = (int)(query.execute_insert ());
-            return id;
-        }
-        catch (SQLHeavy.Error e)
-        {
-            warning ("Cannot insert channel " + channel.title  + ".");
-            return 0;
-        }
-    }*/
-
-    public int insert_item (int channel, Serializer.Item item) {
-        try {
-            query = transaction.prepare ("INSERT INTO items (title, source, description, author, time, read, starred, channel) VALUES (:title, :source, :description, :author, :time, :read, :starred, :channel);");
-            query.set_string (":title", item.title);
-            query.set_string (":source", item.source);
-            query.set_string (":author", item.author);
-            query.set_string (":description", item.description);
-            query.set_int (":time", item.time);
-            query.set_int (":read", 0);
-            query.set_int (":starred", 0);
-            query.set_int (":channel", channel);
-            int id = (int)query.execute_insert ();
-            return id;
-        } catch (SQLHeavy.Error e) {
-            warning ("Cannot insert item " + item.title + ".");
-            return 0;
-        }
-    }
-
-    public string export_to_opml () {
-        //Gee.Map<int, Xml.Node*> folder_node = new Gee.HashMap<int, Xml.Node*> ();
-        Xml.Doc* doc = new Xml.Doc("1.0");
-        /*Xml.Node* opml = doc->new_node (null, "opml", null);
-        opml->new_prop ("version", "1.0");
-        doc->set_root_element (opml);
-
-        Xml.Node* head = new Xml.Node (null, "head");
-        Xml.Node* h_title = doc->new_node (null, "title", "Feedler News Reader");
-        Xml.Node* h_date = doc->new_node (null, "dateCreated", created_time ());
-        head->add_child (h_title);
-        head->add_child (h_date);
-        opml->add_child (head);
-
-        Xml.Node* body = new Xml.Node (null, "body");
-        foreach (Objects.Folder folder in this.folders)
-        {
-            Xml.Node* outline = new Xml.Node (null, "outline");
-            outline->new_prop ("title", folder.name);
-            outline->new_prop ("type", "folder");
-
-            folder_node.set (folder.id, outline);
-            body->add_child (outline);
-        }
-        foreach (Objects.Channel channel in this.channels)
-        {
-            Xml.Node* outline = new Xml.Node (null, "outline");
-            outline->new_prop ("text", channel.title);
-            outline->new_prop ("type", "rss");
-            outline->new_prop ("xmlUrl", channel.source);
-            outline->new_prop ("htmlUrl", channel.link);
-            if (channel.folder > 0)
-            {
-                Xml.Node* folder = folder_node.get (channel.folder);
-                folder->add_child (outline);
+            if (stmt.step () != Sqlite.DONE) {
+                error ("Failed to insert item - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
-            else
-                body->add_child (outline);
+            return (int) this.db.last_insert_rowid ();
         }
-        opml->add_child (body);*/
 
-        string xmlstr;
-        int n;
-        doc->dump_memory (out xmlstr, out n);
-        return xmlstr;
+        public string export_to_opml () {
+            //Gee.Map<int, Xml.Node*> folder_node = new Gee.HashMap<int, Xml.Node*> ();
+            Xml.Doc* doc = new Xml.Doc("1.0");
+            /*Xml.Node* opml = doc->new_node (null, "opml", null);
+            opml->new_prop ("version", "1.0");
+            doc->set_root_element (opml);
+
+            Xml.Node* head = new Xml.Node (null, "head");
+            Xml.Node* h_title = doc->new_node (null, "title", "Feedler News Reader");
+            Xml.Node* h_date = doc->new_node (null, "dateCreated", created_time ());
+            head->add_child (h_title);
+            head->add_child (h_date);
+            opml->add_child (head);
+
+            Xml.Node* body = new Xml.Node (null, "body");
+            foreach (Objects.Folder folder in this.folders)
+            {
+                Xml.Node* outline = new Xml.Node (null, "outline");
+                outline->new_prop ("title", folder.name);
+                outline->new_prop ("type", "folder");
+
+                folder_node.set (folder.id, outline);
+                body->add_child (outline);
+            }
+            foreach (Objects.Channel channel in this.channels)
+            {
+                Xml.Node* outline = new Xml.Node (null, "outline");
+                outline->new_prop ("text", channel.title);
+                outline->new_prop ("type", "rss");
+                outline->new_prop ("xmlUrl", channel.source);
+                outline->new_prop ("htmlUrl", channel.link);
+                if (channel.folder > 0)
+                {
+                    Xml.Node* folder = folder_node.get (channel.folder);
+                    folder->add_child (outline);
+                }
+                else
+                    body->add_child (outline);
+            }
+            opml->add_child (body);*/
+
+            string xmlstr;
+            int n;
+            doc->dump_memory (out xmlstr, out n);
+            return xmlstr;
+        }
+
+        private string created_time () {
+            string currentLocale = GLib.Intl.setlocale(GLib.LocaleCategory.TIME, null);
+            GLib.Intl.setlocale(GLib.LocaleCategory.TIME, "C");
+            string date = GLib.Time.gm (time_t ()).format ("%a, %d %b %Y %H:%M:%S %z");
+            GLib.Intl.setlocale(GLib.LocaleCategory.TIME, currentLocale);
+            return date;
+        }
     }
 
-    private string created_time () {
-        string currentLocale = GLib.Intl.setlocale(GLib.LocaleCategory.TIME, null);
-        GLib.Intl.setlocale(GLib.LocaleCategory.TIME, "C");
-        string date = GLib.Time.gm (time_t ()).format ("%a, %d %b %Y %H:%M:%S %z");
-        GLib.Intl.setlocale(GLib.LocaleCategory.TIME, currentLocale);
-        return date;
-    }
+
+    /* SQLite FUNCTIONS*/
+
 }
