@@ -39,14 +39,19 @@ service = executable (
     meson.project_name () + '-service',
     'src/Service/Abstract.vala',
     'src/Service/Backend-xml.vala',
-    'src/Service/Model.vala',
+
+    'src/Objects/Channel.vala',
+    'src/Objects/Folder.vala',
+    'src/Objects/Item.vala',
+    'src/Objects/State.vala',
+
     'src/Service/Serializer.vala',
     'src/Service/Service.vala',
     'src/Service/Settings.vala',
     dependencies : [
         dependency('libnotify'),
         dependency('granite', version :'>=0.3.0'),
-        dependency('sqlite3'),
+        #dependency('sqlite3'),
         dependency('libsoup-2.4'),
         dependency('libxml-2.0'),
         meson.get_compiler('vala').find_library('posix'),
@@ -57,7 +62,14 @@ service = executable (
 
 main = executable (
     meson.project_name (),
+    'src/Database/DBHelper.vala',
+    'src/Database/Queries.vala',
     'src/Database/Database.vala',
+
+    'src/Objects/Channel.vala',
+    'src/Objects/Folder.vala',
+    'src/Objects/Item.vala',
+    'src/Objects/State.vala',
 
     'src/Dock.vala',
     'src/Feedler.vala',
@@ -83,7 +95,6 @@ main = executable (
     'src/Widget/ViewWeb.vala',
 
     'src/Service/Interface.vala',
-    'src/Service/Model.vala',
     'src/Service/Serializer.vala',
     dependencies : [
         dependency('glib-2.0', version :'>=2.29'),
