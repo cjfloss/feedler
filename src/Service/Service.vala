@@ -33,7 +33,7 @@ public class Feedler.Service : Object {
 
     public void favicon (string uri) {
         warning ("Feedler.Service.favicon (" + uri + ")");
-        Soup.Message msg = new Soup.Message("GET", "http://www.google.com/s2/favicons?domain=" + uri);
+        Soup.Message msg = new Soup.Message ("GET", "http://www.google.com/s2/favicons?domain=" + uri);
         this.backend.session.queue_message (msg, favicon_func);
     }
 

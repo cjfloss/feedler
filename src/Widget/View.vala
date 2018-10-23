@@ -30,6 +30,14 @@ public abstract class Feedler.View : Gtk.VBox {
     public abstract bool contract ();
 
     protected string generate_style (string title_color, string time_color, string content_color, string link_color) {
-        return """<!DOCTYPE HTML><style>.title{color:%s;} .time{color:%s;} .content{color:%s;} a,a:link,a:visited{color:%s;}</style>""".printf (title_color, time_color, content_color, link_color);
+        return """
+        <!DOCTYPE HTML>
+            <style>
+                .title{color:%s;}
+                .time{color:%s;}
+                .content{color:%s;}
+                a,a:link,a:visited{color:%s;}
+            </style>
+        """.printf (title_color, time_color, content_color, link_color);
     }
 }

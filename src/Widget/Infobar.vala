@@ -56,7 +56,8 @@ public class Feedler.RenameTask : Feedler.Task {
     private unowned Objects.Channel channel;
     private string name;
 
-    public RenameTask (Feedler.Database db, Granite.Widgets.SourceList.Item item, Objects.Channel channel, string old_name) {
+    public RenameTask (Feedler.Database db, Granite.Widgets.SourceList.Item item,
+                       Objects.Channel channel, string old_name) {
         this.db = db;
         this.item = item;
         this.channel = channel;

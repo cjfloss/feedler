@@ -7,7 +7,7 @@
 
 void main () {
     /* Needed only if your client is listening to signals; you can omit it otherwise */
-    var loop = new MainLoop();
+    var loop = new MainLoop ();
 
     /* Important: keep demo variable out of try/catch scope not lose signals! */
     Feedler.Client demo = null;
@@ -43,7 +43,7 @@ void main () {
         //demo.update_all ();
 
         GLib.Timeout.add_seconds (10, () => {
-            demo.stop();
+            demo.stop ();
             warning ("Sending stop call.");
             loop.quit ();
             return false;

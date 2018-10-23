@@ -22,8 +22,8 @@ public class Feedler.SidebarCell : Gtk.CellRenderer {
         cr.move_to (x + radius, y);
         cr.arc (x + w - radius, y + radius, radius, GLib.Math.PI * 1.5, GLib.Math.PI * 2);
         cr.arc (x + w - radius, y + h - radius, radius, 0, GLib.Math.PI * 0.5);
-        cr.arc (x + radius,   y + h - radius, radius, GLib.Math.PI * 0.5, GLib.Math.PI);
-        cr.arc (x + radius,   y + radius,   radius, GLib.Math.PI, GLib.Math.PI * 1.5);
+        cr.arc (x + radius, y + h - radius, radius, GLib.Math.PI * 0.5, GLib.Math.PI);
+        cr.arc (x + radius, y + radius, radius, GLib.Math.PI, GLib.Math.PI * 1.5);
     }
 
     static double get_layout_width (Pango.Layout layout) {
@@ -33,8 +33,8 @@ public class Feedler.SidebarCell : Gtk.CellRenderer {
     }
 
     static double get_layout_height (Pango.Layout layout) {
-        Pango.Rectangle rect = Pango.Rectangle();
-        layout.get_extents(out rect, null);
+        Pango.Rectangle rect = Pango.Rectangle ();
+        layout.get_extents (out rect, null);
         return Pango.units_to_double (rect.height);
     }
 
@@ -52,13 +52,14 @@ public class Feedler.SidebarCell : Gtk.CellRenderer {
                                  Gtk.CellRendererState flags) {
         Pango.Layout ? layout = null;
         Gtk.StyleContext style = widget.get_style_context ();
-        Gdk.RGBA color_normal = style.get_color ((flags & Gtk.CellRendererState.FOCUSED) > 0 ? Gtk.StateFlags.SELECTED : Gtk.StateFlags.NORMAL);
+        Gdk.RGBA color_normal = style.get_color ((flags & Gtk.CellRendererState.FOCUSED) > 0 ?
+                                                    Gtk.StateFlags.SELECTED : Gtk.StateFlags.NORMAL);
         Gdk.RGBA color_insensitive = style.get_color (Gtk.StateFlags.INSENSITIVE);
         color_insensitive.alpha = 0.5;
         Gdk.RGBA color_selected = style.get_color (Gtk.StateFlags.SELECTED);
         Gdk.RGBA color_unread = style.get_color (Gtk.StateFlags.ACTIVE);
         Pango.FontDescription font_medium = widget.get_pango_context ().get_font_description ();
-        font_medium.set_size (Pango.units_from_double (Pango.units_to_double (font_medium.get_size()) - 2));
+        font_medium.set_size (Pango.units_from_double (Pango.units_to_double (font_medium.get_size ()) - 2));
         Pango.FontDescription font_bold = widget.get_pango_context ().get_font_description ();
         font_bold.set_weight (Pango.Weight.BOLD);
 

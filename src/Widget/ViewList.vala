@@ -116,7 +116,8 @@ public class Feedler.ViewList : Feedler.View {
         try {
             if (this.selected != null) {
                 var path = GLib.Environment.get_tmp_dir () + "/feedler.html";
-                GLib.StringBuilder item = new GLib.StringBuilder (generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
+                GLib.StringBuilder item = new GLib.StringBuilder (
+                    generate_style ("rgb(77,77,77)", "rgb(113,113,113)", "rgb(77,77,77)", "rgb(0,136,205)"));
                 item.append ("<div class='item'><span class='title'>" + selected.subject + "</span><br/>");
                 item.append ("<span class='time'>" + selected.date + ", by " + selected.author + "</span><br/>");
                 item.append ("<span class='content'>" + selected.text + "</span></div><br/>");

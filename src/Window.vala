@@ -30,7 +30,9 @@ public class Feedler.Window : Gtk.Window {
         this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         this.ui_layout ();
         this.set_default_size (Feedler.STATE.window_width, Feedler.STATE.window_height);
-        Granite.Widgets.Utils.set_theming_for_screen (this.get_screen (), """@define-color colorPrimary #FD9300;""", Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+        Granite.Widgets.Utils.set_theming_for_screen (this.get_screen (),
+                                """@define-color colorPrimary #FD9300;""",
+                                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         if (this.db.is_created ()) {
             this.ui_feeds ();
@@ -46,13 +48,11 @@ public class Feedler.Window : Gtk.Window {
         try {
             client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
                                          "/org/example/feedler");
-            /*client.iconed.connect (favicon_cb);
-            client.added.connect (added_cb);
-            client.updated.connect (updated_cb);*/
             client.imported.connect ((f) => {
                 this.manager.import.begin (f, (o, r) => {
                     if (this.manager.end ()) {
-                        this.notification ("%i %s".printf (this.manager.news, ngettext (_("new feed"), _("new feeds"), this.manager.news)));
+                        this.notification ("%i %s".printf (this.manager.news,
+                                ngettext (_("new feed"), _("new feeds"), this.manager.news)));
                     }
 
                     this.load_sidebar ();
@@ -62,19 +62,12 @@ public class Feedler.Window : Gtk.Window {
             client.updated.connect ((c) => {
                 this.manager.update.begin (c, (o, r) => {
                     if (this.manager.end ()) {
-                        this.notification ("%i %s".printf (this.manager.news, ngettext (_("new feed"), _("new feeds"), this.manager.news)));
+                        this.notification ("%i %s".printf (this.manager.news,
+                                ngettext (_("new feed"), _("new feeds"), this.manager.news)));
                     }
-
-                    //this.notification ("%i %s".printf (this.manager.news, (this.manager.news > 1) ? _("new feeds") : _("new feed")));
-                    //this.load_sidebar ();
-                    //var result = this.manager.update.end (r);
                 });
             });
             warning (client.ping ());
-            //TODO nie widzi w DBus, chyba nie am czegos aktualnego..
-            //Serializer.Folder[] data = client.get_data ();
-
-            //this.infobar.info (new Feedler.ConnectedTask ());
         } catch (GLib.Error e) {
             warning (e.message);
             this.infobar.warning (new Feedler.ReconnectTask (this.try_connect));
@@ -83,24 +76,15 @@ public class Feedler.Window : Gtk.Window {
 
     private void ui_layout () {
         this.toolbar = new Feedler.Toolbar ();
-        this.set_titlebar (toolbar);
-        //this.toolbar.mode.selected = Feedler.STATE.view_mode;
-        //this.content.pack_start (toolbar, false, false, 0);
         this.toolbar.update.clicked.connect (update_subscription);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.mode.selected = Feedler.STATE.view_mode;
         this.toolbar.search.activate.connect (item_search);
-        /*this.toolbar.sharemenu.clicked.connect (() =>
-        {
-            if (this.view.contract ())
-                this.toolbar.sharemenu.switch_state (true);
-            else
-                this.toolbar.sharemenu.switch_state (false);
-        });
-        this.toolbar.sharemenu.export.activate.connect (_export);*/
         this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
         this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
+
+        this.set_titlebar (toolbar);
 
         this.infobar = new Feedler.Infobar ();
         this.content.pack_start (infobar, false, false, 0);
@@ -119,7 +103,7 @@ public class Feedler.Window : Gtk.Window {
         this.layout.init_views ();
         this.view = (Feedler.View)layout.get_nth_page (1);
         this.layout.list.item_marked.connect (item_mark);
-        //this.layout.web.item_marked.connect (item_mark);
+        this.layout.web.item_marked.connect (item_mark);
 
         this.stat = new Feedler.Statusbar ();
         this.stat.add_feed.folder.activate.connect (add_folder);
@@ -192,7 +176,9 @@ public class Feedler.Window : Gtk.Window {
         Feedler.SidebarItem channel = null;
 
         if (GLib.FileUtils.test (path, GLib.FileTest.EXISTS)) {
-            channel = new Feedler.SidebarItem (c.title, new GLib.FileIcon (GLib.File.new_for_path (path)), c.unread, true);
+            channel = new Feedler.SidebarItem (c.title,
+                                               new GLib.FileIcon (GLib.File.new_for_path (path)),
+                                               c.unread, true);
         } else {
             channel = new Feedler.SidebarItem (c.title, Feedler.Icons.RSS, c.unread, true);
         }

@@ -95,7 +95,9 @@ namespace Feedler {
 
                     foreach (var i in reverse) {
                         int id = this.window.db.insert_item (ch.id, i);
-                        Objects.Item it = new Objects.Item.with_data (id, i.title, i.source, i.author, i.description, i.time, ch);
+                        Objects.Item it = new Objects.Item.with_data ( id,
+                                i.title, i.source, i.author, i.description,
+                                i.time, ch);
                         ch.items.append ((owned)it);
                     }
 
@@ -160,8 +162,6 @@ namespace Feedler {
                 }
 
                 this.window.db.commit ();
-                /*if (this.end ())
-                    this.window.notification (_("Imported %i channels in %i folders.").printf (count, this.folders.length ()));*/
                 Idle.add ((owned)callback);
                 return null;
             };

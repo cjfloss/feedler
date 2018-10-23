@@ -11,9 +11,13 @@ public class Feedler.Statusbar : Gtk.Statusbar {
     internal Feedler.StatusButton next_feed;
 
     public Statusbar () {
-        this.add_feed = new Feedler.StatusMenuButton (new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.MENU), _("Add new.."));
-        this.mark_feed = new Feedler.StatusButton (new Gtk.Image.from_gicon (Feedler.Icons.MARK, Gtk.IconSize.MENU), _("Mark all items as read"));
-        this.next_feed = new Feedler.StatusButton (new Gtk.Image.from_icon_name ("go-next-symbolic", Gtk.IconSize.MENU), _("Go to the channel with unread items"));
+        this.add_feed = new Feedler.StatusMenuButton (
+                new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.MENU), _("Add new.."));
+        this.mark_feed = new Feedler.StatusButton (
+                new Gtk.Image.from_gicon (Feedler.Icons.MARK, Gtk.IconSize.MENU), _("Mark all items as read"));
+        this.next_feed = new Feedler.StatusButton (
+                new Gtk.Image.from_icon_name ("go-next-symbolic", Gtk.IconSize.MENU),
+                                            _("Go to the channel with unread items"));
         this.pack_start (add_feed);
         this.pack_start (mark_feed);
         this.pack_start (next_feed);
@@ -24,7 +28,7 @@ public class Feedler.Statusbar : Gtk.Statusbar {
         uint context_id = this.get_context_id ("example");
         if (count > 0) {
             string description = count > 1 ? _("unread feeds") : _("unread feed");
-		        this.push (context_id, "%u %s".printf (count, description));
+                this.push (context_id, "%u %s".printf (count, description));
         } else {
             this.push (context_id, "");
         }

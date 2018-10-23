@@ -14,11 +14,11 @@ public enum BACKENDS {
             case XML:
                 return GLib.Type.from_name (typeof (BackendXml).name ());
 
-            case READER:
-                return GLib.Type.from_name (typeof (BackendXml).name ());//TODO: Reader
+            case READER://TODO: Reader
+                return GLib.Type.from_name (typeof (BackendXml).name ());
 
             default:
-                assert_not_reached();
+                assert_not_reached ();
         }
     }
 
@@ -31,7 +31,7 @@ public enum BACKENDS {
                 return "Google Reader";
 
             default:
-                assert_not_reached();
+                assert_not_reached ();
         }
     }
 }

@@ -27,8 +27,10 @@ public class Feedler.ViewCell : Gtk.CellRenderer {
                                  Gtk.CellRendererState flags) {
         Pango.Layout ? layout = null;
         Gtk.StyleContext style = widget.get_style_context ();
-        Gdk.RGBA color_subject = style.get_color ((flags & Gtk.CellRendererState.FOCUSED) > 0 ? Gtk.StateFlags.SELECTED : Gtk.StateFlags.NORMAL);
-        Gdk.RGBA color_desc = style.get_color ((flags & Gtk.CellRendererState.FOCUSED) > 0 ? Gtk.StateFlags.SELECTED : Gtk.StateFlags.INSENSITIVE);
+        Gdk.RGBA color_subject = style.get_color ((flags & Gtk.CellRendererState.FOCUSED) > 0 ?
+                                                    Gtk.StateFlags.SELECTED : Gtk.StateFlags.NORMAL);
+        Gdk.RGBA color_desc = style.get_color ((flags & Gtk.CellRendererState.FOCUSED) > 0 ?
+                                                    Gtk.StateFlags.SELECTED : Gtk.StateFlags.INSENSITIVE);
         Pango.FontDescription font_desc = widget.get_pango_context ().get_font_description ();
         font_desc.set_size (Pango.units_from_double (Pango.units_to_double (font_desc.get_size ()) - 2));
 
