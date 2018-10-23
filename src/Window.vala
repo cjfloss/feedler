@@ -499,6 +499,17 @@ public class Feedler.Window : Gtk.Window {
         }
     }
 
+    private void create_folder_cb (int id, string name) {
+        this.db.begin ();
+        Serializer.Folder f = Serializer.Folder ();
+        f.name = name;
+        this.db.insert_folder (f);
+        this.db.commit ();
+
+        var _folder = new Granite.Widgets.SourceList.ExpandableItem (f.name);
+        this.side.root.add (_folder);
+    }
+
     private void import_subscription () {
         var file = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN,
                                               "gtk-cancel", Gtk.ResponseType.CANCEL,
