@@ -21,13 +21,13 @@ public class Feedler.Statusbar : Gtk.Statusbar {
     }
 
     public void counter (uint count) {
+        uint context_id = this.get_context_id ("example");
         if (count > 0) {
             string description = count > 1 ? _("unread feeds") : _("unread feed");
-            //this.set_text ("%u %s".printf (count, description));
+		        this.push (context_id, "%u %s".printf (count, description));
+        } else {
+            this.push (context_id, "");
         }
-
-        //else
-        //this.set_text ("");
     }
 }
 
