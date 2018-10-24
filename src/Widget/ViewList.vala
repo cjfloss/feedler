@@ -263,7 +263,7 @@ public class Feedler.ViewList : Feedler.View {
 
             if (e.button == 3) {
                 this.viewmenu.select_mark (selected.read, selected.starred);
-                this.viewmenu.popup (null, null, null, e.button, e.time);
+                this.viewmenu.popup_at_pointer (e);
             } else if (e.button == 1) {
                 this.load_item ();
             }

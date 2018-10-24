@@ -71,7 +71,7 @@ private class Feedler.StatusMenuButton : Gtk.EventBox {
 
     public override bool button_press_event (Gdk.EventButton event) {
         if (event.type == Gdk.EventType.BUTTON_PRESS) {
-            menu.popup (null, null, null, Gdk.BUTTON_SECONDARY, event.time);
+            menu.popup_at_pointer (event);
             return true;
         }
 
