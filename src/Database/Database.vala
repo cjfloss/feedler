@@ -65,12 +65,10 @@ namespace Feedler {
             debug ("Creating Tables…");
             assert (this.db != null);
 
-            this.begin ();
             assert (db.exec (CREATE_FOLDERS_TABLE) == Sqlite.OK);
             assert (db.exec (CREATE_CHANNELS_TABLE) == Sqlite.OK);
             assert (db.exec (CREATE_ITEMS_TABLE) == Sqlite.OK);
 
-            this.commit ();
             assert (db.exec (PRAGMA_VERSION_SET) == Sqlite.OK);
             assert (db.exec (PRAGMA_DISABLE_SYNCHRONOUS) == Sqlite.OK);
         }
@@ -284,8 +282,6 @@ namespace Feedler {
         }
 
         public void mark_all () {
-            this.begin ();
-            this.commit ();
             this.db.exec (MARK_ALL_AS_READ);
 
             foreach (Objects.Folder f in this.data) {
@@ -307,11 +303,9 @@ namespace Feedler {
             DB.set_int (stmt, ":read", 1);
             DB.set_int (stmt, ":channel_id", c.id);
 
-            this.begin ();
             if (stmt.step () != Sqlite.DONE) {
                 error ("Failed mark channel as read - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
-            this.commit ();
 
             foreach (Objects.Item i in c.items) {
                 if (!i.read) {
@@ -325,11 +319,9 @@ namespace Feedler {
             DB.set_int (stmt, ":read", (int) mark);
             DB.set_int (stmt, ":id", item);
 
-            this.begin ();
             if (stmt.step () != Sqlite.DONE) {
                 error ("Failed mark item - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
-            this.commit ();
         }
 
         public void star_item (int item, bool star) {
@@ -337,11 +329,9 @@ namespace Feedler {
             DB.set_int (stmt, ":starred", (int) star);
             DB.set_int (stmt, ":id", item);
 
-            this.begin ();
             if (stmt.step () != Sqlite.DONE) {
                 error ("Failed star item - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
-            this.commit ();
         }
 
         public void rename_channel (string old_name, string new_name) {
@@ -349,11 +339,9 @@ namespace Feedler {
             DB.set_string (stmt, ":old_name", old_name);
             DB.set_string (stmt, ":new_name", new_name);
 
-            this.begin ();
             if (stmt.step () != Sqlite.DONE) {
                 error ("Failed to rename channel - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
-            this.commit ();
         }
 
         public void remove_channel (string name) {
@@ -361,17 +349,16 @@ namespace Feedler {
             var stmt = DB.prepare (db, DELETE_CHANNEL);
             DB.set_int (stmt, ":id", c.id);
 
-            var stmt2 = DB.prepare (db, DELETE_ITEMS_FROM_CHANNEL);
-            DB.set_int (stmt, ":id", c.id);
-
-            this.begin ();
             if (stmt.step () != Sqlite.DONE) {
                 error ("Failed to delete channel - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
-            if (stmt2.step () != Sqlite.DONE) {
+
+            stmt = DB.prepare (db, DELETE_ITEMS_FROM_CHANNEL);
+            DB.set_int (stmt, ":id", c.id);
+
+            if (stmt.step () != Sqlite.DONE) {
                 error ("Failed to delete item - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
-            this.commit ();
             c.folder.channels.remove (c);
         }
 
@@ -397,12 +384,10 @@ namespace Feedler {
             DB.set_string (stmt, ":link", schannel.link);
             DB.set_int (stmt, ":folder", folder);
 
-            this.begin ();
             if (stmt.step () != Sqlite.DONE) {
                 this.roolback ();
                 error ("Failed to insert channel - %d: %s",this.db.errcode (), this.db.errmsg ());
             }
-            this.commit ();
 
             int id = (int) this.db.last_insert_rowid ();
 
