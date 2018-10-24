@@ -99,9 +99,13 @@ public class Feedler.SidebarCell : Gtk.CellRenderer {
 
         /* Icon */
         if (type == Type.ERROR) {
-            Gdk.Pixbuf pix = new Gtk.Invisible ().render_icon_pixbuf (Gtk.Stock.CANCEL, Gtk.IconSize.MENU);
-            Gdk.cairo_set_source_pixbuf (cr, pix, area.x - 8, height_centered - 1);
-            cr.paint ();
+            try {
+                Gdk.Pixbuf pix = new Gtk.IconTheme ().load_icon ("gtk-cancel", Gtk.IconSize.MENU, Gtk.IconLookupFlags.FORCE_SIZE);
+                Gdk.cairo_set_source_pixbuf (cr, pix, area.x - 8, height_centered - 1);
+                cr.paint ();
+            } catch (GLib.Error e) {
+                warning ("ERROR: " + e.message + " - No such file found for: gtk-cancel");
+            }
         } else if (type == Type.CHANNEL) {
             string png = "%s%i.png".printf (location, id);
 
@@ -110,8 +114,7 @@ public class Feedler.SidebarCell : Gtk.CellRenderer {
                 cr.paint ();
             } else {
                 try {
-                    Gtk.IconTheme icons = Gtk.IconTheme.get_default ();
-                    Gdk.Pixbuf pix = icons.load_icon ("internet-news-reader", 16, 0);
+                    Gdk.Pixbuf pix = new Gtk.IconTheme ().load_icon ("internet-news-reader", 16, 0);
                     Gdk.cairo_set_source_pixbuf (cr, pix, area.x - 8, height_centered - 1);
                     cr.paint ();
                 } catch (GLib.Error e) {

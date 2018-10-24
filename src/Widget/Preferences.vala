@@ -31,7 +31,7 @@ public class PreferenceTab : Gtk.Grid {
         var label = new Gtk.Label (description);
         label.halign = Gtk.Align.END;
         widget.halign = Gtk.Align.START;
-        widget.margin_right = 15;
+        widget.margin_end = 15;
         this.attach (label, 0, id, 1, 1);
         this.attach (widget, 1, id++, 1, 1);
     }

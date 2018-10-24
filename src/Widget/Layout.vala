@@ -36,7 +36,7 @@ public class Feedler.ViewAlert : Gtk.EventBox {
         content.pack_start (subtitle_label, false, true, 2);
         content.pack_end (new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0), true, true, 0);
 
-        this.get_style_context ().add_class (Granite.StyleClass.CONTENT_VIEW);
+        this.get_style_context ().add_class (Gtk.STYLE_CLASS_VIEW);
         this.add (content);
     }
 }

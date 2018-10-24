@@ -71,7 +71,6 @@ public class Feedler.Sidebar : Granite.Widgets.SourceList {
         this.all.visible = show;
         this.unread.visible = show;
         this.star.visible = show;
-        this.get_style_context ().add_class ("source-list");
-        this.get_style_context ().add_class ("view");
+        this.get_style_context ().add_class (Gtk.STYLE_CLASS_SIDEBAR);
     }
 }

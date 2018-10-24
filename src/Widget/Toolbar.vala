@@ -55,7 +55,7 @@ public class Feedler.Toolbar : Gtk.HeaderBar {
 
     construct {
         this.sidebar_visible.active = true;
-        this.get_style_context ().add_class ("header-bar");
+        this.get_style_context ().add_class (Gtk.STYLE_CLASS_TITLEBAR);
         this.set_show_close_button (true);
 
         Gtk.Menu menu = new Gtk.Menu ();
@@ -66,6 +66,7 @@ public class Feedler.Toolbar : Gtk.HeaderBar {
         menu.show_all ();
 
         var setting = new Gtk.MenuButton ();
+        setting.set_image (new Gtk.Image.from_icon_name ("application-menu", Gtk.IconSize.MENU));
         setting.set_popup (menu);
 
         this.mode.append (new Gtk.Image.from_icon_name ("view-list-compact-symbolic", Gtk.IconSize.MENU));
