@@ -430,7 +430,7 @@ namespace Feedler {
             return (int) this.db.last_insert_rowid ();
         }
 
-        public string export_to_opml () {
+        /*public string export_to_opml () {
             //Gee.Map<int, Xml.Node*> folder_node = new Gee.HashMap<int, Xml.Node*> ();
             Xml.Doc* doc = new Xml.Doc ("1.0");
             /*Xml.Node* opml = doc->new_node (null, "opml", null);
@@ -469,7 +469,7 @@ namespace Feedler {
                 else
                     body->add_child (outline);
             }
-            opml->add_child (body);*/
+            opml->add_child (body);
 
             string xmlstr;
             int n;
@@ -483,6 +483,6 @@ namespace Feedler {
             string date = GLib.Time.gm (time_t ()).format ("%a, %d %b %Y %H:%M:%S %z");
             GLib.Intl.setlocale (GLib.LocaleCategory.TIME, currentLocale);
             return date;
-        }
+        }*/
     }
 }
