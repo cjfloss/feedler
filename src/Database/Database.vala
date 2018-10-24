@@ -14,7 +14,6 @@ namespace Feedler {
         private string user_data_dir;
         internal GLib.List<Objects.Folder> data;
         internal GLib.List<unowned Objects.Item> tmp;
-        private string errmsg;
 
         construct {
             user_data_dir = GLib.Environment.get_user_data_dir () + "/feedler";
@@ -62,28 +61,18 @@ namespace Feedler {
             }
         }
 
-        private int create_tables () {
+        private void create_tables () {
+            debug ("Creating Tables…");
             assert (this.db != null);
-            debug ("create_tables");
 
             this.begin ();
-            assert (db.exec (CREATE_FOLDERS_TABLE, null, out errmsg) == Sqlite.OK);
-            debug ("Creating table folders");
+            assert (db.exec (CREATE_FOLDERS_TABLE) == Sqlite.OK);
+            assert (db.exec (CREATE_CHANNELS_TABLE) == Sqlite.OK);
+            assert (db.exec (CREATE_ITEMS_TABLE) == Sqlite.OK);
 
-            assert (db.exec (CREATE_CHANNELS_TABLE, null, out errmsg) == Sqlite.OK);
-            debug ("Creating table channels");
-
-            assert (db.exec (CREATE_ITEMS_TABLE, null, out errmsg) == Sqlite.OK);
-            debug ("Creating table items");
             this.commit ();
-
-            assert (db.exec (PRAGMA_VERSION_SET, null, out errmsg) == Sqlite.OK);
-            debug ("user_version is 1");
-
-            assert (db.exec (PRAGMA_DISABLE_SYNCHRONOUS, null, out errmsg) == Sqlite.OK);
-            debug ("synchronous is OFF");
-
-            return 1;//TODO error cases
+            assert (db.exec (PRAGMA_VERSION_SET) == Sqlite.OK);
+            assert (db.exec (PRAGMA_DISABLE_SYNCHRONOUS) == Sqlite.OK);
         }
 
         public bool begin () {
@@ -295,12 +284,9 @@ namespace Feedler {
         }
 
         public void mark_all () {
-            //TODO try/catch
-            //TODO separate sql from objects
             this.begin ();
-            this.db.exec (MARK_ALL_AS_READ, null, out errmsg);
-            debug ("ERROR: " + errmsg);
             this.commit ();
+            this.db.exec (MARK_ALL_AS_READ);
 
             foreach (Objects.Folder f in this.data) {
                 foreach (Objects.Channel c in f.channels) {
