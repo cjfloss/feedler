@@ -45,14 +45,20 @@ i18n.merge_file (
     po_dir : join_paths (meson.source_root (), 'po')
 )
 
+dvf = find_program('desktop-file-validate', required: false)
+if dvf.found()
 test (
     'Validate desktop file',
-    find_program ('desktop-file-validate'),
+    dvf,
     args : join_paths (meson.current_build_dir (), meson.project_name () + '.desktop')
 )
+endif
 
+asc = find_program('appstreamcli', required : false)
+if asc.found()
 test (
    'Validate appdata file',
-    find_program ('appstreamcli'),
+    asc,
     args : ['validate', join_paths (meson.current_build_dir (), meson.project_name () + '.appdata.xml')]
 )
+endif

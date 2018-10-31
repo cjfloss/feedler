@@ -107,7 +107,7 @@ internal class Feeds {
     }
 
     private void rss (Xml.Node* channel) {
-        warning ("Feed is RSS");
+        debug ("Feed is RSS");
 
         for (Xml.Node* iter = channel->children; iter != null; iter = iter->next) {
             if (iter->type != Xml.ElementType.ELEMENT_NODE) {
@@ -162,7 +162,7 @@ internal class Feeds {
     }
 
     private void atom (Xml.Node* channel) {
-        warning ("Feed is atom");
+        debug ("Feed is atom");
 
         for (Xml.Node* iter = channel->children; iter != null; iter = iter->next) {
             if (iter->type != Xml.ElementType.ELEMENT_NODE) {
@@ -273,13 +273,13 @@ public class BackendXml : Backend {
     }
 
     public override void add (string uri) {
-        warning ("BackendXML.add (" + uri + ").");
+        debug ("BackendXML.add (" + uri + ").");
         Soup.Message msg = new Soup.Message ("GET", uri);
         session.queue_message (msg, this.add_func);
     }
 
     public override void import (string uri) {
-        warning ("BackendXML.import (" + uri + ").");
+        debug ("BackendXML.import (" + uri + ").");
         this.cache = uri;
 
         try {
@@ -290,7 +290,7 @@ public class BackendXml : Backend {
     }
 
     public override void update (string uri) {
-        warning ("BackendXML.update (" + uri + ").");
+        debug ("BackendXML.update (" + uri + ").");
         Soup.Message msg = new Soup.Message ("GET", uri);
         session.queue_message (msg, this.update_func);
     }
@@ -319,7 +319,7 @@ public class BackendXml : Backend {
     }
 
     private void add_func (Soup.Session session, Soup.Message message) {
-        warning ("BackendXML.add_func " + message.uri.to_string (false));
+        debug ("BackendXML.add_func " + message.uri.to_string (false));
         string xml = (string)message.response_body.flatten ().data;
         Serializer.Channel ? channel = null;
 
@@ -331,7 +331,7 @@ public class BackendXml : Backend {
     }
 
     private void update_func (Soup.Session session, Soup.Message message) {
-        warning ("BackendXML.update_func " + message.uri.to_string (false));
+        debug ("BackendXML.update_func " + message.uri.to_string (false));
         string xml = (string)message.response_body.flatten ().data;
         Serializer.Channel ? channel = null;
 

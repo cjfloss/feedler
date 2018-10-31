@@ -100,7 +100,9 @@ public class Feedler.SidebarCell : Gtk.CellRenderer {
         /* Icon */
         if (type == Type.ERROR) {
             try {
-                Gdk.Pixbuf pix = new Gtk.IconTheme ().load_icon ("gtk-cancel", Gtk.IconSize.MENU, Gtk.IconLookupFlags.FORCE_SIZE);
+                Gdk.Pixbuf pix = new Gtk.IconTheme ().load_icon ("gtk-cancel",
+                                                                Gtk.IconSize.MENU,
+                                                                Gtk.IconLookupFlags.FORCE_SIZE);
                 Gdk.cairo_set_source_pixbuf (cr, pix, area.x - 8, height_centered - 1);
                 cr.paint ();
             } catch (GLib.Error e) {

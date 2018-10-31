@@ -5,14 +5,14 @@
  * @see COPYING
  */
 
-public class PreferenceTab : Gtk.Grid {
+private class PreferenceTab : Gtk.Grid {
     private int id;
 
-    construct {
+    public PreferenceTab () {
+        Object (border_width: 5,
+                row_spacing: 8,
+                column_spacing: 12);
         this.id = 0;
-        this.border_width = 5;
-        this.row_spacing = 8;
-        this.column_spacing = 12;
     }
 
     public void add_title (string title) {
@@ -37,7 +37,7 @@ public class PreferenceTab : Gtk.Grid {
     }
 }
 
-public class Behavior : PreferenceTab {
+private class Behavior : PreferenceTab {
     private Gtk.ComboBoxText browser_id;
     private Gtk.Entry browser_name;
     construct {
@@ -88,7 +88,7 @@ public class Behavior : PreferenceTab {
     }
 }
 
-public class UserInterface : PreferenceTab {
+private class UserInterface : PreferenceTab {
     construct {
         var hide_close = new Gtk.Switch ();
         var hide_start = new Gtk.Switch ();
@@ -109,7 +109,7 @@ public class UserInterface : PreferenceTab {
     }
 }
 
-public class Update : PreferenceTab {
+private class Update : PreferenceTab {
     internal Gtk.Button fav;
     construct {
         var auto_update = new Gtk.Switch ();
@@ -134,16 +134,21 @@ public class Feedler.Preferences : Gtk.Dialog {
     private Gtk.StackSwitcher stack_switcher;
     private Gtk.Stack stack;
     private Gtk.Box content;
+
     internal Behavior behavior;
     internal UserInterface uinterface;
     internal Update update;
 
-    construct {
-        this.title = _("Preferences");
-        this.border_width = 12;
-        this.set_resizable (false);
-        this.set_modal (true);
-        this.set_deletable (false);
+    public Preferences () {
+        Object (title: _("Preferences"),
+                window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
+                modal: true,
+                destroy_with_parent: true,
+                border_width: 12,
+                use_header_bar: 1,
+                resizable: false
+        );
+
         this.behavior = new Behavior ();
         this.uinterface = new UserInterface ();
         this.update = new Update ();
@@ -156,12 +161,10 @@ public class Feedler.Preferences : Gtk.Dialog {
         stack.add_titled (behavior, "behavior", _("Behavior"));
         stack.add_titled (update, "updates", _("Updates"));
 
-        this.content = this.get_content_area () as Gtk.Box;
-        this.content.set_orientation (Gtk.Orientation.VERTICAL);
-        this.content.pack_start (stack_switcher, false, true, 0);
-        this.content.pack_start (stack, true, true, 0);
+        this.content = (Gtk.Box) this.get_content_area ();
+        this.content.add (stack);
+        ((Gtk.HeaderBar) this.get_header_bar ()).set_custom_title (stack_switcher);
 
-        this.add_button ("gtk-close", Gtk.ResponseType.CLOSE);
         this.show_all ();
     }
 }
