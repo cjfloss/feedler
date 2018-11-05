@@ -83,10 +83,61 @@ public class Feedler.Toolbar : Gtk.HeaderBar {
         this.update.tooltip_text = _("Refresh all subscriptions");
         setting.tooltip_text = _("Menu");
 
+        var btt = new Gtk.Button ();
+        btt.always_show_image = true;
+        btt.image = new Gtk.Image.from_gicon (Feedler.Icons.SIDEBAR, Gtk.IconSize.MENU);
+
+        this.pack_start (new Gtk.Button.from_icon_name ("news-subscribe", Gtk.IconSize.MENU));
+        this.pack_start (btt);
         this.pack_start (update);
         this.pack_start (mode_item);
+        this.pack_start (new Gtk.Button.from_icon_name ("view-dual-symbolic", Gtk.IconSize.MENU));
+        this.pack_start (new Gtk.Button.from_icon_name ("view-left-close", Gtk.IconSize.MENU));
+        this.pack_start (new Gtk.Button.from_icon_name ("view-right-new", Gtk.IconSize.MENU));
+        this.pack_start (new Gtk.Button.from_icon_name ("builder-view-left-pane-symbolic", Gtk.IconSize.MENU));
+        this.pack_start (new Gtk.Button.from_icon_name ("view-sidebar-symbolic", Gtk.IconSize.MENU));
+
         this.pack_end (setting);
         this.pack_end (search_item);
+
+        this.pack_end (new Gtk.Button.from_icon_name ("tag-new-symbolic", Gtk.IconSize.MENU));
+        this.pack_end (new Gtk.Button.from_icon_name ("tag-symbolic", Gtk.IconSize.MENU));
+        this.pack_end (new Gtk.Button.from_icon_name ("user-bookmarks", Gtk.IconSize.MENU));
+        this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        this.pack_end (new Gtk.Button.from_icon_name ("bookmark-add-symbolic", Gtk.IconSize.MENU));
+        this.pack_end (new Gtk.Button.from_icon_name ("action-rss_tag", Gtk.IconSize.MENU));
+        this.pack_end (new Gtk.Button.from_icon_name ("object-select-symbolic", Gtk.IconSize.MENU));
+
+        // this.pack_end (new Gtk.Button.from_icon_name ("view-filter", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("dialog-xml-editor", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("document-export-symbolic", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("document-import-symbolic", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("document-info", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("document-print", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("document-print-symbolic", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("document-revert", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("document-revert-symbolic", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("send-to-symbolic", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("go-next-symbolic", Gtk.IconSize.MENU));
+        // this.pack_end (new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("im-facebook", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("im-google", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("im-skype", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("im-twitter", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("im-yahoo", Gtk.IconSize.MENU));
+        this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        this.pack_end (new Gtk.Button.from_icon_name ("view-fullscreen", Gtk.IconSize.MENU));
+        this.pack_end (new Gtk.Button.from_icon_name ("view-preview", Gtk.IconSize.MENU));
+
+        //this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        // //this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        // //this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
+        //this.pack_end (new Gtk.Button.from_icon_name ("star-new-symbolic", Gtk.IconSize.MENU));
     }
 
     public void set_enable (bool state) {

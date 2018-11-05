@@ -38,22 +38,17 @@ public class Feedler.SidebarCell : Gtk.CellRenderer {
         return Pango.units_to_double (rect.height);
     }
 
-    public override void get_size (Gtk.Widget widget, Gdk.Rectangle ? cell_area,
-                                   out int x_offset, out int y_offset,
-                                   out int width, out int height) {
+    public override void get_size (Gtk.Widget widget, Gdk.Rectangle ? cell_area, out int x_offset, out int y_offset, out int width, out int height) {
         height = 22;
         width = 250;
         x_offset = 0;
         y_offset = 0;
     }
 
-    public override void render (Cairo.Context cr, Gtk.Widget widget,
-                                 Gdk.Rectangle background_area, Gdk.Rectangle area,
-                                 Gtk.CellRendererState flags) {
+    public override void render (Cairo.Context cr, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle area, Gtk.CellRendererState flags) {
         Pango.Layout ? layout = null;
         Gtk.StyleContext style = widget.get_style_context ();
-        Gdk.RGBA color_normal = style.get_color ((flags & Gtk.CellRendererState.FOCUSED) > 0 ?
-                                                    Gtk.StateFlags.SELECTED : Gtk.StateFlags.NORMAL);
+        Gdk.RGBA color_normal = style.get_color ((flags & Gtk.CellRendererState.FOCUSED) > 0 ? Gtk.StateFlags.SELECTED : Gtk.StateFlags.NORMAL);
         Gdk.RGBA color_insensitive = style.get_color (Gtk.StateFlags.INSENSITIVE);
         color_insensitive.alpha = 0.5;
         Gdk.RGBA color_selected = style.get_color (Gtk.StateFlags.SELECTED);
@@ -100,9 +95,7 @@ public class Feedler.SidebarCell : Gtk.CellRenderer {
         /* Icon */
         if (type == Type.ERROR) {
             try {
-                Gdk.Pixbuf pix = new Gtk.IconTheme ().load_icon ("gtk-cancel",
-                                                                Gtk.IconSize.MENU,
-                                                                Gtk.IconLookupFlags.FORCE_SIZE);
+                Gdk.Pixbuf pix = new Gtk.IconTheme ().load_icon ("gtk-cancel", Gtk.IconSize.MENU, Gtk.IconLookupFlags.FORCE_SIZE);
                 Gdk.cairo_set_source_pixbuf (cr, pix, area.x - 8, height_centered - 1);
                 cr.paint ();
             } catch (GLib.Error e) {

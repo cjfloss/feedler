@@ -27,10 +27,12 @@ namespace Feedler {
             this.open ();
         }
 
-        public void open () {
-            if (Sqlite.OK != Sqlite.Database.open_v2 (db_path, out db, Sqlite.OPEN_READWRITE)) {
+        public void open (int flags = Sqlite.OPEN_READWRITE) throws FileError {
+            if (Sqlite.OK != Sqlite.Database.open_v2 (db_path, out db, flags)) {
                 this.db = null;
-                warning ("Failed to open database: %d - %s", db.errcode (), db.errmsg ());
+                throw new FileError.ACCES ("Can't open database: " + db.errmsg ());
+            } else {
+                info ("Database connection success at %s! :)", this.db_path);
             }
         }
 
@@ -39,8 +41,10 @@ namespace Feedler {
         }
 
         public void create () {
-            if (Sqlite.OK != Sqlite.Database.open_v2 (db_path, out db, Sqlite.OPEN_READWRITE | Sqlite.OPEN_CREATE)) {
-                error ("Failed to open database: %d - %s", db.errcode (), db.errmsg ());
+            try {
+                this.open (Sqlite.OPEN_READWRITE | Sqlite.OPEN_CREATE);
+            } catch (FileError e) {
+                error (e.message);
             }
 
             var stmt = DB.prepare (db, PRAGMA_VERSION_GET);
@@ -430,8 +434,7 @@ namespace Feedler {
             opml->add_child (head);
 
             Xml.Node* body = new Xml.Node (null, "body");
-            foreach (Objects.Folder folder in this.folders)
-            {
+            foreach (Objects.Folder folder in this.folders) {
                 Xml.Node* outline = new Xml.Node (null, "outline");
                 outline->new_prop ("title", folder.name);
                 outline->new_prop ("type", "folder");
@@ -439,20 +442,19 @@ namespace Feedler {
                 folder_node.set (folder.id, outline);
                 body->add_child (outline);
             }
-            foreach (Objects.Channel channel in this.channels)
-            {
+
+            foreach (Objects.Channel channel in this.channels) {
                 Xml.Node* outline = new Xml.Node (null, "outline");
                 outline->new_prop ("text", channel.title);
                 outline->new_prop ("type", "rss");
                 outline->new_prop ("xmlUrl", channel.source);
                 outline->new_prop ("htmlUrl", channel.link);
-                if (channel.folder > 0)
-                {
+                if (channel.folder > 0) {
                     Xml.Node* folder = folder_node.get (channel.folder);
                     folder->add_child (outline);
-                }
-                else
+                } else {
                     body->add_child (outline);
+                }
             }
             opml->add_child (body);
 

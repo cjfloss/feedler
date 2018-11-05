@@ -1,12 +1,9 @@
-gnome = import ('gnome')
-i18n  = import ('i18n')
-
-icons = ['all.png', 'favicon.png', 'mark.svg', 'rss.png', 'star.png', 'unread.png']
+icons = ['all.png', 'favicon.png', 'mark.svg', 'rss.png', 'star.png', 'unread.png', 'sidebar_icon.svg']
 
 foreach i : icons
     install_data(
         join_paths('icons', i),
-        install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', 'scalable', 'apps')
+        install_dir: join_paths(get_option('datadir'), 'feedler', 'icons')
     )
 endforeach
 

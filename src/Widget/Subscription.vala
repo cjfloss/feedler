@@ -16,14 +16,7 @@ public class Feedler.Subscription : Gtk.Dialog {
     private Gtk.Entry uri;
 
     public Subscription () {
-        Object (title: _("Add new subscription"),
-                window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
-                modal: false,
-                destroy_with_parent: true,
-                width_request: 300,
-                height_request: 120,
-                resizable: true
-        );
+        Object (title: _("Add new subscription"), window_position: Gtk.WindowPosition.CENTER_ON_PARENT, modal: false, destroy_with_parent: true, width_request: 300, height_request: 120, resizable: true);
 
         this.id = 0;
         this.folder = new Gtk.ComboBoxText ();

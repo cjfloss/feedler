@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/github/cjfloss/feedler">
+    <file>data/application.css</file>
+    <file>data/icons/mark.svg</file>
+    <file>data/icons/sidebar_icon.svg</file>
+    <file>data/icons/star.png</file>
+    <file>data/icons/unread.png</file>
+    <file>data/icons/rss.png</file>
+    <file>data/icons/all.png</file>
+    <file>data/icons/favicon.png</file>
+  </gresource>
+</gresources>

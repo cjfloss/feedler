@@ -7,8 +7,7 @@
 
 [DBus (name = "org.pantheon.contractor")]
 public interface Feedler.Contractor : GLib.Object {
-    public abstract GLib.HashTable<string, string>[] GetServicesByLocation (string strlocation,
-            string ? file_mime = "text/xml") throws IOError;
+    public abstract GLib.HashTable<string, string>[] GetServicesByLocation (string strlocation, string ? file_mime = "text/xml") throws IOError;
 }
 
 public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu {
@@ -18,13 +17,11 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu {
     private GLib.List<Gtk.MenuItem> items;
 
     public ContractorButton () {
-        base (new Gtk.Image.from_icon_name ("document-export", Gtk.IconSize.MENU),
-                _("Share channels or items"), new Gtk.Menu ());
+        base (new Gtk.Image.from_icon_name ("document-export", Gtk.IconSize.MENU), _("Share channels or items"), new Gtk.Menu ());
         this.items = new GLib.List<Gtk.MenuItem> ();
 
         try {
-            contract = Bus.get_proxy_sync (BusType.SESSION, "org.pantheon.contractor",
-                                           "/org/elementary/contractor");
+            contract = Bus.get_proxy_sync (BusType.SESSION, "org.pantheon.contractor", "/org/elementary/contractor");
 
             services = contract.GetServicesByLocation (GLib.Environment.get_tmp_dir () + "/feedler.html");
 

@@ -31,4 +31,6 @@ install:
 
 script:
   - houston ci
+    --name-domain com.github.cjfloss.feedler
+    --name-human Feedler
     --distribution $DIST

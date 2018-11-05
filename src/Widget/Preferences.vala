@@ -9,9 +9,7 @@ private class PreferenceTab : Gtk.Grid {
     private int id;
 
     public PreferenceTab () {
-        Object (border_width: 5,
-                row_spacing: 8,
-                column_spacing: 12);
+        Object (border_width: 5, row_spacing: 8, column_spacing: 12);
         this.id = 0;
     }
 
@@ -41,11 +39,11 @@ private class Behavior : PreferenceTab {
     private Gtk.ComboBoxText browser_id;
     private Gtk.Entry browser_name;
     construct {
-        var enable_image = new Gtk.CheckButton ();
-        var enable_script = new Gtk.CheckButton ();
-        var enable_java = new Gtk.CheckButton ();
-        var enable_plugin = new Gtk.CheckButton ();
-        var shrink_image = new Gtk.CheckButton ();
+        var enable_image = new Gtk.Switch ();
+        var enable_script = new Gtk.Switch ();
+        var enable_java = new Gtk.Switch ();
+        var enable_plugin = new Gtk.Switch ();
+        var shrink_image = new Gtk.Switch ();
         browser_id = new Gtk.ComboBoxText ();
         browser_id.append ("xdg-open", _("Automatic"));
         browser_id.append ("firefox", _("Mozilla Firefox"));
@@ -140,14 +138,7 @@ public class Feedler.Preferences : Gtk.Dialog {
     internal Update update;
 
     public Preferences () {
-        Object (title: _("Preferences"),
-                window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
-                modal: true,
-                destroy_with_parent: true,
-                border_width: 12,
-                use_header_bar: 1,
-                resizable: false
-        );
+        Object (title: _("Preferences"), window_position: Gtk.WindowPosition.CENTER_ON_PARENT, modal: true, destroy_with_parent: true, border_width: 12, use_header_bar: 1, resizable: false);
 
         this.behavior = new Behavior ();
         this.uinterface = new UserInterface ();

@@ -4,6 +4,9 @@ project(
   license : 'LGPL2+'
 )
 
+gnome = import ('gnome')
+i18n  = import ('i18n')
+
 add_global_arguments (
   '-DGETTEXT_PACKAGE="' + meson.project_name () + '"',
   language: 'c'
@@ -45,13 +48,20 @@ build_config = configure_file (
   configuration: config
 )
 
-vala_lint = find_program ('io.elementary.vala-lint', required: false)
-if vala_lint.found()
-  test (
-    'Vala lint',
-    vala_lint,
-    args: ['-d', join_paths (meson.source_root (), 'src')]
-  )
+dependencies = [
+    dependency('glib-2.0', version :'>=2.29'),
+    dependency('gtk+-3.0', version :'>=3.22'),
+    dependency('granite', version :'>=0.3.0'),
+    dependency('webkit2gtk-4.0'),
+    dependency('sqlite3'),
+    meson.get_compiler('vala').find_library('posix'),
+    meson.get_compiler('c').find_library('m', required : false)
+]
+
+if get_option('libunity')
+    unity_dep = dependency('unity')
+    add_project_arguments('--define=UNITY_SUPPORT=1', language : 'vala')
+    dependencies += unity_dep
 endif
 
 service = executable (
@@ -115,20 +125,10 @@ main = executable (
   'src/Service/Interface.vala',
   'src/Service/Serializer.vala',
   build_config,
-  dependencies : [
-    dependency('glib-2.0', version :'>=2.29'),
-    dependency('gtk+-3.0', version :'>=3.22'),
-    dependency('granite', version :'>=0.3.0'),
-    dependency('webkit2gtk-4.0'),
-    dependency('sqlite3'),
-    dependency('unity'),
-    meson.get_compiler('vala').find_library('posix'),
-    meson.get_compiler('c').find_library('m', required : false)
-  ],
+  dependencies: dependencies,
   install : true
 )
 
 subdir ('po')
 subdir ('data')
-
-test('basic', main)
+#subdir ('src')

@@ -35,6 +35,7 @@ public class Feedler.Service : Object {
         warning ("Feedler.Service.favicon (" + uri + ")");
         Soup.Message msg = new Soup.Message ("GET", "http://www.google.com/s2/favicons?domain=" + uri);
         this.backend.session.queue_message (msg, favicon_func);
+        //TODO USE https://valadoc.org/webkit2gtk-4.0/WebKit.FaviconDatabase.html
     }
 
     public void favicon_all (string[] uris) throws IOError, DBusError {
@@ -134,8 +135,6 @@ void on_bus_aquired (DBusConnection conn) {
 }
 
 void main () {
-    Bus.own_name (BusType.SESSION, "org.example.Feedler",
-                  BusNameOwnerFlags.NONE, on_bus_aquired,
-    () => {}, () => warning ("Cannot aquire name."));
+    Bus.own_name (BusType.SESSION, "org.example.Feedler", BusNameOwnerFlags.NONE, on_bus_aquired, () => {}, () => warning ("Cannot aquire name."));
     new MainLoop ().run ();
 }

@@ -10,11 +10,11 @@ namespace Feedler.Objects {
         }
 
         public Channel? channel (string title) {
-            foreach (Channel c in this.channels)
+            foreach (Channel c in this.channels) {
                 if (title == c.title) {
                     return c;
                 }
-
+            }
             return null;
         }
     }

@@ -5,7 +5,8 @@
  * @see COPYING
  */
 //TODO data/icon dodac w cmake
-public class Feedler.Window : Gtk.Window {
+namespace Feedler {
+public class Window : Gtk.Window {
     internal Feedler.Database db;
     internal Feedler.Toolbar toolbar;
     internal Feedler.Infobar infobar;
@@ -17,6 +18,8 @@ public class Feedler.Window : Gtk.Window {
     private Feedler.Layout layout;
     private Feedler.Client client;
     private Feedler.Manager manager;
+
+    private Gtk.VBox box;
 
     static construct {
         new Feedler.Icons ();
@@ -30,9 +33,6 @@ public class Feedler.Window : Gtk.Window {
         this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         this.ui_layout ();
         this.set_default_size (Feedler.STATE.window_width, Feedler.STATE.window_height);
-        Granite.Widgets.Utils.set_theming_for_screen (this.get_screen (),
-                                """@define-color colorPrimary #FD9300;""",
-                                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         if (this.db.is_created ()) {
             this.ui_feeds ();
@@ -46,13 +46,11 @@ public class Feedler.Window : Gtk.Window {
 
     internal void try_connect () {
         try {
-            client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
-                                         "/org/example/feedler");
+            client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler", "/org/example/feedler");
             client.imported.connect ((f) => {
                 this.manager.import.begin (f, (o, r) => {
                     if (this.manager.end ()) {
-                        this.notification ("%i %s".printf (this.manager.news,
-                                ngettext (_("new feed"), _("new feeds"), this.manager.news)));
+                        this.notification ("%i %s".printf (this.manager.news, ngettext (_("new feed"), _("new feeds"), this.manager.news)));
                     }
 
                     this.load_sidebar ();
@@ -62,8 +60,7 @@ public class Feedler.Window : Gtk.Window {
             client.updated.connect ((c) => {
                 this.manager.update.begin (c, (o, r) => {
                     if (this.manager.end ()) {
-                        this.notification ("%i %s".printf (this.manager.news,
-                                ngettext (_("new feed"), _("new feeds"), this.manager.news)));
+                        this.notification ("%i %s".printf (this.manager.news, ngettext (_("new feed"), _("new feeds"), this.manager.news)));
                     }
                 });
             });
@@ -91,6 +88,13 @@ public class Feedler.Window : Gtk.Window {
 
         this.side = new Feedler.Sidebar ();
         this.side.item_selected.connect (channel_selected);
+        box = new Gtk.VBox (false, 6);
+        box.pack_start (this.side);
+        var s = new Gtk.Switch ();
+        s.valign = Gtk.Align.END;
+        s.halign = Gtk.Align.START;
+        box.pack_end (s);
+
         this.pane = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
         this.pane.expand = true;
         this.content.pack_start (pane, true);
@@ -99,9 +103,9 @@ public class Feedler.Window : Gtk.Window {
 
     private void ui_workspace () {
         this.pane.set_position (Feedler.STATE.sidebar_width);
-        this.pane.pack1 (side, true, false);
+        this.pane.pack1 (box, true, false);
         this.layout.init_views ();
-        this.view = (Feedler.View)layout.get_nth_page (1);
+        this.view = (Feedler.View) layout.get_nth_page (1);
         this.layout.list.item_marked.connect (item_mark);
         this.layout.web.item_marked.connect (item_mark);
 
@@ -136,7 +140,6 @@ public class Feedler.Window : Gtk.Window {
                 case 0:
                     this.add_subscription ();
                     break;
-
                 case 1:
                     this.import_subscription ();
                     break;
@@ -176,9 +179,7 @@ public class Feedler.Window : Gtk.Window {
         Feedler.SidebarItem channel = null;
 
         if (GLib.FileUtils.test (path, GLib.FileTest.EXISTS)) {
-            channel = new Feedler.SidebarItem (c.title,
-                                               new GLib.FileIcon (GLib.File.new_for_path (path)),
-                                               c.unread, true);
+            channel = new Feedler.SidebarItem (c.title, new GLib.FileIcon (GLib.File.new_for_path (path)), c.unread, true);
         } else {
             channel = new Feedler.SidebarItem (c.title, Feedler.Icons.RSS, c.unread, true);
         }
@@ -497,9 +498,7 @@ public class Feedler.Window : Gtk.Window {
     }
 
     private void import_subscription () {
-        var file = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN,
-                                              "gtk-cancel", Gtk.ResponseType.CANCEL,
-                                              "gtk-open", Gtk.ResponseType.ACCEPT);
+        var file = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN, "gtk-cancel", Gtk.ResponseType.CANCEL, "gtk-open", Gtk.ResponseType.ACCEPT);
 
         Gtk.FileFilter filter_opml = new Gtk.FileFilter ();
         filter_opml.set_filter_name ("Subscriptions");
@@ -563,8 +562,7 @@ public class Feedler.Window : Gtk.Window {
     }
 
     private void dialog (string msg, Gtk.MessageType msg_type = Gtk.MessageType.INFO) {
-        var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                          msg_type, Gtk.ButtonsType.OK, msg);
+        var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, msg_type, Gtk.ButtonsType.OK, msg);
         info.run ();
         info.destroy ();
     }
@@ -591,4 +589,5 @@ public class Feedler.Window : Gtk.Window {
             return false;
         }
     }
+}
 }

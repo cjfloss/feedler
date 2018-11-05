@@ -18,20 +18,20 @@ namespace Feedler.Objects {
         }
 
         public unowned Item ? item (string title) {
-            foreach (unowned Item i in this.items)
+            foreach (unowned Item i in this.items) {
                 if (title == i.title) {
                     return i;
                 }
-
+            }
             return null;
         }
 
         public unowned Item ? get_item (int id) {
-            foreach (unowned Item item in this.items)
+            foreach (unowned Item item in this.items) {
                 if (id == item.id) {
                     return item;
                 }
-
+            }
             return null;
         }
 

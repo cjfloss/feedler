@@ -11,18 +11,24 @@ namespace Feedler {
         private int steps;
         private double fraction;
         private double proceed;
+        #if UNITY_SUPPORT
         private Feedler.Dock dockbar;
+        #endif
         private Feedler.Window window;
         internal GLib.List < Serializer.Folder ? > folders;
 
         public Manager (Feedler.Window win) {
+        #if UNITY_SUPPORT
             this.dockbar = new Feedler.Dock ();
+        #endif
             this.window = win;
         }
 
         public void unread (int diff = 0) {
             this.count += diff;
+        #if UNITY_SUPPORT
             this.dockbar.counter (count);
+        #endif
             this.window.side.unread.badge = count.to_string ();
             this.window.stat.counter (count);
         }
@@ -44,7 +50,9 @@ namespace Feedler {
             }
 
             this.window.toolbar.progress.proceed (proceed);
+        #if UNITY_SUPPORT
             this.dockbar.proceed (proceed);
+        #endif
         }
 
         public bool end (string ? msg = null) {
@@ -53,7 +61,9 @@ namespace Feedler {
 
             if (steps == 0) {
                 this.window.toolbar.progress.hide_bar ();
+                #if UNITY_SUPPORT
                 this.dockbar.proceed (1.0);
+                #endif
                 this.unread ();
                 return true;
             }
@@ -64,7 +74,9 @@ namespace Feedler {
         public void error () {
             this.steps = 0;
             this.window.toolbar.progress.hide_bar ();
+        #if UNITY_SUPPORT
             this.dockbar.proceed (1.0);
+        #endif
         }
 
         public async void update (Serializer.Channel channel) {
@@ -95,9 +107,7 @@ namespace Feedler {
 
                     foreach (var i in reverse) {
                         int id = this.window.db.insert_item (ch.id, i);
-                        Objects.Item it = new Objects.Item.with_data ( id,
-                                i.title, i.source, i.author, i.description,
-                                i.time, ch);
+                        Objects.Item it = new Objects.Item.with_data ( id, i.title, i.source, i.author, i.description, i.time, ch);
                         ch.items.append ((owned)it);
                     }
 
@@ -200,5 +210,4 @@ namespace Feedler {
                 stdout.printf ("%s - %s\n", this.times.nth_data (i).to_iso8601 (), this.descs.nth_data (i));
         }
     }*/
-
 }

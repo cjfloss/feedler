@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2018 Cleiton Floss <cleitonfloss_AT_gmail.com> -->
-<component type="desktop">
-  <id>com.github.cjfloss.feedler.desktop</id>
+<component type="desktop-application">
+  <id>com.github.cjfloss.feedler</id>
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>Feedler</name>
@@ -43,6 +43,7 @@
   </description>
 
   <launchable type="desktop-id">com.github.cjfloss.envelope.desktop</launchable>
+  <launchable type="service">com.github.cjfloss.feedler-service</launchable>
 
   <provides>
     <binary>com.github.cjfloss.feedler</binary>
@@ -51,11 +52,11 @@
   </provides>
 
   <screenshots>
-    <screenshot type="default">
+    <screenshot type="default" xml:lang="en">
       <caption>Editing a category</caption>
       <image>https://raw.githubusercontent.com/cjfloss/feedler/master/data/screenshots/01.png</image>
     </screenshot>
-    <screenshot type="default">
+    <screenshot type="default" xml:lang="en">
       <caption>Editing a category</caption>
       <image>https://raw.githubusercontent.com/cjfloss/feedler/master/data/screenshots/02.png</image>
     </screenshot>
@@ -85,6 +86,6 @@
   <custom>
     <value key="x-appcenter-color-primary">#FF902C</value>
     <value key="x-appcenter-color-primary-text">rgb(255, 255, 255)</value>
-    <value key="x-appcenter-suggested-price">0</value>
+    <value key="x-appcenter-suggested-price">5</value>
   </custom>
 </component>

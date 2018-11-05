@@ -56,8 +56,7 @@ public class Feedler.RenameTask : Feedler.Task {
     private unowned Objects.Channel channel;
     private string name;
 
-    public RenameTask (Feedler.Database db, Granite.Widgets.SourceList.Item item,
-                       Objects.Channel channel, string old_name) {
+    public RenameTask (Feedler.Database db, Granite.Widgets.SourceList.Item item, Objects.Channel channel, string old_name) {
         this.db = db;
         this.item = item;
         this.channel = channel;
@@ -125,10 +124,10 @@ public class Feedler.Infobar : Gtk.InfoBar {
         var expander = new Gtk.Label ("");
         expander.hexpand = true;
 
-        ((Gtk.Box)get_content_area ()).add (label);
-        ((Gtk.Box)get_content_area ()).add (expander);
-        ((Gtk.Box)get_content_area ()).add (time);
-        ((Gtk.Box)get_content_area ()).add (button);
+        ((Gtk.Box) get_content_area ()).add (label);
+        ((Gtk.Box) get_content_area ()).add (expander);
+        ((Gtk.Box) get_content_area ()).add (time);
+        ((Gtk.Box) get_content_area ()).add (button);
 
         this.no_show_all = true;
         this.hide ();

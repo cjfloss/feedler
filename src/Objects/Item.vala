@@ -10,9 +10,7 @@ namespace Feedler.Objects {
         public bool starred;
         public unowned Channel channel;
 
-        public Item.with_data (int id, string title, string source,
-                               string author, string description,
-                               int time, Channel channel) {
+        public Item.with_data (int id, string title, string source, string author, string description, int time, Channel channel) {
             this.id = id;
             this.title = title;
             this.source = source;

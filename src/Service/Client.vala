@@ -13,8 +13,7 @@ void main () {
     Feedler.Client demo = null;
 
     try {
-        demo = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
-                                   "/org/example/feedler");
+        demo = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler", "/org/example/feedler");
 
         demo.updated.connect ((channel) => {
             stdout.printf ("%s with %i items:\n", channel.title, channel.items.length);
@@ -51,6 +50,5 @@ void main () {
     } catch (GLib.IOError e) {
         warning (e.message);
     }
-
     loop.run ();
 }

@@ -13,4 +13,5 @@ public class Feedler.Icons {
     public static GLib.Icon UNREAD = new GLib.FileIcon (GLib.File.new_for_path (path.printf ("unread", "png")));
     public static GLib.Icon RSS = new GLib.FileIcon (GLib.File.new_for_path (path.printf ("favicon", "png")));
     public static GLib.Icon MARK = new GLib.FileIcon (GLib.File.new_for_path (path.printf ("mark", "svg")));
+    public static GLib.Icon SIDEBAR = new GLib.FileIcon (GLib.File.new_for_path (path.printf ("sidebar_icon", "svg")));
 }

@@ -5,6 +5,15 @@
  * @see COPYING
  */
 
+//TODO Offline Mode: Read without requesting images
+//
+//
+//
+
+
+//TODO JSON Feeds https://jsonfeed.org/version/1
+//
+//
 namespace Feedler {
     internal Feedler.State STATE;
     internal Feedler.Settings SETTING;
@@ -48,9 +57,11 @@ public class Feedler.App : Granite.Application {
         }
 
         Granite.Services.Logger.initialize (Build.APP_NAME);
-        Granite.Services.Logger.DisplayLevel = DEBUG ?
-                Granite.Services.LogLevel.DEBUG :
-                Granite.Services.LogLevel.INFO;
+        Granite.Services.Logger.DisplayLevel = DEBUG ? Granite.Services.LogLevel.DEBUG : Granite.Services.LogLevel.INFO;
+
+        var provider = new Gtk.CssProvider ();
+        provider.load_from_resource ("/com/github/cjfloss/feedler/application.css");
+        Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         Feedler.STATE = new Feedler.State ();
         Feedler.SETTING = new Feedler.Settings ();
