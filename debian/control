@@ -13,7 +13,7 @@ Build-Depends: meson,
                libunity-dev,
                libglib2.0-dev (>= 2.30.0),
                libsoup2.4-dev (>= 2.25.2),
-               libwebkit2gtk-4.0-dev (>= 2.0.0),
+               libwebkit2gtk-4.0-dev (>= 2.0.0)
 
 Package: com.github.cjfloss.feedler
 Architecture: any
