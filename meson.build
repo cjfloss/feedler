@@ -49,8 +49,8 @@ build_config = configure_file (
 )
 
 dependencies = [
-    dependency('glib-2.0', version :'>=2.29'),
-    dependency('gtk+-3.0', version :'>=3.22'),
+    dependency('glib-2.0'),
+    dependency('gtk+-3.0'),
     dependency('granite', version :'>=0.3.0'),
     dependency('webkit2gtk-4.0'),
     dependency('sqlite3'),
