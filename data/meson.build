@@ -11,7 +11,6 @@ install_data (
     meson.project_name () + '.gschema.xml',
     install_dir : join_paths (get_option ('datadir'), 'glib-2.0', 'schemas')
 )
-meson.add_install_script ('post_install.py')
 
 srv = configure_file (
     input : meson.project_name () + '.service.in',

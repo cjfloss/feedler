@@ -132,3 +132,5 @@ main = executable (
 subdir ('po')
 subdir ('data')
 #subdir ('src')
+
+meson.add_install_script ('build-aux/meson_post_install.py')
