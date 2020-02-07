@@ -1,93 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2018 Cleiton Floss <cleitonfloss@gmail.com> -->
-<component type="desktop">
-    <id>com.github.cjfloss.feedler.desktop</id>
-    <metadata_license>CC0</metadata_license>
-    <project_license>GPL-3.0+</project_license>
-    <name>Feedler</name>
-    <summary>Download and view feeds</summary>
-    <content_rating type="oars-1.0">
-        <content_attribute id="violence-cartoon">none</content_attribute>
-        <content_attribute id="violence-fantasy">none</content_attribute>
-        <content_attribute id="violence-realistic">none</content_attribute>
-        <content_attribute id="violence-bloodshed">none</content_attribute>
-        <content_attribute id="violence-sexual">none</content_attribute>
-        <content_attribute id="drugs-alcohol">none</content_attribute>
-        <content_attribute id="drugs-narcotics">none</content_attribute>
-        <content_attribute id="drugs-tobacco">none</content_attribute>
-        <content_attribute id="sex-nudity">none</content_attribute>
-        <content_attribute id="sex-themes">none</content_attribute>
-        <content_attribute id="sex-homosexuality">none</content_attribute>
-        <content_attribute id="sex-prostitution">none</content_attribute>
-        <content_attribute id="sex-adultery">none</content_attribute>
-        <content_attribute id="sex-appearance">none</content_attribute>
-        <content_attribute id="violence-desecration">none</content_attribute>
-        <content_attribute id="violence-slavery">none</content_attribute>
-        <content_attribute id="violence-worship">none</content_attribute>
-        <content_attribute id="language-profanity">none</content_attribute>
-        <content_attribute id="language-humor">none</content_attribute>
-        <content_attribute id="language-discrimination">none</content_attribute>
-        <content_attribute id="social-chat">none</content_attribute>
-        <content_attribute id="social-info">none</content_attribute>
-        <content_attribute id="social-audio">none</content_attribute>
-        <content_attribute id="social-location">none</content_attribute>
-        <content_attribute id="social-contacts">none</content_attribute>
-        <content_attribute id="money-purchasing">none</content_attribute>
-        <content_attribute id="money-gambling">none</content_attribute>
-    </content_rating>
+<!-- Copyright 2018 Cleiton Floss <cleitonfloss_AT_gmail.com> -->
+<component type="desktop-application">
+  <id>com.github.cjfloss.feedler</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>Feedler</name>
+  <summary>Download and view feeds</summary>
 
-    <description>
-        <p>View News feeds</p>
-        <p>Originaly made by Daniel Kur.</p>
-    </description>
+  <content_rating type="oars-1.0">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
 
-    <provides>
-        <binary>com.github.cjfloss.feedler</binary>
-        <binary>com.github.cjfloss.feedler-service</binary>
-        <dbus type="system">org.example.Feedler</dbus>
-    </provides>
+  <description>
+    <p>Feedler is a lightweight news reading software with RSS and ATOM support.</p>
+    <p>Originaly made by Daniel Kur.</p>
+  </description>
 
-    <screenshots>
-        <screenshot type="default">
-            <image>https://raw.githubusercontent.com/cjfloss/feedler/master/data/screenshots/01.png</image>
-        </screenshot>
-        <screenshot type="default">
-            <image>https://raw.githubusercontent.com/cjfloss/feedler/master/data/screenshots/02.png</image>
-        </screenshot>
-        <screenshot type="default">
-            <image>https://raw.githubusercontent.com/cjfloss/feedler/master/data/screenshots/03.png</image>
-        </screenshot>
-        <screenshot type="default">
-            <image>https://raw.githubusercontent.com/cjfloss/feedler/master/data/screenshots/04.png</image>
-        </screenshot>
-        <screenshot type="default">
-            <image>https://raw.githubusercontent.com/cjfloss/feedler/master/data/screenshots/05.png</image>
-        </screenshot>
-    </screenshots>
+  <launchable type="desktop-id">com.github.cjfloss.envelope.desktop</launchable>
+  <launchable type="service">com.github.cjfloss.feedler-service</launchable>
 
-    <developer_name>Cleiton Floss</developer_name>
-    <url type="homepage">https://github.com/cjfloss/feedler</url>
-    <url type="bugtracker">https://github.com/cjfloss/feedler/issues</url>
-    <url type="help">https://github.com/cjfloss/feedler/issues</url>
-    <update_contact>https://github.com/cjfloss/feedler/issues</update_contact>
+  <provides>
+    <binary>com.github.cjfloss.feedler</binary>
+    <binary>com.github.cjfloss.feedler-service</binary>
+    <dbus type="system">org.example.Feedler</dbus>
+  </provides>
 
-    <releases>
-        ​<release version="0.0.1" date="2018-01-22" urgency="low">
-            <description>
-            ​</description>
-        ​</release>
-    ​</releases>
+  <screenshots>
+    <screenshot type="default" xml:lang="en">
+      <caption>Editing a category</caption>
+      <image>https://raw.githubusercontent.com/cjfloss/feedler/master/data/screenshots/01.png</image>
+    </screenshot>
+    <screenshot type="default" xml:lang="en">
+      <caption>Editing a category</caption>
+      <image>https://raw.githubusercontent.com/cjfloss/feedler/master/data/screenshots/02.png</image>
+    </screenshot>
+  </screenshots>
 
-    <categories>
-        <category>Network</category>
-        <category>Feed</category>
-        <category>News</category>
-        <category>Monitor</category>
-    </categories>
+  <developer_name>Cleiton Floss</developer_name>
 
-    <custom>
-        <value key="x-appcenter-color-primary">#FF902C</value>
-        <value key="x-appcenter-color-primary-text">rgb(255, 255, 255)</value>
-        <value key="x-appcenter-suggested-price">0</value>
-    </custom>
+  <url type="homepage">https://github.com/cjfloss/feedler</url>
+  <url type="bugtracker">https://github.com/cjfloss/feedler/issues</url>
+  <url type="help">https://github.com/cjfloss/feedler/issues</url>
+  <update_contact>cleitonfloss_AT_gmail.com</update_contact>
+
+  <releases>
+    ​<release version="0.0.1" date="2018-01-22" urgency="low">
+      <description>
+      ​</description>
+    ​</release>
+  </releases>
+
+  <categories>
+    <category>Network</category>
+    <category>Feed</category>
+    <category>News</category>
+    <category>Monitor</category>
+  </categories>
+
+  <custom>
+    <value key="x-appcenter-color-primary">#FF902C</value>
+    <value key="x-appcenter-color-primary-text">rgb(255, 255, 255)</value>
+    <value key="x-appcenter-suggested-price">5</value>
+  </custom>
 </component>

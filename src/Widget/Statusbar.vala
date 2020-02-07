@@ -17,17 +17,17 @@ public class Feedler.Statusbar : Gtk.Statusbar {
         this.pack_start (add_feed);
         this.pack_start (mark_feed);
         this.pack_start (next_feed);
-        this.get_style_context ().add_class ("action-bar");
+        //this.get_style_context ().add_class ("action-bar");
     }
 
     public void counter (uint count) {
+        uint context_id = this.get_context_id ("example");
         if (count > 0) {
             string description = count > 1 ? _("unread feeds") : _("unread feed");
-            //this.set_text ("%u %s".printf (count, description));
+            this.push (context_id, "%u %s".printf (count, description));
+        } else {
+            this.push (context_id, "");
         }
-
-        //else
-        //this.set_text ("");
     }
 }
 
@@ -67,7 +67,7 @@ private class Feedler.StatusMenuButton : Gtk.EventBox {
 
     public override bool button_press_event (Gdk.EventButton event) {
         if (event.type == Gdk.EventType.BUTTON_PRESS) {
-            menu.popup (null, null, null, Gdk.BUTTON_SECONDARY, event.time);
+            menu.popup_at_pointer (event);
             return true;
         }
 

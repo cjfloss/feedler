@@ -13,18 +13,14 @@ public class Feedler.ViewCell : Gtk.CellRenderer {
     public string date { set; get; }
     public bool unread { set; get; }
 
-    public override void get_size (Gtk.Widget widget, Gdk.Rectangle ? cell_area,
-                                   out int x_offset, out int y_offset,
-                                   out int width, out int height) {
+    public override void get_size (Gtk.Widget widget, Gdk.Rectangle ? cell_area, out int x_offset, out int y_offset, out int width, out int height) {
         height = 36;
         width = 250;
         x_offset = 0;
         y_offset = 0;
     }
 
-    public override void render (Cairo.Context cr, Gtk.Widget widget,
-                                 Gdk.Rectangle background_area, Gdk.Rectangle area,
-                                 Gtk.CellRendererState flags) {
+    public override void render (Cairo.Context cr, Gtk.Widget widget, Gdk.Rectangle background_area, Gdk.Rectangle area, Gtk.CellRendererState flags) {
         Pango.Layout ? layout = null;
         Gtk.StyleContext style = widget.get_style_context ();
         Gdk.RGBA color_subject = style.get_color ((flags & Gtk.CellRendererState.FOCUSED) > 0 ? Gtk.StateFlags.SELECTED : Gtk.StateFlags.NORMAL);

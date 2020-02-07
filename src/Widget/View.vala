@@ -6,7 +6,7 @@
  */
 
 public abstract class Feedler.View : Gtk.VBox {
-    public signal void item_marked (int id, Model.State state);
+    public signal void item_marked (int id, Objects.State state);
 
     public static WebKit.Settings settings;
 
@@ -21,7 +21,7 @@ public abstract class Feedler.View : Gtk.VBox {
 
     public abstract void clear ();
 
-    public abstract void add_feed (Model.Item item, string time_format);
+    public abstract void add_feed (Objects.Item item, string time_format);
 
     public abstract void load_feeds ();
 
@@ -30,6 +30,6 @@ public abstract class Feedler.View : Gtk.VBox {
     public abstract bool contract ();
 
     protected string generate_style (string title_color, string time_color, string content_color, string link_color) {
-        return """<!DOCTYPE HTML><style>.title{color:%s;} .time{color:%s;} .content{color:%s;} a,a:link,a:visited{color:%s;}</style>""".printf (title_color, time_color, content_color, link_color);
+        return """<!DOCTYPE HTML><style>.title{color:%s;}.time{color:%s;}.content{color:%s;}a,a:link,a:visited{color:%s;}</style>""".printf (title_color, time_color, content_color, link_color);
     }
 }

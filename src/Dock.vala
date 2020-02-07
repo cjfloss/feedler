@@ -6,6 +6,7 @@
  */
 
 public class Feedler.Dock : GLib.Object {
+#if UNITY_SUPPORT
     private Unity.LauncherEntry dock;
 
     construct {
@@ -34,4 +35,5 @@ public class Feedler.Dock : GLib.Object {
             this.dock.progress_visible = false;
         }
     }
+#endif
 }

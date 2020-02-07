@@ -4,17 +4,18 @@
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
+using Feedler;
 
 internal class Subscriptions {
-    internal GLib.List<Model.Folder> folders;
+    internal GLib.List<Objects.Folder> folders;
 
     internal bool parse (Xml.Doc data) {
         unowned Xml.Node root = data.get_root_element ();
 
         if (root.name == "opml") {
-            this.folders = new GLib.List<Model.Folder> ();
-            Model.Folder f = new Model.Folder.with_data (0, _("Subscriptions")); //for feeds not in folders
-            f.channels = new GLib.List<Model.Channel> ();
+            this.folders = new GLib.List<Objects.Folder> ();
+            Objects.Folder f = new Objects.Folder.with_data (0, _("Subscriptions")); //for feeds not in folders
+            f.channels = new GLib.List<Objects.Channel> ();
             this.folders.append (f);
             unowned Xml.Node head_body = root.children;
 
@@ -60,15 +61,15 @@ internal class Subscriptions {
     }
 
     private void opml_folder (Xml.Node node) {
-        Model.Folder f = new Model.Folder ();
+        Objects.Folder f = new Objects.Folder ();
         f.name = node.get_prop ("text");
-        f.channels = new GLib.List<Model.Channel> ();
+        f.channels = new GLib.List<Objects.Channel> ();
         this.folders.append (f);
         opml (node);
     }
 
     private void opml_channel (Xml.Node node) {
-        Model.Channel c = new Model.Channel ();
+        Objects.Channel c = new Objects.Channel ();
         c.title = node.get_prop ("text");
         c.source = node.get_prop ("xmlUrl");
         c.link = node.get_prop ("htmlUrl");
@@ -82,12 +83,12 @@ internal class Subscriptions {
 }
 
 internal class Feeds {
-    internal Model.Channel channel;
+    internal Objects.Channel channel;
 
     internal bool parse (Xml.Doc data) {
         unowned Xml.Node root = data.get_root_element ();
-        this.channel = new Model.Channel ();
-        this.channel.items = new GLib.List < Model.Item ? > ();
+        this.channel = new Objects.Channel ();
+        this.channel.items = new GLib.List < Objects.Item ? > ();
 
         switch (root.name) {
             case "rss":
@@ -106,7 +107,7 @@ internal class Feeds {
     }
 
     private void rss (Xml.Node* channel) {
-        warning ("Feed is RSS");
+        debug ("Feed is RSS");
 
         for (Xml.Node* iter = channel->children; iter != null; iter = iter->next) {
             if (iter->type != Xml.ElementType.ELEMENT_NODE) {
@@ -126,7 +127,7 @@ internal class Feeds {
     }
 
     private void rss_item (Xml.Node* iitem) {
-        Model.Item item = new Model.Item ();
+        Objects.Item item = new Objects.Item ();
 
         for (Xml.Node* iter = iitem->children; iter != null; iter = iter->next) {
             if (iter->type != Xml.ElementType.ELEMENT_NODE) {
@@ -161,7 +162,7 @@ internal class Feeds {
     }
 
     private void atom (Xml.Node* channel) {
-        warning ("Feed is atom");
+        debug ("Feed is atom");
 
         for (Xml.Node* iter = channel->children; iter != null; iter = iter->next) {
             if (iter->type != Xml.ElementType.ELEMENT_NODE) {
@@ -181,7 +182,7 @@ internal class Feeds {
     }
 
     private void atom_item (Xml.Node* iitem) {
-        Model.Item item = new Model.Item ();
+        Objects.Item item = new Objects.Item ();
 
         for (Xml.Node* iter = iitem->children; iter != null; iter = iter->next) {
             if (iter->type != Xml.ElementType.ELEMENT_NODE) {
@@ -272,13 +273,13 @@ public class BackendXml : Backend {
     }
 
     public override void add (string uri) {
-        warning ("BackendXML.add (" + uri + ").");
+        debug ("BackendXML.add (" + uri + ").");
         Soup.Message msg = new Soup.Message ("GET", uri);
         session.queue_message (msg, this.add_func);
     }
 
     public override void import (string uri) {
-        warning ("BackendXML.import (" + uri + ").");
+        debug ("BackendXML.import (" + uri + ").");
         this.cache = uri;
 
         try {
@@ -289,7 +290,7 @@ public class BackendXml : Backend {
     }
 
     public override void update (string uri) {
-        warning ("BackendXML.update (" + uri + ").");
+        debug ("BackendXML.update (" + uri + ").");
         Soup.Message msg = new Soup.Message ("GET", uri);
         session.queue_message (msg, this.update_func);
     }
@@ -318,7 +319,7 @@ public class BackendXml : Backend {
     }
 
     private void add_func (Soup.Session session, Soup.Message message) {
-        warning ("BackendXML.add_func " + message.uri.to_string (false));
+        debug ("BackendXML.add_func " + message.uri.to_string (false));
         string xml = (string)message.response_body.flatten ().data;
         Serializer.Channel ? channel = null;
 
@@ -330,7 +331,7 @@ public class BackendXml : Backend {
     }
 
     private void update_func (Soup.Session session, Soup.Message message) {
-        warning ("BackendXML.update_func " + message.uri.to_string (false));
+        debug ("BackendXML.update_func " + message.uri.to_string (false));
         string xml = (string)message.response_body.flatten ().data;
         Serializer.Channel ? channel = null;
 

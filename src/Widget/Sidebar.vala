@@ -13,9 +13,9 @@ public class Feedler.SidebarItem : Granite.Widgets.SourceList.Item {
     internal Gtk.MenuItem remove;
     internal Gtk.MenuItem edit;
 
-    public SidebarItem (string name, GLib.Icon icon, uint badge = 0, bool menu = false) {
+    public SidebarItem (string name, GLib.Icon icon, uint badge = 0, bool menu = false, bool editable = true) {
         base (name);
-        this.editable = true;
+        this.editable = editable;
         this.icon = icon;
         this.badge = (badge > 0) ? badge.to_string () : null;
 
@@ -58,20 +58,19 @@ public class Feedler.Sidebar : Granite.Widgets.SourceList {
     }
 
     internal void init () {
-        this.all = new Feedler.SidebarItem (_("All items"), Feedler.Icons.ALL);
+        this.all = new Feedler.SidebarItem (_("All items"), Feedler.Icons.ALL, 0, false, false);
         this.root.add (all);
 
-        this.unread = new Feedler.SidebarItem (_("Unread items"), Feedler.Icons.UNREAD);
+        this.unread = new Feedler.SidebarItem (_("Unread items"), Feedler.Icons.UNREAD, 0, false, false);
         this.root.add (unread);
 
-        this.star = new Feedler.SidebarItem (_("Starred items"), Feedler.Icons.STAR);
+        this.star = new Feedler.SidebarItem (_("Starred items"), Feedler.Icons.STAR, 0, false, false);
         this.root.add (star);
 
         bool show = !Feedler.SETTING.hide_header;
         this.all.visible = show;
         this.unread.visible = show;
         this.star.visible = show;
-        this.get_style_context ().add_class ("source-list");
-        this.get_style_context ().add_class ("view");
+        this.get_style_context ().add_class (Gtk.STYLE_CLASS_SIDEBAR);
     }
 }

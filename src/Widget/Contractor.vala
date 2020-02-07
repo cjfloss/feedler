@@ -21,8 +21,7 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu {
         this.items = new GLib.List<Gtk.MenuItem> ();
 
         try {
-            contract = Bus.get_proxy_sync (BusType.SESSION, "org.pantheon.contractor",
-                                           "/org/elementary/contractor");
+            contract = Bus.get_proxy_sync (BusType.SESSION, "org.pantheon.contractor", "/org/elementary/contractor");
 
             services = contract.GetServicesByLocation (GLib.Environment.get_tmp_dir () + "/feedler.html");
 
@@ -33,7 +32,7 @@ public class Feedler.ContractorButton : Granite.Widgets.ToolButtonWithMenu {
                 items.append (item);
             }
 
-            this.export = new Gtk.MenuItem.with_label(_("Export subscriptions"));
+            this.export = new Gtk.MenuItem.with_label (_("Export subscriptions"));
             menu.append (export);
         } catch (IOError e) {
             warning (e.message);

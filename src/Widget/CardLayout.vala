@@ -36,4 +36,3 @@ public class Feedler.CardLayout : Gtk.Notebook {
         this.init_views ();
     }
 }
-

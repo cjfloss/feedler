@@ -7,14 +7,13 @@
 
 void main () {
     /* Needed only if your client is listening to signals; you can omit it otherwise */
-    var loop = new MainLoop();
+    var loop = new MainLoop ();
 
     /* Important: keep demo variable out of try/catch scope not lose signals! */
     Feedler.Client demo = null;
 
     try {
-        demo = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
-                                   "/org/example/feedler");
+        demo = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler", "/org/example/feedler");
 
         demo.updated.connect ((channel) => {
             stdout.printf ("%s with %i items:\n", channel.title, channel.items.length);
@@ -43,7 +42,7 @@ void main () {
         //demo.update_all ();
 
         GLib.Timeout.add_seconds (10, () => {
-            demo.stop();
+            demo.stop ();
             warning ("Sending stop call.");
             loop.quit ();
             return false;
@@ -51,6 +50,5 @@ void main () {
     } catch (GLib.IOError e) {
         warning (e.message);
     }
-
     loop.run ();
 }

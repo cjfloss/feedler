@@ -4,12 +4,13 @@
  * @author Daniel Kur <Daniel.M.Kur@gmail.com>
  * @see COPYING
  */
+using Feedler;
 
 public struct Serializer.Folder {
     public string name;
     public Serializer.Channel[] ? channels;
 
-    public Folder.from_model (Model.Folder model, bool full = false) {
+    public Folder.from_model (Objects.Folder model, bool full = false) {
         this.name = model.name;
         this.channels = new Serializer.Channel[model.channels.length ()];
         int i = 0;
@@ -26,7 +27,7 @@ public struct Serializer.Channel {
     public string source;
     public Serializer.Item[] ? items;
 
-    public Channel.from_model (Model.Channel model, bool full = true) {
+    public Channel.from_model (Feedler.Objects.Channel model, bool full = true) {
         this.title = model.title;
         this.link = model.link ?? "";
         this.source = model.source ?? "";
@@ -56,8 +57,8 @@ public struct Serializer.Item {
     public string description;
     public int time;
 
-    public Item.from_model (Model.Item model) {
-        this.title = model.title ?? "No title";
+    public Item.from_model (Objects.Item model) {
+        this.title = model.title ?? _("No title");
         this.source = model.source;
         this.author = model.author;
         this.description = model.description ?? "";

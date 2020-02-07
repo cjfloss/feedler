@@ -16,19 +16,14 @@ public class Feedler.Subscription : Gtk.Dialog {
     private Gtk.Entry uri;
 
     public Subscription () {
-        this.title = _("Add new subscription");
-        this.window_position = Gtk.WindowPosition.CENTER;
-        this.set_modal (false);
-        this.set_destroy_with_parent (true);
-        this.set_size_request (360, -1);
-        this.set_resizable (true);
-        this.set_deletable (false);
+        Object (title: _("Add new subscription"), window_position: Gtk.WindowPosition.CENTER_ON_PARENT, modal: false, destroy_with_parent: true, width_request: 300, height_request: 120, resizable: true);
+
         this.id = 0;
         this.folder = new Gtk.ComboBoxText ();
         this.channel = new Gtk.Entry ();
         this.uri = new Gtk.Entry ();
 
-        var save = new Gtk.Button.from_stock (Gtk.Stock.SAVE);
+        var save = new Gtk.Button.with_label (_("Save"));
         save.set_size_request (85, -1);
         save.valign = save.halign = Gtk.Align.END;
         save.clicked.connect_after (() => {
@@ -66,7 +61,6 @@ public class Feedler.Subscription : Gtk.Dialog {
         this.content.pack_start (uri, false, true, 0);
         this.content.pack_end (button_box, false, false, 0);
 
-        this.add (content);
         this.show_all ();
     }
 

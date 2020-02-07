@@ -1,12 +1,9 @@
-gnome = import ('gnome')
-i18n  = import ('i18n')
-
-icons = ['all.png', 'favicon.png', 'mark.svg', 'rss.png', 'star.png', 'unread.png']
+icons = ['all.png', 'favicon.png', 'mark.svg', 'rss.png', 'star.png', 'unread.png', 'sidebar_icon.svg']
 
 foreach i : icons
     install_data(
         join_paths('icons', i),
-        install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', 'scalable', 'apps')
+        install_dir: join_paths(get_option('datadir'), 'feedler', 'icons')
     )
 endforeach
 
@@ -14,7 +11,6 @@ install_data (
     meson.project_name () + '.gschema.xml',
     install_dir : join_paths (get_option ('datadir'), 'glib-2.0', 'schemas')
 )
-meson.add_install_script ('post_install.py')
 
 srv = configure_file (
     input : meson.project_name () + '.service.in',
@@ -45,14 +41,29 @@ i18n.merge_file (
     po_dir : join_paths (meson.source_root (), 'po')
 )
 
+dvf = find_program('desktop-file-validate', required: false)
+if dvf.found()
 test (
     'Validate desktop file',
-    find_program ('desktop-file-validate'),
+    dvf,
     args : join_paths (meson.current_build_dir (), meson.project_name () + '.desktop')
 )
+endif
 
+asc = find_program('appstreamcli', required : false)
+if asc.found()
 test (
    'Validate appdata file',
-    find_program ('appstreamcli'),
+    asc,
     args : ['validate', join_paths (meson.current_build_dir (), meson.project_name () + '.appdata.xml')]
 )
+endif
+
+vala_lint = find_program ('io.elementary.vala-lint', required: false)
+if vala_lint.found()
+  test (
+    'Vala lint',
+    vala_lint,
+    args: ['-d', join_paths (meson.source_root (), 'src')]
+  )
+endif

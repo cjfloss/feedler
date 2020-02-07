@@ -11,39 +11,42 @@ public class Feedler.Folder : Gtk.Dialog {
     private Gtk.Entry folder;
 
     public Folder () {
-        this.title = _("Add new folder");
-        this.window_position = Gtk.WindowPosition.CENTER;
-        //this.type_hint = Gdk.WindowTypeHint.DIALOG;
-        this.set_modal (false);
-        this.destroy_with_parent = true;
-        this.set_size_request (360, -1);
-        this.resizable = false;
+        Object (title: _("Add new folder"), window_position: Gtk.WindowPosition.CENTER_ON_PARENT, modal: false, destroy_with_parent: true, border_width: 12, use_header_bar: 1, resizable: false);
+
         this.id = 0;
         this.folder = new Gtk.Entry ();
 
-        var save = new Gtk.Button.from_icon_name ("gtk-save", Gtk.IconSize.BUTTON);
+        var save = new Gtk.Button.with_label (_("Save"));
         save.set_size_request (85, -1);
         save.valign = save.halign = Gtk.Align.END;
+        save.sensitive = false;
         save.clicked.connect_after (() => {
             saved_folder (this.id, this.folder.get_text ());
             this.destroy ();
         });
+        save.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
 
-        var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-        button_box.pack_end (save, false, false, 0);
-        button_box.margin_top = 30;
+        folder.key_release_event.connect (() => {
+            folder.get_text () == "" ? save.sensitive = false : save.sensitive = true;
+            return true;
+        });
+
+        //var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 10);
+        //button_box.pack_end (save, false, false, 0);
+        //button_box.margin_top = 30;
 
         var f_label = new Gtk.Label ("");
         f_label.set_markup ("<b>%s</b>".printf (_("Name")));
         f_label.set_halign (Gtk.Align.START);
 
-        Gtk.Box content = get_content_area () as Gtk.Box;
+        Gtk.Box content = (Gtk.Box) this.get_content_area ();
         content.pack_start (f_label);
         content.pack_start (folder, false, true, 0);
-        content.pack_end (button_box, false, false, 0);
-        content.spacing = 10;
+        //content.pack_end (button_box, false, false, 0);
+        content.border_width = 12;
 
-        this.add (content);
+        this.add_action_widget (save, 0);
+
         this.show_all ();
     }
 

@@ -31,13 +31,14 @@ public class Feedler.Service : Object {
         this.with_backend (BACKENDS.XML);
     }
 
-    public void favicon (string uri) {
+    public void favicon (string uri) throws IOError, DBusError {
         warning ("Feedler.Service.favicon (" + uri + ")");
-        Soup.Message msg = new Soup.Message("GET", "http://www.google.com/s2/favicons?domain=" + uri);
+        Soup.Message msg = new Soup.Message ("GET", "http://www.google.com/s2/favicons?domain=" + uri);
         this.backend.session.queue_message (msg, favicon_func);
+        //TODO USE https://valadoc.org/webkit2gtk-4.0/WebKit.FaviconDatabase.html
     }
 
-    public void favicon_all (string[] uris) {
+    public void favicon_all (string[] uris) throws IOError, DBusError {
         warning ("Feedler.Service.favicon_all ()");
 
         foreach (string uri in uris) {
@@ -51,12 +52,12 @@ public class Feedler.Service : Object {
         warning ("Feedler.Service.favicon_func.URI: " + uri + ".");
     }
 
-    public void update (string uri) {
+    public void update (string uri) throws IOError, DBusError {
         warning ("Feedler.Service.update (" + uri + ").");
         this.backend.update (uri);
     }
 
-    public void update_all (string[] uris) {
+    public void update_all (string[] uris) throws IOError, DBusError {
         warning ("Feedler.Service.update_all ()");
 
         foreach (string uri in uris) {
@@ -64,17 +65,17 @@ public class Feedler.Service : Object {
         }
     }
 
-    public void import (string uri) {
+    public void import (string uri) throws IOError, DBusError {
         warning ("Feedler.Service.import (" + uri + ").");
         this.backend.import (uri);
     }
 
-    public void add (string uri) {
+    public void add (string uri) throws IOError, DBusError {
         warning ("Feedler.Service.add (" + uri + ").");
         this.backend.add (uri);
     }
 
-    public void run () {
+    public void run () throws IOError, DBusError {
         warning ("Feedler.Service.run ()");
 
         try {
@@ -99,11 +100,11 @@ public class Feedler.Service : Object {
         }
     }
 
-    public string ping () {
+    public string ping () throws IOError, DBusError {
         return "Welcome in Feedler service!\n";
     }
 
-    public void notification (string msg) {
+    public void notification (string msg) throws IOError, DBusError {
         try {
             Notify.Notification notify = new Notify.Notification ("Feedler News Reader", msg, "internet-news-reader");
             notify.show ();
@@ -112,7 +113,7 @@ public class Feedler.Service : Object {
         }
     }
 
-    public new Serializer.Folder[] get_data () {
+    public new Serializer.Folder[] get_data () throws IOError, DBusError {
         /*Serializer.Folder[] data = new Serializer.Folder[this.db.data.length ()];
         int i = 0;
         foreach (unowned Model.Folder f in this.db.data)
@@ -134,8 +135,6 @@ void on_bus_aquired (DBusConnection conn) {
 }
 
 void main () {
-    Bus.own_name (BusType.SESSION, "org.example.Feedler",
-                  BusNameOwnerFlags.NONE, on_bus_aquired,
-    () => {}, () => warning ("Cannot aquire name."));
+    Bus.own_name (BusType.SESSION, "org.example.Feedler", BusNameOwnerFlags.NONE, on_bus_aquired, () => {}, () => warning ("Cannot aquire name."));
     new MainLoop ().run ();
 }

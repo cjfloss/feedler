@@ -53,10 +53,10 @@ public class Feedler.ReconnectTask : Feedler.Task {
 public class Feedler.RenameTask : Feedler.Task {
     private unowned Feedler.Database db;
     private unowned Granite.Widgets.SourceList.Item item;
-    private unowned Model.Channel channel;
+    private unowned Objects.Channel channel;
     private string name;
 
-    public RenameTask (Feedler.Database db, Granite.Widgets.SourceList.Item item, Model.Channel channel, string old_name) {
+    public RenameTask (Feedler.Database db, Granite.Widgets.SourceList.Item item, Objects.Channel channel, string old_name) {
         this.db = db;
         this.item = item;
         this.channel = channel;
@@ -71,7 +71,7 @@ public class Feedler.RenameTask : Feedler.Task {
     }
 
     public override void undo () {
-        //Model.Channel c = this.db.get_channel (item.name);
+        //Objects.Channel c = this.db.get_channel (item.name);
         channel.title = this.name;
         item.name = this.name;
     }
@@ -124,10 +124,10 @@ public class Feedler.Infobar : Gtk.InfoBar {
         var expander = new Gtk.Label ("");
         expander.hexpand = true;
 
-        ((Gtk.Box)get_content_area ()).add (label);
-        ((Gtk.Box)get_content_area ()).add (expander);
-        ((Gtk.Box)get_content_area ()).add (time);
-        ((Gtk.Box)get_content_area ()).add (button);
+        ((Gtk.Box) get_content_area ()).add (label);
+        ((Gtk.Box) get_content_area ()).add (expander);
+        ((Gtk.Box) get_content_area ()).add (time);
+        ((Gtk.Box) get_content_area ()).add (button);
 
         this.no_show_all = true;
         this.hide ();

@@ -21,11 +21,11 @@ public class Feedler.ViewAlert : Gtk.EventBox {
 
     public ViewAlert (string title_text, string subtitle_text) {
         title_label = new Gtk.Label (title_text);
-        Granite.Widgets.Utils.apply_text_style_to_label (Granite.TextStyle.H1, title_label);
+        title_label.get_style_context ().add_class ("h1");
         title_label.set_justify (Gtk.Justification.CENTER);
 
         subtitle_label = new Gtk.Label (subtitle_text);
-        Granite.Widgets.Utils.apply_text_style_to_label (Granite.TextStyle.H2, subtitle_label);
+        subtitle_label.get_style_context ().add_class ("h2");
         subtitle_label.sensitive = false;
         subtitle_label.set_justify (Gtk.Justification.CENTER);
 
@@ -36,7 +36,7 @@ public class Feedler.ViewAlert : Gtk.EventBox {
         content.pack_start (subtitle_label, false, true, 2);
         content.pack_end (new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0), true, true, 0);
 
-        this.get_style_context ().add_class (Granite.StyleClass.CONTENT_VIEW);
+        this.get_style_context ().add_class (Gtk.STYLE_CLASS_VIEW);
         this.add (content);
     }
 }
@@ -85,12 +85,10 @@ public class Feedler.Layout : Gtk.Notebook {
                 this.list.pane.set_orientation (Gtk.Orientation.HORIZONTAL);
                 this.set_current_page (Feedler.Views.LIST);
                 break;
-
             case Feedler.Views.LIST:
                 this.list.pane.set_orientation (Gtk.Orientation.VERTICAL);
                 this.set_current_page (Feedler.Views.LIST);
                 break;
-
             default:
                 this.set_current_page (view);
                 break;

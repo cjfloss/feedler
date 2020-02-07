@@ -5,7 +5,8 @@
  * @see COPYING
  */
 //TODO data/icon dodac w cmake
-public class Feedler.Window : Gtk.Window {
+namespace Feedler {
+public class Window : Gtk.Window {
     internal Feedler.Database db;
     internal Feedler.Toolbar toolbar;
     internal Feedler.Infobar infobar;
@@ -18,12 +19,13 @@ public class Feedler.Window : Gtk.Window {
     private Feedler.Client client;
     private Feedler.Manager manager;
 
+    private Gtk.VBox box;
+
     static construct {
         new Feedler.Icons ();
     }
 
     construct {
-
         this.db = new Feedler.Database ();
         this.manager = new Feedler.Manager (this);
         this.layout = new Feedler.Layout ();
@@ -31,7 +33,6 @@ public class Feedler.Window : Gtk.Window {
         this.content = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         this.ui_layout ();
         this.set_default_size (Feedler.STATE.window_width, Feedler.STATE.window_height);
-        Granite.Widgets.Utils.set_theming_for_screen (this.get_screen (), """@define-color colorPrimary #FD9300;""", Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         if (this.db.is_created ()) {
             this.ui_feeds ();
@@ -45,11 +46,7 @@ public class Feedler.Window : Gtk.Window {
 
     internal void try_connect () {
         try {
-            client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler",
-                                         "/org/example/feedler");
-            /*client.iconed.connect (favicon_cb);
-            client.added.connect (added_cb);
-            client.updated.connect (updated_cb);*/
+            client = Bus.get_proxy_sync (BusType.SESSION, "org.example.Feedler", "/org/example/feedler");
             client.imported.connect ((f) => {
                 this.manager.import.begin (f, (o, r) => {
                     if (this.manager.end ()) {
@@ -65,17 +62,9 @@ public class Feedler.Window : Gtk.Window {
                     if (this.manager.end ()) {
                         this.notification ("%i %s".printf (this.manager.news, ngettext (_("new feed"), _("new feeds"), this.manager.news)));
                     }
-
-                    //this.notification ("%i %s".printf (this.manager.news, (this.manager.news > 1) ? _("new feeds") : _("new feed")));
-                    //this.load_sidebar ();
-                    //var result = this.manager.update.end (r);
                 });
             });
             warning (client.ping ());
-            //TODO nie widzi w DBus, chyba nie am czegos aktualnego..
-            //Serializer.Folder[] data = client.get_data ();
-
-            //this.infobar.info (new Feedler.ConnectedTask ());
         } catch (GLib.Error e) {
             warning (e.message);
             this.infobar.warning (new Feedler.ReconnectTask (this.try_connect));
@@ -84,30 +73,28 @@ public class Feedler.Window : Gtk.Window {
 
     private void ui_layout () {
         this.toolbar = new Feedler.Toolbar ();
-        this.set_titlebar (toolbar);
-        //this.toolbar.mode.selected = Feedler.STATE.view_mode;
-        //this.content.pack_start (toolbar, false, false, 0);
         this.toolbar.update.clicked.connect (update_subscription);
         this.toolbar.mode.mode_changed.connect (change_mode);
         this.toolbar.mode.selected = Feedler.STATE.view_mode;
         this.toolbar.search.activate.connect (item_search);
-        /*this.toolbar.sharemenu.clicked.connect (() =>
-        {
-            if (this.view.contract ())
-                this.toolbar.sharemenu.switch_state (true);
-            else
-                this.toolbar.sharemenu.switch_state (false);
-        });
-        this.toolbar.sharemenu.export.activate.connect (_export);*/
         this.toolbar.preferences.activate.connect (config);
         this.toolbar.sidebar_visible.toggled.connect (sidebar_update);
         this.toolbar.fullscreen_mode.toggled.connect (fullscreen_mode);
+
+        this.set_titlebar (toolbar);
 
         this.infobar = new Feedler.Infobar ();
         this.content.pack_start (infobar, false, false, 0);
 
         this.side = new Feedler.Sidebar ();
         this.side.item_selected.connect (channel_selected);
+        box = new Gtk.VBox (false, 6);
+        box.pack_start (this.side);
+        var s = new Gtk.Switch ();
+        s.valign = Gtk.Align.END;
+        s.halign = Gtk.Align.START;
+        box.pack_end (s);
+
         this.pane = new Gtk.Paned (Gtk.Orientation.HORIZONTAL);
         this.pane.expand = true;
         this.content.pack_start (pane, true);
@@ -116,11 +103,11 @@ public class Feedler.Window : Gtk.Window {
 
     private void ui_workspace () {
         this.pane.set_position (Feedler.STATE.sidebar_width);
-        this.pane.pack1 (side, true, false);
+        this.pane.pack1 (box, true, false);
         this.layout.init_views ();
-        this.view = (Feedler.View)layout.get_nth_page (1);
+        this.view = (Feedler.View) layout.get_nth_page (1);
         this.layout.list.item_marked.connect (item_mark);
-        //this.layout.web.item_marked.connect (item_mark);
+        this.layout.web.item_marked.connect (item_mark);
 
         this.stat = new Feedler.Statusbar ();
         this.stat.add_feed.folder.activate.connect (add_folder);
@@ -153,7 +140,6 @@ public class Feedler.Window : Gtk.Window {
                 case 0:
                     this.add_subscription ();
                     break;
-
                 case 1:
                     this.import_subscription ();
                     break;
@@ -174,11 +160,11 @@ public class Feedler.Window : Gtk.Window {
         this.side.init ();
         int unread = 0;
 
-        foreach (Model.Folder f in this.db.data) {
+        foreach (Objects.Folder f in this.db.data) {
             var folder = new Granite.Widgets.SourceList.ExpandableItem (f.name);
             this.side.root.add (folder);
 
-            foreach (Model.Channel c in f.channels) {
+            foreach (Objects.Channel c in f.channels) {
                 folder.add (create_channel (c));
                 unread += c.unread;
             }
@@ -188,7 +174,7 @@ public class Feedler.Window : Gtk.Window {
         this.manager.unread (unread);
     }
 
-    private Feedler.SidebarItem create_channel (Model.Channel c) {
+    private Feedler.SidebarItem create_channel (Objects.Channel c) {
         string path = "%s/feedler/fav/%i.png".printf (GLib.Environment.get_user_data_dir (), c.id);
         Feedler.SidebarItem channel = null;
 
@@ -252,7 +238,7 @@ public class Feedler.Window : Gtk.Window {
         var c = this.side.selected;
 
         if (new_name != c.name) {
-            Model.Channel ch = this.db.get_channel (c.name);
+            Objects.Channel ch = this.db.get_channel (c.name);
             ch.title = new_name;
             this.infobar.question (new Feedler.RenameTask (this.db, c, ch, c.name));
         }
@@ -274,12 +260,12 @@ public class Feedler.Window : Gtk.Window {
 
     private void channel_edit () {
         var ch = this.side.selected;
-        unowned Model.Channel c = this.db.get_channel (ch.name);
+        unowned Objects.Channel c = this.db.get_channel (ch.name);
         Feedler.Subscription subs = new Feedler.Subscription ();
         subs.set_transient_for (this);
 
         //subs.saved.connect (create_subs_cb);
-        foreach (Model.Folder folder in this.db.data) {
+        foreach (Objects.Folder folder in this.db.data) {
             subs.add_folder (folder.id, folder.name);
         }
 
@@ -326,11 +312,11 @@ public class Feedler.Window : Gtk.Window {
         }
     }
 
-    private void item_mark (int id, Model.State state) {
+    private void item_mark (int id, Objects.State state) {
         warning ("item_mark");
         var ch = this.side.selected;
-        unowned Model.Channel c = this.db.get_channel (ch.name);
-        unowned Model.Item it;
+        unowned Objects.Channel c = this.db.get_channel (ch.name);
+        unowned Objects.Item it;
         bool reload = true;
 
         if (c != null) {
@@ -341,8 +327,8 @@ public class Feedler.Window : Gtk.Window {
             c = it.channel;
         }
 
-        if (state == Model.State.STARRED || state == Model.State.UNSTARRED) {
-            bool star = (state == Model.State.STARRED) ? true : false;
+        if (state == Objects.State.STARRED || state == Objects.State.UNSTARRED) {
+            bool star = (state == Objects.State.STARRED) ? true : false;
             it.starred = star;
             this.channel_selected (this.side.selected);
             this.db.star_item (id, star);
@@ -351,9 +337,9 @@ public class Feedler.Window : Gtk.Window {
 
         int diff = 0;
 
-        if (state == Model.State.READ) {
+        if (state == Objects.State.READ) {
             diff--;
-        } else if (state == Model.State.UNREAD) {
+        } else if (state == Objects.State.UNREAD) {
             diff++;
         }
 
@@ -367,7 +353,7 @@ public class Feedler.Window : Gtk.Window {
 
         this.manager.unread (diff);
         c.unread += diff;
-        bool read = (state == Model.State.READ) ? true : false;
+        bool read = (state == Objects.State.READ) ? true : false;
         it.read = read;
         this.db.mark_item (id, read);
 
@@ -393,14 +379,14 @@ public class Feedler.Window : Gtk.Window {
     }
 
     private void channel_selected (Granite.Widgets.SourceList.Item ? channel) {
-        unowned GLib.List < Model.Item ? > items = null;
+        unowned GLib.List < Objects.Item ? > items = null;
 
         if (channel == side.all) {
-            items = this.db.get_items (Model.State.ALL);
+            items = this.db.get_items (Objects.State.ALL);
         } else if (channel == side.unread) {
-            items = this.db.get_items (Model.State.UNREAD);
+            items = this.db.get_items (Objects.State.UNREAD);
         } else if (channel == side.star) {
-            items = this.db.get_items (Model.State.STARRED);
+            items = this.db.get_items (Objects.State.STARRED);
         } else {
             items = this.db.get_channel (channel.name).items;
         }
@@ -408,7 +394,7 @@ public class Feedler.Window : Gtk.Window {
         this.load_view (items);
     }
 
-    private void load_view (GLib.List < Model.Item ? > items) {
+    private void load_view (GLib.List < Objects.Item ? > items) {
         warning ("load_view");
 
         if (items.length () < 1) {
@@ -421,7 +407,7 @@ public class Feedler.Window : Gtk.Window {
         this.view.clear ();
         GLib.Time current_time = GLib.Time.local (time_t ());
 
-        foreach (Model.Item item in items) {
+        foreach (Objects.Item item in items) {
             GLib.Time feed_time = GLib.Time.local (item.time);
 
             if (feed_time.day_of_year + 6 < current_time.day_of_year) {
@@ -437,7 +423,7 @@ public class Feedler.Window : Gtk.Window {
     private void add_folder () {
         Feedler.Folder fol = new Feedler.Folder ();
         fol.set_transient_for (this);
-        //fol.saved.connect (create_folder_cb);
+        fol.saved_folder.connect (create_folder_cb);
         fol.show_all ();
     }
 
@@ -446,7 +432,7 @@ public class Feedler.Window : Gtk.Window {
         subs.set_transient_for (this);
         subs.saved.connect (create_subs_cb);
 
-        foreach (Model.Folder folder in this.db.data) {
+        foreach (Objects.Folder folder in this.db.data) {
             subs.add_folder (folder.id, folder.name);
         }
 
@@ -454,7 +440,7 @@ public class Feedler.Window : Gtk.Window {
         //this.stat.add_feed.button_press_event.disconnect (_create_subs);
     }
 
-    private void create_subs_cb (int id, int folder, string title, string url) {
+    private void create_subs_cb (int id, int folder, string name, string url) {
         //this.stat.add_feed.button_press_event.connect (_create_subs);
         //if (id == -1 || folder == -1)
         //    return;
@@ -471,23 +457,24 @@ public class Feedler.Window : Gtk.Window {
                 folder = 1;
                 var _folder = new Granite.Widgets.SourceList.ExpandableItem (f.name);
                 this.side.root.add (_folder);
-                Model.Folder ff = new Model.Folder.with_data (folder, f.name);
+                Objects.Folder ff = new Objects.Folder.with_data (folder, f.name);
                 this.db.data.append (ff);
                 //http://rss.feedsportal.com/c/32739/f/530495/index.rss
             }
 
             Serializer.Channel sch = Serializer.Channel.no_data ();
-            sch.title = title;
+            sch.title = name;
             sch.source = url;
-            unowned Model.Channel ch = this.db.insert_channel (folder, sch);
+            unowned Objects.Channel ch = this.db.insert_channel (folder, sch);
 
             if (folder > 0) {
-                foreach (var child in this.side.root.children)
+                foreach (var child in this.side.root.children) {
                     if (child.name == ch.folder.name) {
                         var expandable_item = child as Granite.Widgets.SourceList.ExpandableItem;
                         expandable_item.add (create_channel (ch));
                         break;
                     }
+                }
             }
 
             //else
@@ -499,10 +486,19 @@ public class Feedler.Window : Gtk.Window {
         }
     }
 
+    private void create_folder_cb (int id, string name) {
+        this.db.begin ();
+        Serializer.Folder f = Serializer.Folder ();
+        f.name = name;
+        this.db.insert_folder (f);
+        this.db.commit ();
+
+        var _folder = new Granite.Widgets.SourceList.ExpandableItem (f.name);
+        this.side.root.add (_folder);
+    }
+
     private void import_subscription () {
-        var file = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN,
-                                              Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL,
-                                              Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
+        var file = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN, "gtk-cancel", Gtk.ResponseType.CANCEL, "gtk-open", Gtk.ResponseType.ACCEPT);
 
         Gtk.FileFilter filter_opml = new Gtk.FileFilter ();
         filter_opml.set_filter_name ("Subscriptions");
@@ -566,8 +562,7 @@ public class Feedler.Window : Gtk.Window {
     }
 
     private void dialog (string msg, Gtk.MessageType msg_type = Gtk.MessageType.INFO) {
-        var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                                          msg_type, Gtk.ButtonsType.OK, msg);
+        var info = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT, msg_type, Gtk.ButtonsType.OK, msg);
         info.run ();
         info.destroy ();
     }
@@ -594,4 +589,5 @@ public class Feedler.Window : Gtk.Window {
             return false;
         }
     }
+}
 }
