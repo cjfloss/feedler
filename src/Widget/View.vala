@@ -12,7 +12,7 @@ public abstract class Feedler.View : Gtk.VBox {
 
     static construct {
         settings = new WebKit.Settings ();
-        settings.default_font_size = 9;
+        settings.default_font_size = 16;
         settings.auto_load_images = Feedler.SETTING.enable_image;
         settings.enable_plugins = Feedler.SETTING.enable_plugin;
         settings.enable_javascript = Feedler.SETTING.enable_script;
