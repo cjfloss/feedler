@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: feedler\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-23 14:15-0400\n"
+"POT-Creation-Date: 2020-06-25 22:22-0400\n"
 "PO-Revision-Date: 2013-02-24 14:53+0000\n"
 "Last-Translator: MinSik CHO <Unknown>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -18,41 +18,45 @@ msgstr ""
 "X-Launchpad-Export-Date: 2014-03-15 07:10+0000\n"
 "X-Generator: Launchpad (build 16963)\n"
 
-#: src/Window.vala:55 src/Window.vala:66
+#: src/Window.vala:53 src/Window.vala:63
 msgid "new feed"
 msgstr "새로운 피드"
 
-#: src/Window.vala:55 src/Window.vala:66
+#: src/Window.vala:53 src/Window.vala:63
 msgid "new feeds"
 msgstr "새로운 피드"
 
-#: src/Window.vala:451 src/Service/Backend-xml.vala:17
+#: src/Window.vala:452 src/Service/Backend-xml.vala:17
 #, fuzzy
 msgid "Subscriptions"
 msgstr "구독:"
 
-#: src/Window.vala:518
+#: src/Window.vala:517
 msgid "Importing subscriptions"
 msgstr "구독물 불러오는 중"
 
-#: src/Window.vala:540
+#: src/Window.vala:539
 msgid "Updating subscriptions"
 msgstr "구독물 업데이트 중"
 
-#: src/Window.vala:556
+#: src/Window.vala:555
 #, fuzzy
 msgid "Updating channel"
 msgstr "%s를 업데이트 중"
 
-#: src/Widget/Folder.vala:14 src/Widget/Statusbar.vala:60
+#: src/Widget/Folder.vala:14 src/Widget/Statusbar.vala:56
 msgid "Add new folder"
 msgstr ""
 
-#: src/Widget/Folder.vala:37 src/Widget/Subscription.vala:50
+#: src/Widget/Folder.vala:19 src/Widget/Subscription.vala:26
+msgid "Save"
+msgstr "저장"
+
+#: src/Widget/Folder.vala:39 src/Widget/Subscription.vala:45
 msgid "Name"
 msgstr "이름"
 
-#: src/Widget/Folder.vala:51
+#: src/Widget/Folder.vala:54
 #, c-format
 msgid "Edit folder %s"
 msgstr ""
@@ -73,22 +77,22 @@ msgstr ""
 msgid "Connect"
 msgstr ""
 
-#: src/Widget/Infobar.vala:66
+#: src/Widget/Infobar.vala:65
 #, c-format
 msgid "Undo rename %s"
 msgstr ""
 
-#: src/Widget/Infobar.vala:67 src/Widget/Infobar.vala:90
-#: src/Widget/Infobar.vala:122
+#: src/Widget/Infobar.vala:66 src/Widget/Infobar.vala:89
+#: src/Widget/Infobar.vala:121
 msgid "Undo"
 msgstr "실행취소"
 
-#: src/Widget/Infobar.vala:89
+#: src/Widget/Infobar.vala:88
 #, c-format
 msgid "Undo delete %s"
 msgstr ""
 
-#: src/Widget/Infobar.vala:162 src/Widget/Infobar.vala:172
+#: src/Widget/Infobar.vala:161 src/Widget/Infobar.vala:171
 #, c-format
 msgid "<small>Dismiss after %i seconds.</small>"
 msgstr ""
@@ -157,132 +161,132 @@ msgstr ""
 msgid "Remove from starred"
 msgstr ""
 
-#: src/Widget/Preferences.vala:50
+#: src/Widget/Preferences.vala:48
 msgid "Automatic"
 msgstr ""
 
-#: src/Widget/Preferences.vala:51
+#: src/Widget/Preferences.vala:49
 msgid "Mozilla Firefox"
 msgstr ""
 
-#: src/Widget/Preferences.vala:52
+#: src/Widget/Preferences.vala:50
 msgid "Midori"
 msgstr ""
 
-#: src/Widget/Preferences.vala:53
+#: src/Widget/Preferences.vala:51
 msgid "Chromium"
 msgstr ""
 
-#: src/Widget/Preferences.vala:54
+#: src/Widget/Preferences.vala:52
 msgid "Google Chrome"
 msgstr ""
 
-#: src/Widget/Preferences.vala:55
+#: src/Widget/Preferences.vala:53
 msgid "Opera"
 msgstr ""
 
-#: src/Widget/Preferences.vala:56
+#: src/Widget/Preferences.vala:54
 msgid "Manual"
 msgstr ""
 
-#: src/Widget/Preferences.vala:79
+#: src/Widget/Preferences.vala:77
 msgid "Content:"
 msgstr "내용:"
 
-#: src/Widget/Preferences.vala:80
+#: src/Widget/Preferences.vala:78
 msgid "Enable images:"
 msgstr "사진 다운로드 허용:"
 
-#: src/Widget/Preferences.vala:81
+#: src/Widget/Preferences.vala:79
 msgid "Shrink image to fit:"
 msgstr "공간에 맞게 이미지 크기 조정하기:"
 
-#: src/Widget/Preferences.vala:82
+#: src/Widget/Preferences.vala:80
 msgid "Enable plugins:"
 msgstr "플러그 인 허용:"
 
-#: src/Widget/Preferences.vala:83
+#: src/Widget/Preferences.vala:81
 msgid "Enable JavaScripts:"
 msgstr "자바스크립트 허용:"
 
-#: src/Widget/Preferences.vala:84
+#: src/Widget/Preferences.vala:82
 msgid "Enable Java:"
 msgstr "자바 허용하기:"
 
-#: src/Widget/Preferences.vala:85
+#: src/Widget/Preferences.vala:83
 msgid "Browser:"
 msgstr ""
 
-#: src/Widget/Preferences.vala:86
+#: src/Widget/Preferences.vala:84
 msgid "Open links in:"
 msgstr ""
 
-#: src/Widget/Preferences.vala:87
+#: src/Widget/Preferences.vala:85
 msgid "Manual command:"
 msgstr ""
 
-#: src/Widget/Preferences.vala:102
+#: src/Widget/Preferences.vala:100
 msgid "Window:"
 msgstr "창:"
 
-#: src/Widget/Preferences.vala:103
+#: src/Widget/Preferences.vala:101
 msgid "Hiding window instead of closing:"
 msgstr "종료하지 않고 숨기기:"
 
-#: src/Widget/Preferences.vala:104
+#: src/Widget/Preferences.vala:102
 #, fuzzy
 msgid "Hide on start to the messaging menu:"
 msgstr "메세지 메뉴에 숨기기:"
 
-#: src/Widget/Preferences.vala:106
+#: src/Widget/Preferences.vala:104
 msgid "Application:"
 msgstr ""
 
-#: src/Widget/Preferences.vala:107
+#: src/Widget/Preferences.vala:105
 msgid "Hide additional headers in sidebar:"
 msgstr ""
 
-#: src/Widget/Preferences.vala:108
+#: src/Widget/Preferences.vala:106
 msgid "Maximum items stored in the channel:"
 msgstr ""
 
-#: src/Widget/Preferences.vala:124
+#: src/Widget/Preferences.vala:122
 msgid "Subscriptions:"
 msgstr "구독:"
 
-#: src/Widget/Preferences.vala:125
+#: src/Widget/Preferences.vala:123
 msgid "Enable automatic updates:"
 msgstr "자동으로 업데이트 허용:"
 
-#: src/Widget/Preferences.vala:126
+#: src/Widget/Preferences.vala:124
 msgid "Enable updates on start:"
 msgstr "시작할 때 업데이트하기:"
 
-#: src/Widget/Preferences.vala:127
+#: src/Widget/Preferences.vala:125
 msgid "Time interval between updates:"
 msgstr "업데이트 간격:"
 
-#: src/Widget/Preferences.vala:128
+#: src/Widget/Preferences.vala:126
 msgid "Favicons:"
 msgstr "아이콘:"
 
-#: src/Widget/Preferences.vala:129
+#: src/Widget/Preferences.vala:127
 msgid "Download now all favicons:"
 msgstr "모든 아이콘 다운로드하기:"
 
-#: src/Widget/Preferences.vala:142 src/Widget/Toolbar.vala:54
+#: src/Widget/Preferences.vala:141 src/Widget/Toolbar.vala:54
 msgid "Preferences"
 msgstr "환경 설정"
 
-#: src/Widget/Preferences.vala:155
+#: src/Widget/Preferences.vala:151
 msgid "Interface"
 msgstr ""
 
-#: src/Widget/Preferences.vala:156
+#: src/Widget/Preferences.vala:152
 msgid "Behavior"
 msgstr "동작"
 
-#: src/Widget/Preferences.vala:157
+#: src/Widget/Preferences.vala:153
 msgid "Updates"
 msgstr "업데이트"
 
@@ -315,49 +319,49 @@ msgstr "읽지않음"
 msgid "Starred items"
 msgstr ""
 
-#: src/Widget/Statusbar.vala:15
+#: src/Widget/Statusbar.vala:14
 msgid "Add new.."
 msgstr ""
 
-#: src/Widget/Statusbar.vala:17
+#: src/Widget/Statusbar.vala:15
 msgid "Mark all items as read"
 msgstr "모든 항목을 읽음으로 표시"
 
-#: src/Widget/Statusbar.vala:20
+#: src/Widget/Statusbar.vala:16
 msgid "Go to the channel with unread items"
 msgstr "읽지 않은 항목이 있는 채널로 이동하기"
 
-#: src/Widget/Statusbar.vala:30
+#: src/Widget/Statusbar.vala:26
 msgid "unread feeds"
 msgstr "읽지 않은 피드"
 
-#: src/Widget/Statusbar.vala:30
+#: src/Widget/Statusbar.vala:26
 msgid "unread feed"
 msgstr "읽지 않은 피드"
 
-#: src/Widget/Statusbar.vala:61 src/Widget/Subscription.vala:19
+#: src/Widget/Statusbar.vala:57 src/Widget/Subscription.vala:19
 #, fuzzy
 msgid "Add new subscription"
 msgstr "새로운 구독 URL 추가하기"
 
-#: src/Widget/Statusbar.vala:62
+#: src/Widget/Statusbar.vala:58
 #, fuzzy
 msgid "Import subscription from file"
 msgstr "OPML로부터 구독 목록 추가하기"
 
-#: src/Widget/Subscription.vala:39
+#: src/Widget/Subscription.vala:34
 msgid "Load favicon"
 msgstr "아이콘 로드하기"
 
-#: src/Widget/Subscription.vala:47
+#: src/Widget/Subscription.vala:42
 msgid "Folder"
 msgstr "폴더"
 
-#: src/Widget/Subscription.vala:54
+#: src/Widget/Subscription.vala:49
 msgid "URI Address"
 msgstr "URL 주소"
 
-#: src/Widget/Subscription.vala:79
+#: src/Widget/Subscription.vala:73
 #, fuzzy, c-format
 msgid "Edit subscription %s"
 msgstr "구독 목록 내보내기"
@@ -370,21 +374,21 @@ msgstr "사이드바 표시"
 msgid "Fullscreen"
 msgstr "전체 화면"
 
-#: src/Widget/Toolbar.vala:77
+#: src/Widget/Toolbar.vala:78
 #, fuzzy
 msgid "Type to Search"
 msgstr "검색하려면 입력하세요..."
 
-#: src/Widget/Toolbar.vala:82
+#: src/Widget/Toolbar.vala:83
 msgid "Refresh all subscriptions"
 msgstr "모든 구독 목록 업데이트하기"
 
-#: src/Widget/Toolbar.vala:83
+#: src/Widget/Toolbar.vala:84
 msgid "Menu"
 msgstr "메뉴"
 
 #. Description
-#: src/Widget/ViewCell.vala:53
+#: src/Widget/ViewCell.vala:47
 #, c-format
 msgid "%s, by %s"
 msgstr "%s, 작성자 %s"
@@ -447,9 +451,6 @@ msgstr ""
 
 #~ msgid "Remove selected subscription"
 #~ msgstr "선택한 구독 목록 삭제하기"
-
-#~ msgid "Save"
-#~ msgstr "저장"
 
 #~ msgid "Subscription"
 #~ msgstr "구독"
