@@ -172,7 +172,77 @@ public class Feedler.ViewList : Feedler.View {
         warning ("Feedler.ViewList.load_item ()");
 
         if (selected != null) {
-            this.load_article (selected.text);
+            string content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>%s</title>
+  <style>
+    body {
+      margin: 2rem;
+      border-radius: 8px;
+    }
+    
+    header {
+      padding: 1rem;
+      border-bottom: 0.1rem solid hsl(0, 80%, 10%);
+    }
+    
+    #top {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .author {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+    
+    .title {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    span#title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    article {
+        padding: 0.5rem 1rem;
+    }
+    
+    img {
+        max-width:100%;
+        height:auto;
+    }
+  </style>
+</head>
+
+<body>
+    <header>
+        <div id="top">
+            <div class="author">
+                <a href="%s" title="Content">%s</a>
+                <span>%s</span>
+            </div>
+            <div>
+                <img src="https://ranchero.com/images/nnw_icon_32.png">
+            </div>
+        </div>
+        
+        <div class="title">
+            <span id="title">%s</span>
+            <date>%s</date> 
+        </div> 
+    </header>
+    <article>%s</article>
+</body>
+</html>"""
+            .printf(selected.subject, selected.source, selected.source, selected.author, selected.subject,selected.date, selected.text);
+            
+            this.load_article (content);
 
             if (!selected.read) {
                 this.selected.read = true;
