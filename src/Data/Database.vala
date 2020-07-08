@@ -13,7 +13,7 @@ namespace Feedler {
         private int db_version;
         private string user_data_dir;
         internal GLib.List<Objects.Folder> data;
-        internal GLib.List<unowned Objects.Item> tmp;
+        internal GLib.List<weak Objects.Item> tmp;
 
         construct {
             user_data_dir = GLib.Environment.get_user_data_dir () + "/feedler";
@@ -219,7 +219,7 @@ namespace Feedler {
         }
 
         public unowned GLib.List<Objects.Item> get_items (Objects.State state = Objects.State.ALL) {
-            this.tmp = new GLib.List < Objects.Item ? > ();
+            this.tmp = new GLib.List < weak Objects.Item > ();
             GLib.CompareFunc < Objects.Item ? > timecmp = (a, b) => {
                 return (int)(a.time > b.time) - (int)(a.time < b.time);
             };
